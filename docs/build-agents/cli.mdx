@@ -1,0 +1,782 @@
+---
+title: Build with AI editors
+---
+
+Add this to your .cursorrules or CLAUDE.md file.
+
+`````` markdown
+## Quickstart
+```bash
+pip install kapso
+kapso init                         # Create project structure
+kapso pull --project-id <id>       # Pull existing project from cloud
+kapso agent init <name>            # Create new agent
+kapso flow init <name>             # Create new flow
+kapso push                         # Push all changes
+kapso agent snapshot <name>        # Test with web UI
+```
+
+## Project Structure
+```
+project/
+├── kapso.yaml              # Project configuration  
+├── agents/                 # Agent Builder SDK (LangGraph)
+│   └── agent_name/
+│       ├── agent.py
+│       └── metadata.yaml
+├── flows/                  # Flow Builder SDK (WhatsApp)
+│   └── flow_name/
+│       ├── flow.py
+│       └── metadata.yaml
+└── functions/              # JavaScript serverless
+    └── function_name.js
+```
+
+## Agent Builder SDK (for agents/)
+```python
+from kapso.builder import Agent
+from kapso.builder.nodes import SubagentNode, WarmEndNode, HandoffNode
+from kapso.builder.nodes.subagent import WebhookTool, KnowledgeBaseTool
+from kapso.builder.agent.constants import START_NODE, END_NODE
+
+agent = Agent(name="my_agent", system_prompt="You are a helpful assistant")
+
+# Main node: SubagentNode (preferred)
+assistant = SubagentNode(
+    name="assistant",
+    prompt="Help users with available tools",
+    global_=False,  # or True for global access
+    global_condition="trigger condition if global"
+)
+
+# Add tools to SubagentNode
+assistant.add_tool(WebhookTool(
+    name="api_call",
+    url="https://api.example.com",
+    description="API description"
+))
+assistant.add_tool(KnowledgeBaseTool(
+    name="kb",
+    knowledge_base_text="Content...",
+    description="Search knowledge"
+))
+
+# Global handoff
+handoff = HandoffNode(
+    name="human",
+    global_=True,
+    global_condition="if user requests human"
+)
+
+# Conversation end
+end = WarmEndNode(
+    name="end",
+    timeout_minutes=30,
+    prompt="Say goodbye message"
+)
+
+# Build graph
+agent.add_node(START_NODE)
+agent.add_node(assistant)
+agent.add_node(handoff)
+agent.add_node(end)
+agent.add_node(END_NODE)
+
+agent.add_edge(START_NODE, "assistant")
+agent.add_edge("assistant", "end", condition="if conversation complete")
+agent.add_edge("end", END_NODE)
+agent.validate()
+```
+
+
+## Flow Builder SDK (for flows/)
+```python
+from kapso.builder.flows import Flow
+from kapso.builder.flows.nodes import StartNode, SendTextNode, DecideNode, AgentNode, WaitForResponseNode
+from kapso.builder.flows.nodes.decide import Condition
+from kapso.builder.flows.nodes.agent import FlowAgentWebhook
+from kapso.builder.ai.field import AIField
+
+flow = Flow(name="Customer Support", description="Handle customer inquiries")
+
+# REQUIRED: Start node (entry point for every flow)
+start = StartNode(id="start_001")
+
+# AI-powered greeting with dynamic content
+greeting = SendTextNode(
+    id="greeting_001",
+    whatsapp_config_id="main_config",
+    text=AIField(),  # Dynamic AI-generated content
+    provider_model_name="claude-sonnet-4-20250514",  # Note: provider_model_name not provider_model_id
+    ai_field_config={
+        "message": {
+            "mode": "prompt",
+            "prompt": "Generate friendly greeting for {{customer_name}}"
+        }
+    }
+)
+
+# Wait for user response
+wait = WaitForResponseNode(id="wait_001")
+
+# AI decision routing
+router = DecideNode(
+    id="router_001",
+    provider_model_name="claude-sonnet-4-20250514",
+    conditions=[
+        Condition("technical", "Technical support needed"),
+        Condition("billing", "Billing inquiry"),
+        Condition("general", "General question")
+    ]
+)
+
+# AI agent with webhooks
+agent = AgentNode(
+    id="support_agent",
+    system_prompt="You are a helpful support agent",
+    provider_model_name="claude-sonnet-4-20250514",
+    webhooks=[
+        FlowAgentWebhook(
+            name="Check Status",
+            url="https://api.company.com/status",
+            description="Check system status"
+        )
+    ]
+)
+
+# Add nodes and edges (always start from StartNode)
+flow.add_node(start)
+flow.add_node(greeting)
+flow.add_node(wait)
+flow.add_node(router)
+flow.add_node(agent)
+
+flow.add_edge("start_001", "greeting_001")
+flow.add_edge("greeting_001", "wait_001")
+flow.add_edge("wait_001", "router_001", label="next")
+flow.add_edge("router_001", "support_agent", label="technical")
+
+flow.validate()
+```
+
+
+## Flow Builder SDK Nodes (for flows/)
+
+### SendTextNode
+**Purpose**: Send text messages (static or AI-generated) via WhatsApp
+```python
+SendTextNode(
+    id="unique_id",                    # Required: node identifier
+    whatsapp_config_id="config_123",   # Required: WhatsApp config
+    text="Static text",                # Option 1: static text
+    # OR
+    text=AIField(),                    # Option 2: AI-generated text
+    provider_model_name="claude-sonnet-4-20250514", # Required if using AIField
+    ai_field_config={                  # Required if using AIField
+        "message": {
+            "mode": "prompt",
+            "prompt": "Generate greeting for {{customer_name}}"
+        }
+    }
+)
+```
+
+### SendInteractiveNode
+**Purpose**: Send interactive WhatsApp messages (buttons, lists) with AI-generated content
+```python
+SendInteractiveNode(
+    id="interactive_123",
+    whatsapp_config_id="config_123",
+    interactive_type="button",         # "button" or "list"
+    body_text="Choose an option:",     # Main message text
+    header_text=AIField(),             # Can be static string or AIField
+    footer_text="Need help?",          # Optional footer
+    provider_model_name="claude-sonnet-4-20250514", # Required if using AIField
+    ai_field_config={                  # Required if using AIField
+        "header_text": {
+            "mode": "prompt", 
+            "prompt": "Create header for {{context}}"
+        }
+    }
+)
+```
+
+### DecideNode
+**Purpose**: AI-powered decision routing based on user input
+```python
+DecideNode(
+    id="router_123",
+    provider_model_name="claude-sonnet-4-20250514",  # Required: AI model
+    conditions=[                       # Required: routing conditions
+        Condition("technical", "User needs technical support"),
+        Condition("billing", "User has billing questions"),
+        Condition("general", "General inquiry")
+    ],
+    llm_temperature=0.1,               # Optional: model temperature
+    llm_max_tokens=500                 # Optional: token limit
+)
+```
+
+### AgentNode
+**Purpose**: AI agent with tools (webhooks, reasoning) for complex interactions
+```python
+AgentNode(
+    id="agent_123",
+    system_prompt="You are a helpful support agent",
+    provider_model_name="claude-sonnet-4-20250514",  # Required: AI model
+    temperature=0.2,                    # Optional: creativity level
+    max_iterations=50,                  # Optional: max tool calls
+    reasoning_effort="high",            # Optional: thinking depth
+    webhooks=[                          # Optional: external tools
+        FlowAgentWebhook(
+            name="Check Status",
+            url="https://api.company.com/status",
+            description="Check system status"
+        )
+    ]
+)
+```
+
+### WaitForResponseNode
+**Purpose**: Wait for user input with timeout
+```python
+WaitForResponseNode(
+    id="wait_123",
+)
+```
+
+### SendTemplateNode  
+**Purpose**: Send pre-approved WhatsApp templates
+```python
+SendTemplateNode(
+    id="template_123",
+    whatsapp_config_id="config_123",
+    template_id="order_confirmation",
+    parameters={
+        "order_number": "{{order_id}}",
+        "customer_name": "{{name}}"
+    }
+)
+```
+
+### FunctionNode
+**Purpose**: Execute serverless JavaScript functions
+```python
+FunctionNode(
+    id="function_123", 
+    function_id="calculate_total",
+    save_response_to="order_total"    # Save result to variable
+)
+```
+
+### StartNode
+**Purpose**: Entry point for flows - REQUIRED for every flow
+```python
+StartNode(
+    id="start_001"                   # Required: unique identifier
+)
+```
+**Important**: Every flow must have exactly one StartNode as the entry point. It has no configuration and doesn't perform any actions - it's purely the starting point for flow execution.
+
+## SubagentNode Tools
+
+### WebhookTool
+```python
+WebhookTool(
+    name="api_call",
+    url="https://api.example.com",
+    http_method="POST",
+    headers={"Authorization": "Bearer #{token}"},
+    body_schema={...},
+    jmespath_query="results[0]",
+    mock_response={...},
+    mock_response_enabled=True,
+    description="Tool description"
+)
+```
+
+### KnowledgeBaseTool
+```python
+# From text
+KnowledgeBaseTool(
+    name="kb",
+    knowledge_base_text="Content...",
+    description="Search knowledge"
+)
+
+# From file
+KnowledgeBaseTool.from_file(
+    name="kb",
+    file_path="docs/manual.pdf",
+    description="Search docs"
+)
+```
+
+### McpServerTool
+```python
+McpServerTool(
+    name="mcp",
+    url="https://mcp.example.com",
+    transport_kind="sse|streamable_http",
+    jmespath_queries=[
+        JmespathQuery(
+            tool_name="calculator",
+            jmespath_query="tools[?type=='math']"
+        )
+    ],
+    description="MCP tools"
+)
+```
+
+### WhatsappTemplateTool
+```python
+WhatsappTemplateTool(
+    name="notify",
+    template_name="order_update",
+    phone_number="#{phone}",
+    template_parameters={"1": "#{name}"},
+    wait_for_response=True,
+    whatsapp_config_id="config_123",
+    whatsapp_template_id="template_456",
+    description="Send WhatsApp"
+)
+```
+
+## Graph Rules & Flow Control
+
+### Essential Rules
+1. **START_NODE and END_NODE must exist** in every agent
+2. **Only ONE node can connect from START** - START → single_node
+3. **Node prompts are LLM instructions**, not user-facing messages
+4. **A node cannot connect to itself** - no self-loops
+5. **Global nodes are NOT connected** - they're available everywhere and return to calling node
+6. **HandoffNode stops execution** - put any user messages in previous node
+
+### Edges & Flow
+```python
+# Simple edge
+agent.add_edge("source", "target")
+
+# Conditional edge
+agent.add_edge("source", "target", condition="user says X")
+
+# Special nodes
+START_NODE  # Entry point (exactly one outgoing edge)
+END_NODE    # Exit point (can have multiple incoming)
+
+# Global nodes - no edges needed
+global_node = DefaultNode(name="help", global_=True, global_condition="user asks for help")
+# Automatically available from any node when condition is met
+```
+
+## CLI Commands
+
+### Core Project Commands
+```bash
+kapso init [path]                    # Initialize new project structure
+kapso login                          # Authenticate with Kapso Cloud
+kapso pull [--project-id <id>]       # Pull entire project from cloud
+kapso push [--yes] [--dry-run]       # Push all local changes to cloud
+kapso test [target] [--verbose]      # Run tests (cloud-based)
+kapso logout                         # Remove stored credentials
+kapso version                        # Show version information
+```
+
+### Agent Commands (for agents/)
+```bash
+kapso agent init <name> [--template]       # Create new agent locally
+kapso agent pull <name>                     # Pull specific agent from cloud  
+kapso agent push <name>                     # Push agent to cloud (create/update)
+kapso agent snapshot [--agent <name>]      # Create test snapshot, get web URL
+kapso agent list [--remote]                # List local/remote agents
+```
+
+### Flow Commands (for flows/)
+```bash
+kapso flow init <name>              # Create new flow locally
+kapso flow pull <name>              # Pull specific flow from cloud
+kapso flow push <name>              # Push flow to cloud (create/update)
+kapso flow list [--remote]          # List local/remote flows
+```
+
+### Functions Commands (unchanged)
+```bash
+kapso functions list                # List all functions
+kapso functions push <file.js>      # Upload/update function  
+kapso functions pull <name>         # Download function
+```
+
+
+### Global Options
+```bash
+--verbose, -v         # Enable detailed output
+--yes, -y            # Skip confirmation prompts (push command)
+--dry-run            # Show what would be done without doing it (push command)
+--config <file>      # Use custom config file
+```
+
+
+## Functions (Serverless JavaScript)
+
+### Quickstart
+```bash
+# Set API key (no project setup needed)
+export KAPSO_API_KEY=your-api-key
+
+# List functions
+kapso functions list
+
+# Upload function (creates or updates)
+kapso functions push my-function.js
+
+# Download function
+kapso functions pull my-function
+```
+
+### Function Structure
+Functions have access to persistent KV storage and encrypted secrets for each project:
+
+```javascript
+// functions/my-function.js
+async function handler(request, env) {
+  // Get request data
+  const body = await request.json();
+  
+  // Access encrypted secrets (set in web app)
+  const apiKey = env.API_KEY;
+  const dbUrl = env.DATABASE_URL;
+  
+  // Use KV storage
+  await env.KV.put('user:123', JSON.stringify({ name: body.name }));
+  const user = await env.KV.get('user:123', { type: 'json' });
+  
+  // Make API call with secret
+  const apiResponse = await fetch('https://api.example.com/data', {
+    headers: { 'Authorization': `Bearer ${apiKey}` }
+  });
+  
+  // Process the request
+  const result = {
+    message: "Hello from function",
+    input: body,
+    storedUser: user,
+    apiData: await apiResponse.json()
+  };
+  
+  // Return JSON response
+  return new Response(JSON.stringify(result), {
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
+```
+
+**Secrets Management:**
+- Secrets are set in the Kapso web app (function page → Secrets tab)
+- Access via `env.SECRET_NAME` in your function code
+- Secret names should use UPPERCASE_WITH_UNDERSCORES
+- Values are encrypted and never exposed after creation
+- Functions must be deployed before adding secrets
+
+### KV Storage API
+```javascript
+// Store data
+await env.KV.put('key', 'value');
+await env.KV.put('key', JSON.stringify(object));
+await env.KV.put('key', 'value', { expirationTtl: 3600 }); // 1 hour TTL
+
+// Retrieve data
+const text = await env.KV.get('key');
+const json = await env.KV.get('key', { type: 'json' });
+
+// Delete data
+await env.KV.delete('key');
+
+// List keys
+const list = await env.KV.list({ prefix: 'user:' });
+```
+
+### Functions Organization
+```
+functions/                    # Functions directory
+├── process-order.js         # Function files (name = filename)
+├── send-notification.js
+└── validate-data.js
+```
+
+### Function Commands
+```bash
+# Push function (create/update)
+kapso functions push functions/process-order.js
+kapso functions push my-func.js --name custom-name
+
+# List all functions
+kapso functions list
+
+# Pull function (download)
+kapso functions pull process-order              # → functions/process-order.js
+kapso functions pull process-order -o custom.js # → custom.js
+```
+
+### Key Features
+- **No configuration files** - just JavaScript
+- **Auto-deploy** - functions deploy immediately on push
+- **Smart updates** - same push command creates or updates
+- **Convention over configuration** - function name = filename
+- **Encrypted secrets** - manage API keys and sensitive data in web app
+- **Persistent KV storage** - built-in key-value store per project
+
+## Environment Variables (.env)
+```bash
+# APIs
+KAPSO_API_KEY=your-key
+```
+
+## Node Prompts & Tool Usage
+
+### Referencing Tools in Prompts
+You can instruct the LLM to use specific built-in tools in node prompts:
+
+```python
+DefaultNode(
+    name="notify",
+    prompt="Use send_notification_to_user to inform the user about their order status"
+)
+
+SubagentNode(
+    name="assistant",
+    prompt="When the user asks about weather, use the weather_api tool. For FAQs, use the kb_search tool."
+)
+
+WarmEndNode(
+    name="goodbye",
+    prompt="Thank the user and use send_notification_to_user to send a follow-up message"
+)
+```
+
+### Available Built-in Tools by Node
+- **send_notification_to_user**: Send messages to user
+- **AskUserForInput**: Request specific information from user
+- **MoveToNextNode**: Navigate to specific nodes
+- **EnterIdleState**: Pause and wait
+- **kb_retrieval**: Search knowledge bases (KB/Subagent nodes)
+- **webhook_request**: Make API calls (Webhook nodes)
+- **SendWhatsappTemplateMessage**: Send WhatsApp templates
+
+## Common Workflows
+
+### New Project Setup
+```bash
+# Create project structure
+kapso init my_project
+cd my_project
+
+# Login to cloud
+kapso login
+
+# Pull existing project (if available)
+kapso pull --project-id proj_abc123
+```
+
+### Agent Development  
+```bash
+# Create new agent
+kapso agent init customer_support
+
+# Edit agents/customer_support/agent.py
+# Write Agent Builder SDK code
+
+# Test with web interface
+kapso agent snapshot customer_support
+
+# Push to cloud
+kapso agent push customer_support
+```
+
+### Flow Development  
+```bash
+# Create new flow
+kapso flow init order_processing
+
+# Edit flows/order_processing/flow.py
+# Write Flow Builder SDK code
+
+# Push to cloud
+kapso flow push order_processing
+```
+
+### Multi-Resource Development
+```bash
+# Check what's changed locally
+kapso push --dry-run
+
+# Push all changes at once
+kapso push
+
+# Or push individually
+kapso agent push support_agent
+kapso flow push onboarding_flow
+kapso functions push calculate_tax.js
+```
+
+### Collaboration Workflow
+```bash
+# Pull entire project with all resources
+kapso pull --project-id proj_123
+
+# See what's available
+kapso agent list --remote
+kapso flow list --remote
+
+# Pull specific resources for focused work
+kapso agent pull customer_support
+kapso flow pull onboarding
+```
+
+### Testing and Iteration
+```bash
+# Test agent interactively (web UI)
+kapso agent snapshot my_agent
+
+# Run automated tests
+kapso test
+kapso test "Customer Support Tests"
+
+# Debug issues
+kapso test --verbose
+```
+
+## Best Practices
+
+### Agent Builder SDK (agents/)
+1. **Use SubagentNode** instead of individual nodes when possible
+2. **Global nodes**: Use sparingly (handoff, help menus)
+3. **Edge conditions**: Natural language, no overlap
+4. **Mock responses**: Enable during development
+5. **Variables**: #{variable_name} in URLs, headers, bodies
+6. **Node names**: lowercase_with_underscores
+7. **Validation**: Always call agent.validate()
+
+### Flow Builder SDK (flows/)
+1. **Always include StartNode**: Every flow MUST have exactly one StartNode as entry point
+2. **Use provider_model_name** (not provider_model_id) for AI models
+3. **AIField for dynamic content**: Use for personalized messages
+4. **Node IDs**: Use descriptive, unique identifiers  
+5. **Flow structure**: StartNode → other nodes, connected with edges
+6. **Wait handling**: Use WaitForResponseNode to pause flow for user input
+7. **Template usage**: Leverage SendTemplateNode for approved WhatsApp templates
+8. **Edge labels**: Use clear, descriptive labels for routing
+9. **Validation**: Always call flow.validate()
+
+### General
+1. **Directory structure**: Keep agents/, flows/, functions/ organized
+2. **Metadata management**: Let CLI handle metadata.yaml files
+3. **Version control**: Commit both Python code and generated metadata
+4. **Testing**: Use `kapso agent snapshot` for interactive testing
+5. **Collaboration**: Use `kapso pull` to sync entire project state
+
+## Quick Examples
+
+### Agent Builder SDK Examples
+
+#### API Integration with SubagentNode
+```python
+# Add webhook tool to SubagentNode
+assistant.add_tool(WebhookTool(
+    name="weather",
+    url="https://api.weather.com/current?city=#{city}",
+    http_method="GET", 
+    headers={"X-API-Key": "#{WEATHER_KEY}"},
+    jmespath_query="current.temp_f",
+    description="Get weather data"
+))
+```
+
+#### Knowledge Base Integration
+```python
+assistant.add_tool(KnowledgeBaseTool(
+    name="faq",
+    knowledge_base_text="Q: Hours? A: 9-5 M-F\nQ: Returns? A: 30 days",
+    description="Company FAQ"
+))
+```
+
+#### Global Help Menu
+```python
+help_node = DefaultNode(
+    name="help",
+    prompt="Show menu: 1) Status 2) Support 3) Info",
+    global_=True,
+    global_condition="user says help or menu"
+)
+```
+
+### Flow Builder SDK Examples
+
+#### AI-Generated Welcome Message
+```python
+welcome = SendTextNode(
+    id="welcome_001",
+    whatsapp_config_id="main_config",
+    text=AIField(),
+    provider_model_name="claude-sonnet-4-20250514",  # Use provider_model_name
+    ai_field_config={
+        "message": {
+            "mode": "prompt",
+            "prompt": "Create personalized welcome for {{customer_name}} with tier {{tier}}"
+        }
+    }
+)
+```
+
+#### Smart Routing with DecideNode
+```python
+router = DecideNode(
+    id="intent_router",
+    provider_model_name="claude-sonnet-4-20250514",
+    conditions=[
+        Condition("support", "Customer needs technical help"),
+        Condition("sales", "Customer interested in purchasing"),
+        Condition("billing", "Customer has billing questions")
+    ],
+    llm_temperature=0.1
+)
+```
+
+#### Agent with External Tools
+```python
+support_agent = AgentNode(
+    id="support_agent",
+    system_prompt="You are a helpful support agent. Use available tools to assist customers.",
+    provider_model_name="claude-sonnet-4-20250514",
+    temperature=0.2,
+    max_iterations=50,
+    webhooks=[
+        FlowAgentWebhook(
+            name="Order Status",
+            url="https://api.company.com/orders/{{order_id}}",
+            description="Check order status and tracking"
+        ),
+        FlowAgentWebhook(
+            name="Account Info", 
+            url="https://api.company.com/customers/{{customer_id}}",
+            description="Get customer account information"
+        )
+    ]
+)
+```
+
+## Environment Variables (.env)
+```bash
+# LLM Configuration
+KAPSO_API_KEY=your-key
+```
+
+## Debug Tips
+- Use `--verbose` flag for detailed output
+- Test with `kapso agent snapshot <name>` for interactive debugging
+- Check `metadata.yaml` files for resource IDs and sync status
+- Use `kapso push --dry-run` to preview changes
+- Validate flows/agents with `.validate()` before pushing
+- Use mock responses during development for webhooks
+
+``````

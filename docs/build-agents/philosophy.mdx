@@ -1,0 +1,68 @@
+---
+title: Agent architecture
+---
+
+Building effective AI agents in Kapso requires choosing the right architecture for your use case. We've designed our system to give you flexibility while maintaining reliability.
+
+## Recommended initial architecture
+
+For most WhatsApp agents, we recommend starting with this simple but powerful architecture:
+
+![Recommended architecture](../../images/recommended-architecture.png)
+
+1. **Subagent Node** (main node)
+   - Handles the core conversation logic
+   - Manages tool selection intelligently
+   - Provides flexibility for various user inputs
+
+2. **Warm End Node**
+   - Gracefully closes conversations after periods of inactivity
+   - Prevents hanging conversations
+   - Provides a clean exit point
+
+3. **Handoff Node** (global)
+   - Monitors all conversations for handoff triggers
+   - Transfers to human agents when needed
+   - Acts as a safety net for complex cases
+
+Note: Every agent graph automatically includes Start and End nodes that define where execution begins and terminates. These system nodes are created for you and ensure proper flow control.
+
+This architecture provides:
+- **Simplicity:** Easy to understand and maintain
+- **Flexibility:** Handles most conversation patterns effectively
+- **Reliability:** Built-in failsafes for edge cases
+- **Scalability:** Easy to extend as requirements grow
+
+## Why subagent nodes?
+
+Subagent nodes are powerful because they combine multiple capabilities in a single, intelligent node:
+
+*   **Flexibility:** Handle open-ended conversations naturally
+*   **Multiple tools:** Access to webhooks, knowledge bases, WhatsApp templates, and MCP servers
+*   **Intelligent routing:** The AI determines the best tool for each situation
+*   **Easy iteration:** Quickly adapt and improve without restructuring your graph
+
+This approach works well for most use cases. Only move to specialized nodes when you need deterministic behavior or strict control.
+
+## Alternative: Specialized nodes
+
+For scenarios requiring deterministic behavior and strict control, you can use specialized nodes:
+
+*   **Default Node:** For simple conversational steps with specific prompts
+*   **Webhook Node:** For deterministic API calls with structured data
+*   **Knowledge Base Node:** For focused Q&A from specific documentation
+*   **WhatsApp Template Node:** For sending pre-approved message templates
+*   **Handoff Node:** For transferring to human agents with specific criteria
+
+## Growing your architecture
+
+The recommended architecture scales well as your needs grow:
+
+1. **Start simple:** Use the three-node architecture shown above
+2. **Add complexity gradually:**
+   - Add more subagent nodes for different conversation contexts
+   - Introduce specialized nodes for high-frequency, deterministic tasks
+   - Create conditional routing based on user attributes or conversation state
+3. **Maintain flexibility:** Keep subagent nodes for complex interactions while using specialized nodes for predictable flows
+
+The beauty of this approach is that you can start simple and evolve without major restructuring.

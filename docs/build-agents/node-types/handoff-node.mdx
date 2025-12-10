@@ -1,0 +1,62 @@
+---
+title: "Handoff Node"
+description: "Transfer conversations to human operators"
+icon: "user"
+---
+
+The Handoff Node enables seamless transition from automated agent conversations to human intervention when issues require personal attention or fall outside the agent's capabilities.
+
+### Purpose & Functionality
+
+Immediately stops the agent's execution for the user and prevents further automated message processing for that conversation, setting the status to `handoff`. It does not use a prompt and signals that the conversation requires external intervention (e.g., transfer to a human).
+
+Unlike other nodes, the Handoff Node does not have a prompt configuration since its purpose is to immediately exit automated processing.
+
+### Configuration
+
+- **Name:** A label for the node on the Canvas
+- No prompt configuration is necessary or used
+
+### Use Cases
+
+- Escalating complex issues
+- Transferring conversations to human support agents
+- Handling sensitive requests requiring human judgment
+- Managing situations where the agent can't resolve an issue
+- Allowing for supervision of specific conversation paths
+
+### Best Practices
+
+- Place Handoff Nodes at strategic points in your Agent Graph where human intervention might be necessary
+- Consider using a Default Node before the Handoff Node to explain to the user that they're being transferred
+- Create clear edge conditions leading to Handoff Nodes
+- Ensure you have a system in place to monitor and handle conversations in "handoff" status
+- Document common reasons for handoffs to improve your Agent Graph over time
+
+### Implementation Example
+
+A common implementation pattern is to have a Default Node explain the handoff before transferring:
+
+**Default Node (preceding the Handoff Node):**
+```
+Inform the customer that for this complex issue, you'll connect them with a specialist 
+who can better assist them. Let them know someone will review their conversation 
+shortly.
+```
+
+**Handoff Node:**
+Simply add this node after the explanation node with no additional configuration.
+
+## Related Nodes
+
+<CardGroup cols={3}>
+  <Card title="Default Node" icon="message" href="./default-node">
+    The most versatile node for general conversation
+  </Card>
+  <Card title="Knowledge Base Node" icon="database" href="./knowledge-base-node">
+    Access specific knowledge sources for responses
+  </Card>
+  <Card title="Warm End Node" icon="door-open" href="./warm-end-node">
+    Gracefully conclude conversations
+  </Card>
+</CardGroup> 

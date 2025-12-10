@@ -1,0 +1,1193 @@
+openapi: 3.0.3
+info:
+  title: Kapso External API - Functions and App Accounts API
+  description: API for programmatically managing and invoking Kapso Functions, and for making API calls to connected app accounts through the Pipedream proxy. This specification includes all Functions and App Accounts API endpoints.
+  version: 1.0.0
+  contact:
+    name: Kapso Support
+servers:
+- url: https://app.kapso.ai/api/v1
+  description: Production server
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key required for all endpoints
+  schemas:
+    Function:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: function-123abc
+        name:
+          type: string
+          example: Process Order
+        slug:
+          type: string
+          example: process-order
+        description:
+          type: string
+          example: Function to process incoming orders
+        code:
+          type: string
+          example: |
+            export default function handler(request) {
+              return new Response(JSON.stringify({ status: 'success' }));
+            }
+        function_type:
+          type: string
+          enum:
+          - cloudflare_worker
+          - supabase_function
+          default: cloudflare_worker
+          example: cloudflare_worker
+          description: The type of function platform (Cloudflare Workers or Supabase Functions)
+        version:
+          type: integer
+          example: 1
+        status:
+          type: string
+          enum:
+          - draft
+          - deployed
+          - error
+          example: deployed
+        last_deployed_at:
+          type: string
+          format: date-time
+          nullable: true
+        runtime_config:
+          type: object
+          nullable: true
+          description: Runtime configuration for the function
+        project_id:
+          type: string
+          format: uuid
+        created_by_id:
+          type: string
+          format: uuid
+          nullable: true
+        endpoint_url:
+          type: string
+          format: uri
+          example: https://app.kapso.ai/api/v1/functions/function-123abc/invoke
+          description: External API endpoint for function invocation
+        cf_worker_url:
+          type: string
+          format: uri
+          nullable: true
+          example: https://kapso-functions.workers.dev/function-123abc
+          description: Cloudflare Worker URL (only available when deployed and function_type is 'cloudflare_worker')
+        supabase_function_url:
+          type: string
+          format: uri
+          nullable: true
+          example: https://kbwuhiftfyortimljihc.functions.supabase.co/my-function
+          description: Supabase Function URL (only available when deployed and function_type is 'supabase_function')
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    FunctionInvocation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        function_id:
+          type: string
+          format: uuid
+        status_code:
+          type: integer
+          example: 200
+        duration_ms:
+          type: integer
+          example: 125
+        request_headers:
+          type: object
+        request_body:
+          type: object
+        response_body:
+          type: object
+        error_message:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Resource not found
+        status:
+          type: integer
+          example: 404
+        message:
+          type: string
+          example: The requested resource could not be found
+    FunctionSecret:
+      type: object
+      properties:
+        name:
+          type: string
+          example: API_KEY
+          description: The name of the secret (environment variable name)
+        type:
+          type: string
+          example: secret_text
+          description: The type of secret (always 'secret_text' for now)
+security:
+- ApiKeyAuth: []
+paths:
+  /functions:
+    get:
+      summary: List all functions
+      description: Returns a list of all functions for the authenticated project
+      operationId: listFunctions
+      tags:
+      - Functions
+      responses:
+        '200':
+          description: A list of functions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Function'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create a new function
+      description: Creates a new function in draft status
+      operationId: createFunction
+      tags:
+      - Functions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - function
+              properties:
+                function:
+                  type: object
+                  required:
+                  - name
+                  - code
+                  properties:
+                    name:
+                      type: string
+                      example: New Function
+                      description: Name of the function
+                    description:
+                      type: string
+                      example: This function processes incoming webhooks
+                      description: Optional description of the function's purpose
+                    code:
+                      type: string
+                      example: |
+                        export default function handler(request) {
+                          const body = await request.json();
+                          // Process the request
+                          return new Response(JSON.stringify({ processed: true }));
+                        }
+                      description: The function code (JavaScript/TypeScript for Cloudflare Workers or Deno for Supabase Functions)
+                    function_type:
+                      type: string
+                      enum:
+                      - cloudflare_worker
+                      - supabase_function
+                      default: cloudflare_worker
+                      example: cloudflare_worker
+                      description: The type of function platform (Cloudflare Workers or Supabase Functions)
+                    runtime_config:
+                      type: object
+                      description: Optional runtime configuration
+                      example:
+                        timeout: 30
+                        memory: 128
+      responses:
+        '201':
+          description: Function created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Function'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /functions/{function_id}:
+    get:
+      summary: Get function details
+      description: Returns details for a specific function
+      operationId: getFunction
+      tags:
+      - Functions
+      parameters:
+      - name: function_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Function details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Function'
+        '404':
+          description: Function not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Update a function
+      description: Updates an existing function's details
+      operationId: updateFunction
+      tags:
+      - Functions
+      parameters:
+      - name: function_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - function
+              properties:
+                function:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: Updated Function Name
+                    description:
+                      type: string
+                      example: Updated description
+                    code:
+                      type: string
+                      example: |
+                        export default function handler(request) {
+                          // Updated code
+                          return new Response(JSON.stringify({ updated: true }));
+                        }
+                    function_type:
+                      type: string
+                      enum:
+                      - cloudflare_worker
+                      - supabase_function
+                      description: The type of function platform (Cloudflare Workers or Supabase Functions)
+                    runtime_config:
+                      type: object
+      responses:
+        '200':
+          description: Function updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Function'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Function not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Delete a function
+      description: Deletes a function and all its associated data
+      operationId: deleteFunction
+      tags:
+      - Functions
+      parameters:
+      - name: function_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '204':
+          description: Function deleted successfully
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Function not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /functions/{function_id}/deploy:
+    post:
+      summary: Deploy or redeploy a function
+      description: |
+        Deploys a function to the specified platform (Cloudflare Workers or Supabase Functions). This endpoint supports:
+        - Initial deployment of draft functions
+        - Redeployment of already deployed functions (useful after code updates)
+        - Retry deployment of functions in error status
+        
+        The deployment target is determined by the function's function_type field:
+        - cloudflare_worker: Deploys to Cloudflare Workers
+        - supabase_function: Deploys to Supabase Functions (requires Supabase project integration)
+        
+        The deployment is asynchronous - the function returns immediately and deployment happens in the background.
+      operationId: deployFunction
+      tags:
+      - Functions
+      parameters:
+      - name: function_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Deployment initiated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Deployment started
+                    description: Status message indicating deployment or redeployment
+                  function_id:
+                    type: string
+                    format: uuid
+                    example: function-123abc
+                  status:
+                    type: string
+                    enum: [draft, deployed, error]
+                    example: deployed
+                    description: Current status of the function
+        '404':
+          description: Function not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /functions/{function_id}/invoke:
+    post:
+      summary: Invoke a deployed function
+      description: |
+        Invokes a deployed function with the provided request body. The function must be in 'deployed' status.
+        
+        The request body is passed directly to the function, and the function's response is returned.
+        Function invocations are tracked for billing and analytics purposes.
+      operationId: invokeFunction
+      tags:
+      - Functions
+      parameters:
+      - name: function_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Any JSON payload to send to the function
+              additionalProperties: true
+              example:
+                action: process
+                data:
+                  orderId: 12345
+                  items:
+                  - sku: ITEM-001
+                    quantity: 2
+      responses:
+        '200':
+          description: Function executed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                description: The response from the function
+                additionalProperties: true
+                example:
+                  status: success
+                  processedAt: '2024-01-15T10:30:00Z'
+                  orderId: 12345
+        '400':
+          description: Invalid JSON in request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Function not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Function is not deployed or missing requirements
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Function is not deployed
+                    description: Could be "Function is not deployed" or "Supabase project required for Supabase functions"
+        '500':
+          description: Function execution failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Function execution failed
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /functions/{function_id}/secrets:
+    get:
+      summary: List function secrets
+      description: |
+        Lists all secrets configured for a function. Only secret names are returned - values are never exposed.
+        The function must be deployed to have secrets.
+      operationId: listFunctionSecrets
+      tags:
+      - Function Secrets
+      parameters:
+      - name: function_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: List of secrets
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      secrets:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/FunctionSecret'
+                        example:
+                        - name: API_KEY
+                          type: secret_text
+                        - name: DATABASE_URL
+                          type: secret_text
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Function not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '502':
+          description: Failed to fetch secrets from function platform
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create a function secret
+      description: |
+        Creates a new secret for a deployed function. Secrets are encrypted environment variables
+        accessible in your function code:
+        - Cloudflare Workers: `env.SECRET_NAME`  
+        - Supabase Functions: `Deno.env.get('SECRET_NAME')`
+        
+        Note: Secret values are write-only and cannot be retrieved after creation.
+      operationId: createFunctionSecret
+      tags:
+      - Function Secrets
+      parameters:
+      - name: function_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - secret
+              properties:
+                secret:
+                  type: object
+                  required:
+                  - name
+                  - value
+                  properties:
+                    name:
+                      type: string
+                      pattern: '^[A-Z][A-Z0-9_]*$'
+                      example: API_KEY
+                      description: Secret name (uppercase letters, numbers, and underscores)
+                    value:
+                      type: string
+                      example: sk-1234567890abcdef
+                      description: Secret value (will be encrypted)
+      responses:
+        '201':
+          description: Secret created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: Secret created successfully
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Function not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Function must be deployed before managing secrets
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Function must be deployed before managing secrets
+        '502':
+          description: Failed to create secret in function platform
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /functions/{function_id}/secrets/{secret_name}:
+    delete:
+      summary: Delete a function secret
+      description: Permanently deletes a secret from a function. This action cannot be undone.
+      operationId: deleteFunctionSecret
+      tags:
+      - Function Secrets
+      parameters:
+      - name: function_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: secret_name
+        in: path
+        required: true
+        schema:
+          type: string
+          example: API_KEY
+      responses:
+        '204':
+          description: Secret deleted successfully
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Function not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Function must be deployed before managing secrets
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Function must be deployed before managing secrets
+        '502':
+          description: Failed to delete secret from function platform
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /app_accounts/{account_id}/proxy:
+    get:
+      summary: Proxy GET request to connected app account
+      description: |
+        Makes a GET request to an external API on behalf of a connected app account.
+        The Pipedream proxy handles OAuth credential injection and forwards the request
+        to the target API endpoint.
+      operationId: proxyGetRequest
+      tags:
+      - App Accounts Proxy
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          example: apn_1234567
+        description: The Pipedream account ID for the connected app
+      - name: url
+        in: query
+        required: true
+        schema:
+          type: string
+          format: uri
+          example: https://slack.com/api/conversations.list
+        description: The target API endpoint URL
+      - name: X-Target-URL
+        in: header
+        required: false
+        schema:
+          type: string
+          format: uri
+          example: https://slack.com/api/conversations.list
+        description: Alternative way to specify target URL via header
+      - name: X-PD-Proxy-*
+        in: header
+        required: false
+        schema:
+          type: string
+        description: |
+          Custom headers to forward to the target API. Use X-PD-Proxy- prefix.
+          Example: X-PD-Proxy-Content-Type will be forwarded as Content-Type
+      responses:
+        '200':
+          description: Successful proxy request
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Response from the target API
+                additionalProperties: true
+                example:
+                  ok: true
+                  channels:
+                  - id: C123
+                    name: general
+        '400':
+          description: Missing target URL
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: App account not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '402':
+          description: Payment required - addon not enabled or insufficient credits
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: App integrations addon is not enabled. Please enable it in billing settings.
+        '422':
+          description: Proxy request failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Proxy request failed
+    post:
+      summary: Proxy POST request to connected app account
+      description: |
+        Makes a POST request to an external API on behalf of a connected app account.
+        The Pipedream proxy handles OAuth credential injection and forwards the request
+        with the provided body to the target API endpoint.
+      operationId: proxyPostRequest
+      tags:
+      - App Accounts Proxy
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          example: apn_1234567
+        description: The Pipedream account ID for the connected app
+      - name: X-Target-URL
+        in: header
+        required: false
+        schema:
+          type: string
+          format: uri
+          example: https://slack.com/api/chat.postMessage
+        description: Alternative way to specify target URL via header
+      - name: X-PD-Proxy-*
+        in: header
+        required: false
+        schema:
+          type: string
+        description: |
+          Custom headers to forward to the target API. Use X-PD-Proxy- prefix.
+          Example: X-PD-Proxy-Content-Type will be forwarded as Content-Type
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - url
+              properties:
+                url:
+                  type: string
+                  format: uri
+                  example: https://slack.com/api/chat.postMessage
+                  description: The target API endpoint URL
+              additionalProperties: true
+              example:
+                url: https://slack.com/api/chat.postMessage
+                channel: C123
+                text: Hello from Kapso!
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+              - url
+              properties:
+                url:
+                  type: string
+                  format: uri
+                  example: https://slack.com/api/chat.postMessage
+                  description: The target API endpoint URL
+              additionalProperties: true
+      responses:
+        '200':
+          description: Successful proxy request
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Response from the target API
+                additionalProperties: true
+                example:
+                  ok: true
+                  channel: C123
+                  ts: "1234567890.123456"
+        '400':
+          description: Missing target URL
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: App account not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '402':
+          description: Payment required - addon not enabled or insufficient credits
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Insufficient credits for proxy requests. Please add credits to continue.
+        '422':
+          description: Proxy request failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Proxy request failed
+    put:
+      summary: Proxy PUT request to connected app account
+      description: |
+        Makes a PUT request to an external API on behalf of a connected app account.
+        The Pipedream proxy handles OAuth credential injection and forwards the request
+        with the provided body to the target API endpoint.
+      operationId: proxyPutRequest
+      tags:
+      - App Accounts Proxy
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          example: apn_1234567
+        description: The Pipedream account ID for the connected app
+      - name: X-Target-URL
+        in: header
+        required: false
+        schema:
+          type: string
+          format: uri
+        description: Alternative way to specify target URL via header
+      - name: X-PD-Proxy-*
+        in: header
+        required: false
+        schema:
+          type: string
+        description: |
+          Custom headers to forward to the target API. Use X-PD-Proxy- prefix.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - url
+              properties:
+                url:
+                  type: string
+                  format: uri
+                  description: The target API endpoint URL
+              additionalProperties: true
+      responses:
+        '200':
+          description: Successful proxy request
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Response from the target API
+                additionalProperties: true
+        '400':
+          description: Missing target URL
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: App account not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '402':
+          description: Payment required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '422':
+          description: Proxy request failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Proxy request failed
+    patch:
+      summary: Proxy PATCH request to connected app account
+      description: |
+        Makes a PATCH request to an external API on behalf of a connected app account.
+        The Pipedream proxy handles OAuth credential injection and forwards the request
+        with the provided body to the target API endpoint.
+      operationId: proxyPatchRequest
+      tags:
+      - App Accounts Proxy
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          example: apn_1234567
+        description: The Pipedream account ID for the connected app
+      - name: X-Target-URL
+        in: header
+        required: false
+        schema:
+          type: string
+          format: uri
+        description: Alternative way to specify target URL via header
+      - name: X-PD-Proxy-*
+        in: header
+        required: false
+        schema:
+          type: string
+        description: |
+          Custom headers to forward to the target API. Use X-PD-Proxy- prefix.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - url
+              properties:
+                url:
+                  type: string
+                  format: uri
+                  description: The target API endpoint URL
+              additionalProperties: true
+      responses:
+        '200':
+          description: Successful proxy request
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Response from the target API
+                additionalProperties: true
+        '400':
+          description: Missing target URL
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: App account not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '402':
+          description: Payment required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '422':
+          description: Proxy request failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Proxy request failed
+    delete:
+      summary: Proxy DELETE request to connected app account
+      description: |
+        Makes a DELETE request to an external API on behalf of a connected app account.
+        The Pipedream proxy handles OAuth credential injection and forwards the request
+        to the target API endpoint.
+      operationId: proxyDeleteRequest
+      tags:
+      - App Accounts Proxy
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        schema:
+          type: string
+          example: apn_1234567
+        description: The Pipedream account ID for the connected app
+      - name: url
+        in: query
+        required: true
+        schema:
+          type: string
+          format: uri
+        description: The target API endpoint URL
+      - name: X-Target-URL
+        in: header
+        required: false
+        schema:
+          type: string
+          format: uri
+        description: Alternative way to specify target URL via header
+      - name: X-PD-Proxy-*
+        in: header
+        required: false
+        schema:
+          type: string
+        description: |
+          Custom headers to forward to the target API. Use X-PD-Proxy- prefix.
+      responses:
+        '200':
+          description: Successful proxy request
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Response from the target API
+                additionalProperties: true
+        '400':
+          description: Missing target URL
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: App account not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '402':
+          description: Payment required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '422':
+          description: Proxy request failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Proxy request failed

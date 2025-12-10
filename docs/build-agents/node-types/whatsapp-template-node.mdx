@@ -1,0 +1,76 @@
+---
+title: "WhatsApp Template Node"
+description: "Send pre-approved WhatsApp message templates"
+icon: "whatsapp"
+---
+
+The WhatsApp Template Node allows your agent to send pre-approved message templates through WhatsApp, essential for initiating conversations or sending messages outside the 24-hour window.
+
+### Purpose & Functionality
+
+Sends pre-approved WhatsApp message templates, which are required for initiating conversations or sending notifications outside the 24-hour messaging window. Can dynamically fill template parameters using variables (`#{variable}`).
+
+Primarily operates as a notification, it only pauses execution if the `waitForResponse` flag is explicitly set in its configuration.
+
+### Configuration
+
+- **Name:** A label for the node on the Canvas
+- **Associated WhatsApp Configuration:** The WhatsApp Business Account to use
+- **Selected WhatsApp Template:** Choose from your approved templates
+- **Template Parameters:** Values to fill in variable placeholders in the template
+- **Target Phone Number:** Recipient's phone number (can use a variable)
+- **waitForResponse:** Boolean flag to control if execution should pause after sending
+
+### Use Cases
+
+- Sending notifications
+- Initiating conversations
+- Re-engaging customers after the 24-hour window
+- Sending standardized messages that require pre-approval
+
+### Example
+
+**Configuration:**
+```json
+{
+  "whatsAppConfiguration": "default",
+  "template": "order_confirmation",
+  "parameters": {
+    "1": "#{order_number}",
+    "2": "#{delivery_date}"
+  },
+  "phoneNumber": "#{customer_phone}",
+  "waitForResponse": true
+}
+```
+
+**Template Content:**
+```
+Your order #{{1}} has been confirmed and will be delivered on {{2}}. 
+Would you like to add any special delivery instructions?
+```
+
+## Related Documentation
+
+<CardGroup cols={2}>
+  <Card title="WhatsApp Configuration" icon="gears" href="../../integrations/whatsapp/kapso-setup.mdx">
+    Learn how to set up your WhatsApp integration
+  </Card>
+  <Card title="WhatsApp Templates" icon="file-lines" href="../../integrations/whatsapp/templates.mdx">
+    Detailed guide on creating and managing templates
+  </Card>
+</CardGroup>
+
+## Related Nodes
+
+<CardGroup cols={3}>
+  <Card title="Default Node" icon="message" href="./default-node">
+    The most versatile node for general conversation
+  </Card>
+  <Card title="Webhook Node" icon="webhook" href="./webhook-node">
+    Make HTTP requests to external services and APIs
+  </Card>
+  <Card title="Warm End Node" icon="door-open" href="./warm-end-node">
+    Gracefully conclude conversations
+  </Card>
+</CardGroup> 

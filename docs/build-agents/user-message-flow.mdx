@@ -1,0 +1,58 @@
+---
+title: "Started by user message"
+description: "How agents process messages initiated by users"
+---
+
+## User message flow
+
+<Note>
+This flow is triggered when a user sends a message to the agent's configured WhatsApp number.
+</Note>
+
+The sequence is as follows:
+
+<Steps>
+  <Step title="Message arrival">
+    WhatsApp delivers the user's message to Kapso's webhook.
+  </Step>
+  <Step title="Message queueing">
+    Kapso acknowledges the message and queues it for processing.
+  </Step>
+  <Step title="Debounced processing">
+    Kapso waits for the configured "Message Debounce" period. If more messages arrive from the same user within this time, the timer resets. Processing starts only after the debounce duration elapses without new messages. This ensures the agent receives the full context.
+  </Step>
+  <Step title="Agent execution">
+    Kapso gathers the message(s), identifies the Agent and conversation state, and starts or resumes Agent execution.
+    - For new interactions or completed flows, execution starts at the `Start` node.
+    - If paused awaiting input, execution resumes at the waiting node.
+  </Step>
+  <Step title="Graph execution">
+    The agent navigates the graph, executing node prompts or actions.
+  </Step>
+  <Step title="Pausing for input">
+    If a node requires user input, the agent sends the prompt and pauses execution.
+  </Step>
+  <Step title="Ending execution">
+    Execution continues until an `End` node is reached.
+  </Step>
+</Steps>
+
+## Resuming paused conversations
+
+When a user responds after a pause:
+
+- The agent resumes exactly where it left off.
+- The new message is treated as the response to the previous prompt.
+- Conversation context and variables are preserved.
+- The agent continues graph execution from the resumed node.
+
+## Related topics
+
+<CardGroup cols={2}>
+  <Card title="External Trigger Flow" icon="webhook" href="./external-trigger-flow">
+    Learn how agents can be triggered programmatically
+  </Card>
+  <Card title="Nodes and Edges" icon="diagram-project" href="../nodes-and-edges/introduction">
+    Understand the building blocks of Agent Graphs
+  </Card>
+</CardGroup> 

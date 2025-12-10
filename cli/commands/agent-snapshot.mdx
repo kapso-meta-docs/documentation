@@ -1,0 +1,24 @@
+---
+title: 'kapso agent snapshot'
+description: 'Create test snapshot and get web URL'
+---
+
+```bash
+kapso agent snapshot [OPTIONS]
+```
+
+## Options
+
+| Option            | Description                                     |
+| ----------------- | ----------------------------------------------- |
+| `--agent, -a`     | Agent name (auto-detected if in agent directory) |
+
+## Examples
+
+```bash
+kapso agent snapshot
+kapso agent snapshot --agent customer_support
+kapso agent snapshot -a my_agent
+```
+
+Creates a test snapshot with web URL for interactive testing. 

@@ -1,0 +1,68 @@
+---
+title: "Knowledge Base Node"
+description: "Access specific knowledge sources for responses"
+icon: "database"
+---
+
+The Knowledge Base Node provides your agent with a dedicated source of information for answering questions accurately within the context of a specific step in the conversation flow.
+
+### Purpose & Functionality
+
+Provides the agent with specific text as a dedicated knowledge source for this node. You can provide various types of content, such as a list of question/answer pairs, a detailed policy document, or technical specifications. 
+
+Kapso processes this text, creating embeddings to enable efficient semantic search. When executing this node, the agent prioritizes searching this embedded source to answer questions or inform actions based on the node's prompt, and will avoid fabricating information not found within it.
+
+Interaction style (notification or pausing for input) depends on the node's prompt.
+
+### Configuration
+
+- **Name:** A label for the node on the Canvas
+- **Knowledge Base Text:** The specific text content, like FAQs or a policy document, that the agent should reference
+- **Prompt:** Instructions for how the agent should use the knowledge base
+
+### Use Cases
+
+- Answering questions based on specific product documentation
+- Providing responses from FAQs
+- Ensuring compliance with policy documents
+- Offering technical support based on troubleshooting guides
+- Sharing information relevant to a specific step in the conversation
+
+### Example
+
+**Knowledge Base Text:**
+```
+Q: What is your return policy?
+A: You can return any item within 30 days of purchase with the original receipt for a full refund.
+
+Q: Do you offer exchanges?
+A: Yes, we offer exchanges within 60 days of purchase with the original receipt.
+
+Q: How do I track my order?
+A: You can track your order by logging into your account or using the tracking number sent in your confirmation email.
+```
+
+**Prompt:**
+```
+Answer the customer's question about our policies using ONLY the information in the knowledge base.
+If their question isn't covered, let them know you'll connect them with a team member who can help.
+```
+
+### Best Practices
+
+- Organize knowledge base content into clear, distinct sections separated by two new lines for better readability
+- Put long texts into knowledge base nodes to optimize LLM token usage and reduce costs, especially when dealing with extensive documentation
+
+## Related Nodes
+
+<CardGroup cols={3}>
+  <Card title="Default Node" icon="message" href="./default-node">
+    The most versatile node for general conversation
+  </Card>
+  <Card title="Handoff Node" icon="user" href="./handoff-node">
+    Transfer conversations to human operators
+  </Card>
+  <Card title="Webhook Node" icon="webhook" href="./webhook-node">
+    Make HTTP requests to external services and APIs
+  </Card>
+</CardGroup> 

@@ -1,0 +1,64 @@
+---
+title: "Warm End Node"
+description: "Gracefully conclude conversations"
+icon: "door-open"
+---
+
+The Warm End Node provides a graceful way to conclude conversations while giving users a final opportunity to ask questions or provide feedback.
+
+### Purpose & Functionality
+
+Marks a flow endpoint allowing for a graceful conclusion. Its prompt should typically invite final user questions or feedback. After a configured timeout without further interaction leading to a resume, the execution fully finalizes.
+
+This creates a more natural ending to conversations rather than an abrupt stop.
+
+### Configuration
+
+- **Name:** A label for the node on the Canvas
+- **Prompt:** Instructions for concluding the conversation
+- **timeoutMinutes:** How long to wait for a user response before fully ending (default: 5 minutes)
+
+### Use Cases
+
+- Gracefully ending conversations
+- Allowing a window for final questions
+- Gathering feedback at the end of an interaction
+- Confirming all needs have been met
+- Providing closing information or next steps
+
+### Example
+
+**Configuration:**
+```json
+{
+  "timeoutMinutes": 10
+}
+```
+
+**Prompt:**
+```
+Thank the customer for their time and ask if there's anything else they need help with before concluding.
+Let them know they can start a new conversation anytime by sending a message.
+```
+
+### Comparison with End Node
+
+While the standard End Node immediately terminates the conversation flow, the Warm End Node:
+- Allows for a more natural conclusion
+- Provides a window for final questions
+- Only finalizes after the timeout period
+- Can be resumed if the user responds within the timeout
+
+## Related Nodes
+
+<CardGroup cols={3}>
+  <Card title="Default Node" icon="message" href="./default-node">
+    The most versatile node for general conversation
+  </Card>
+  <Card title="Handoff Node" icon="user" href="./handoff-node">
+    Transfer conversations to human operators
+  </Card>
+  <Card title="Special Nodes" icon="star" href="./special-nodes">
+    Learn about Start and End Nodes
+  </Card>
+</CardGroup> 

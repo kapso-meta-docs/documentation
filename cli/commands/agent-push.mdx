@@ -1,0 +1,22 @@
+---
+title: 'kapso agent push'
+description: 'Push agent to cloud (create or update)'
+---
+
+```bash
+kapso agent push <name> [OPTIONS]
+```
+
+## Options
+
+| Option            | Description                                     |
+| ----------------- | ----------------------------------------------- |
+| `--force, -f`     | Force push without confirmation                |
+
+## Examples
+
+```bash
+kapso agent push customer_support
+kapso agent push sales_bot --force
+kapso agent push my_agent -f
+```

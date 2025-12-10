@@ -1,0 +1,44 @@
+---
+title: 'kapso functions'
+description: 'Manage serverless functions with Kapso CLI'
+---
+
+## Push
+
+```bash
+kapso functions push <file.js> [OPTIONS]
+```
+
+**Options:**
+- `--name, -n <name>` - Custom function name
+- `--platform, -p <platform>` - `cloudflare` or `supabase`
+
+**Examples:**
+```bash
+kapso functions push webhook.js
+kapso functions push handler.js --platform supabase
+kapso functions push utils/helper.js --name my-helper
+```
+
+## List
+
+```bash
+kapso functions list
+```
+
+Shows all functions with status and invoke URLs.
+
+## Pull
+
+```bash
+kapso functions pull <name> [OPTIONS]
+```
+
+**Options:**
+- `--output, -o <path>` - Output file path
+
+**Examples:**
+```bash
+kapso functions pull webhook
+kapso functions pull handler --output my-functions/db.js
+```

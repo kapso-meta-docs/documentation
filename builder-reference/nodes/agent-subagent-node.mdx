@@ -1,0 +1,333 @@
+---
+title: SubagentNode
+description: Multi-tool composite node for flexible agent building
+---
+
+Most powerful node type. Combines multiple tools (webhooks, knowledge bases, MCP servers, WhatsApp templates) and intelligently selects which to use.
+
+## Basic usage
+
+```python
+from kapso.builder.nodes import SubagentNode
+from kapso.builder.nodes.subagent.tools import WebhookTool, KnowledgeBaseTool
+
+node = SubagentNode(
+    name="assistant",
+    prompt="Help users with available tools",
+    global_=False,
+    global_condition=None
+)
+
+# Add tools
+node.add_tool(WebhookTool(name="api", url="https://api.com"))
+node.add_tool(KnowledgeBaseTool(name="docs", knowledge_base_text="..."))
+```
+
+## Constructor
+
+```python
+SubagentNode(
+    name: str,                    # Required: unique identifier
+    prompt: str = None,           # Optional: LLM instructions
+    global_: bool = False,        # Optional: globally accessible
+    global_condition: str = None  # Required if global_=True
+)
+```
+
+## Tools
+
+### WebhookTool
+
+```python
+from kapso.builder.nodes.subagent.tools import WebhookTool
+
+tool = WebhookTool(
+    name="order_api",                          # Required: tool identifier
+    url="https://api.example.com/orders",      # Required: API endpoint
+    http_method="POST",                        # Optional: GET, POST, PUT, PATCH, DELETE
+    headers={                                  # Optional: request headers
+        "Authorization": "Bearer {{api_key}}",
+        "Content-Type": "application/json"
+    },
+    body={                                     # Optional: request body
+        "order_id": "{{order_id}}",
+        "action": "status"
+    },
+    body_schema={                              # Optional: JSON Schema validation
+        "type": "object",
+        "properties": {
+            "order_id": {"type": "string"},
+            "action": {"type": "string"}
+        },
+        "required": ["order_id"]
+    },
+    jmespath_query="data.status",              # Optional: extract specific data
+    mock_response={"status": "shipped"},       # Optional: for testing
+    mock_response_enabled=True,                # Optional: enable mock
+    description="Check order status"           # Optional but recommended
+)
+
+node.add_tool(tool)
+```
+
+### KnowledgeBaseTool
+
+```python
+from kapso.builder.nodes.subagent.tools import KnowledgeBaseTool
+
+# From text
+tool = KnowledgeBaseTool(
+    name="policies",
+    knowledge_base_text="""
+    Return Policy:
+    - 30-day returns for unopened items
+    - 14-day returns for opened items
+    - No returns on sale items
+    """,
+    description="Company policies and procedures"
+)
+
+# From file
+tool = KnowledgeBaseTool.from_file(
+    name="manual",
+    file_path="docs/user_manual.pdf",
+    description="Product user manual"
+)
+
+node.add_tool(tool)
+```
+
+### McpServerTool
+
+```python
+from kapso.builder.nodes.subagent.tools import McpServerTool, JmespathQuery
+
+tool = McpServerTool(
+    name="calculator",
+    url="https://mcp.example.com/math",
+    transport_kind="sse",  # or "streamable_http"
+    jmespath_queries=[
+        JmespathQuery(
+            tool_name="basic_math",
+            jmespath_query="tools[?category=='arithmetic']"
+        ),
+        JmespathQuery(
+            tool_name="advanced_math",
+            jmespath_query="tools[?category=='scientific']"
+        )
+    ],
+    description="Mathematical calculations"
+)
+
+node.add_tool(tool)
+```
+
+### WhatsappTemplateTool
+
+```python
+from kapso.builder.nodes.subagent.tools import WhatsappTemplateTool
+
+tool = WhatsappTemplateTool(
+    name="order_confirmation",
+    template_name="order_confirm_v2",              # Meta-approved template
+    phone_number="{{customer_phone}}",             # Recipient
+    template_parameters={                          # Template variables
+        "1": "{{customer_name}}",
+        "2": "{{order_number}}",
+        "3": "{{delivery_date}}"
+    },
+    wait_for_response=True,                        # Wait for user reply
+    whatsapp_config_id="prod_config",             # WhatsApp configuration
+    whatsapp_template_id="template_123",          # Template ID
+    description="Send order confirmation message"
+)
+
+node.add_tool(tool)
+```
+
+## Methods
+
+### add_tool()
+```python
+node.add_tool(tool: SubagentTool) -> None
+```
+
+Add any supported tool to the node. Tool names must be unique within the node.
+
+## Factory function
+
+Create SubagentNode with tools in one call:
+
+```python
+from kapso.builder.nodes.factory import create_subagent_node
+
+# With tool objects
+node = create_subagent_node(
+    name="helper",
+    prompt="Use tools to help users",
+    tools=[
+        WebhookTool(name="api", url="https://api.example.com"),
+        KnowledgeBaseTool(name="docs", knowledge_base_text="...")
+    ]
+)
+
+# With dictionaries
+node = create_subagent_node(
+    name="helper",
+    tools_dict=[
+        {"type": "webhook", "name": "api", "url": "https://api.example.com"},
+        {"type": "knowledge_base", "name": "docs", "knowledge_base_text": "..."}
+    ]
+)
+```
+
+## Tool selection
+
+The LLM automatically selects tools based on:
+
+1. **Tool descriptions**: Always provide clear descriptions
+2. **Tool names**: Use descriptive, action-oriented names  
+3. **Prompt guidance**: Reference tools in the node prompt
+4. **Context**: Current conversation state
+
+```python
+node = SubagentNode(
+    name="assistant",
+    prompt="""When users ask about:
+    - Orders: Use the 'check_order' tool
+    - Weather: Use the 'weather_api' tool
+    - Policies: Use the 'company_policies' knowledge base
+    """
+)
+```
+
+## Complete example
+
+```python
+from kapso.builder import Agent
+from kapso.builder.nodes import SubagentNode
+from kapso.builder.nodes.subagent.tools import (
+    WebhookTool, KnowledgeBaseTool, WhatsappTemplateTool
+)
+from kapso.builder.agent.constants import START_NODE, END_NODE
+
+# Create agent
+agent = Agent(name="customer_service")
+agent.add_node(START_NODE)
+agent.add_node(END_NODE)
+
+# Create SubagentNode with multiple tools
+subagent = SubagentNode(
+    name="assistant",
+    prompt="""Help customers using available tools:
+    - Use order_api for order inquiries
+    - Use company_docs for policy questions
+    - Send confirmations via WhatsApp when needed"""
+)
+
+# Add API tool
+subagent.add_tool(WebhookTool(
+    name="order_api",
+    url="https://api.example.com/orders/{{order_id}}",
+    http_method="GET",
+    headers={"Authorization": "Bearer {{api_key}}"},
+    description="Retrieve order information by ID"
+))
+
+# Add knowledge base
+subagent.add_tool(KnowledgeBaseTool(
+    name="company_docs",
+    knowledge_base_text="""
+    Return Policy: Items can be returned within 30 days.
+    Shipping: Free shipping on orders over $50.
+    Business Hours: Monday-Friday 9AM-5PM EST.
+    """,
+    description="Search company policies and information"
+))
+
+# Add WhatsApp template
+subagent.add_tool(WhatsappTemplateTool(
+    name="order_confirmation",
+    template_name="order_confirmed",
+    phone_number="{{customer_phone}}",
+    template_parameters={
+        "1": "{{order_id}}",
+        "2": "{{delivery_date}}"
+    },
+    description="Send order confirmation via WhatsApp"
+))
+
+agent.add_node(subagent)
+agent.add_edge(START_NODE, "assistant")
+agent.add_edge("assistant", END_NODE)
+
+agent.validate()
+```
+
+## Built-in tools
+
+SubagentNode includes these built-in tools:
+
+- `send_notification_to_user` - Send messages to user
+- `MoveToNextNode` - Navigate to specific nodes
+- `EnterIdleState` - Pause and wait
+- `AskUserForInput` - Request specific information
+- `kb_retrieval` - Available if knowledge base tools added
+- `SendWhatsappTemplateMessage` - Available if WhatsApp template tools added
+
+## Best practices
+
+### Tool naming
+```python
+# ✅ Good: Clear, action-oriented names
+WebhookTool(name="check_inventory", ...)
+WebhookTool(name="create_ticket", ...)
+
+# ❌ Bad: Vague names
+WebhookTool(name="api1", ...)
+WebhookTool(name="webhook", ...)
+```
+
+### Tool descriptions
+```python
+# ✅ Good: Specific and helpful
+WebhookTool(
+    name="weather",
+    description="Get current weather conditions for any city"
+)
+
+# ❌ Bad: Too vague
+WebhookTool(
+    name="weather",
+    description="Weather tool"
+)
+```
+
+### Error handling
+```python
+# Use mock responses during development
+tool = WebhookTool(
+    name="api",
+    url="https://api.example.com",
+    mock_response={"error": "Not found"},
+    mock_response_enabled=True  # Toggle for dev/prod
+)
+```
+
+### Global usage
+```python
+# Global help menu available from anywhere
+help_menu = SubagentNode(
+    name="help_assistant",
+    prompt="Show available options and guide users",
+    global_=True,
+    global_condition="user asks for help, menu, or options"
+)
+```
+
+## Limitations
+
+- Tools only available within the specific SubagentNode
+- Cannot share tools between different SubagentNodes  
+- Tool execution order determined by LLM
+- All tools must complete before moving to next node

@@ -1,0 +1,69 @@
+---
+title: "Edges"
+description: "Connecting nodes and defining conversational paths"
+---
+
+Edges connect nodes, defining the possible paths a conversation can take through your Agent Graph. They determine the flow logic and create structured conversational experiences.
+
+### Functionality
+
+- **Connections:** Edges direct flow from a source node to a target node.
+- **Directionality:** Each edge has a specific direction, flowing from one node to another.
+- **Visual Representation:** Displayed as arrows on the Canvas.
+
+### Conditional Edges
+
+A powerful feature of edges is the ability to add conditions, allowing for dynamic conversation paths based on context:
+
+- **Natural Language Conditions:** Write conditions in plain English that the agent will interpret.
+- **Context Awareness:** Conditions are evaluated based on the current conversation state, including user inputs and any variables.
+- **Multiple Paths:** When a node has multiple outgoing edges, the agent evaluates the condition associated with each edge after executing the source node's logic.
+- **Path Selection:** The agent will follow the outgoing edge whose condition evaluates to true.
+
+### Examples
+
+**Example 1: Simple Conditional Routing**
+```
+Condition: User asks about pricing
+```
+
+**Example 2: Intent Detection**
+```
+Condition: User wants to track their order
+```
+
+**Example 3: Entity-Based Routing**
+```
+Condition: User mentions t-shirts or apparel
+```
+
+**Example 4: Complex Logic**
+```
+Condition: User is a returning customer AND is asking about premium products
+```
+
+### Best Practices
+
+- **Clear Conditions:** Make conditions clear and distinct to avoid ambiguity
+- **Condition Testing:** Test conditions thoroughly with various user inputs
+- **Simplicity:** Keep conditions focused on a single concept when possible
+
+## Building Complex Flows
+
+By combining nodes and conditional edges, you can build sophisticated conversation flows that adapt to user inputs and context. Consider these patterns:
+
+- **Decision Trees:** Use conditional edges to create branching paths based on user choices
+- **Information Collection:** Route through different nodes to gather specific information
+- **Error Handling:** Create paths for handling misunderstandings or invalid inputs
+- **Context Switching:** Allow users to change topics with edges that detect new intents
+
+## Related Topics
+
+<CardGroup cols={2}>
+  <Card title="Node Types" icon="diagram-project" href="./default-node">
+    Learn about the different types of nodes
+  </Card>
+  <Card title="Agent Execution Flow" icon="gears" href="../03-agent-execution-flow">
+    Understand how agents process conversations
+  </Card>
+</CardGroup> 

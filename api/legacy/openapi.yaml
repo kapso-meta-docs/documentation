@@ -1,0 +1,5357 @@
+openapi: 3.0.3
+info:
+  title: Kapso External API
+  description: API for programmatically interacting with Kapso agents, executions, and WhatsApp conversations.
+  version: '1.0.0'
+  contact:
+    name: Kapso Support
+servers:
+  - url: 'https://app.kapso.ai/api/v1'
+    description: Production server
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key required for all endpoints
+  
+  schemas:
+    WhatsappTemplate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "template-123abc"
+        name:
+          type: string
+          example: "appointment_reminder"
+        language_code:
+          type: string
+          example: "en_US"
+        category:
+          type: string
+          enum: ["MARKETING", "UTILITY", "AUTHENTICATION"]
+          example: "UTILITY"
+        status:
+          type: string
+          enum: ["draft", "submitted", "approved", "rejected", "disabled"]
+          example: "approved"
+        content:
+          type: string
+          example: "Hello {{1}}, your appointment is confirmed for {{2}}."
+        parameter_count:
+          type: integer
+          example: 2
+        components:
+          type: object
+          description: "Raw WhatsApp template components structure"
+        metadata:
+          type: object
+          description: "Additional metadata about the template"
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    
+    AgentSnapshot:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "snapshot-123abc"
+        agent_id:
+          type: string
+          format: uuid
+          example: "agent-456def"
+        name:
+          type: string
+          example: "Agent Name Snapshot (2023-05-01 14:30)"
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        graph:
+          $ref: '#/components/schemas/AgentGraph'
+    
+    AgentSnapshotWithGraph:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "snapshot-123abc"
+        agent_id:
+          type: string
+          format: uuid
+          example: "agent-456def"
+        name:
+          type: string
+          example: "Agent Name Snapshot (2023-05-01 14:30)"
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        graph:
+          $ref: '#/components/schemas/AgentGraph'
+    
+    Agent:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "agent-123abc"
+        name:
+          type: string
+          example: "Customer Support Agent"
+        description:
+          type: string
+          example: "Handles initial customer support queries"
+        project_id:
+          type: string
+          example: "project-456def"
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    
+    WhatsappSandboxSession:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        phone_number:
+          type: string
+          example: "+12345678901"
+        status:
+          type: string
+          enum: [pending_activation, active]
+          example: "pending_activation"
+        activation_code:
+          type: string
+          example: "ABC123"
+        activation_message:
+          type: string
+          example: "Your WhatsApp Sandbox activation code is: ABC123"
+        activation_link:
+          type: string
+          example: "https://wa.me/12345678901?text=ABC123"
+        activated_at:
+          type: string
+          format: date-time
+          nullable: true
+        expires_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        agent:
+          $ref: '#/components/schemas/Agent'
+    
+    WhatsappSandboxSessionCreate:
+      type: object
+      required:
+        - phone_number
+        - agent_id
+      properties:
+        phone_number:
+          type: string
+          example: "+12345678901"
+        agent_id:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+    
+    AgentGraph:
+      type: object
+      properties:
+        nodes:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              type:
+                type: string
+              prompt:
+                type: string
+              config:
+                type: object
+              global:
+                type: boolean
+              tool_ids:
+                type: array
+                items:
+                  type: string
+              nodeable_id:
+                type: string
+              global_condition:
+                type: string
+                description: "LLM will evaluate this condition to move to this global node"
+              # Node-specific properties based on type
+              webhook:
+                type: object
+                description: "Details for WebhookNode types"
+                properties:
+                  nodeable_id:
+                    type: string
+                  url:
+                    type: string
+                  http_method:
+                    type: string
+                  headers:
+                    type: object
+                  body:
+                    type: object
+                  mock_response:
+                    type: object
+                  mock_response_enabled:
+                    type: boolean
+                  headers_raw:
+                    type: string
+                    description: "Raw JSON string representation of headers to preserve case formatting"
+                  body_raw:
+                    type: string
+                    description: "Raw JSON string representation of body to preserve case formatting"
+                  mock_response_raw:
+                    type: string
+                    description: "Raw JSON string representation of mock response to preserve case formatting"
+              whatsapp_template:
+                type: object
+                description: "Details for WhatsappTemplateNode types"
+                properties:
+                  nodeable_id:
+                    type: string
+                  name:
+                    type: string
+                  phone_number:
+                    type: string
+                  template_parameters:
+                    type: object
+                  whatsapp_node_id:
+                    type: string
+                  whatsapp_config_id:
+                    type: string
+                  whatsapp_template_id:
+                    type: string
+                  wait_for_response:
+                    type: boolean
+              knowledge_base:
+                type: object
+                description: "Details for KnowledgeBaseNode types"
+                properties:
+                  nodeable_id:
+                    type: string
+                  key:
+                    type: string
+                  knowledge_base_text:
+                    type: string
+              handoff:
+                type: object
+                description: "Details for HandoffNode types"
+                properties:
+                  nodeable_id:
+                    type: string
+              warm_end:
+                type: object
+                description: "Details for WarmEndNode types"
+                properties:
+                  nodeable_id:
+                    type: string
+                  timeout_minutes:
+                    type: integer
+        edges:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              from:
+                type: string
+              to:
+                type: string
+              label:
+                type: string
+              conditions:
+                type: object
+        tools:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              type:
+                type: string
+              description:
+                type: string
+        metadata:
+          type: object
+    
+    AgentWithGraph:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "agent-123abc"
+        name:
+          type: string
+          example: "Customer Support Agent"
+        system_prompt:
+          type: string
+          example: "You are a helpful assistant"
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        graph:
+          $ref: '#/components/schemas/AgentGraph'
+    
+    TestSuite:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          example: "Basic Functionality Tests"
+        description:
+          type: string
+          example: "Tests for basic agent functionality"
+        agent_id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        test_cases:
+          type: array
+          items:
+            $ref: '#/components/schemas/TestCase'
+    
+    TestCase:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          example: "Greeting Test"
+        description:
+          type: string
+          example: "Tests the agent's greeting response"
+        script:
+          type: string
+          example: "Ask the agent to introduce itself"
+        rubric:
+          type: string
+          example: "The agent should respond with a polite introduction"
+        test_suite_id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    
+    AgentTestRun:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        thread_id:
+          type: string
+          example: "thread_12345abcde"
+        started_at:
+          type: string
+          format: date-time
+        ended_at:
+          type: string
+          format: date-time
+        score:
+          type: number
+          format: float
+          example: 9.5
+        feedback:
+          type: string
+          example: "The agent performed well on this test"
+        execution_completed:
+          type: boolean
+        conversation:
+          type: object
+        full_history:
+          type: object
+        error:
+          type: object
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        test_case:
+          $ref: '#/components/schemas/TestCase'
+    
+    AgentExecution:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "execution-789ghi"
+        agent_id:
+          type: string
+          example: "agent-123abc"
+        thread_id:
+          type: string
+          example: "thread-101jkl"
+        status:
+          type: string
+          enum: [started, running, paused, ended, handoff]
+          example: "running"
+        started_at:
+          type: string
+          format: date-time
+        ended_at:
+          type: string
+          format: date-time
+          nullable: true
+        duration:
+          type: integer
+          description: Duration in seconds
+          nullable: true
+        
+    WhatsappConversation:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "conversation-202mno"
+        phone_number:
+          type: string
+          example: "+1234567890"
+        status:
+          type: string
+          enum: [active, ended]
+          example: "active"
+        last_active_at:
+          type: string
+          format: date-time
+        contact_name:
+          type: string
+          example: "John Doe"
+    
+    WhatsappContact:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "contact-789ghi"
+        wa_id:
+          type: string
+          example: "1234567890"
+          description: The WhatsApp ID (normalized phone number)
+        profile_name:
+          type: string
+          example: "John Doe"
+        metadata:
+          type: object
+          description: Additional metadata about the contact
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    WhatsappContactNote:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "note-123abc"
+        name:
+          type: string
+          nullable: true
+          example: "Customer Preference"
+          description: Optional name for the note
+        content:
+          type: string
+          example: "Prefers morning deliveries between 9-11 AM"
+          description: The content of the note
+        metadata:
+          type: object
+          description: Additional metadata about the note
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    
+    WhatsappMessage:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        phone_number:
+          type: string
+        message_type:
+          type: string
+          enum: [text, image, video, audio, document, template, location, interactive, reaction, contacts]
+          description: The type of WhatsApp message
+        content:
+          type: string
+          description: Human-readable representation of the message content
+        direction:
+          type: string
+          enum: [inbound, outbound]
+        status:
+          type: string
+        processing_status:
+          type: string
+          enum: [pending, processed]
+        whatsapp_message_id:
+          type: string
+        metadata:
+          type: object
+          nullable: false
+          description: Type-specific metadata for the message
+        media_url:
+          type: string
+          description: URL to access any attached media (for image, video, audio, document message types)
+        message_type_data:
+          type: object
+          description: Type-specific data based on the message_type
+          oneOf:
+            - $ref: '#/components/schemas/TextMessageData'
+            - $ref: '#/components/schemas/ImageMessageData'
+            - $ref: '#/components/schemas/VideoMessageData'
+            - $ref: '#/components/schemas/AudioMessageData'
+            - $ref: '#/components/schemas/DocumentMessageData'
+            - $ref: '#/components/schemas/LocationMessageData'
+            - $ref: '#/components/schemas/TemplateMessageData'
+            - $ref: '#/components/schemas/InteractiveMessageData'
+            - $ref: '#/components/schemas/ReactionMessageData'
+            - $ref: '#/components/schemas/ContactsMessageData'
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    
+    TextMessageData:
+      type: object
+      description: Data specific to text messages
+      properties:
+        text:
+          type: string
+          description: The text content of the message
+    
+    ImageMessageData:
+      type: object
+      description: Data specific to image messages
+      properties:
+        caption:
+          type: string
+          description: Optional caption for the image
+        media_id:
+          type: string
+          description: WhatsApp media ID for the image
+        mime_type:
+          type: string
+          description: MIME type of the image (e.g., image/jpeg)
+    
+    VideoMessageData:
+      type: object
+      description: Data specific to video messages
+      properties:
+        caption:
+          type: string
+          description: Optional caption for the video
+        media_id:
+          type: string
+          description: WhatsApp media ID for the video
+        mime_type:
+          type: string
+          description: MIME type of the video (e.g., video/mp4)
+    
+    AudioMessageData:
+      type: object
+      description: Data specific to audio messages
+      properties:
+        media_id:
+          type: string
+          description: WhatsApp media ID for the audio
+        mime_type:
+          type: string
+          description: MIME type of the audio (e.g., audio/ogg)
+    
+    DocumentMessageData:
+      type: object
+      description: Data specific to document messages
+      properties:
+        caption:
+          type: string
+          description: Optional caption for the document
+        media_id:
+          type: string
+          description: WhatsApp media ID for the document
+        mime_type:
+          type: string
+          description: MIME type of the document (e.g., application/pdf)
+        filename:
+          type: string
+          description: Original filename of the document
+    
+    LocationMessageData:
+      type: object
+      description: Data specific to location messages
+      properties:
+        latitude:
+          type: number
+          format: float
+          description: Latitude coordinate
+        longitude:
+          type: number
+          format: float
+          description: Longitude coordinate
+        location_name:
+          type: string
+          description: Optional name for the location
+        location_address:
+          type: string
+          description: Optional address for the location
+    
+    TemplateMessageData:
+      type: object
+      description: Data specific to template messages
+      properties:
+        template_name:
+          type: string
+          description: Name of the template used
+        template_language:
+          type: string
+          description: Language code of the template (e.g., en_US)
+        template_params:
+          type: array
+          description: Parameters used in the template
+          items:
+            type: string
+        header_type:
+          type: string
+          description: Type of header used in the template
+          enum: [text, image, video, document]
+        header_params:
+          type: string
+          description: Content for the template header
+        header_filename:
+          type: string
+          description: Filename for document headers
+    
+    InteractiveMessageData:
+      type: object
+      description: Data specific to interactive messages
+      properties:
+        interactive_type:
+          type: string
+          enum: [button, list]
+          description: Type of interactive message
+        body_text:
+          type: string
+          description: Main text content of the interactive message
+        header_text:
+          type: string
+          description: Optional header text
+        footer_text:
+          type: string
+          description: Optional footer text
+        buttons:
+          type: array
+          description: Buttons for button-type interactive messages
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: Unique identifier for the button
+              title:
+                type: string
+                description: Display text for the button
+        sections:
+          type: array
+          description: Sections for list-type interactive messages
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Section title
+              rows:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: Row identifier
+                    title:
+                      type: string
+                      description: Row title
+                    description:
+                      type: string
+                      description: Optional row description
+        reply_option_id:
+          type: string
+          description: For replies, the ID of the selected option
+        reply_option_title:
+          type: string
+          description: For replies, the title of the selected option
+        list_button_text:
+          type: string
+          description: Text for the button that opens the list (for list-type messages)
+    
+    ReactionMessageData:
+      type: object
+      description: Data specific to reaction messages
+      properties:
+        reaction_emoji:
+          type: string
+          description: Emoji used for the reaction
+        reacted_to_message_id:
+          type: string
+          description: ID of the message being reacted to
+    
+    ContactsMessageData:
+      type: object
+      description: Data specific to contact messages
+      properties:
+        contacts:
+          type: array
+          description: List of shared contacts
+          items:
+            type: object
+            properties:
+              name:
+                type: object
+                properties:
+                  formatted_name:
+                    type: string
+                    description: Full contact name
+                  first_name:
+                    type: string
+                    description: First name
+                  last_name:
+                    type: string
+                    description: Last name
+              phones:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    phone:
+                      type: string
+                      description: Phone number
+                    type:
+                      type: string
+                      description: Phone number type (e.g., HOME, WORK)
+              emails:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                      description: Email address
+                    type:
+                      type: string
+                      description: Email type (e.g., HOME, WORK)
+
+    WhatsappConversationAgentExecution:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        active:
+          type: boolean
+        handoff_reason:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        agent_execution:
+          $ref: '#/components/schemas/AgentExecution'
+    
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Resource not found"
+        status:
+          type: integer
+          example: 404
+        message:
+          type: string
+          example: "The requested resource could not be found"
+
+    Customer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          example: "Example Client"
+        external_customer_id:
+          type: string
+          example: "CLIENT-123"
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    WhatsappConfig:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "config-123abc"
+        name:
+          type: string
+          example: "Client WhatsApp"
+        display_name:
+          type: string
+          example: "Client WhatsApp (+1234567890)"
+        phone_number_id:
+          type: string
+          example: "1234567890"
+        business_account_id:
+          type: string
+          example: "98765432109"
+        webhook_verify_token:
+          type: string
+        webhook_destination_url:
+          type: string
+        customer_id:
+          type: string
+          format: uuid
+          example: "customer-456def"
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    AgentWhatsappConfig:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "awc-123abc"
+        is_primary:
+          type: boolean
+          example: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        whatsapp_config:
+          $ref: '#/components/schemas/WhatsappConfig'
+
+    AgentTestChat:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        agent_id:
+          type: string
+          format: uuid
+        agent_snapshot_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [processing, completed, error]
+        conversation:
+          type: array
+          items:
+            type: object
+            properties:
+              role:
+                type: string
+                enum: [user, assistant]
+              content:
+                type: string
+        error:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    ConversationAssignment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        user_id:
+          type: string
+          format: uuid
+        active:
+          type: boolean
+        notes:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        created_by_user_id:
+          type: string
+          format: uuid
+          nullable: true
+
+    Flow:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "flow-123abc"
+        name:
+          type: string
+          example: "Customer Onboarding Flow"
+        description:
+          type: string
+          nullable: true
+          example: "Automated flow for onboarding new customers"
+        status:
+          type: string
+          enum: [draft, active, archived]
+          example: "active"
+        project_id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        created_by:
+          type: object
+          nullable: true
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+        last_executed_at:
+          type: string
+          format: date-time
+          nullable: true
+        execution_count:
+          type: integer
+          example: 42
+
+    FlowExecution:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "exec-456def"
+        flow_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [running, waiting, ended, failed]
+          example: "running"
+        started_at:
+          type: string
+          format: date-time
+        ended_at:
+          type: string
+          format: date-time
+          nullable: true
+        last_event_at:
+          type: string
+          format: date-time
+          nullable: true
+        tracking_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: Tracking ID for API-triggered executions
+        current_step:
+          type: object
+          nullable: true
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+              example: "Send Welcome Message"
+            step_type:
+              type: string
+              example: "message"
+        execution_context:
+          type: object
+          description: Context data for the execution
+          additionalProperties: true
+        variables:
+          type: object
+          description: Variables available in the execution
+          additionalProperties: true
+        flow:
+          $ref: '#/components/schemas/Flow'
+
+    SetupLink:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "link-123abc"
+        status:
+          type: string
+          enum: [active, used, expired, revoked]
+          example: "active"
+          description: "Current status of the setup link"
+        expires_at:
+          type: string
+          format: date-time
+          description: "When the link expires"
+        url:
+          type: string
+          format: uri
+          example: "https://app.kapso.ai/whatsapp/setup/aBcD123..."
+          description: "The setup URL for WhatsApp configuration"
+        created_at:
+          type: string
+          format: date-time
+
+security:
+  - ApiKeyAuth: []
+
+paths:
+  /agents:
+    get:
+      summary: List all agents
+      description: Returns a list of all agents for the authenticated project
+      operationId: listAgents
+      tags:
+        - Agents
+      responses:
+        '200':
+          description: A list of agents
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Agent'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    post:
+      summary: Create a new agent
+      description: Creates a new agent with default graph structure
+      operationId: createAgent
+      tags:
+        - Agents
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - agent
+              properties:
+                agent:
+                  type: object
+                  required:
+                    - name
+                  properties:
+                    name:
+                      type: string
+                      example: "New Customer Support Agent"
+                    system_prompt:
+                      type: string
+                      example: "You are a helpful customer support assistant."
+      responses:
+        '201':
+          description: Agent created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Agent'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /agents/{agent_id}:
+    get:
+      summary: Get agent details
+      description: Returns details for a specific agent
+      operationId: getAgent
+      tags:
+        - Agents
+      parameters:
+        - name: agent_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Agent details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Agent'
+        '404':
+          description: Agent not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    patch:
+      summary: Update an agent
+      description: Updates an existing agent's details
+      operationId: updateAgent
+      tags:
+        - Agents
+      parameters:
+        - name: agent_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - agent
+              properties:
+                agent:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: "Updated Agent Name"
+                    system_prompt:
+                      type: string
+                      example: "You are a helpful assistant for our customers."
+                    graph:
+                      type: object
+                      description: "Graph definition for the agent"
+                      properties:
+                        metadata:
+                          type: object
+                          description: "Metadata for the graph"
+                          additionalProperties: true
+                        nodes:
+                          type: array
+                          description: "Array of node definitions"
+                          items:
+                            type: object
+                            required: ["id", "name", "type"]
+                            properties:
+                              id:
+                                type: string
+                                description: "Unique identifier for the node in this definition"
+                              nodeable_id:
+                                type: string
+                                description: "Optional ID of an existing node object to update instead of creating new"
+                              name:
+                                type: string
+                                description: "Name of the node"
+                              type:
+                                type: string
+                                description: "Node type"
+                                enum: ["DefaultNode", "WebhookNode", "WhatsappTemplateNode", "KnowledgeBaseNode", "HandoffNode", "WarmEndNode"]
+                              prompt:
+                                type: string
+                                description: "LLM prompt for the node"
+                              global:
+                                type: boolean
+                                description: "Whether this node is globally accessible"
+                              global_condition:
+                                type: string
+                                description: "LLM will evaluate this condition to move to this global node"
+                              config:
+                                type: object
+                                description: "Configuration object for the node"
+                                additionalProperties: true
+                              tool_ids:
+                                type: array
+                                description: "IDs of tools to associate with this node"
+                                items:
+                                  type: string
+                              webhook:
+                                type: object
+                                description: "Webhook configuration (for WebhookNode)"
+                                properties:
+                                  url:
+                                    type: string
+                                  http_method:
+                                    type: string
+                                  headers:
+                                    type: object
+                                    additionalProperties: true
+                                  body:
+                                    type: object
+                                    additionalProperties: true
+                                  mock_response:
+                                    type: object
+                                  mock_response_enabled:
+                                    type: boolean
+                                  headers_raw:
+                                    type: string
+                                    description: "Raw JSON string representation of headers to preserve case formatting"
+                                  body_raw:
+                                    type: string
+                                    description: "Raw JSON string representation of body to preserve case formatting"
+                                  mock_response_raw:
+                                    type: string
+                                    description: "Raw JSON string representation of mock response to preserve case formatting"
+                              whatsapp_template:
+                                type: object
+                                description: "WhatsApp template configuration"
+                                properties:
+                                  phone_number:
+                                    type: string
+                                  template_parameters:
+                                    type: object
+                                    additionalProperties: true
+                                  wait_for_response:
+                                    type: boolean
+                                  whatsapp_config_id:
+                                    type: string
+                                    description: "ID of the WhatsApp config to use"
+                                  whatsapp_template_id:
+                                    type: string
+                                    description: "ID of the WhatsApp template to use"
+                                  whatsapp_node_id:
+                                    type: string
+                                    description: "ID of the WhatsApp node (same as nodeable_id)"
+                              knowledge_base:
+                                type: object
+                                description: "Knowledge base configuration"
+                                properties:
+                                  key:
+                                    type: string
+                                  knowledge_base_text:
+                                    type: string
+                              warm_end:
+                                type: object
+                                description: "Warm end configuration"
+                                properties:
+                                  timeout_minutes:
+                                    type: integer
+                        edges:
+                          type: array
+                          description: "Array of edge definitions"
+                          items:
+                            type: object
+                            required: ["from", "to"]
+                            properties:
+                              id:
+                                type: string
+                                description: "Edge identifier"
+                              from:
+                                type: string
+                                description: "Source node ID"
+                              to:
+                                type: string
+                                description: "Target node ID"
+                              label:
+                                type: string
+                                description: "Label for the edge"
+                              conditions:
+                                type: object
+                                description: "Conditions for this edge"
+                                additionalProperties: true
+                        tools:
+                          type: array
+                          description: "Array of tool definitions"
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              name:
+                                type: string
+                              type:
+                                type: string
+                              url:
+                                type: string
+                              method:
+                                type: string
+                              query_params:
+                                type: object
+                                additionalProperties: true
+                              headers:
+                                type: object
+                                additionalProperties: true
+                              body:
+                                type: object
+                                additionalProperties: true
+                              description:
+                                type: string
+      responses:
+        '200':
+          description: Agent updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Agent'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Agent not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /agents/{agent_id}/graph:
+    get:
+      summary: Get agent with graph
+      description: Returns agent details including the langgraph definition
+      operationId: getAgentWithGraph
+      tags:
+        - Agents
+      parameters:
+        - name: agent_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Agent with graph definition
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AgentWithGraph'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Agent not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /agents/{agent_id}/test_suites:
+    get:
+      summary: List test suites for an agent
+      description: Returns all test suites associated with the specified agent
+      operationId: listAgentTestSuites
+      tags:
+        - Agents
+      parameters:
+        - name: agent_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Agent test suites
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TestSuite'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Agent not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /agents/{agent_id}/executions:
+    post:
+      summary: Start a new agent execution
+      description: Triggers a new execution of the specified agent
+      operationId: startAgentExecution
+      tags:
+        - Agent Executions
+      parameters:
+        - name: agent_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  oneOf:
+                    - type: string
+                      description: Legacy format - Initial message to send to the agent (string)
+                      example: "I need help with my order"
+                    - type: object
+                      description: Structured message to send to the agent
+                      properties:
+                        type:
+                          type: string
+                          enum: [user_input, payload]
+                          description: The type of message to send
+                          example: "user_input"
+                        content:
+                          type: object
+                          description: The content of the message
+                          properties:
+                            text:
+                              type: string
+                              description: The text content (for user_input type)
+                              example: "I need help with my order"
+                          additionalProperties: true
+                phone_number:
+                  type: string
+                  description: WhatsApp phone number to associate with this execution
+                  example: "+1234567890"
+      responses:
+        '202':
+          description: Execution accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AgentExecution'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Agent not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    get:
+      summary: List agent executions
+      description: Returns a list of executions for the specified agent
+      operationId: listAgentExecutions
+      tags:
+        - Agent Executions
+      parameters:
+        - name: agent_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: per_page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: "q[status_eq]"
+          in: query
+          description: Filter by exact status match
+          schema:
+            type: string
+            enum: [started, running, paused, ended, handoff]
+        - name: "q[started_at_gteq]"
+          in: query
+          description: Filter by started_at greater than or equal to (ISO 8601 format)
+          schema:
+            type: string
+            format: date-time
+        - name: "q[started_at_lteq]"
+          in: query
+          description: Filter by started_at less than or equal to (ISO 8601 format)
+          schema:
+            type: string
+            format: date-time
+        - name: "q[ended_at_gteq]"
+          in: query
+          description: Filter by ended_at greater than or equal to (ISO 8601 format)
+          schema:
+            type: string
+            format: date-time
+        - name: "q[ended_at_lteq]"
+          in: query
+          description: Filter by ended_at less than or equal to (ISO 8601 format)
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: A list of agent executions
+          headers:
+            Total:
+              schema:
+                type: integer
+              description: Total number of records
+            Total-Pages:
+              schema:
+                type: integer
+              description: Total number of pages
+            Per-Page:
+              schema:
+                type: integer
+              description: Number of items per page
+            Page:
+              schema:
+                type: integer
+              description: Current page number
+            Link:
+              schema:
+                type: string
+              description: Links to first, prev, next, and last pages
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AgentExecution'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Agent not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /agents/{agent_id}/executions/{execution_id}:
+    get:
+      summary: Get agent execution details
+      description: Returns details for a specific agent execution
+      operationId: getAgentExecution
+      tags:
+        - Agent Executions
+      parameters:
+        - name: agent_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: execution_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Agent execution details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AgentExecution'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Execution not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /agents/{agent_id}/executions/{execution_id}/resume:
+    post:
+      summary: Resume a paused agent execution
+      description: Resumes an execution that was previously paused
+      operationId: resumeAgentExecution
+      tags:
+        - Agent Executions
+      parameters:
+        - name: agent_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: execution_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: object
+                  description: Structured message to send when resuming the execution
+                  properties:
+                    type:
+                      type: string
+                      enum: [user_input, payload]
+                      description: The type of message to send
+                      example: "user_input"
+                    content:
+                      type: object
+                      description: The content of the message
+                      properties:
+                        text:
+                          type: string
+                          description: The text content (for user_input type)
+                          example: "I need help with my order"
+                      additionalProperties: true
+      responses:
+        '200':
+          description: Execution resume accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AgentExecution'
+        '400':
+          description: Invalid request or execution cannot be resumed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Execution not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /test_suites:
+    post:
+      summary: Create a new test suite
+      description: Creates a new test suite for an agent
+      operationId: createTestSuite
+      tags:
+        - Test Suites
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - test_suite
+              properties:
+                test_suite:
+                  type: object
+                  required:
+                    - name
+                    - agent_id
+                  properties:
+                    name:
+                      type: string
+                      example: "New Test Suite"
+                    description:
+                      type: string
+                      example: "Description of the new test suite"
+                    agent_id:
+                      type: string
+                      format: uuid
+                      example: "agent-123abc"
+      responses:
+        '201':
+          description: Test suite created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/TestSuite'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Agent not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /test_suites/{test_suite_id}:
+    get:
+      summary: Get test suite with test cases
+      description: Returns details for a specific test suite including all test cases
+      operationId: getTestSuite
+      tags:
+        - Test Suites
+      parameters:
+        - name: test_suite_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Test suite details with test cases
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/TestSuite'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Test suite not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /test_suites/{test_suite_id}/test_cases:
+    post:
+      summary: Create a new test case
+      description: Creates a new test case for a specific test suite
+      operationId: createTestCase
+      tags:
+        - Test Suites
+      parameters:
+        - name: test_suite_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - test_case
+              properties:
+                test_case:
+                  type: object
+                  required:
+                    - name
+                    - script
+                    - rubric
+                  properties:
+                    name:
+                      type: string
+                      example: "New Test Case"
+                    description:
+                      type: string
+                      example: "Description of the new test case"
+                    script:
+                      type: string
+                      example: "Script content for the test"
+                    rubric:
+                      type: string
+                      example: "Rubric for evaluating test performance"
+      responses:
+        '201':
+          description: Test case created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/TestCase'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Test suite not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /test_cases/{test_case_id}:
+    get:
+      summary: Get test case details
+      description: Returns details for a specific test case
+      operationId: getTestCase
+      tags:
+        - Test Suites
+      parameters:
+        - name: test_case_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Test case details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/TestCase'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Test case not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    patch:
+      summary: Update a test case
+      description: Updates an existing test case
+      operationId: updateTestCase
+      tags:
+        - Test Suites
+      parameters:
+        - name: test_case_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - test_case
+              properties:
+                test_case:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: "Updated Test Case Name"
+                    description:
+                      type: string
+                      example: "Updated test case description"
+                    script:
+                      type: string
+                      example: "Updated script content"
+                    rubric:
+                      type: string
+                      example: "Updated rubric content"
+      responses:
+        '200':
+          description: Test case updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/TestCase'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Test case not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /test_cases/{test_case_id}/test_runs:
+    post:
+      summary: Create a new test run
+      description: Creates a new test run for a specific test case
+      operationId: createTestRun
+      tags:
+        - Test Runs
+      parameters:
+        - name: test_case_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - agent_test_run
+              properties:
+                agent_test_run:
+                  type: object
+                run_now:
+                  type: boolean
+                  description: If true, the test will be run immediately
+                  default: false
+      responses:
+        '201':
+          description: Test run created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AgentTestRun'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Test case not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /test_runs/{test_run_id}:
+    get:
+      summary: Get test run details
+      description: Returns details for a specific test run
+      operationId: getTestRun
+      tags:
+        - Test Runs
+      parameters:
+        - name: test_run_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Test run details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AgentTestRun'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Test run not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /projects/{project_id}:
+    get:
+      summary: Get project details
+      description: Returns details for a specific project
+      operationId: getProject
+      tags:
+        - Projects
+      parameters:
+        - name: project_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Project details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Project'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Project not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /sandbox_sessions:
+    get:
+      summary: List sandbox sessions
+      description: Returns a list of WhatsApp sandbox sessions for the project associated with the API key
+      operationId: listSandboxSessions
+      tags:
+        - WhatsApp Sandbox
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: per_page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: A list of sandbox sessions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WhatsappSandboxSession'
+                  meta:
+                    type: object
+                    properties:
+                      page:
+                        type: integer
+                      per_page:
+                        type: integer
+                      total_pages:
+                        type: integer
+                      total_count:
+                        type: integer
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create a sandbox session
+      description: Creates a new WhatsApp sandbox session for the project associated with the API key
+      operationId: createSandboxSession
+      tags:
+        - WhatsApp Sandbox
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - whatsapp_sandbox_session
+              properties:
+                whatsapp_sandbox_session:
+                  $ref: '#/components/schemas/WhatsappSandboxSessionCreate'
+      responses:
+        '201':
+          description: Sandbox session created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/WhatsappSandboxSession'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /sandbox_sessions/{id}:
+    get:
+      summary: Get sandbox session details
+      description: Returns details for a specific WhatsApp sandbox session
+      operationId: getSandboxSession
+      tags:
+        - WhatsApp Sandbox
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Sandbox session details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/WhatsappSandboxSession'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Sandbox session not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /whatsapp_conversations:
+    get:
+      summary: List WhatsApp conversations
+      description: Returns a list of WhatsApp conversations
+      operationId: listWhatsappConversations
+      tags:
+        - WhatsApp Conversations
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: per_page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: "q[status_eq]"
+          in: query
+          description: Filter by exact status match
+          schema:
+            type: string
+            enum: [active, ended]
+        - name: "q[last_active_at_gteq]"
+          in: query
+          description: Filter by last_active_at greater than or equal to (ISO 8601 format)
+          schema:
+            type: string
+            format: date-time
+        - name: "q[last_active_at_lteq]"
+          in: query
+          description: Filter by last_active_at less than or equal to (ISO 8601 format)
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: A list of WhatsApp conversations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WhatsappConversation'
+                  meta:
+                    type: object
+                    properties:
+                      page:
+                        type: integer
+                      per_page:
+                        type: integer
+                      total_pages:
+                        type: integer
+                      total_count:
+                        type: integer
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /whatsapp_conversations/{conversation_id}:
+    get:
+      summary: Get WhatsApp conversation details
+      description: Returns details for a specific WhatsApp conversation
+      operationId: getWhatsappConversation
+      tags:
+        - WhatsApp Conversations
+      parameters:
+        - name: conversation_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: WhatsApp conversation details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/WhatsappConversation'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Conversation not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    patch:
+      summary: Update WhatsApp conversation status
+      description: Updates the status of a specific WhatsApp conversation
+      operationId: updateWhatsappConversation
+      tags:
+        - WhatsApp Conversations
+      parameters:
+        - name: conversation_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - whatsapp_conversation
+              properties:
+                whatsapp_conversation:
+                  type: object
+                  required:
+                    - status
+                  properties:
+                    status:
+                      type: string
+                      enum: [active, ended]
+                      description: The new status for the conversation
+                      example: "ended"
+      responses:
+        '200':
+          description: WhatsApp conversation updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/WhatsappConversation'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Conversation not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /whatsapp_conversations/{conversation_id}/whatsapp_messages:
+    get:
+      summary: List messages in a WhatsApp conversation
+      description: Returns a list of messages for a specific WhatsApp conversation
+      operationId: listWhatsappMessages
+      tags:
+        - WhatsApp Messages
+      parameters:
+        - name: conversation_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: per_page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: A list of WhatsApp messages
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WhatsappMessage'
+                  meta:
+                    type: object
+                    properties:
+                      page:
+                        type: integer
+                      per_page:
+                        type: integer
+                      total_pages:
+                        type: integer
+                      total_count:
+                        type: integer
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Conversation not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    post:
+      summary: Send a new WhatsApp message
+      description: Sends a new message through WhatsApp Cloud API and creates the message record
+      operationId: createWhatsappMessage
+      tags:
+        - WhatsApp Messages
+      parameters:
+        - name: conversation_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - message
+              properties:
+                message:
+                  type: object
+                  required:
+                    - content
+                  properties:
+                    content:
+                      type: string
+                      description: The message content to send (for text messages)
+                      example: "Hello, how can I help you today?"
+                    message_type:
+                      type: string
+                      description: The type of message
+                      enum: [text, image, video, audio, document, template, location, interactive, reaction, contacts]
+                      default: "text"
+                      example: "text"
+                    # Media message parameters
+                    media_url:
+                      type: string
+                      description: URL of the media file to send (for image, video, audio, document message types)
+                    media_id:
+                      type: string
+                      description: WhatsApp media ID to use instead of a URL (for image, video, audio, document message types)
+                    media_file:
+                      type: string
+                      format: binary
+                      description: Media file upload (for image, video, audio, document message types)
+                    caption:
+                      type: string
+                      description: Caption for media messages (image, video, document)
+                    filename:
+                      type: string
+                      description: Filename for document messages
+                    
+                    # Location message parameters
+                    latitude:
+                      type: number
+                      format: float
+                      description: Latitude for location messages
+                    longitude:
+                      type: number
+                      format: float
+                      description: Longitude for location messages
+                    location_name:
+                      type: string
+                      description: Optional name for the location
+                    location_address:
+                      type: string
+                      description: Optional address for the location
+                    
+                    # Interactive message parameters
+                    interactive_type:
+                      type: string
+                      enum: [button, list]
+                      description: Type of interactive message
+                    body_text:
+                      type: string
+                      description: Main message text for interactive messages
+                    header_text:
+                      type: string
+                      description: Header text for interactive messages
+                    footer_text:
+                      type: string
+                      description: Footer text for interactive messages
+                    buttons:
+                      type: array
+                      description: Button definitions for button-type interactive messages
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            description: Button identifier
+                          title:
+                            type: string
+                            description: Button display text
+                    sections:
+                      type: array
+                      description: Section definitions for list-type interactive messages
+                      items:
+                        type: object
+                        properties:
+                          title:
+                            type: string
+                            description: Section title
+                          rows:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                  description: Row identifier
+                                title:
+                                  type: string
+                                  description: Row title
+                                description:
+                                  type: string
+                                  description: Optional row description
+                    list_button_text:
+                      type: string
+                      description: Text for the button that opens the list (for list-type interactive messages)
+                      example: "View Options"
+                    
+                    # Template message parameters
+                    template_name:
+                      type: string
+                      description: Name of the template to use
+                    template_language:
+                      type: string
+                      description: Language code of the template (e.g., en_US)
+                    template_params:
+                      oneOf:
+                        - type: array
+                          description: Array of values for positional parameters (e.g., {{1}}, {{2}})
+                          items:
+                            type: string
+                          example: ["John Smith", "Tomorrow at 2 PM"]
+                        - type: object
+                          description: Object with named parameters (e.g., {{name}}, {{email}})
+                          additionalProperties:
+                            type: string
+                          example: 
+                            name: "John Smith"
+                            email: "john@example.com"
+                      description: |
+                        Parameters to fill in the template placeholders. 
+                        Use array format for templates with positional parameters ({{1}}, {{2}}).
+                        Use object format for templates with named parameters ({{name}}, {{email}}).
+                    header_type:
+                      type: string
+                      description: Type of header for template messages
+                      enum: [text, image, video, document]
+                    header_params:
+                      type: string
+                      description: Content for the template header (URL for media, text for text headers)
+                    header_filename:
+                      type: string
+                      description: Filename for document headers
+                    
+                    # Reaction message parameters
+                    reaction_emoji:
+                      type: string
+                      description: Emoji to use for the reaction
+                    reacted_to_message_id:
+                      type: string
+                      description: ID of the message to react to
+                    
+                    # Contacts message parameters
+                    contacts:
+                      type: array
+                      description: Contact cards to send
+                      items:
+                        type: object
+                        properties:
+                          formatted_name:
+                            type: string
+                            description: Full contact name
+                          first_name:
+                            type: string
+                            description: First name
+                          last_name:
+                            type: string
+                            description: Last name
+                          phones:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                phone:
+                                  type: string
+                                  description: Phone number
+                                type:
+                                  type: string
+                                  description: Phone type (e.g., HOME, WORK)
+                          emails:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                email:
+                                  type: string
+                                  description: Email address
+                                type:
+                                  type: string
+                                  description: Email type (e.g., HOME, WORK)
+      responses:
+        '201':
+          description: Message created and sent successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/WhatsappMessage'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Conversation not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Cannot send message when an agent execution is active
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: WhatsApp service error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /whatsapp_conversations/{conversation_id}/agent_executions:
+    get:
+      summary: List agent executions for a WhatsApp conversation
+      description: Returns all agent executions associated with a specific WhatsApp conversation
+      operationId: listWhatsappConversationAgentExecutions
+      tags:
+        - WhatsApp Conversations
+      parameters:
+        - name: conversation_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: per_page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: A list of agent execution associations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WhatsappConversationAgentExecution'
+                  meta:
+                    type: object
+                    properties:
+                      page:
+                        type: integer
+                      per_page:
+                        type: integer
+                      total_pages:
+                        type: integer
+                      total_count:
+                        type: integer
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Conversation not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+  /whatsapp_conversations/{conversation_id}/agent_executions/{id}:
+    get:
+      summary: Get agent execution association details
+      description: Returns details for a specific agent execution association
+      operationId: getWhatsappConversationAgentExecution
+      tags:
+        - WhatsApp Conversations
+      parameters:
+        - name: conversation_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Agent execution association details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/WhatsappConversationAgentExecution'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Conversation or association not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /customers:
+    get:
+      summary: List customers
+      description: Returns a list of customers for the project
+      operationId: listCustomers
+      tags:
+        - Customers
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: per_page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: "q[name_cont]"
+          in: query
+          description: Filter by name containing text
+          schema:
+            type: string
+        - name: "q[external_customer_id_eq]"
+          in: query
+          description: Filter by exact external customer ID
+          schema:
+            type: string
+        - name: "q[created_at_gteq]"
+          in: query
+          description: Filter by creation date (greater than or equal)
+          schema:
+            type: string
+            format: date-time
+        - name: "q[created_at_lteq]"
+          in: query
+          description: Filter by creation date (less than or equal)
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: A list of customers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Customer'
+                  meta:
+                    type: object
+                    properties:
+                      page:
+                        type: integer
+                      per_page:
+                        type: integer
+                      total_pages:
+                        type: integer
+                      total_count:
+                        type: integer
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    post:
+      summary: Create a new customer
+      description: Creates a new customer for the project
+      operationId: createCustomer
+      tags:
+        - Customers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - customer
+              properties:
+                customer:
+                  type: object
+                  required:
+                    - name
+                    - external_customer_id
+                  properties:
+                    name:
+                      type: string
+                      example: "New Client"
+                    external_customer_id:
+                      type: string
+                      example: "CLIENT-456"
+      responses:
+        '201':
+          description: Customer created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Customer'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /customers/{customer_id}:
+    get:
+      summary: Get customer details
+      description: Returns details for a specific customer
+      operationId: getCustomer
+      tags:
+        - Customers
+      parameters:
+        - name: customer_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Customer details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Customer'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          
+    patch:
+      summary: Update customer
+      description: Updates a customer's details
+      operationId: updateCustomer
+      tags:
+        - Customers
+      parameters:
+        - name: customer_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - customer
+              properties:
+                customer:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: "Updated Client Name"
+                    external_customer_id:
+                      type: string
+                      example: "CLIENT-456"
+      responses:
+        '200':
+          description: Customer updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Customer'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          
+    delete:
+      summary: Delete customer
+      description: Deletes a customer
+      operationId: deleteCustomer
+      tags:
+        - Customers
+      parameters:
+        - name: customer_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Customer deleted
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /customers/{customer_id}/whatsapp_configs:
+    get:
+      summary: List WhatsApp configs for a customer
+      description: Returns a list of WhatsApp configurations for a specific customer
+      operationId: listCustomerWhatsappConfigs
+      tags:
+        - WhatsApp Configs
+      parameters:
+        - name: customer_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: per_page
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: A list of WhatsApp configurations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WhatsappConfig'
+                  meta:
+                    type: object
+                    properties:
+                      page:
+                        type: integer
+                      per_page:
+                        type: integer
+                      total_pages:
+                        type: integer
+                      total_count:
+                        type: integer
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    post:
+      summary: Create a new WhatsApp config
+      description: Creates a new WhatsApp configuration for a specific customer
+      operationId: createCustomerWhatsappConfig
+      tags:
+        - WhatsApp Configs
+      parameters:
+        - name: customer_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - whatsapp_config
+              properties:
+                whatsapp_config:
+                  type: object
+                  required:
+                    - name
+                    - phone_number_id
+                    - business_account_id
+                    - webhook_verify_token
+                  properties:
+                    name:
+                      type: string
+                      example: "WhatsApp Business Account"
+                    phone_number_id:
+                      type: string
+                      example: "1234567890"
+                    business_account_id:
+                      type: string
+                      example: "98765432109"
+                    webhook_verify_token:
+                      type: string
+                    webhook_destination_url:
+                      type: string
+                    access_token:
+                      type: string
+      responses:
+        '201':
+          description: WhatsApp configuration created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/WhatsappConfig'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /customers/{customer_id}/setup_links:
+    get:
+      summary: List setup links for a customer
+      description: Returns a list of setup links for the specified customer, ordered by creation date (newest first)
+      operationId: listCustomerSetupLinks
+      tags:
+        - Setup Links
+      parameters:
+        - name: customer_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: A paginated list of setup links
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SetupLink'
+                  meta:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                      total_pages:
+                        type: integer
+                      total_count:
+                        type: integer
+                      per_page:
+                        type: integer
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    post:
+      summary: Create a new setup link
+      description: Creates a new setup link for the customer. This will revoke any existing active links for the customer.
+      operationId: createCustomerSetupLink
+      tags:
+        - Setup Links
+      parameters:
+        - name: customer_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '201':
+          description: Setup link created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/SetupLink'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /whatsapp_configs/{config_id}:
+    get:
+      summary: Get WhatsApp config details
+      description: Returns details for a specific WhatsApp configuration
+      operationId: getWhatsappConfig
+      tags:
+        - WhatsApp Configs
+      parameters:
+        - name: config_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: WhatsApp configuration details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/WhatsappConfig'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: WhatsApp configuration not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    patch:
+      summary: Update WhatsApp config
+      description: Updates a WhatsApp configuration's details
+      operationId: updateWhatsappConfig
+      tags:
+        - WhatsApp Configs
+      parameters:
+        - name: config_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - whatsapp_config
+              properties:
+                whatsapp_config:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    phone_number_id:
+                      type: string
+                    business_account_id:
+                      type: string
+                    webhook_verify_token:
+                      type: string
+                    webhook_destination_url:
+                      type: string
+                    access_token:
+                      type: string
+      responses:
+        '200':
+          description: WhatsApp configuration updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/WhatsappConfig'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: WhatsApp configuration not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    delete:
+      summary: Delete WhatsApp config
+      description: Deletes a WhatsApp configuration
+      operationId: deleteWhatsappConfig
+      tags:
+        - WhatsApp Configs
+      parameters:
+        - name: config_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: WhatsApp configuration deleted
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: WhatsApp configuration not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /agents/{agent_id}/test_chats:
+    post:
+      summary: Start a new agent test chat
+      description: Initiates a test conversation with the specified agent
+      operationId: createAgentTestChat
+      tags:
+        - Agent Test Chats
+      parameters:
+        - name: agent_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - message
+              properties:
+                message:
+                  type: string
+                  description: Message to send to the agent
+                  example: "I need help with my order"
+                agent_test_chat_id:
+                  type: string
+                  format: uuid
+                  description: Optional ID of an existing test chat to continue the conversation
+      responses:
+        '201':
+          description: Test chat initiated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AgentTestChat'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Agent not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /test_chats/{id}:
+    get:
+      summary: Get agent test chat details
+      description: Returns details for a specific agent test chat
+      operationId: getAgentTestChat
+      tags:
+        - Agent Test Chats
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Agent test chat details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AgentTestChat'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Test chat not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /test_chats/{id}/resume:
+    post:
+      summary: Resume a completed agent test chat
+      description: Resumes a completed test chat with an optional payload message. This simulates an API call to resume the agent with external data, human-in-the-loop responses, system notifications, or any other information that needs to be injected into the conversation flow.
+      operationId: resumeAgentTestChat
+      tags:
+        - Agent Test Chats
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the test chat to resume
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: object
+                  description: Optional payload message to send when resuming
+                  properties:
+                    type:
+                      type: string
+                      enum: ["payload"]
+                      description: Message type (always 'payload' for resume)
+                    content:
+                      type: object
+                      description: The payload content as a JSON object
+                      additionalProperties: true
+                      example:
+                        message_from_manager: "Please send a reminder message to the user"
+              example:
+                message:
+                  type: "payload"
+                  content:
+                    message_from_manager: "Please send a reminder message to the user"
+      responses:
+        '200':
+          description: Test chat resumed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AgentTestChat'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '402':
+          description: Payment required - Insufficient credits
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Insufficient credits. Go to https://app.kapso.ai/projects/{project_id}/billing"
+        '404':
+          description: Test chat not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Test chat cannot be resumed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Test chat cannot be resumed"
+                  message:
+                    type: string
+                    example: "This test chat is not in a completed state"
+  
+  /whatsapp_conversations/{whatsapp_conversation_id}/conversation_assignments:
+    get:
+      summary: List conversation assignments
+      description: Returns a list of assignments for a specific WhatsApp conversation
+      operationId: listConversationAssignments
+      tags:
+        - Conversation Assignments
+      parameters:
+        - name: whatsapp_conversation_id
+          in: path
+          required: true
+          description: ID of the WhatsApp conversation
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: per_page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: A list of conversation assignments
+          headers:
+            Total:
+              schema:
+                type: integer
+              description: Total number of records
+            Total-Pages:
+              schema:
+                type: integer
+              description: Total number of pages
+            Per-Page:
+              schema:
+                type: integer
+              description: Number of items per page
+            Page:
+              schema:
+                type: integer
+              description: Current page number
+            Link:
+              schema:
+                type: string
+              description: Links to first, prev, next, and last pages
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ConversationAssignment'
+                  meta:
+                    type: object
+                    properties:
+                      page:
+                        type: integer
+                      per_page:
+                        type: integer
+                      total_pages:
+                        type: integer
+                      total_count:
+                        type: integer
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Conversation not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create a conversation assignment
+      description: Creates a new assignment for a WhatsApp conversation
+      operationId: createConversationAssignment
+      tags:
+        - Conversation Assignments
+      parameters:
+        - name: whatsapp_conversation_id
+          in: path
+          required: true
+          description: ID of the WhatsApp conversation
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - conversation_assignment
+              properties:
+                conversation_assignment:
+                  type: object
+                  required:
+                    - user_id
+                  properties:
+                    user_id:
+                      type: string
+                      format: uuid
+                      description: ID of the user to assign the conversation to
+                    notes:
+                      type: string
+                      description: Optional notes for the assignment
+      responses:
+        '201':
+          description: Assignment created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ConversationAssignment'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Conversation or User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation error (e.g., user not in project, conversation already assigned)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /whatsapp_conversations/{whatsapp_conversation_id}/conversation_assignments/{id}:
+    patch:
+      summary: Update a conversation assignment
+      description: Updates an existing conversation assignment (e.g., notes, user, active status)
+      operationId: updateConversationAssignment
+      tags:
+        - Conversation Assignments
+      parameters:
+        - name: whatsapp_conversation_id
+          in: path
+          required: true
+          description: ID of the WhatsApp conversation
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          description: ID of the conversation assignment
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - conversation_assignment
+              properties:
+                conversation_assignment:
+                  type: object
+                  properties:
+                    user_id:
+                      type: string
+                      format: uuid
+                      description: ID of the new user to assign the conversation to
+                    notes:
+                      type: string
+                      description: Updated notes for the assignment
+                    active:
+                      type: boolean
+                      description: Set to false to deactivate the assignment
+      responses:
+        '200':
+          description: Assignment updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ConversationAssignment'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Conversation, Assignment, or User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation error (e.g., user not in project)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /whatsapp_templates:
+    get:
+      summary: List WhatsApp templates
+      description: Returns a list of WhatsApp templates available for the project
+      operationId: listWhatsappTemplates
+      tags:
+        - WhatsApp Templates
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: per_page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: customer_id
+          in: query
+          description: Filter templates by customer ID
+          schema:
+            type: string
+            format: uuid
+        - name: "q[name_cont]"
+          in: query
+          description: Filter templates by name (contains)
+          schema:
+            type: string
+        - name: "q[language_code_eq]"
+          in: query
+          description: Filter templates by exact language code match
+          schema:
+            type: string
+        - name: "q[category_eq]"
+          in: query
+          description: Filter templates by category
+          schema:
+            type: string
+            enum: ["MARKETING", "UTILITY", "AUTHENTICATION"]
+        - name: "q[status_eq]"
+          in: query
+          description: Filter templates by status
+          schema:
+            type: string
+            enum: ["draft", "submitted", "approved", "rejected", "disabled"]
+        - name: "q[customer_id_eq]"
+          in: query
+          description: Filter templates by customer ID (Ransack syntax)
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: A list of WhatsApp templates
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WhatsappTemplate'
+                  meta:
+                    type: object
+                    properties:
+                      page:
+                        type: integer
+                      per_page:
+                        type: integer
+                      total_pages:
+                        type: integer
+                      total_count:
+                        type: integer
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+  /whatsapp_templates/{template_id}:
+    get:
+      summary: Get WhatsApp template details
+      description: Returns details for a specific WhatsApp template
+      operationId: getWhatsappTemplate
+      tags:
+        - WhatsApp Templates
+      parameters:
+        - name: template_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: WhatsApp template details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/WhatsappTemplate'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Template not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+  /whatsapp_templates/{template_id}/send_template:
+    post:
+      summary: Send a WhatsApp template message
+      description: Sends a WhatsApp template message to a specified phone number
+      operationId: sendWhatsappTemplate
+      tags:
+        - WhatsApp Templates
+      parameters:
+        - name: template_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - template
+              properties:
+                template:
+                  type: object
+                  required:
+                    - phone_number
+                  properties:
+                    phone_number:
+                      type: string
+                      description: Phone number to send the template message to
+                      example: "+123456789012"
+                    template_parameters:
+                      oneOf:
+                        - type: array
+                          description: Array of values for positional parameters (e.g., {{1}}, {{2}})
+                          items:
+                            type: string
+                          example: ["John Smith", "Tomorrow at 2 PM"]
+                        - type: object
+                          description: Object with named parameters (e.g., {{name}}, {{email}})
+                          additionalProperties:
+                            type: string
+                          example: 
+                            name: "John Smith"
+                            email: "john@example.com"
+                      description: |
+                        Parameters to fill in the template placeholders. 
+                        Use array format for templates with positional parameters ({{1}}, {{2}}).
+                        Use object format for templates with named parameters ({{name}}, {{email}}).
+                        The system automatically detects which format to use based on the template configuration.
+                    header_type:
+                      type: string
+                      description: Type of header for the template
+                      enum: [text, image, video, document]
+                      example: "image"
+                    header_params:
+                      type: string
+                      description: Content for the template header (URL for media, text for text headers)
+                      example: "https://example.com/header-image.jpg"
+                    header_filename:
+                      type: string
+                      description: Filename for document headers (only used when header_type is document)
+                      example: "invoice.pdf"
+                    whatsapp_config_id:
+                      type: string
+                      format: uuid
+                      description: Optional specific WhatsApp configuration to use
+                    customer_id:
+                      type: string
+                      format: uuid
+                      description: Optional customer ID whose WhatsApp config to use
+      responses:
+        '200':
+          description: Template message sent successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Template message sent successfully"
+                  template_id:
+                    type: string
+                    format: uuid
+                  template_name:
+                    type: string
+                  response:
+                    type: object
+                    description: WhatsApp API response
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Template not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Template requires 2 parameters, but 1 were provided"
+        '500':
+          description: WhatsApp service error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "error"
+                  message:
+                    type: string
+                    example: "Failed to send template message: API Error"
+  
+  /whatsapp_contacts:
+    get:
+      summary: List WhatsApp contacts
+      description: Retrieve a paginated list of WhatsApp contacts for the project
+      operationId: listWhatsappContacts
+      tags:
+        - WhatsApp Contacts
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            default: 1
+        - name: per_page
+          in: query
+          description: Items per page
+          required: false
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WhatsappContact'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    post:
+      summary: Create a WhatsApp contact
+      description: Create a new WhatsApp contact for the project
+      operationId: createWhatsappContact
+      tags:
+        - WhatsApp Contacts
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - contact
+              properties:
+                contact:
+                  type: object
+                  required:
+                    - wa_id
+                  properties:
+                    wa_id:
+                      type: string
+                      example: "1234567890"
+                      description: The WhatsApp phone number
+                    profile_name:
+                      type: string
+                      example: "John Doe"
+                    customer_id:
+                      type: string
+                      format: uuid
+                      example: "customer-456def"
+                      description: Optional customer ID to associate with this contact
+                    metadata:
+                      type: object
+                      example:
+                        source: "website"
+                        tags: ["lead", "priority"]
+      responses:
+        '201':
+          description: Contact created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/WhatsappContact'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                    example: ["Wa_id has already been taken"]
+
+  /whatsapp_contacts/{identifier}:
+    get:
+      summary: Get a WhatsApp contact
+      description: Retrieve a specific WhatsApp contact by ID or phone number
+      operationId: getWhatsappContact
+      tags:
+        - WhatsApp Contacts
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: identifier
+          in: path
+          required: true
+          description: Contact ID (UUID) or phone number
+          schema:
+            type: string
+            example: "contact-789ghi or 1234567890"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/WhatsappContact'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Contact not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    patch:
+      summary: Update a WhatsApp contact
+      description: Update a WhatsApp contact's profile name and metadata
+      operationId: updateWhatsappContact
+      tags:
+        - WhatsApp Contacts
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: identifier
+          in: path
+          required: true
+          description: Contact ID (UUID) or phone number
+          schema:
+            type: string
+            example: "contact-789ghi or 1234567890"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                contact:
+                  type: object
+                  properties:
+                    profile_name:
+                      type: string
+                      example: "John Doe - VIP Customer"
+                    metadata:
+                      type: object
+                      example:
+                        vip: true
+                        subscription_tier: "premium"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/WhatsappContact'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Contact not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /whatsapp_contacts/{identifier}/notes:
+    get:
+      summary: List notes for a WhatsApp contact
+      description: Retrieve all notes for a specific WhatsApp contact
+      operationId: listWhatsappContactNotes
+      tags:
+        - WhatsApp Contact Notes
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: identifier
+          in: path
+          required: true
+          description: Contact ID (UUID) or phone number
+          schema:
+            type: string
+            example: "contact-789ghi or 1234567890"
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            default: 1
+        - name: per_page
+          in: query
+          description: Items per page
+          required: false
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WhatsappContactNote'
+                  meta:
+                    $ref: '#/components/schemas/PaginationMeta'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Contact not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    post:
+      summary: Create a note for a WhatsApp contact
+      description: Create a new note for a specific WhatsApp contact
+      operationId: createWhatsappContactNote
+      tags:
+        - WhatsApp Contact Notes
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: identifier
+          in: path
+          required: true
+          description: Contact ID (UUID) or phone number
+          schema:
+            type: string
+            example: "contact-789ghi or 1234567890"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - note
+              properties:
+                note:
+                  type: object
+                  required:
+                    - content
+                  properties:
+                    name:
+                      type: string
+                      description: Optional name for the note
+                      example: "Customer Preference"
+                    content:
+                      type: string
+                      description: The content of the note
+                      example: "Prefers morning deliveries between 9-11 AM"
+                    metadata:
+                      type: object
+                      description: Additional metadata
+      responses:
+        '201':
+          description: Note created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/WhatsappContactNote'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Contact not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /whatsapp_contacts/{identifier}/notes/{note_id}:
+    get:
+      summary: Get a specific note
+      description: Retrieve a specific note for a WhatsApp contact
+      operationId: getWhatsappContactNote
+      tags:
+        - WhatsApp Contact Notes
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: identifier
+          in: path
+          required: true
+          description: Contact ID (UUID) or phone number
+          schema:
+            type: string
+            example: "contact-789ghi or 1234567890"
+        - name: note_id
+          in: path
+          required: true
+          description: Note ID
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/WhatsappContactNote'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Contact or note not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    patch:
+      summary: Update a note
+      description: Update a specific note for a WhatsApp contact
+      operationId: updateWhatsappContactNote
+      tags:
+        - WhatsApp Contact Notes
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: identifier
+          in: path
+          required: true
+          description: Contact ID (UUID) or phone number
+          schema:
+            type: string
+            example: "contact-789ghi or 1234567890"
+        - name: note_id
+          in: path
+          required: true
+          description: Note ID
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                note:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      description: Optional name for the note
+                    content:
+                      type: string
+                      description: The content of the note
+                    metadata:
+                      type: object
+                      description: Additional metadata
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/WhatsappContactNote'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Contact or note not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    delete:
+      summary: Delete a note
+      description: Delete a specific note for a WhatsApp contact
+      operationId: deleteWhatsappContactNote
+      tags:
+        - WhatsApp Contact Notes
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: identifier
+          in: path
+          required: true
+          description: Contact ID (UUID) or phone number
+          schema:
+            type: string
+            example: "contact-789ghi or 1234567890"
+        - name: note_id
+          in: path
+          required: true
+          description: Note ID
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Note deleted successfully
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Contact or note not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /agents/{agent_id}/agent_snapshots:
+    post:
+      summary: Create a new agent snapshot
+      description: Creates a snapshot of an agent at its current state, or with a provided graph structure
+      operationId: createAgentSnapshot
+      tags:
+        - Agent Snapshots
+      parameters:
+        - name: agent_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                graph:
+                  $ref: '#/components/schemas/AgentGraph'
+                  description: Optional custom graph definition to use instead of the agent's current graph
+      responses:
+        '201':
+          description: Agent snapshot created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AgentSnapshot'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Agent not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /agent_snapshots/{id}:
+    get:
+      summary: Get agent snapshot details
+      description: Returns details for a specific agent snapshot
+      operationId: getAgentSnapshot
+      tags:
+        - Agent Snapshots
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Agent snapshot details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AgentSnapshot'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Agent snapshot not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /agents/{agent_id}/agent_whatsapp_configs:
+    get:
+      summary: List agent WhatsApp configurations
+      description: Returns a list of WhatsApp configurations associated with the agent
+      operationId: listAgentWhatsappConfigs
+      tags:
+        - Agent WhatsApp Configs
+      parameters:
+        - name: agent_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: A list of agent WhatsApp configurations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AgentWhatsappConfig'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Agent not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    post:
+      summary: Create agent WhatsApp configuration
+      description: Associates a WhatsApp configuration with the agent
+      operationId: createAgentWhatsappConfig
+      tags:
+        - Agent WhatsApp Configs
+      parameters:
+        - name: agent_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - agent_whatsapp_config
+              properties:
+                agent_whatsapp_config:
+                  type: object
+                  required:
+                    - whatsapp_config_id
+                  properties:
+                    whatsapp_config_id:
+                      type: string
+                      format: uuid
+                      example: "config-123abc"
+                    is_primary:
+                      type: boolean
+                      example: true
+      responses:
+        '201':
+          description: Agent WhatsApp configuration created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AgentWhatsappConfig'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Agent not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /agents/{agent_id}/agent_whatsapp_configs/{id}:
+    get:
+      summary: Get agent WhatsApp configuration
+      description: Returns details for a specific agent WhatsApp configuration
+      operationId: getAgentWhatsappConfig
+      tags:
+        - Agent WhatsApp Configs
+      parameters:
+        - name: agent_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Agent WhatsApp configuration details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AgentWhatsappConfig'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Agent WhatsApp configuration not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    put:
+      summary: Update agent WhatsApp configuration
+      description: Updates an existing agent WhatsApp configuration
+      operationId: updateAgentWhatsappConfig
+      tags:
+        - Agent WhatsApp Configs
+      parameters:
+        - name: agent_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - agent_whatsapp_config
+              properties:
+                agent_whatsapp_config:
+                  type: object
+                  properties:
+                    is_primary:
+                      type: boolean
+                      example: true
+      responses:
+        '200':
+          description: Agent WhatsApp configuration updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AgentWhatsappConfig'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Agent WhatsApp configuration not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    delete:
+      summary: Delete agent WhatsApp configuration
+      description: Removes a WhatsApp configuration association from the agent
+      operationId: deleteAgentWhatsappConfig
+      tags:
+        - Agent WhatsApp Configs
+      parameters:
+        - name: agent_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Agent WhatsApp configuration deleted successfully
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Agent WhatsApp configuration not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /agent_snapshots/{agent_snapshot_id}/test_chats:
+    post:
+      summary: Start a new test chat using an agent snapshot
+      description: Initiates a test conversation using a specific agent snapshot
+      operationId: createAgentSnapshotTestChat
+      tags:
+        - Agent Test Chats
+      parameters:
+        - name: agent_snapshot_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - message
+              properties:
+                message:
+                  type: string
+                  description: Message to send to the agent
+                  example: "I need help with my order"
+                agent_test_chat_id:
+                  type: string
+                  format: uuid
+                  description: Optional ID of an existing test chat to continue the conversation
+      responses:
+        '201':
+          description: Test chat initiated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AgentTestChat'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Agent snapshot not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /flows:
+    get:
+      summary: List all flows
+      description: Returns a list of all flows for the authenticated project
+      operationId: listFlows
+      tags:
+        - Flows
+      parameters:
+        - name: q[status_eq]
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [draft, active, archived]
+          description: Filter flows by status
+      responses:
+        '200':
+          description: A list of flows
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Flow'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+  /flows/{flow_id}:
+    get:
+      summary: Get flow details
+      description: Returns details for a specific flow
+      operationId: getFlow
+      tags:
+        - Flows
+      parameters:
+        - name: flow_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Flow details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Flow'
+        '404':
+          description: Flow not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /flows/{flow_id}/executions:
+    get:
+      summary: List flow executions
+      description: Returns a list of executions for a specific flow
+      operationId: listFlowExecutions
+      tags:
+        - Flow Executions
+      parameters:
+        - name: flow_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: q[status_eq]
+          in: query
+          required: false
+          schema:
+            type: integer
+            enum: [0, 1, 2, 3]
+          description: Filter by status (0=running, 1=waiting, 2=ended, 3=failed)
+        - name: q[started_at_gteq]
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+          description: Filter executions started on or after this date
+        - name: q[started_at_lteq]
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+          description: Filter executions started on or before this date
+      responses:
+        '200':
+          description: A list of flow executions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FlowExecution'
+        '404':
+          description: Flow not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    post:
+      summary: Create a new flow execution
+      description: Triggers a new execution of a flow via API. The flow must have an active API trigger configured.
+      operationId: createFlowExecution
+      tags:
+        - Flow Executions
+      parameters:
+        - name: flow_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - phone_number
+              properties:
+                phone_number:
+                  type: string
+                  description: Phone number to associate with this flow execution (required for conversation tracking)
+                  pattern: '^\+[1-9]\d{1,14}$'
+                  example: "+1234567890"
+                variables:
+                  type: object
+                  description: Variables to pass to the flow execution
+                  additionalProperties: true
+                  example:
+                    user_id: "123"
+                    name: "John Doe"
+                    email: "john@example.com"
+                context:
+                  type: object
+                  description: Additional context for the execution
+                  additionalProperties: true
+                  example:
+                    source: "mobile_app"
+                    version: "1.2.3"
+                initial_data:
+                  type: object
+                  description: Initial data to pass to the flow
+                  additionalProperties: true
+      responses:
+        '202':
+          description: Flow execution accepted and queued
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  flow_id:
+                    type: string
+                    format: uuid
+                    description: ID of the flow being executed
+                  tracking_id:
+                    type: string
+                    format: uuid
+                    description: Unique tracking ID for this execution request
+                  message:
+                    type: string
+                    example: "Flow execution queued"
+        '404':
+          description: Flow not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Flow cannot be executed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Flow is not active"
+                  details:
+                    type: string
+                    example: "Flow must be in active status and have an active API trigger"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /flow_executions/{execution_id}:
+    get:
+      summary: Get flow execution details
+      description: Returns details for a specific flow execution
+      operationId: getFlowExecution
+      tags:
+        - Flow Executions
+      parameters:
+        - name: execution_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Flow execution details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FlowExecution'
+        '404':
+          description: Flow execution not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /flow_executions/{execution_id}/resume:
+    post:
+      summary: Resume a waiting flow execution
+      description: Resumes a flow execution that is in waiting state
+      operationId: resumeFlowExecution
+      tags:
+        - Flow Executions
+      parameters:
+        - name: execution_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                input:
+                  type: string
+                  description: Text input to resume the flow with
+                  example: "yes"
+                message:
+                  type: object
+                  description: Structured message data to resume with
+                  additionalProperties: true
+                  example:
+                    button_id: "confirm_button"
+                    additional_data:
+                      timestamp: "2024-01-15T10:30:00Z"
+      responses:
+        '200':
+          description: Flow execution resumed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FlowExecution'
+        '404':
+          description: Flow execution not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Flow execution cannot be resumed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Execution cannot be resumed"
+                  message:
+                    type: string
+                    example: "The execution is not in a waiting state"
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'

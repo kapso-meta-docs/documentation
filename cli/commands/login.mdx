@@ -1,0 +1,24 @@
+---
+title: 'kapso login'
+description: 'Authenticate with Kapso Cloud'
+---
+
+```bash
+kapso login [OPTIONS]
+```
+
+## Options
+
+| Option            | Description                                     |
+| ----------------- | ----------------------------------------------- |
+| `--force, -f`     | Force re-authentication even if already logged in |
+
+## Examples
+
+```bash
+kapso login
+kapso login --force
+kapso login -f
+```
+
+Opens browser window to authenticate and stores token securely.

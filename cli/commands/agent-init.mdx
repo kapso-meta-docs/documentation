@@ -1,0 +1,22 @@
+---
+title: 'kapso agent init'
+description: 'Create a new agent locally'
+---
+
+```bash
+kapso agent init <name> [OPTIONS]
+```
+
+## Options
+
+| Option            | Description                                     |
+| ----------------- | ----------------------------------------------- |
+| `--template, -t`  | Agent template: `default`, `sales`, `support`  |
+
+## Examples
+
+```bash
+kapso agent init customer_support
+kapso agent init sales_bot --template sales
+kapso agent init my_agent -t support
+```

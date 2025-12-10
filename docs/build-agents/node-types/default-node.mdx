@@ -1,0 +1,52 @@
+---
+title: "Default Node"
+description: "The most versatile node for general conversation and reasoning"
+icon: "message"
+---
+
+The Default Node is the most versatile component in Agent Graphs, handling general conversation flow and complex reasoning.
+
+### Purpose & Functionality
+
+The Default Node uses the configured LLM to interpret its specific prompt within the conversation's context. How it interacts (notification vs. pausing for input) depends entirely on the instructions within its prompt.
+
+### Use Cases
+
+- General conversation steps
+- Asking questions
+- Providing information
+- Complex reasoning
+- Decision-making
+
+### Configuration
+
+- **Name:** A label for the node on the Canvas
+- **Prompt:** Instructions for the agent at this step
+
+### Examples
+
+**Example 1: Non-pausing notification**
+```
+Send a message to the customer thanking them for their purchase and confirming 
+their order has been received.
+```
+
+**Example 2: Pausing to collect information**
+```
+Ask the customer what size t-shirt they would like to order. Make sure to 
+list the available sizes (S, M, L, XL).
+```
+
+## Related Nodes
+
+<CardGroup cols={3}>
+  <Card title="Webhook Node" icon="webhook" href="./webhook-node">
+    Make HTTP requests to external services and APIs
+  </Card>
+  <Card title="Knowledge Base Node" icon="database" href="./knowledge-base-node">
+    Access specific knowledge sources for responses
+  </Card>
+  <Card title="Warm End Node" icon="door-open" href="./warm-end-node">
+    Gracefully conclude conversations
+  </Card>
+</CardGroup> 

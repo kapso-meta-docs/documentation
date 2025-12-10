@@ -1,0 +1,433 @@
+---
+title: "Sending Templates"
+description: "Complete guide to sending WhatsApp template messages via API and Flows"
+---
+
+## Overview
+
+WhatsApp template messages are pre-approved message formats that allow businesses to send notifications and initiate conversations with users. This guide covers all the ways to send template messages through Kapso, including support for various template types and parameter formats.
+
+## Sending Templates via API
+
+### Basic Template Message
+
+Send a simple text template with positional parameters:
+
+```bash
+curl -X POST https://api.kapso.ai/whatsapp_templates/{template_id}/send_template \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "template": {
+      "phone_number": "+1234567890",
+      "template_parameters": ["John", "ORDER123"]
+    }
+  }'
+```
+
+### Named Parameters
+
+For templates using named parameters (e.g., `\{\{customer_name\}\}`, `\{\{order_id\}\}`):
+
+```bash
+curl -X POST https://api.kapso.ai/whatsapp_templates/{template_id}/send_template \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "template": {
+      "phone_number": "+1234567890",
+      "template_parameters": {
+        "customer_name": "John Smith",
+        "order_id": "ORDER123"
+      }
+    }
+  }'
+```
+
+### Templates with Headers
+
+#### Text Header with Parameter
+For headers with dynamic text like "Welcome \{\{customer_name\}\}!" or "Welcome \{\{1\}\}!":
+
+**For templates with positional parameters:**
+```bash
+curl -X POST https://api.kapso.ai/whatsapp_templates/{template_id}/send_template \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "template": {
+      "phone_number": "+1234567890",
+      "template_parameters": ["Your order is ready"],
+      "header_type": "text",
+      "header_params": "John Smith"
+    }
+  }'
+```
+
+**For templates with named parameters:**
+```bash
+curl -X POST https://api.kapso.ai/whatsapp_templates/{template_id}/send_template \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "template": {
+      "phone_number": "+1234567890",
+      "template_parameters": {
+        "order_status": "ready",
+        "delivery_date": "tomorrow"
+      },
+      "header_type": "text",
+      "header_params": "John Smith"  # Or {"name": "John Smith"} for named header param
+    }
+  }'
+```
+
+<Note>
+WhatsApp headers support only ONE parameter. The `header_params` field accepts either:
+- A single string value (e.g., `"John Smith"`)
+- For named parameter templates, you can also use a hash with the parameter name (e.g., `{"name": "John Smith"}`)
+
+Both formats work and will correctly replace the placeholder in the header text.
+</Note>
+
+#### Image Header
+```bash
+curl -X POST https://api.kapso.ai/whatsapp_templates/{template_id}/send_template \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "template": {
+      "phone_number": "+1234567890",
+      "template_parameters": ["John", "ORDER123"],
+      "header_type": "image",
+      "header_params": "https://example.com/product-image.jpg"
+    }
+  }'
+```
+
+#### Video Header
+```bash
+curl -X POST https://api.kapso.ai/whatsapp_templates/{template_id}/send_template \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "template": {
+      "phone_number": "+1234567890",
+      "template_parameters": ["Welcome message"],
+      "header_type": "video",
+      "header_params": "https://example.com/intro-video.mp4"
+    }
+  }'
+```
+
+#### Document Header
+```bash
+curl -X POST https://api.kapso.ai/whatsapp_templates/{template_id}/send_template \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "template": {
+      "phone_number": "+1234567890",
+      "template_parameters": ["Invoice for your order"],
+      "header_type": "document",
+      "header_params": "https://example.com/invoice.pdf",
+      "header_filename": "Invoice_2024.pdf"
+    }
+  }'
+```
+
+### Templates with Location Headers
+
+Send a template with a location header:
+
+```bash
+curl -X POST https://api.kapso.ai/whatsapp_templates/{template_id}/send_template \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "template": {
+      "phone_number": "+1234567890",
+      "template_parameters": ["Your order is ready"],
+      "location_params": {
+        "latitude": 37.7749,
+        "longitude": -122.4194,
+        "name": "Pickup Location",
+        "address": "123 Market St, San Francisco, CA 94105"
+      }
+    }
+  }'
+```
+
+### Templates with Interactive Buttons
+
+#### URL Buttons with Dynamic Parameters
+```bash
+curl -X POST https://api.kapso.ai/whatsapp_templates/{template_id}/send_template \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "template": {
+      "phone_number": "+1234567890",
+      "template_parameters": ["Your order is ready"],
+      "button_url_params": {
+        "0": "ORDER123"  # Parameter for first URL button
+      }
+    }
+  }'
+```
+
+#### Quick Reply Buttons
+```bash
+curl -X POST https://api.kapso.ai/whatsapp_templates/{template_id}/send_template \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "template": {
+      "phone_number": "+1234567890",
+      "template_parameters": ["Please confirm your appointment"],
+      "button_quick_reply_payloads": {
+        "0": "CONFIRM_YES",
+        "1": "CONFIRM_NO"
+      }
+    }
+  }'
+```
+
+#### Copy Code Buttons
+```bash
+curl -X POST https://api.kapso.ai/whatsapp_templates/{template_id}/send_template \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "template": {
+      "phone_number": "+1234567890",
+      "template_parameters": ["Use this code for 20% off"],
+      "button_copy_code_params": {
+        "0": "SAVE20"
+      }
+    }
+  }'
+```
+
+### Complete Example with All Features
+
+Here's a comprehensive example combining headers, body parameters, and buttons:
+
+```bash
+curl -X POST https://api.kapso.ai/whatsapp_templates/{template_id}/send_template \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "template": {
+      "phone_number": "+1234567890",
+      "template_parameters": {
+        "customer_name": "John Smith",
+        "order_id": "ORDER123",
+        "delivery_date": "December 25, 2024"
+      },
+      "header_type": "image",
+      "header_params": "https://example.com/package.jpg",
+      "button_url_params": {
+        "0": "ORDER123"
+      },
+      "button_quick_reply_payloads": {
+        "1": "NEED_HELP"
+      }
+    }
+  }'
+```
+
+## Sending Templates with Flows
+
+Flows provide a powerful way to send template messages as part of automated workflows. When configuring a Send Template action in a flow, you specify the parameters in the "Parameters" field.
+
+### Structured Parameters Format
+
+All Send Template actions in flows use the structured format with specific parameter keys. This provides consistent support for all template features including headers, buttons, and advanced components.
+
+### Basic Structured Format
+
+#### For Simple Text Templates
+
+For templates with only body parameters (positional):
+
+```json
+{
+  "template_params": ["the_customer_name", "the_order_id"]
+}
+```
+
+For templates with named parameters:
+
+```json
+{
+  "template_params": {
+    "customer_name": "the_user_name", 
+    "order_id": "the_order_number"
+  }
+}
+```
+
+#### For Templates with Advanced Features
+
+To configure headers, buttons, and other features, add the corresponding keys:
+
+```json
+{
+  "template_params": ["the_customer_name", "the_order_id"],
+  "header_params": "the_document_url",
+  "header_filename": "Invoice_the_invoice_number.pdf",
+  "button_url_params": {
+    "0": "the_tracking_code"
+  }
+}
+```
+
+### Flow Parameter Examples
+
+#### Text Header with Parameter
+
+For a template with header text "Welcome \{\{1\}\}!" (positional) or "Welcome \{\{name\}\}!" (named) and body parameters:
+
+**Positional parameters:**
+```json
+{
+  "template_params": ["the_order_id", "the_delivery_date"],
+  "header_params": "the_customer_name"
+}
+```
+
+**Named parameters:**
+```json
+{
+  "template_params": {
+    "order_id": "the_order_id",
+    "delivery_date": "the_delivery_date"
+  },
+  "header_params": "the_customer_name"
+}
+```
+
+Or with explicit parameter name for the header:
+```json
+{
+  "template_params": {
+    "order_id": "the_order_id",
+    "delivery_date": "the_delivery_date"
+  },
+  "header_params": {"name": "the_customer_name"}
+}
+```
+
+<Note>
+Remember: `header_params` accepts either a single string value or a hash with the parameter name. Flow variables like `\{\{customer_name\}\}` will be substituted before sending.
+</Note>
+
+#### Order Confirmation with Image Header and Tracking Button
+
+For a template with image header, body text, and a URL button with dynamic parameter:
+
+```json
+{
+  "template_params": {
+    "customer_name": "the_user_name",
+    "order_id": "the_order_number",
+    "total_amount": "the_order_total"
+  },
+  "header_params": "https://cdn.example.com/orders/\{\{order_number\}\}.jpg",
+  "button_url_params": {
+    "0": "the_order_number"
+  }
+}
+```
+
+#### Appointment Reminder with Location
+
+For a template with location header and quick reply buttons:
+
+```json
+{
+  "template_params": ["the_patient_name", "the_appointment_time"],
+  "location_params": {
+    "latitude": 37.7749,
+    "longitude": -122.4194,
+    "name": "the_clinic_name",
+    "address": "the_clinic_address"
+  },
+  "button_quick_reply_payloads": {
+    "0": "CONFIRM_APPOINTMENT",
+    "1": "RESCHEDULE_REQUEST"
+  }
+}
+```
+
+#### Promotional Message with Copy Code
+
+For a marketing template with image header and copy code button:
+
+```json
+{
+  "template_params": ["the_customer_name", "the_discount_percentage"],
+  "header_params": "https://cdn.example.com/promotions/holiday-sale.jpg",
+  "button_copy_code_params": {
+    "0": "the_promo_code"
+  }
+}
+```
+
+#### Document Header with Filename
+
+For templates with document headers:
+
+```json
+{
+  "template_params": ["the_invoice_date", "the_amount_due"],
+  "header_params": "https://cdn.example.com/invoices/the_invoice_id.pdf",
+  "header_filename": "Invoice_the_invoice_number.pdf"
+}
+```
+
+#### Simple Text Template
+
+For templates with only text parameters (most common case):
+
+```json
+{
+  "template_params": ["the_customer_name", "the_order_status", "the_delivery_date"]
+}
+```
+
+## Parameter Types Reference
+
+### Template Body Parameters
+
+| Format | Use Case | Example |
+|--------|----------|---------|
+| Array | Positional parameters (`\{\{1}}`, `\{\{2\}\}`) | `["John", "ORDER123"]` |
+| Object | Named parameters (`\{\{name\}\}`, `\{\{order\}\}`) | `{"name": "John", "order": "ORDER123"}` |
+
+### Header Parameters
+
+| Type | Parameter | Description | Example |
+|------|-----------|-------------|---------|
+| text | `header_params` | Text value to replace \{\{1\}\} or \{\{param_name\}\} in header | `"John Smith"` for header "Welcome \{\{1\}\}!" |
+| image | `header_params` | Image URL | `"https://example.com/image.jpg"` |
+| video | `header_params` | Video URL | `"https://example.com/video.mp4"` |
+| document | `header_params` + `header_filename` | Document URL and filename | URL: `"https://example.com/doc.pdf"`<br/>Filename: `"Invoice.pdf"` |
+| location | `location_params` | Location object | See location example above |
+
+<Warning>
+**Important:** WhatsApp headers support only ONE parameter. Even if you design a header with multiple placeholders, WhatsApp will only accept one value in `header_params`.
+</Warning>
+
+### Button Parameters
+
+| Button Type | Parameter Key | Description | Example |
+|-------------|---------------|-------------|---------|
+| URL | `button_url_params` | Dynamic URL parameters | `{"0": "ORDER123"}` |
+| Quick Reply | `button_quick_reply_payloads` | Custom payloads | `{"0": "YES", "1": "NO"}` |
+| Copy Code | `button_copy_code_params` | Coupon codes | `{"0": "SAVE20"}` |
+
+<Note>
+Button indices (0, 1, 2, etc.) correspond to the order of buttons defined in your template.
+</Note>

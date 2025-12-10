@@ -1,0 +1,161 @@
+---
+title: Tools reference
+description: Complete reference of tools available
+---
+
+Tools are the building blocks that give your agents superpowers. They enable agents to interact with users, navigate conversations, access knowledge, and integrate with external systems. Each node type comes with a carefully selected set of tools designed for its specific purpose.
+
+<Note>
+💡 **Pro tip:** Reference tools by their exact names in your prompts to help the agent understand when to use them.
+</Note>
+
+
+<AccordionGroup>
+  <Accordion title="send_notification_to_user" icon="message">
+    Send a one-way notification message to the user.
+    
+    **Parameters:**
+    - `message` (string, required): The notification text to send
+    
+    **Usage:** Inform users without expecting a response
+    
+    **Available in:** All node types
+  </Accordion>
+
+  <Accordion title="AskUserForInput" icon="message-question">
+    Ask the user a question and wait for their response. This tool pauses execution until the user replies.
+    
+    **Parameters:**
+    - `message` (string, required): The question to ask. Must end with a question mark (?)
+    
+    **Usage:** Gather specific information from users
+    
+    **Available in:** All node types
+  </Accordion>
+
+  <Accordion title="send_media_message" icon="image">
+    Send media files (images, videos, audio, documents) to the user via WhatsApp.
+    
+    **Parameters:**
+    - `media_url` (string, required): URL of the media file to send. Must be accessible by WhatsApp servers
+    - `media_type` (string, required): Type of media - must be one of: "image", "video", "audio", "document"
+    - `caption` (string, optional): Caption for the media (not supported for audio files)
+    - `filename` (string, optional): Filename to display (only used for documents)
+    
+    **Usage:** Share visual content, audio files, videos, or documents with users
+    
+    **Available in:** All node types
+    
+    **Examples:**
+    ```python
+    # Send an image with caption
+    send_media_message(
+      media_url="https://example.com/chart.png",
+      media_type="image",
+      caption="Sales chart for Q4"
+    )
+    
+    # Send a document
+    send_media_message(
+      media_url="https://example.com/report.pdf",
+      media_type="document",
+      caption="Monthly report",
+      filename="report_december.pdf"
+    )
+    ```
+  </Accordion>
+
+  <Accordion title="MoveToNextNode" icon="route">
+    Navigate to another node in the agent graph based on edge conditions.
+    
+    **Parameters:**
+    - `next_node` (string, optional): Target node name. If not specified, follows edge conditions
+    
+    **Usage:** Direct conversation flow based on logic or user responses
+    
+    **Available in:** All node types
+  </Accordion>
+
+  <Accordion title="EnterIdleState" icon="pause">
+    Pause the conversation by entering an idle state. The agent can send a final message before idling.
+    
+    **Parameters:**
+    - `message` (string, optional): Final message to send before idling
+    
+    **Usage:** Gracefully end conversations or wait for external events
+    
+    **Available in:** All node types
+  </Accordion>
+
+  <Accordion title="kb_retrieval" icon="book">
+    Search and retrieve relevant information from knowledge bases.
+    
+    **Parameters:**
+    - `query` (string, required): The search query
+    - `kb_id` (string, optional): Specific knowledge base ID to search
+    
+    **Usage:** Find answers from documentation or reference materials
+    
+    **Available in:** KnowledgeBaseNode, SubagentNode
+  </Accordion>
+
+  <Accordion title="SendWhatsappTemplateMessage" icon="paper-plane">
+    Send pre-approved WhatsApp template messages.
+    
+    **Parameters:**
+    - `template_name` (string, required): Name of the approved template
+    - `parameters` (object, optional): Template parameter values
+    
+    **Usage:** Send notifications using WhatsApp Business templates
+    
+    **Available in:** WhatsappTemplateNode, SubagentNode
+  </Accordion>
+
+  <Accordion title="Dynamic webhook tools" icon="webhook">
+    Make HTTP requests to external APIs and services. These tools are created dynamically based on your node configuration.
+    
+    **Parameters:** Defined by the webhook configuration in your node
+    
+    **Usage:** Integrate with external systems, fetch data, trigger actions
+    
+    **Available in:** WebhookNode, SubagentNode
+    
+    **Features:**
+    - Custom naming (e.g., `check_order_status_webhook`)
+    - Support for all HTTP methods (GET, POST, PUT, PATCH, DELETE)
+    - Mock responses for testing
+    - JMESPath transformations for responses
+  </Accordion>
+
+  <Accordion title="MCP server tools" icon="server">
+    Model Context Protocol (MCP) enables seamless integration with external systems through standardized server connections.
+    
+    **Parameters:** Defined by each MCP server's available tools
+    
+    **Usage:** Access databases, external APIs, custom business logic, and third-party services
+    
+    **Available in:** SubagentNode
+    
+    **Configuration:**
+    - Server URL (e.g., `https://api.example.com/mcp`)
+    - Transport Kind (Streamable HTTP or SSE)
+    - Optional JMESPath queries for response transformation
+  </Accordion>
+
+  <Accordion title="get_execution_metadata" icon="info">
+    Get contextual information about the current agent execution.
+    
+    **Parameters:** None
+    
+    **Returns:**
+    - `agent_id` (string): The ID of the current agent
+    - `agent_execution_id` (string): The unique execution ID for this conversation
+    - `contact_information` (object): Contact details including phone number and broadcast context
+    - `whatsapp_conversation_id` (string): The WhatsApp conversation ID (if applicable)
+    
+    **Usage:** Access execution context for logging, tracking, or conditional logic
+    
+    **Available in:** All node types
+  </Accordion>
+</AccordionGroup>
+

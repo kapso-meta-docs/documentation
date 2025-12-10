@@ -1,0 +1,84 @@
+---
+title: Flow class
+description: Create and manage WhatsApp workflows
+---
+
+## Basic usage
+
+```python
+from kapso.builder.flows import Flow
+from kapso.builder.flows.nodes import StartNode, SendTextNode
+
+flow = Flow(
+    name="customer_onboarding",
+    description="Onboard new customers via WhatsApp"
+)
+
+# Add nodes  
+flow.add_node(StartNode(id="start_1234"))
+flow.add_node(SendTextNode(
+    id="send_text_5678",
+    message="Welcome to our service!"
+))
+
+# Connect nodes
+flow.add_edge("start_1234", "send_text_5678")
+
+flow.validate()
+```
+
+The backend automatically falls back to the WhatsApp configuration tied to the conversation. Only set `whatsapp_config_id` on a node when you need to override that default.
+
+## Constructor
+
+```python
+Flow(
+    name: str,
+    description: str = None
+)
+```
+
+- **name**: Flow identifier (alphanumeric + underscores)
+- **description**: Optional description
+
+## Methods
+
+### add_node()
+```python
+flow.add_node(node)
+```
+
+Add a node to the flow. Each node needs a unique ID.
+
+### add_edge()
+```python
+flow.add_edge(source, target, label="next")
+```
+
+Connect two nodes by their IDs.
+
+```python
+flow.add_edge("start_1234", "greeting_5678")
+flow.add_edge("decide_9012", "help_3456", label="needs_help")
+```
+
+### validate()
+```python
+flow.validate()
+```
+
+Check flow structure. Required before deployment.
+
+- Must have exactly one StartNode
+- All nodes must be reachable from StartNode
+- No duplicate node IDs
+
+## Node IDs
+
+Node IDs use format `{type}_{timestamp}`:
+
+```python
+StartNode(id="start_1234567890")
+SendTextNode(id="send_text_1234567891", ...)
+DecideNode(id="decide_1234567892", ...)
+```

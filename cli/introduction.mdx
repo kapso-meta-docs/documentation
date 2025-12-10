@@ -1,0 +1,79 @@
+---
+title: 'Introduction'
+description: 'Get started with the Kapso CLI and Builder SDK'
+---
+
+Install the Kapso SDK (includes both Builder SDK and CLI):
+
+```bash
+pip install kapso
+```
+
+This installs:
+- The Builder SDK for creating agents in Python
+- The CLI tools for deployment
+
+Verify your installation:
+
+```bash
+kapso version
+```
+
+## Quickstart
+
+1. **Pull a remote project and set up local directory**:
+```bash
+kapso pull
+```
+
+2. **Authenticate with cloud**:
+```bash
+kapso login
+```
+
+3. **Create and test an agent**:
+```bash
+kapso agent init my_agent
+kapso agent snapshot my_agent  # Opens web interface for testing
+```
+
+4. **Or create and test a flow**:
+```bash
+kapso flow init my_flow
+kapso flow push my_flow
+```
+
+5. **Push all changes**:
+```bash
+kapso push
+```
+
+## Commands
+
+**Core project:**
+- `kapso pull [--project-id]` - Pull remote project and set up local directory with agents/, flows/, functions/
+- `kapso login` - Authenticate with Kapso Cloud
+- `kapso push [--yes] [--dry-run]` - Push all local changes to cloud
+
+**Agent commands:**
+- `kapso agent init <name>` - Create new agent in agents/ directory  
+- `kapso agent pull <name>` - Pull specific agent from cloud
+- `kapso agent push <name>` - Push agent to cloud (create or update)
+- `kapso agent snapshot <name>` - Create test snapshot with web URL
+- `kapso agent list [--remote]` - List local and/or remote agents
+
+**Flow commands:**
+- `kapso flow init <name>` - Create new flow in flows/ directory
+- `kapso flow pull <name>` - Pull specific flow from cloud  
+- `kapso flow push <name>` - Push flow to cloud (create or update)
+- `kapso flow list [--remote]` - List local and/or remote flows
+
+**Functions:**
+- `kapso functions list` - List JavaScript serverless functions
+- `kapso functions push <file>` - Upload/update function
+- `kapso functions pull <name>` - Download function
+
+**Global options:**
+- `--verbose, -v` - Enable detailed output
+
+ 

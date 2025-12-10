@@ -1,0 +1,216 @@
+---
+title: AI fields
+description: Dynamic content generation in flows
+---
+
+Generate dynamic content at runtime using conversation context and AI.
+
+## Basic usage
+
+```python
+from kapso.builder.ai.field import AIField
+from kapso.builder.flows.nodes import SendTextNode
+
+# Static message
+node = SendTextNode(
+    id="send_text_1234",
+    message="Thank you for contacting us!"
+)
+
+# AI-generated message  
+node = SendTextNode(
+    id="send_text_5678",
+    message=AIField("Personalize greeting using customer's name and order history"),
+    provider_model_name="claude-sonnet-4-20250514"
+)
+```
+
+## AIField class
+
+```python
+AIField(prompt: str)
+# or  
+AIField.prompt(text: str)
+```
+
+Create dynamic content with AI prompts:
+
+```python
+# Constructor
+greeting = AIField("Create friendly greeting mentioning customer's recent order")
+
+# Class method (same result)
+greeting = AIField.prompt("Create friendly greeting mentioning customer's recent order")
+```
+
+## Context available to AI
+
+AIField prompts have access to:
+
+- **Conversation history**: Recent WhatsApp messages
+- **Flow variables**: User-defined variables 
+- **Flow events**: Previous flow actions and results
+- **Customer context**: Phone number, channel info
+- **Action context**: Specific field being filled
+
+Example prompt utilizing context:
+```python
+message = AIField("""
+Create a personalized message that:
+- Uses the customer's name from the conversation
+- References their recent order if mentioned
+- Offers relevant help based on their inquiry
+""")
+```
+
+## Supported nodes
+
+### SendTextNode
+```python
+from kapso.builder.ai.field import AIField
+
+SendTextNode(
+    id="send_text_1234",
+    message=AIField("Generate helpful response based on customer question"),
+    provider_model_name="claude-sonnet-4-20250514"
+)
+```
+
+### SendTemplateNode  
+```python
+from kapso.builder.ai.field import AIField
+
+SendTemplateNode(
+    id="template_1234", 
+    template_id="order_update",
+    parameters=AIField("Generate order update parameters for {{customer_name}}"),
+    provider_model_name="claude-sonnet-4-20250514"
+)
+```
+
+### SendInteractiveNode
+```python
+from kapso.builder.ai.field import AIField
+
+SendInteractiveNode(
+    id="interactive_1234",
+    interactive_type="button",
+    body_text=AIField("Create contextual question with options"),
+    header_text=AIField("Generate attention-grabbing header"),
+    footer_text=AIField("Add helpful footer based on customer status"),
+    provider_model_name="claude-sonnet-4-20250514",
+    buttons=[
+        {"id": "yes", "title": "Yes"},
+        {"id": "no", "title": "No"}
+    ]
+)
+```
+
+## Best practices
+
+### Specific prompts
+```python
+# ✅ Good - specific and actionable
+AIField("Extract the order number from customer's message and format as #12345")
+
+# ❌ Bad - too vague  
+AIField("Help the customer")
+```
+
+### Context-aware prompts
+```python
+# ✅ Good - leverages available context
+AIField("If customer mentioned urgency, apologize for delay and provide expedited options")
+
+# ❌ Bad - ignores conversation context
+AIField("Send generic response")
+```
+
+### Field-appropriate responses
+```python
+# For template parameters - concise values
+template_parameters={
+    "1": AIField("Customer first name only")  # Not full sentence
+}
+
+# For message content - complete messages
+message=AIField("Generate complete helpful response with greeting and next steps")
+```
+
+## Complete example
+
+```python
+from kapso.builder.flows import Flow
+from kapso.builder.flows.nodes import StartNode, SendTextNode, WaitForResponseNode, DecideNode
+from kapso.builder.flows.nodes.decide import Condition
+from kapso.builder.ai.field import AIField
+
+flow = Flow(name="smart_support")
+
+# Entry point
+start = StartNode(id="start_1234")
+
+# AI-powered personalized greeting
+greeting = SendTextNode(
+    id="greeting_5678",
+    message=AIField("""
+    Create a personalized greeting that:
+    - Uses customer's name if provided previously
+    - References any previous conversation context
+    - Asks how you can help them today
+    """),
+    provider_model_name="claude-sonnet-4-20250514"
+)
+
+# Wait for customer response
+wait = WaitForResponseNode(
+    id="wait_9012"
+)
+
+# AI-powered decision making  
+decide = DecideNode(
+    id="decide_3456",
+    provider_model_name="claude-sonnet-4-20250514",
+    conditions=[
+        Condition(label="order_issue", description="Customer has order or delivery problems"),
+        Condition(label="product_question", description="Questions about products or services"),
+        Condition(label="account_help", description="Account or billing related issues")
+    ]
+)
+
+# Dynamic response based on classification
+response = SendTextNode(
+    id="response_7890", 
+    message=AIField("""
+    Based on the customer's inquiry classification, provide:
+    - Empathetic acknowledgment of their specific concern
+    - 2-3 concrete next steps they can take
+    - Offer to escalate if needed
+    """),
+    provider_model_name="claude-sonnet-4-20250514"
+)
+
+# Build flow
+flow.add_node(start)
+flow.add_node(greeting)
+flow.add_node(wait)
+flow.add_node(decide)
+flow.add_node(response)
+
+# Connect nodes
+flow.add_edge("start_1234", "greeting_5678")
+flow.add_edge("greeting_5678", "wait_9012")  
+flow.add_edge("wait_9012", "decide_3456")
+flow.add_edge("decide_3456", "response_7890", label="order_issue")
+flow.add_edge("decide_3456", "response_7890", label="product_question")
+flow.add_edge("decide_3456", "response_7890", label="account_help")
+
+flow.validate()
+```
+
+## Requirements
+
+- **provider_model_name** required when using AIField
+- AI operations consume credits
+- Prompts have access to full conversation context
+- Generated content respects WhatsApp message limits

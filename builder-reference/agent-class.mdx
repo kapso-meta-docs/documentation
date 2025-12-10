@@ -1,0 +1,74 @@
+---
+title: Agent class
+description: Create and manage conversational agents
+---
+
+## Basic usage
+
+```python
+from kapso.builder import Agent
+from kapso.builder.agent.constants import START_NODE, END_NODE
+
+agent = Agent(
+    name="support_bot",
+    system_prompt="You are a helpful support assistant"
+)
+
+agent.add_node(START_NODE)
+agent.add_node(END_NODE)
+agent.add_edge(START_NODE, END_NODE)
+agent.validate()
+```
+
+## Constructor
+
+```python
+Agent(
+    name: str,
+    system_prompt: str = None,
+    message_debounce_seconds: int = None
+)
+```
+
+- **name**: Agent identifier (alphanumeric + underscores)
+- **system_prompt**: Instructions for the LLM
+- **message_debounce_seconds**: Wait time before processing rapid messages
+
+## Methods
+
+### add_node()
+```python
+agent.add_node(node)
+```
+
+Add a node to the graph. Accepts Node objects or START_NODE/END_NODE constants.
+
+### add_edge()
+```python
+agent.add_edge(source, target, condition=None)
+```
+
+Connect two nodes with optional condition.
+
+```python
+agent.add_edge(START_NODE, "greeting")
+agent.add_edge("greeting", "help", condition="user needs help")
+```
+
+### validate()
+```python
+agent.validate()
+```
+
+Check graph structure. Required before deployment.
+
+## Special nodes
+
+Every agent needs START_NODE and END_NODE:
+
+```python
+from kapso.builder.agent.constants import START_NODE, END_NODE
+
+agent.add_node(START_NODE)  # Entry point
+agent.add_node(END_NODE)    # Exit point
+```
