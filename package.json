@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@mintlify/openapi-parser": "^0.0.8"
+  }
+}

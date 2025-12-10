@@ -1,0 +1,196 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Kapso Legacy API",
+  "colors": {
+    "primary": "#16A34A",
+    "light": "#07C983",
+    "dark": "#15803D"
+  },
+  "appearance": {
+    "default": "dark"
+  },
+  "favicon": "/favicon.svg",
+  "navigation": {
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Github",
+          "icon": "github",
+          "href": "https://github.com/gokapso"
+        },
+        {
+          "anchor": "Current API",
+          "icon": "arrow-right",
+          "href": "https://docs.kapso.ai"
+        }
+      ]
+    },
+    "tabs": [
+      {
+        "tab": "WhatsApp API",
+        "openapi": {
+          "source": "api/legacy/openapi-whatsapp.yaml",
+          "directory": "api/legacy/whatsapp"
+        },
+        "groups": [
+          {
+            "group": "Guides",
+            "pages": [
+              "docs/integrations/whatsapp/sending-templates"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Platform API",
+        "openapi": {
+          "source": "api/legacy/openapi-platform.yaml",
+          "directory": "api/legacy/platform"
+        },
+        "groups": []
+      },
+      {
+        "tab": "Agents API",
+        "openapi": {
+          "source": "api/legacy/openapi-agents.yaml",
+          "directory": "api/legacy/agents"
+        },
+        "groups": [
+          {
+            "group": "Getting started",
+            "pages": [
+              "api/legacy/agents-introduction",
+              "docs/build-agents/philosophy",
+              "docs/build-agents/builder-sdk-reference"
+            ]
+          },
+          {
+            "group": "Node types",
+            "pages": [
+              "docs/build-agents/node-types/start-end-nodes",
+              "docs/build-agents/node-types/subagent-node",
+              "docs/build-agents/node-types/default-node",
+              "docs/build-agents/node-types/webhook-node",
+              "docs/build-agents/node-types/whatsapp-template-node",
+              "docs/build-agents/node-types/knowledge-base-node",
+              "docs/build-agents/node-types/handoff-node",
+              "docs/build-agents/node-types/warm-end-node",
+              "docs/build-agents/node-types/special-nodes"
+            ]
+          },
+          {
+            "group": "Concepts",
+            "pages": [
+              "docs/build-agents/edges",
+              "docs/build-agents/tools"
+            ]
+          },
+          {
+            "group": "Execution flow",
+            "pages": [
+              "docs/build-agents/user-message-flow",
+              "docs/build-agents/external-trigger-flow"
+            ]
+          },
+          {
+            "group": "Integration",
+            "pages": [
+              "docs/build-agents/cli",
+              "docs/build-agents/agent-webhooks"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Functions API",
+        "openapi": {
+          "source": "api/legacy/openapi-functions.yaml",
+          "directory": "api/legacy/functions"
+        },
+        "groups": []
+      },
+      {
+        "tab": "Builder SDK",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "builder-reference/overview"
+            ]
+          },
+          {
+            "group": "Flows",
+            "pages": [
+              "builder-reference/flow-overview",
+              "builder-reference/flow-class",
+              "builder-reference/flow-nodes",
+              "builder-reference/flow-edges",
+              "builder-reference/ai-fields"
+            ]
+          },
+          {
+            "group": "Agents",
+            "pages": [
+              "builder-reference/agent-class",
+              "builder-reference/agent-nodes",
+              "builder-reference/agent-edges",
+              "builder-reference/nodes/agent-subagent-node"
+            ]
+          },
+          {
+            "group": "CLI",
+            "pages": [
+              "cli/introduction",
+              "docs/build-agents/cli",
+              "cli/commands/deploy",
+              "cli/commands/pull",
+              "cli/commands/functions",
+              "cli/commands/agent-init",
+              "cli/commands/agent-pull",
+              "cli/commands/agent-push",
+              "cli/commands/agent-snapshot",
+              "cli/commands/agent-list",
+              "cli/commands/flow-init",
+              "cli/commands/flow-pull",
+              "cli/commands/flow-push",
+              "cli/commands/flow-list",
+              "cli/commands/login",
+              "cli/commands/logout",
+              "cli/commands/version"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "logo": {
+    "light": "/logo/light.png",
+    "dark": "/logo/dark.png"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "mailto:dev@kap.so"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Dashboard",
+      "href": "https://app.kapso.ai"
+    }
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/gokapso"
+    }
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "chatgpt",
+      "claude"
+    ]
+  }
+}
