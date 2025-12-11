@@ -1,0 +1,807 @@
+
+# WhatsApp Business Multi-Partner Solutions - Solution Reject API
+
+Copy for LLM
+
+[View as Markdown](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-solution/solution-reject-api/v23.0.md/)
+
+Version
+
+v23.0
+
+API for rejecting Multi-Partner Solution partnership requests or deactivation requests.
+
+This endpoint allows solution partners to reject pending partnership requests or deactivation
+
+requests for Multi-Partner Solutions.
+
+## Base URL
+
+| https://graph.facebook.com |
+
+## Endpoints
+
+| POST | [/{Version}/{Solution-ID}/reject](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-solution/solution-reject-api#post-version-solution-id-reject) |
+
+* * *
+
+## POST /{Version}/{Solution-ID}/reject
+
+Reject a pending partnership request or deactivation request for a Multi-Partner Solution.
+
+This endpoint allows solution owners to decline incoming requests and maintain control
+
+over their solution partnerships and lifecycle.
+
+Use Cases:
+
+Reject partnership requests from unauthorized or incompatible applications
+
+Decline deactivation requests to keep solutions active
+
+Maintain solution security and partnership quality
+
+Control solution access and collaboration boundaries
+
+Request Types:
+
+PARTNERSHIP_REQUEST: Reject an incoming partnership request from another app
+
+DEACTIVATION_REQUEST: Reject a request to deactivate the solution
+
+Rate Limiting:
+
+Standard Graph API rate limits apply. Use appropriate retry logic with exponential backoff.
+
+Business Logic:
+
+Only solution owners can reject requests for their solutions
+
+Partnership rejections require the partner_app_id parameter
+
+Rejection actions are permanent and cannot be undone through this API
+
+Rejected requests may need to be resubmitted through proper channels
+
+### Request Syntax
+
+**POST**/{Version}/{Solution-ID}/reject
+
+Select language
+
+cURLJavaScriptPython
+
+* * *
+
+```
+curl --request POST \
+  --url 'https://graph.facebook.com/{Version}/{Solution-ID}/reject' \
+  --header 'Authorization: Bearer <Token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "request_type": "PARTNERSHIP_REQUEST",
+  "partner_app_id": "9876543210987654",
+  "rejection_reason": "Partnership terms do not align with our business requirements"
+}'
+```
+
+Select status code
+
+200400401403404422429500
+
+* * *
+
+```
+\{
+  "partnership_rejected": {
+    "summary": "Partnership request rejected",
+    "value": {
+      "success": true,
+      "solution_id": "1234567890123456",
+      "rejected_request_type": "PARTNERSHIP_REQUEST",
+      "rejection_timestamp": "2024-01-15T10:30:00Z",
+      "partner_app_id": "9876543210987654"
+    }
+  },
+  "deactivation_rejected": {
+    "summary": "Deactivation request rejected",
+    "value": {
+      "success": true,
+      "solution_id": "1234567890123456",
+      "rejected_request_type": "DEACTIVATION_REQUEST",
+      "rejection_timestamp": "2024-01-15T10:30:00Z"
+    }
+  }
+}
+```
+
+Header Parameters
+
+* * *
+
+User-Agentstring
+
+The user agent string identifying the client software making the request.
+
+Authorizationstring·required
+
+Bearer token for API authentication. This should be a valid access token obtained through the appropriate OAuth flow or system user token.
+
+Path Parameters
+
+* * *
+
+Versionstring·required
+
+Graph API version to use for this request. Determines the API behavior and available features.
+
+Solution-IDstring·required
+
+Your Multi-Partner Solution ID. This ID is provided when you create the solution
+
+and can be found in your Partner Dashboard or through solution management APIs.
+
+Request BodyRequired
+
+* * *
+
+Content Type: application/json
+
+Schema: SolutionRejectRequest
+
+Show child attributes
+
+* * *
+
+SolutionRejectRequest
+
+* * *
+
+request_typeOne of "PARTNERSHIP_REQUEST", "DEACTIVATION_REQUEST"·required
+
+Type of request being rejected
+
+* * *
+
+rejection_reasonstring
+
+Optional reason for rejecting the request
+
+* * *
+
+partner_app_idstring
+
+The app ID of the requesting partner. Required when request_type is PARTNERSHIP_REQUEST, not used for DEACTIVATION_REQUEST
+
+Responses
+
+* * *
+
+Reject a pending partnership request or deactivation request for a Multi-Partner Solution.
+
+This endpoint allows solution owners to decline incoming requests and maintain control
+
+over their solution partnerships and lifecycle.
+
+Use Cases:
+
+Reject partnership requests from unauthorized or incompatible applications
+
+Decline deactivation requests to keep solutions active
+
+Maintain solution security and partnership quality
+
+Control solution access and collaboration boundaries
+
+Request Types:
+
+PARTNERSHIP_REQUEST: Reject an incoming partnership request from another app
+
+DEACTIVATION_REQUEST: Reject a request to deactivate the solution
+
+Rate Limiting:
+
+Standard Graph API rate limits apply. Use appropriate retry logic with exponential backoff.
+
+Business Logic:
+
+Only solution owners can reject requests for their solutions
+
+Partnership rejections require the partner_app_id parameter
+
+Rejection actions are permanent and cannot be undone through this API
+
+Rejected requests may need to be resubmitted through proper channels
+
+200
+
+Successfully rejected the Multi-Partner Solution request
+
+Content Type: application/json
+
+Schema: SolutionRejectResponse
+
+Show child attributes
+
+* * *
+
+SolutionRejectResponse
+
+* * *
+
+successboolean·required
+
+Indicates whether the rejection was successful
+
+* * *
+
+solution_idstring·required
+
+The ID of the Multi-Partner Solution
+
+* * *
+
+rejected_request_typeOne of "PARTNERSHIP_REQUEST", "DEACTIVATION_REQUEST"·required
+
+Type of request that was rejected
+
+* * *
+
+rejection_timestampstring (date-time)
+
+ISO 8601 timestamp when the rejection was processed
+
+* * *
+
+partner_app_idstring
+
+App ID of the partner whose request was rejected (for partnership rejections)
+
+400
+
+Bad Request - Invalid parameters or malformed request
+
+Content Type: application/json
+
+Schema: GraphAPIError
+
+Show child attributes
+
+* * *
+
+GraphAPIError
+
+* * *
+
+errorobject·required
+
+Show child attributes
+
+* * *
+
+messagestring·required
+
+Human-readable error message
+
+* * *
+
+typestring·required
+
+Error category type
+
+* * *
+
+codeinteger·required
+
+Numeric error code
+
+* * *
+
+error_subcodeinteger
+
+More specific error subcode when available
+
+* * *
+
+fbtrace_idstring
+
+Unique identifier for debugging and support requests with Meta
+
+* * *
+
+is_transientboolean
+
+Indicates whether this error is temporary and the request should be retried
+
+* * *
+
+error_user_titlestring
+
+User-friendly error title for display purposes
+
+* * *
+
+error_user_msgstring
+
+User-friendly error message for display purposes
+
+401
+
+Unauthorized - Invalid or missing access token
+
+Content Type: application/json
+
+Schema: GraphAPIError
+
+Show child attributes
+
+* * *
+
+GraphAPIError
+
+* * *
+
+errorobject·required
+
+Show child attributes
+
+* * *
+
+messagestring·required
+
+Human-readable error message
+
+* * *
+
+typestring·required
+
+Error category type
+
+* * *
+
+codeinteger·required
+
+Numeric error code
+
+* * *
+
+error_subcodeinteger
+
+More specific error subcode when available
+
+* * *
+
+fbtrace_idstring
+
+Unique identifier for debugging and support requests with Meta
+
+* * *
+
+is_transientboolean
+
+Indicates whether this error is temporary and the request should be retried
+
+* * *
+
+error_user_titlestring
+
+User-friendly error title for display purposes
+
+* * *
+
+error_user_msgstring
+
+User-friendly error message for display purposes
+
+403
+
+Forbidden - Insufficient permissions or not solution owner
+
+Content Type: application/json
+
+Schema: GraphAPIError
+
+Show child attributes
+
+* * *
+
+GraphAPIError
+
+* * *
+
+errorobject·required
+
+Show child attributes
+
+* * *
+
+messagestring·required
+
+Human-readable error message
+
+* * *
+
+typestring·required
+
+Error category type
+
+* * *
+
+codeinteger·required
+
+Numeric error code
+
+* * *
+
+error_subcodeinteger
+
+More specific error subcode when available
+
+* * *
+
+fbtrace_idstring
+
+Unique identifier for debugging and support requests with Meta
+
+* * *
+
+is_transientboolean
+
+Indicates whether this error is temporary and the request should be retried
+
+* * *
+
+error_user_titlestring
+
+User-friendly error title for display purposes
+
+* * *
+
+error_user_msgstring
+
+User-friendly error message for display purposes
+
+404
+
+Not Found - Solution ID does not exist or request not found
+
+Content Type: application/json
+
+Schema: GraphAPIError
+
+Show child attributes
+
+* * *
+
+GraphAPIError
+
+* * *
+
+errorobject·required
+
+Show child attributes
+
+* * *
+
+messagestring·required
+
+Human-readable error message
+
+* * *
+
+typestring·required
+
+Error category type
+
+* * *
+
+codeinteger·required
+
+Numeric error code
+
+* * *
+
+error_subcodeinteger
+
+More specific error subcode when available
+
+* * *
+
+fbtrace_idstring
+
+Unique identifier for debugging and support requests with Meta
+
+* * *
+
+is_transientboolean
+
+Indicates whether this error is temporary and the request should be retried
+
+* * *
+
+error_user_titlestring
+
+User-friendly error title for display purposes
+
+* * *
+
+error_user_msgstring
+
+User-friendly error message for display purposes
+
+422
+
+Unprocessable Entity - Request cannot be processed due to business logic constraints
+
+Content Type: application/json
+
+Schema: GraphAPIError
+
+Show child attributes
+
+* * *
+
+GraphAPIError
+
+* * *
+
+errorobject·required
+
+Show child attributes
+
+* * *
+
+messagestring·required
+
+Human-readable error message
+
+* * *
+
+typestring·required
+
+Error category type
+
+* * *
+
+codeinteger·required
+
+Numeric error code
+
+* * *
+
+error_subcodeinteger
+
+More specific error subcode when available
+
+* * *
+
+fbtrace_idstring
+
+Unique identifier for debugging and support requests with Meta
+
+* * *
+
+is_transientboolean
+
+Indicates whether this error is temporary and the request should be retried
+
+* * *
+
+error_user_titlestring
+
+User-friendly error title for display purposes
+
+* * *
+
+error_user_msgstring
+
+User-friendly error message for display purposes
+
+429
+
+Too Many Requests - Rate limit exceeded
+
+Content Type: application/json
+
+Schema: GraphAPIError
+
+Show child attributes
+
+* * *
+
+GraphAPIError
+
+* * *
+
+errorobject·required
+
+Show child attributes
+
+* * *
+
+messagestring·required
+
+Human-readable error message
+
+* * *
+
+typestring·required
+
+Error category type
+
+* * *
+
+codeinteger·required
+
+Numeric error code
+
+* * *
+
+error_subcodeinteger
+
+More specific error subcode when available
+
+* * *
+
+fbtrace_idstring
+
+Unique identifier for debugging and support requests with Meta
+
+* * *
+
+is_transientboolean
+
+Indicates whether this error is temporary and the request should be retried
+
+* * *
+
+error_user_titlestring
+
+User-friendly error title for display purposes
+
+* * *
+
+error_user_msgstring
+
+User-friendly error message for display purposes
+
+500
+
+Internal Server Error - Unexpected server error
+
+Content Type: application/json
+
+Schema: GraphAPIError
+
+Show child attributes
+
+* * *
+
+GraphAPIError
+
+* * *
+
+errorobject·required
+
+Show child attributes
+
+* * *
+
+messagestring·required
+
+Human-readable error message
+
+* * *
+
+typestring·required
+
+Error category type
+
+* * *
+
+codeinteger·required
+
+Numeric error code
+
+* * *
+
+error_subcodeinteger
+
+More specific error subcode when available
+
+* * *
+
+fbtrace_idstring
+
+Unique identifier for debugging and support requests with Meta
+
+* * *
+
+is_transientboolean
+
+Indicates whether this error is temporary and the request should be retried
+
+* * *
+
+error_user_titlestring
+
+User-friendly error title for display purposes
+
+* * *
+
+error_user_msgstring
+
+User-friendly error message for display purposes
+
+Select language
+
+cURLJavaScriptPython
+
+* * *
+
+```
+curl --request POST \
+  --url 'https://graph.facebook.com/{Version}/{Solution-ID}/reject' \
+  --header 'Authorization: Bearer <Token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "request_type": "PARTNERSHIP_REQUEST",
+  "partner_app_id": "9876543210987654",
+  "rejection_reason": "Partnership terms do not align with our business requirements"
+}'
+```
+
+Select status code
+
+200400401403404422429500
+
+* * *
+
+```
+\{
+  "partnership_rejected": {
+    "summary": "Partnership request rejected",
+    "value": {
+      "success": true,
+      "solution_id": "1234567890123456",
+      "rejected_request_type": "PARTNERSHIP_REQUEST",
+      "rejection_timestamp": "2024-01-15T10:30:00Z",
+      "partner_app_id": "9876543210987654"
+    }
+  },
+  "deactivation_rejected": {
+    "summary": "Deactivation request rejected",
+    "value": {
+      "success": true,
+      "solution_id": "1234567890123456",
+      "rejected_request_type": "DEACTIVATION_REQUEST",
+      "rejection_timestamp": "2024-01-15T10:30:00Z"
+    }
+  }
+}
+```
+
+## Authentication
+
+| **Scheme** | **Type** | **Location** |
+| bearerAuth | HTTP Bearer | Header: Authorization |
+
+### Usage Examples
+
+bearerAuth:
+
+Include Authorization: Bearer your-token-here in request headers
+
+### Global Authentication Requirements
+
+All endpoints require:
+
+bearerAuth
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+* * *

@@ -1,0 +1,243 @@
+
+# Interactive list messages
+
+Updated: Nov 3, 2025
+
+Interactive list messages allow you to present WhatsApp users with a list of options to choose from (options are defined as rows in the request payload):
+
+![](https://scontent-lax3-2.xx.fbcdn.net/v/t39.2365-6/439906651_815131396632137_2393939757123941379_n.png?_nc_cat=106&ccb=1-7&_nc_sid=e280be&_nc_ohc=pJMTZI8NsSgQ7kNvwHS5YCS&_nc_oc=AdnnidaNNCmJURty54m4pU8OCCHReT3z_qCJj4viGfRV1e6t32mI6SJE5c8-l2lZtfo&_nc_zt=14&_nc_ht=scontent-lax3-2.xx&_nc_gid=kdaroyoGIEr34o4ORgtfgw&oh=00_Afn--vNlyVPwBo9SIJQuvt9R6i3tuiGLNzk_dtUrxoJ05A&oe=69553091)
+
+When a user taps the button in the message, it displays a modal that lists the options available:
+
+![](https://scontent-lax3-1.xx.fbcdn.net/v/t39.2365-6/440772174_1215031642793437_4263879536705453309_n.png?_nc_cat=109&ccb=1-7&_nc_sid=e280be&_nc_ohc=Dyy1Sj4b5Z0Q7kNvwG8XJfI&_nc_oc=AdmEXbLtBTkSeTKrZH5s3yDW91gSi4-OCj5piVuMsFI83cJ4wWPMHY3cPqNBYCHvoUI&_nc_zt=14&_nc_ht=scontent-lax3-1.xx&_nc_gid=kdaroyoGIEr34o4ORgtfgw&oh=00_AflP1NlfNBmUacYKD8Ej1HNp5prs2PfEc0y1a2ZGDW8UDw&oe=695519C3)
+
+Users can then choose one option and their selection will be sent as a reply:
+
+![](https://scontent-lax3-2.xx.fbcdn.net/v/t39.2365-6/440751989_956441365805448_2344471884869029846_n.png?_nc_cat=106&ccb=1-7&_nc_sid=e280be&_nc_ohc=ln68oDA87UAQ7kNvwGxBKxw&_nc_oc=AdkGPtz8P5T-Nc9QlqLZhOoGN9nABJDCqhsXAK-cNAMeLvwhIker_uMpY6LYuqYVBbI&_nc_zt=14&_nc_ht=scontent-lax3-2.xx&_nc_gid=kdaroyoGIEr34o4ORgtfgw&oh=00_Afl6VXVn4haEBFyt6yh8p6zkTfZ42an40gTKu5TW8UxEqQ&oe=6954FA53)
+
+This triggers a webhook, which identifies the option selected by the user.
+
+Interactive list messages support up to 10 sections, with up to 10 rows for all sections combined, and can include an optional header and footer.
+
+## Request Syntax
+
+Use the [POST /&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;/messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api) endpoint to send an interactive list message to a WhatsApp user.
+
+```
+curl 'https://graph.facebook.com/&lt;API_VERSION&gt;/&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;/messages' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer &lt;ACCESS_TOKEN&gt;' \
+-d '
+\{
+  "messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": "&lt;WHATSAPP_USER_PHONE_NUMBER&gt;",
+  "type": "interactive",
+  "interactive": {
+    "type": "list",
+    "header": {
+      "type": "text",
+      "text": "&lt;MESSAGE_HEADER_TEXT&gt;"
+    },
+    "body": {
+      "text": "&lt;MESSAGE_BODY_TEXT&gt;"
+    },
+    "footer": {
+      "text": "&lt;MESSAGE_FOOTER_TEXT&gt;"
+    },
+    "action": {
+      "button": "&lt;BUTTON_TEXT&gt;",
+      "sections": [\
+        {\
+          "title": "&lt;SECTION_TITLE_TEXT&gt;",\
+          "rows": [\
+            {\
+              "id": "&lt;ROW_ID&gt;",\
+              "title": "&lt;ROW_TITLE_TEXT&gt;",\
+              "description": "&lt;ROW_DESCRIPTION_TEXT&gt;"\
+            }\
+            <!-- Additional rows would go here -->\
+          ]\
+        }\
+        <!-- Additional sections would go here -->\
+      ]
+    }
+  }
+}'
+```
+
+## Request parameters
+
+| Placeholder | Description | Sample Value |
+| --- | --- | --- |
+| `&lt;ACCESS_TOKEN&gt;`<br />_String_ | **Required.**<br />[System token](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#system-user-access-tokens) or [business token](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#business-integration-system-user-access-tokens). | `EAAAN6tcBzAUBOZC82CW7iR2LiaZBwUHS4Y7FDtQxRUPy1PHZClDGZBZCgWdrTisgMjpFKiZAi1FBBQNO2IqZBAzdZAA16lmUs0XgRcCf6z1LLxQCgLXDEpg80d41UZBt1FKJZCqJFcTYXJvSMeHLvOdZwFyZBrV9ZPHZASSqxDZBUZASyFdzjiy2A1sippEsF4DVV5W2IlkOSr2LrMLuYoNMYBy8xQczzOKDOMccqHEZD` |
+| `&lt;API_VERSION&gt;`<br />_String_ | **Optional.**<br />Graph API version. | v24.0 |
+| `&lt;BUTTON_TEXT&gt;`<br />_String_ | **Required.**<br />Button label text. When tapped, reveals rows (options the WhatsApp user can tap). Supports a single button.<br />Maximum 20 characters. | `Shipping Options` |
+| `&lt;MESSAGE_BODY_TEXT&gt;`<br />_String_ | **Required.**<br />Message body text. Supports URLs.<br />Maximum 4096 characters. | `Which shipping option do you prefer?` |
+| `&lt;MESSAGE_FOOTER_TEXT&gt;`<br />_String_ | **Optional.**<br />Message footer text.<br />Maximum 60 characters. | `Lucky Shrub: Your gateway to succulents™` |
+| `&lt;MESSAGE_HEADER_TEXT&gt;`<br />_String_ | **Optional.**<br />The `header` object is optional. Supports `text` header type only.<br />Maximum 60 characters. | `Choose Shipping Option` |
+| `&lt;ROW_DESCRIPTION_TEXT&gt;`<br />_String_ | **Optional.**<br />Row description.<br />Maximum 72 characters. | `Next Day to 2 Days` |
+| `&lt;ROW_ID&gt;`<br />_String_ | **Required.**<br />Arbitrary string identifying the row. This ID will be included in the webhook payload if the user submits the selection.<br />At least one row is required. Supports up to 10 rows.<br />Maximum 200 characters. | `priority_express` |
+| `&lt;ROW_TITLE_TEXT&gt;`<br />_String_ | **Required.**<br />Row title. At least 1 row is required. Supports up to 10 rows.<br />Maximum 24 characters. | `Priority Mail Express` |
+| `&lt;SECTION_TITLE_TEXT&gt;`<br />_String_ | **Required.**<br />Section title text. At least 1 section is required. Supports up to 10 sections.<br />Maximum 24 characters. | `I want it ASAP!` |
+| `&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;`<br />_String_ | **Required.**<br />WhatsApp business phone number ID. | `106540352242922` |
+| `&lt;WHATSAPP_USER_PHONE_NUMBER&gt;`<br />_String_ | **Required.**<br />WhatsApp user phone number. | `+16505551234` |
+
+## Example request
+
+Example request to send an interactive list message with a header, body, footer, and two sections containing two rows each.
+
+```
+curl 'https://graph.facebook.com/v24.0/106540352242922/messages' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+-d '
+\{
+  "messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": "+16505551234",
+  "type": "interactive",
+  "interactive": {
+    "type": "list",
+    "header": {
+      "type": "text",
+      "text": "Choose Shipping Option"
+    },
+    "body": {
+      "text": "Which shipping option do you prefer?"
+    },
+    "footer": {
+      "text": "Lucky Shrub: Your gateway to succulents™"
+    },
+    "action": {
+      "button": "Shipping Options",
+      "sections": [\
+        {\
+          "title": "I want it ASAP!",\
+          "rows": [\
+            {\
+              "id": "priority_express",\
+              "title": "Priority Mail Express",\
+              "description": "Next Day to 2 Days"\
+            },\
+            {\
+              "id": "priority_mail",\
+              "title": "Priority Mail",\
+              "description": "1–3 Days"\
+            }\
+          ]\
+        },\
+        {\
+          "title": "I can wait a bit",\
+          "rows": [\
+            {\
+              "id": "usps_ground_advantage",\
+              "title": "USPS Ground Advantage",\
+              "description": "2–5 Days"\
+            },\
+            {\
+              "id": "media_mail",\
+              "title": "Media Mail",\
+              "description": "2–8 Days"\
+            }\
+          ]\
+        }\
+      ]
+    }
+  }
+}'
+```
+
+## Example response
+
+```
+\{
+  "messaging_product": "whatsapp",
+  "contacts": [\
+    {\
+      "input": "+16505551234",\
+      "wa_id": "16505551234"\
+    }\
+  ],
+  "messages": [\
+    {\
+      "id": "wamid.HBgLMTY0NjcwNDM1OTUVAgARGBI1RjQyNUE3NEYxMzAzMzQ5MkEA"\
+    }\
+  ]
+}
+```
+
+## Webhooks
+
+When a WhatsApp user selects an option and sends their message, a **messages** webhook is triggered identifying the ID (`id`) of the option they chose.
+
+```
+\{
+  "object": "whatsapp_business_account",
+  "entry": [\
+    {\
+      "id": "102290129340398",\
+      "changes": [\
+        {\
+          "value": {\
+            "messaging_product": "whatsapp",\
+            "metadata": {\
+              "display_phone_number": "15550783881",\
+              "phone_number_id": "106540352242922"\
+            },\
+            "contacts": [\
+              {\
+                "profile": {\
+                  "name": "Pablo Morales"\
+                },\
+                "wa_id": "16505551234"\
+              }\
+            ],\
+            "messages": [\
+              {\
+                "context": {\
+                  "from": "15550783881",\
+                  "id": "wamid.HBgLMTY0NjcwNDM1OTUVAgARGBIwMjg0RkMxOEMyMkNEQUFFRDgA"\
+                },\
+                "from": "16505551234",\
+                "id": "wamid.HBgLMTY0NjcwNDM1OTUVAgASGBQzQTZDMzFGRUFBQjlDMzIzMzlEQwA=",\
+                "timestamp": "1712595443",\
+                "type": "interactive",\
+                "interactive": {\
+                  "type": "list_reply",\
+                  "list_reply": {\
+                    "id": "priority_express",\
+                    "title": "Priority Mail Express",\
+                    "description": "Next Day to 2 Days"\
+                  }\
+                }\
+              }\
+            ]\
+          },\
+          "field": "messages"\
+        }\
+      ]\
+    }\
+  ]
+}
+```
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Request Syntax
+
+Request parameters
+
+Example request
+
+Example response
+
+Webhooks
+
+* * *

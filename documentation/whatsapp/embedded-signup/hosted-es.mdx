@@ -1,0 +1,202 @@
+
+# Hosted Embedded Signup
+
+Updated: Nov 4, 2025
+
+If you don’t want to implement Embedded Signup by adding JavaScript code to your website or customer portal, you can instead use a link that, when clicked, displays a web page describing onboarding steps, and a button that launches the Embedded Signup flow:
+
+![](https://scontent-lax7-1.xx.fbcdn.net/v/t39.2365-6/557247008_1487309905743315_2332288243528054136_n.png?_nc_cat=105&ccb=1-7&_nc_sid=e280be&_nc_ohc=884HKmwz9hEQ7kNvwHpLtBi&_nc_oc=AdmIs-Iw7OG7TETDXdPD94B9MG4TAoXgb_Htl9nG-AMWE4lo0WbX8k12MaxW0Pdd5NU&_nc_zt=14&_nc_ht=scontent-lax7-1.xx&_nc_gid=EE8Q4LEM3ty3Vzzjycwu2Q&oh=00_AfkvrAPfTxh5Urf7g9o4aumhGi3Qis-7d27rfkLasCyqGg&oe=6955070A)
+
+## Limitations
+
+Hosted Embedded Signup (“Hosted ES”) can only be used to onboard business customers to Cloud API, and the flow cannot be customized.
+
+## Requirements
+
+You must have completed the steps to become a Solution Partner or Tech Provider.
+If your app is for messaging, it must be able to send messages, manage templates, and have a properly configured production webhook endpoint.
+Your app must be subscribed to the [account_update](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/reference/account_update) webhook.
+Solution Partners must have a line of credit.
+
+You will also need:
+
+Your [system token](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#system-user-access-tokens).
+Your app secret.
+
+## Step 1: Create a Facebook Login for Business configuration
+
+If you don’t already have a Facebook Login for Business configuration, you must create one. A Facebook Login for Business configuration defines which permissions to request, and what additional information to collect, from business customers who access Embedded Signup.
+
+Navigate to **Facebook Login for Business** \> **Configurations** and click the **\+ Create configuration** button to access the configuration flow.
+
+Use a name that will help you differentiate this configuration from any others you may create in the future. When completing the flow, be sure to select the WhatsApp Embedded Signup login variation:
+
+![](https://scontent-lax7-1.xx.fbcdn.net/v/t39.2365-6/556678416_1155934729723662_8909215200649973782_n.png?_nc_cat=101&ccb=1-7&_nc_sid=e280be&_nc_ohc=3V3DHz-Oqg4Q7kNvwFDL9vf&_nc_oc=Adm6uj35h8tQEbtaMSBcGNRQ4UTt9u1t4rOsuvuOJe-GXy06lAzGpHy3qnaR-EszIf0&_nc_zt=14&_nc_ht=scontent-lax7-1.xx&_nc_gid=EE8Q4LEM3ty3Vzzjycwu2Q&oh=00_AflEn__OO_yJk01t-6jEwsZIJQFwJEiuq8a33rZBaF3hig&oe=695535E8)
+
+When choosing assets and permissions, select only those assets and permissions that you will actually need from your business customers.
+
+![](https://scontent-lax3-2.xx.fbcdn.net/v/t39.2365-6/556838067_777912301525569_1334774809437446260_n.png?_nc_cat=103&ccb=1-7&_nc_sid=e280be&_nc_ohc=XbeJdltHWOsQ7kNvwFyBi0a&_nc_oc=AdmGbwIATkmHAJgFBEQFcNo1Ul06G3GR2ZLnf1sk_z11pKn2sgDmzn5IQ3l_ko_K1wM&_nc_zt=14&_nc_ht=scontent-lax3-2.xx&_nc_gid=EE8Q4LEM3ty3Vzzjycwu2Q&oh=00_AflEgHgQLun1B8FAAeiATwdcmFbY_7Bv6Gm63h0Ml6fTHQ&oe=695510A1)
+
+For example, if you select the **Catalogs** asset but don’t actually need access to customer catalogs, your customers will likely abandon the flow at the catalog selection screen and ask you for clarification.
+
+## Step 2: Get the Hosted ES URL
+
+Navigate to the **WhatsApp** \> **Quickstart** panel and click the **View onboarding** button.
+
+![](https://scontent-lax3-1.xx.fbcdn.net/v/t39.2365-6/556820792_1873904266492750_8998264804748617024_n.png?_nc_cat=104&ccb=1-7&_nc_sid=e280be&_nc_ohc=hb1WIZoKJ6wQ7kNvwEx79n5&_nc_oc=AdmGKxGwOS_CqLz9T4rY9BIMyomSvp94zYHnDHQFXcZmBF3riNQqFa026MX50QLzkxA&_nc_zt=14&_nc_ht=scontent-lax3-1.xx&_nc_gid=EE8Q4LEM3ty3Vzzjycwu2Q&oh=00_AfmbfwaIr9-38nKjMlmkNPmAjbN_ayi-ngpLXcxybH781A&oe=69550269)
+
+Locate the **Zero integration onboarding** card. The URL displayed in the card is the onboarding page URL:
+
+![](https://scontent-lax7-1.xx.fbcdn.net/v/t39.2365-6/556828984_1430417581383742_4223219994357738350_n.png?_nc_cat=101&ccb=1-7&_nc_sid=e280be&_nc_ohc=WEtQ4lXzQRYQ7kNvwH4ox9n&_nc_oc=AdnFhvxFy8MRXpYWe6o6FFzG46Dr84bvwBARMcGi3rowWGgyy4KMqWh-sSUVmhNBphg&_nc_zt=14&_nc_ht=scontent-lax7-1.xx&_nc_gid=EE8Q4LEM3ty3Vzzjycwu2Q&oh=00_AfmQJYnrKRuEoxAbBRtgoR1kTFf2PsjKGaVxr4JmcSCzGA&oe=69551CEB)
+
+Click the **Copy button** to copy the URL to your clipboard. Map this URL to a button on your website or customer portal that, when clicked, opens the URL in a new browser window.
+
+To see what this looks like, you can load the URL in a new browser window or tab, or click the blue “new window” icon, which does the same thing.
+
+This onboarding page looks like this:
+
+![](https://scontent-lax7-1.xx.fbcdn.net/v/t39.2365-6/557247008_1487309905743315_2332288243528054136_n.png?_nc_cat=105&ccb=1-7&_nc_sid=e280be&_nc_ohc=884HKmwz9hEQ7kNvwHpLtBi&_nc_oc=AdmIs-Iw7OG7TETDXdPD94B9MG4TAoXgb_Htl9nG-AMWE4lo0WbX8k12MaxW0Pdd5NU&_nc_zt=14&_nc_ht=scontent-lax7-1.xx&_nc_gid=EE8Q4LEM3ty3Vzzjycwu2Q&oh=00_AfkvrAPfTxh5Urf7g9o4aumhGi3Qis-7d27rfkLasCyqGg&oe=6955070A)
+
+Click the **Get started** button. This is the flow that business customers who click the button on your website or customer portal will see. Complete the flow if you wish.
+
+## Step 3: Capture customer asset IDs
+
+When a business customer completes the flow, an [account_update](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/reference/account_update) webhook is triggered with `event` set to `PARTNER_ADDED`. Capture the customer’s WhatsApp Business Account ID and business portfolio ID from the webhook payload.
+
+## Step 4: Generate an HMAC-SHA256 hash
+
+Generate an HMAC-SHA256 hash of your app secret and system token.
+
+### Bash example for Linux and macOS
+
+```
+echo -n "&lt;SYSTEM_TOKEN&gt;" | openssl dgst -sha256 -hmac "&lt;APP_SECRET&gt;"
+```
+
+`&lt;SYSTEM_TOKEN&gt;` — Your system token.
+`&lt;APP_SECRET&gt;` — Your app secret ( [**App Dashboard**](https://developers.facebook.com/apps) \> **App settings** \> **Basic**)
+
+## Step 5: Get a business token
+
+Use the [POST /&lt;BUSINESS_PORTFOLIO_ID&gt;/system_user_access_tokens](https://developers.facebook.com/docs/marketing-api/reference/business/system_user_access_tokens#Creating) endpoint to get and capture the customer’s [business token](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#business-integration-system-user-access-tokens). (Target the customer’s business portfolio ID, not yours).
+
+### Request syntax
+
+```
+curl 'https://graph.facebook.com/&lt;API_VERSION&gt;/&lt;BUSINESS_PORTFOLIO_ID&gt;/system_user_access_tokens' \
+-H 'Content-Type: application/x-www-form-urlencoded' \
+-H 'Authorization: Bearer &lt;SYSTEM_TOKEN&gt;' \
+-d 'appsecret_proof=&lt;APPSECRET_PROOF&gt;' \
+-d 'fetch_only=true'
+```
+
+`&lt;API_VERSION&gt;` — API version.
+`&lt;APPSECRET_PROOF&gt;` — HMAC-SHA256 hash of your app secret and system token.
+`&lt;BUSINESS_PORTFOLIO_ID&gt;` — Business customer’s business portfolio ID.
+`&lt;SYSTEM_TOKEN&gt;` — Your system token.
+
+### Response syntax
+
+Upon success:
+
+```
+\{
+  "access_token": "&lt;BUSINESS_TOKEN&gt;"
+}
+```
+
+`&lt;BUSINESS_TOKEN&gt;` — The business customer’s business token.
+
+## Step 6: Get the customer’s business phone number ID
+
+Use the [GET /&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;/phone_numbers](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-account/phone-number-management-api#Reading) endpoint to get and capture the business customer’s business phone number ID.
+
+### Request syntax
+
+```
+curl 'https://graph.facebook.com/&lt;API_VERSION&gt;/&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;/phone_numbers' \
+-H 'Authorization: Bearer &lt;BUSINESS_TOKEN&gt;'
+```
+
+`&lt;API_VERSION&gt;` — API version.
+`&lt;BUSINESS_TOKEN&gt;` — Business customer’s business token.
+`&lt;WABA_ID&gt;` — Business customer’s WhatsApp Business Account ID.
+
+### Response syntax
+
+```
+\{
+  "data": [\
+    {\
+      "verified_name": "&lt;VERIFIED_NAME&gt;",\
+      "code_verification_status": "&lt;CODE_VERIFICATION_STATUS&gt;",\
+      "display_phone_number": "&lt;DISPLAY_PHONE_NUMBER&gt;",\
+      "quality_rating": "&lt;QUALITY_RATING&gt;",\
+      "platform_type": "&lt;PLATFORM_TYPE&gt;",\
+      "throughput": {\
+        "level": "&lt;THROUGHPUT_LEVEL&gt;"\
+      },\
+      "last_onboarded_time": "&lt;LAST_ONBOARDED_TIME&gt;",\
+      "webhook_configuration": {\
+        "application": "&lt;WEBHOOK_CALLBACK_URL&gt;"\
+      },\
+      "id": "&lt;BUSINESS_PHONE_NUMBER_ID&gt;"\
+    }\
+  ]
+}
+```
+
+`&lt;BUSINESS_PHONE_NUMBER_ID&gt;` — Business phone number ID.
+`&lt;CODE_VERIFICATION_STATUS&gt;` — Business phone number verification status.
+`&lt;DISPLAY_PHONE_NUMBER&gt;` — Business display phone number.
+`&lt;LAST_ONBOARDED_TIME&gt;` — Unix timestamp indicating when the number was added the business customer’s WhatsApp Business Account (essentially, when the customer successfully completed the flow.)
+`&lt;PLATFORM_TYPE&gt;` — Platform.
+`&lt;QUALITY_RATING&gt;` — Business phone number quality rating.
+`&lt;THROUGHPUT_LEVEL&gt;` — Throughput level.
+`&lt;VERIFIED_NAME&gt;` — Business phone number verified name.
+`&lt;WEBHOOK_CALLBACK_URL&gt;` — Webhook callback URL associated with the number.
+
+## Step 7: Onboard the customer
+
+Onboard the business customer by completing the steps in the appropriate onboarding guide below:
+
+[Onboarding business customers as a Tech Provider or Tech Partner](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/onboarding-customers-as-a-tech-provider) (skip step 1)
+[Onboarding business customers as a Solution Partner](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/onboarding-customers-as-a-solution-partner) (skip step 1)
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Limitations
+
+Requirements
+
+Step 1: Create a Facebook Login for Business configuration
+
+Step 2: Get the Hosted ES URL
+
+Step 3: Capture customer asset IDs
+
+Step 4: Generate an HMAC-SHA256 hash
+
+Bash example for Linux and macOS
+
+Step 5: Get a business token
+
+Request syntax
+
+Response syntax
+
+Step 6: Get the customer’s business phone number ID
+
+Request syntax
+
+Response syntax
+
+Step 7: Onboard the customer
+
+* * *

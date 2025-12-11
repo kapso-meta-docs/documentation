@@ -1,0 +1,527 @@
+
+# Media card carousel templates
+
+Updated: Nov 4, 2025
+
+Media card carousel templates allow you to send a single **marketing template** message accompanied by a set of up to 10 product media cards in a horizontally scrollable view:
+
+![](https://scontent-fra5-2.xx.fbcdn.net/v/t39.2365-6/461961248_1048610163180196_3907313698557856900_n.png?_nc_cat=107&ccb=1-7&_nc_sid=e280be&_nc_ohc=lKkI7MnrIAEQ7kNvwE1CxWm&_nc_oc=AdnHjgJmnqVjp0Sv8P_Z3PfyzzjdokfzPtqemI7hYBQhSUynVcPeDmPOk_YfkcHkkWE&_nc_zt=14&_nc_ht=scontent-fra5-2.xx&_nc_gid=wjTJE0R-w4MtfStRzHmN3g&oh=00_Afk3CFoWR5WmlqrAg3t5Am-7GZTdyNJA40DDBa8zjAqf7A&oe=695522BC)
+
+When a user taps a media card’s **URL** button to buy a product, the URL mapped to the button is loaded in the device’s default web browser, thus taking the user out of the WhatsApp client experience. If you prefer to keep the user in the WhatsApp client, see [Product Card Carousel Templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates/product-card-carousel-templates). Note that carousel cards are only available for marketing template messages.
+
+## Media cards
+
+Carousel templates consist of a message body text and up to 10 product media cards. Each card in the template has an image or video header asset and can optionally include a body text and up to two buttons. Button combinations can be a mix of [quick reply buttons](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/components#quick-reply-buttons), [phone number buttons](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/components#phone-number-buttons), and [URL buttons](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/components#url-buttons).
+
+All cards defined on a template must have the same components.
+
+![](https://scontent-fra3-1.xx.fbcdn.net/v/t39.2365-6/461975373_1069581831199988_6558232856590657854_n.png?_nc_cat=108&ccb=1-7&_nc_sid=e280be&_nc_ohc=Z8b1I26oPAwQ7kNvwGF2rzd&_nc_oc=AdlpSO9xFvOu_spwZ53XgPRvuGBm3ZlNmJFrulAiwQ57BZbSztCC_Xf9wKS_gTPFhc0&_nc_zt=14&_nc_ht=scontent-fra3-1.xx&_nc_gid=wjTJE0R-w4MtfStRzHmN3g&oh=00_AflCb8A3qhaMOdRNYtB1JoPnFs5KIAoprMtbgkhOx9EHKw&oe=69553BD3)
+
+WhatsApp users who place an order do so outside of the WhatsApp client, so no webhooks are triggered describing their order.
+
+## Creating media card carousel templates
+
+Use the [**POST /&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;/message_templates**](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-account/template-api#post-version-waba-id-message-templates) endpoint to create a media card carousel template.
+
+### Request syntax
+
+It is necessary to define the exact number of product cards (minimum 2 and maximum 10) upon template creation. An approved template can only be used to send the same number of cards as defined during its creation. If any card in the carousel includes a card body text, then all cards must include a card body text to ensure consistent card heights.
+
+```
+curl -X POST "https://graph.facebook.com/v23.0/&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;/message_templates" \
+  -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;" \
+  -H "Content-Type: application/json" \
+  -d '
+\{
+    "name": "&lt;TEMPLATE_NAME&gt;",
+    "language": "&lt;TEMPLATE_LANGUAGE&gt;",
+    "category": "marketing",
+    "components": [\
+      {\
+        "type": "body",\
+        "text": "&lt;MESSAGE_BODY_TEXT&gt;",\
+        "example": {\
+          "body_text": [\
+            [\
+              "<MESSAGE_BODY_TEXT_VARIABLE_EXAMPLE_1>",\
+              "<MESSAGE_BODY_TEXT_VARIABLE_EXAMPLE_2>"\
+            ]\
+          ]\
+        }\
+      },\
+      {\
+        "type": "carousel",\
+        "cards": [\
+          {\
+            "components": [\
+              {\
+                "type": "header",\
+                "format": "&lt;CARD_HEADER_FORMAT&gt;",\
+                "example": {\
+                  "header_handle": [\
+                    "&lt;CARD_HEADER_ASSET_HANDLE&gt;"\
+                  ]\
+                }\
+              },\
+              {\
+                "type": "buttons",\
+                "buttons": [\
+                  {\
+                    "type": "quick_reply",\
+                    "text": "&lt;QUICK_REPLY_BUTTON_LABEL_TEXT&gt;"\
+                  },\
+                  {\
+                    "type": "url",\
+                    "text": "&lt;URL_BUTTON_LABEL_TEXT&gt;",\
+                    "url": "&lt;URL_BUTTON_URL&gt;",\
+                    "example": [\
+                      "&lt;URL_BUTTON_URL_VARIABLE_EXAMPLE&gt;"\
+                    ]\
+                  },\
+                  {\
+                    "type": "phone_number",\
+                    "text": "&lt;PHONE_NUMBER_BUTTON_LABEL_TEXT&gt;",\
+                    "phone_number": "&lt;PHONE_NUMBER&gt;"\
+                  }\
+                ]\
+              }\
+            ]\
+          }\
+          // Add additional cards here, following the same structure\
+        ]\
+      }\
+    ]
+  }'
+```
+
+### Request parameters
+
+| Placeholder | Description | Example Value |
+| --- | --- | --- |
+| `&lt;CARD_HEADER_ASSET_HANDLE&gt;`<br />_String_ | **Required.**<br />Uploaded media asset handle. Use the [Resumable Upload API](https://developers.facebook.com/docs/graph-api/guides/upload) to generate an asset handle.<br />Media assets are automatically cropped to a wide ratio based on the WhatsApp user’s device. | `4::anBlZw==:ARa525ZJ1g0J-8egeiRvb4Z4r9RSi9qeKF7-wXsUiaDFsll5CKbu5H7h_9mTW0TDfA8LEGHC4bAeXtJJiVQADMp5Ooe2huQlhpBxMadJiu3qVg:e:1724535430:634974688087057:100089620928913:ARaQoFQMm6BlbI3MYo4` |
+| `&lt;CARD_HEADER_FORMAT&gt;`<br />_String_ | **Required.**<br />Card header format. Value can be `image` or `video`. | `image` |
+| `&lt;MESSAGE_BODY_TEXT&gt;`<br />_String_ | **Required.**<br />Message body text. Supports variables.<br />Maximum 1024 characters. | `Rare succulents for sale! {{1}}, add these unique plants to your collection. Each of these rare succulents are {{2}} if you checkout using code {{3}}. Shop now and add some unique and beautiful plants to your collection!` |
+| `&lt;MESSAGE_BODY_TEXT_VARIABLE_EXAMPLE&gt;`<br />_String_ | **Required if message body text string uses variables.**<br />Message body text example variable string(s). Number of strings must match the number of variable placeholders in the message body text string.<br />If message body text uses a single variable, `body_text` value can be a string, otherwise it must be an array containing an array of strings. | `20OFF` |
+| `&lt;PHONE_NUMBER&gt;`<br />_String_ | **Required if using a phone number button.**<br />Alphanumeric string. Business phone number to be called when the WhatsApp user taps the button.<br />Maximum 20 characters. | `+15550051310` |
+| `&lt;PHONE_NUMBER_BUTTON_LABEL_TEXT&gt;`<br />_String_ | **Required if using a phone number button.**<br />Phone number button label text.<br />Maximum 25 characters. | `Call` |
+| `&lt;QUICK_REPLY_BUTTON_LABEL_TEXT&gt;`<br />_String_ | **Required if using a quick-reply button.**<br />Quick-reply button label text.<br />Maximum 25 characters. | `Send more like this!` |
+| `&lt;TEMPLATE_LANGUAGE&gt;`<br />_String_ | **Required.**<br />Template [language and locale code](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/supported-languages). | `en_US` |
+| `&lt;TEMPLATE_NAME&gt;`<br />_String_ | **Required.**<br />Template name.<br />Maximum 512 characters. | `carousel_template_media_cards_v1` |
+| `&lt;URL_BUTTON_LABEL_TEXT&gt;`<br />_String_ | **Required if using a URL button.**<br />URL button label text.<br />25 characters maximum. | `Shop` |
+| `&lt;URL_BUTTON_URL&gt;`<br />_String_ | **Required if using a URL button.**<br />URL to be loaded in the device’s default web browser when the WhatsApp user taps the button.<br />Supports 1 variable. Variable placeholder must be appended to the end of the URL string.<br />Maximum 2000 characters. | `https://www.luckyshrub.com/rare-succulents/{{1}}` |
+| `&lt;URL_BUTTON_URL_VARIABLE_EXAMPLE&gt;`<br />_String_ | **Required if URL button URL uses a variable.**<br />URL button URL example variable string.<br />Maximum 2000 characters. | `BUDDHA` |
+
+### Example request
+
+This example request creates a media card carousel template with a message that uses 3 variables and 3 media cards. Each media card has a quick reply button, and a URL button that uses a variable.
+
+```
+curl 'https://graph.facebook.com/v24.0/102290129340398/message_templates' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+-d '
+\{
+  "name": "carousel_template_media_cards_v1",
+  "language": "en_US",
+  "category": "marketing",
+  "components": [\
+    {\
+      "type": "body",\
+      "text": "Rare succulents for sale! {{1}}, add these unique plants to your collection. Each of these rare succulents are {{2}} if you checkout using code {{3}}. Shop now and add some unique and beautiful plants to your collection!",\
+      "example": {\
+        "body_text": [\
+          [\
+            "Pablo",\
+            "30%",\
+            "30OFF"\
+          ]\
+        ]\
+      }\
+    },\
+    {\
+      "type": "carousel",\
+      "cards": [\
+        {\
+          "components": [\
+            {\
+              "type": "header",\
+              "format": "image",\
+              "example": {\
+                "header_handle": [\
+                  "4::an..."\
+                ]\
+              }\
+            },\
+            {\
+              "type": "buttons",\
+              "buttons": [\
+                {\
+                  "type": "quick_reply",\
+                  "text": "Send me more like this!"\
+                },\
+                {\
+                  "type": "url",\
+                  "text": "Shop",\
+                  "url": "https://www.luckyshrub.com/rare-succulents/{{1}}",\
+                  "example": [\
+                    "BLUE_ELF"\
+                  ]\
+                }\
+              ]\
+            }\
+          ]\
+        },\
+        {\
+          "components": [\
+            {\
+              "type": "header",\
+              "format": "image",\
+              "example": {\
+                "header_handle": [\
+                  "4::an..."\
+                ]\
+              }\
+            },\
+            {\
+              "type": "buttons",\
+              "buttons": [\
+                {\
+                  "type": "quick_reply",\
+                  "text": "Send me more like this!"\
+                },\
+                {\
+                  "type": "url",\
+                  "text": "Shop",\
+                  "url": "https://www.luckyshrub.com/rare-succulents{{1}}",\
+                  "example": [\
+                    "BUDDHA"\
+                  ]\
+                }\
+              ]\
+            }\
+          ]\
+        },\
+        {\
+          "components": [\
+            {\
+              "type": "header",\
+              "format": "image",\
+              "example": {\
+                "header_handle": [\
+                  "4::an..."\
+                ]\
+              }\
+            },\
+            {\
+              "type": "buttons",\
+              "buttons": [\
+                {\
+                  "type": "quick_reply",\
+                  "text": "Send me more like this!"\
+                },\
+                {\
+                  "type": "url",\
+                  "text": "Shop",\
+                  "url": "https://www.luckyshrub.com/rare-succulents{{1}}",\
+                  "example": [\
+                    "BLACK_PRINCE"\
+                  ]\
+                }\
+              ]\
+            }\
+          ]\
+        }\
+      ]\
+    }\
+  ]
+}'
+```
+
+## Sending Media Card Carousel Templates
+
+This document describes how to send approved [media card carousel templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates/media-card-carousel-templates) to WhatsApp users.
+
+### Request Syntax
+
+```
+curl -X POST "https://graph.facebook.com/v23.0/&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;/messages" \
+  -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "messaging_product": "whatsapp",
+    "recipient_type": "individual",
+    "to": "&lt;WHATSAPP_USER_PHONE_NUMBER&gt;",
+    "type": "template",
+    "template": {
+      "name": "&lt;TEMPLATE_NAME&gt;",
+      "language": {
+        "code": "&lt;TEMPLATE_LANGUAGE&gt;"
+      },
+      "components": [\
+        {\
+          "type": "body",\
+          "parameters": [\
+            { "type": "text", "text": "<MESSAGE_BODY_TEXT_VARIABLE_1>" },\
+            { "type": "text", "text": "<MESSAGE_BODY_TEXT_VARIABLE_2>" }\
+          ]\
+        },\
+        {\
+          "type": "carousel",\
+          "cards": [\
+            {\
+              "card_index": 0,\
+              "components": [\
+                {\
+                  "type": "header",\
+                  "parameters": [\
+                    {\
+                      "type": "&lt;MESSAGE_HEADER_FORMAT&gt;",\
+                      "&lt;MESSAGE_HEADER_FORMAT&gt;": {\
+                        "id": "&lt;MESSAGE_HEADER_ASSET_ID&gt;"\
+                      }\
+                    }\
+                  ]\
+                },\
+                {\
+                  "type": "body",\
+                  "parameters": [\
+                    { "type": "text", "text": "<CARD_BODY_VARIABLE_1>" },\
+                    { "type": "text", "text": "<CARD_BODY_VARIABLE_2>" }\
+                  ]\
+                },\
+                {\
+                  "type": "button",\
+                  "sub_type": "quick_reply",\
+                  "index": 0,\
+                  "parameters": [\
+                    {\
+                      "type": "payload",\
+                      "payload": "&lt;QUICK_REPLY_BUTTON_PAYLOAD&gt;"\
+                    }\
+                  ]\
+                },\
+                {\
+                  "type": "button",\
+                  "sub_type": "url",\
+                  "index": 1,\
+                  "parameters": [\
+                    {\
+                      "type": "text",\
+                      "text": "&lt;URL_BUTTON_URL_VARIABLE&gt;"\
+                    }\
+                  ]\
+                }\
+              ]\
+            }\
+            // Add additional cards here, following the same structure\
+          ]\
+        }\
+      ]
+    }
+  }'
+```
+
+### Request parameters
+
+| Placeholder | Description | Example Value |
+| --- | --- | --- |
+| `&lt;BUTTON_INDEX&gt;`<br />_Integer_ | **Required.**<br />Zero-indexed order in which button appears at the bottom of the template message. `0` indicates the first button, `1` indicates second button, etc.<br />Note that if any buttons use variables, the type and order of buttons must match the type and order defined on the template, so you can’t use the index values to arrange the order of the buttons in the sent template.<br />For example, if the template defines a phone number button first (which equates to index `0`) and a URL button that supports a single variable second (which equates to index `1`), if you attempt to send the template with the URL button index set to `0` , the API would return an error (“Parameter value for URL was expected but was not found”) because it’s expecting a button object with an index of `1` to be present in the post body payload. | `0` |
+| `&lt;CARD_BODY_VARIABLE&gt;`<br />_Object_ | **Required if the template card body text uses variables, otherwise omit.**<br />Object describing a card body variable. If the template uses multiple variables, you must define an object for each variable.<br />Supports `text`, `currency`, and `date_time` types. See [Messages Parameters](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api#parameter-object).<br />There is no maximum character limit on this value, but does count against the card body text limit of 160 characters. | ```<br />{<br />"type":"text",<br />"text": "Pablo"<br />}<br />``` |
+| `&lt;CARD_INDEX&gt;`<br />_Integer_ | **Required.**<br />Zero-indexed order in which card should appear within the card carousel. `0` indicates first card, `1` indicates second card, etc. | `0` |
+| `&lt;MESSAGE_BODY_TEXT_VARIABLE&gt;`<br />_Object_ | **Required if template message body text uses variables, otherwise omit.**<br />Object describing a message variable. If the template uses multiple variables, you must define an object for each variable.<br />Supports `text`, `currency`, and `date_time` types. See [Messages Parameters](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api#parameter-object).<br />There is no maximum character limit on this value, but it does count against the message body text limit of 1024 characters. | ```<br />{<br />"type":"text",<br />"text": "Pablo"<br />}<br />``` |
+| `&lt;MESSAGE_HEADER_ASSET_ID&gt;`<br />_String_ | **Required.**<br />Header asset’s uploaded media asset ID. Use the [**POST /&lt;BUSINESS_PHONE_NUMBER_ID&gt;/media**](https://developers.facebook.com/documentation/business-messaging/whatsapp/business-phone-numbers/media#upload-media) endpoint to generate an asset ID. | `1558081531584829` |
+| `&lt;MESSAGE_HEADER_FORMAT&gt;`<br />_String_ | **Required.**<br />Indicates header type and a matching property name.<br />Note that the `&lt;MESSAGE_HEADER_FORMAT&gt;` placeholder appears twice in the post body example above, as it serves as a placeholder for the type property’s value and its matching property name.<br />Value can be `image` or `video`. | `image` |
+| `&lt;QUICK_REPLY_BUTTON_PAYLOAD&gt;`<br />_String_ | **Optional.**<br />Value to be included in messages webhooks (`messages.button.payload`) when the button is tapped. | `more-aloes` |
+| `&lt;TEMPLATE_LANGUAGE&gt;`<br />_String_ | **Required.**<br />Template [language and locale code](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/supported-languages). | `en_US` |
+| `&lt;TEMPLATE_NAME&gt;`<br />_String_ | **Required.**<br />Template name.<br />Maximum 512 characters. | `carousel_template_media_cards_v1` |
+| `&lt;URL_BUTTON_URL_VARIABLE&gt;`<br />_String_ | **Required if the URL button URL uses a variable.**<br />URL button variable value. | `blue-elf` |
+| `&lt;WHATSAPP_USER_PHONE_NUMBER&gt;`<br />_String_ | **Required.**<br />WhatsApp user phone number. | `+16505551234` |
+
+### Example request
+
+This example request sends a media card carousel template named “carousel_template_media_cards_v1”. It supplies three body text variables (which the template requires) and contents for three cards (which the template also requires). For each card, the request supplies an image asset ID, a quick-reply button payload (to be included in webhooks when the button is tapped), and a text string to be injected into the URL mapped to the card’s URL button (which is defined on the template).
+
+```
+curl 'https://graph.facebook.com/v24.0/106540352242922/messages' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+-d '
+\{
+  "messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": "+16505551234",
+  "type": "template",
+  "template": {
+    "name": "carousel_template_media_cards_v1",
+    "language": {
+      "code": "en_US"
+    },
+    "components": [\
+      {\
+        "type": "body",\
+        "parameters": [\
+          {\
+            "type": "text",\
+            "text": "Pablo"\
+          },\
+          {\
+            "type": "text",\
+            "text": "20%"\
+          },\
+          {\
+            "type": "text",\
+            "text": "20OFF"\
+          }\
+        ]\
+      },\
+      {\
+        "type": "carousel",\
+        "cards": [\
+          {\
+            "card_index": 0,\
+            "components": [\
+              {\
+                "type": "header",\
+                "parameters": [\
+                  {\
+                    "type": "image",\
+                    "image": {\
+                      "id": "1558081531584829"\
+                    }\
+                  }\
+                ]\
+              },\
+              {\
+                "type": "button",\
+                "sub_type": "quick_reply",\
+                "index": "0",\
+                "parameters": [\
+                  {\
+                    "type": "payload",\
+                    "payload": "more-aloes"\
+                  }\
+                ]\
+              },\
+              {\
+                "type": "button",\
+                "sub_type": "url",\
+                "index": "1",\
+                "parameters": [\
+                  {\
+                    "type": "text",\
+                    "text": "blue-elf"\
+                  }\
+                ]\
+              }\
+            ]\
+          },\
+          {\
+            "card_index": 1,\
+            "components": [\
+              {\
+                "type": "header",\
+                "parameters": [\
+                  {\
+                    "type": "image",\
+                    "image": {\
+                      "id": "861236878885705"\
+                    }\
+                  }\
+                ]\
+              },\
+              {\
+                "type": "button",\
+                "sub_type": "quick_reply",\
+                "index": "0",\
+                "parameters": [\
+                  {\
+                    "type": "payload",\
+                    "payload": "more-crassulas"\
+                  }\
+                ]\
+              },\
+              {\
+                "type": "button",\
+                "sub_type": "url",\
+                "index": "1",\
+                "parameters": [\
+                  {\
+                    "type": "text",\
+                    "text": "buddhas-temple"\
+                  }\
+                ]\
+              }\
+            ]\
+          },\
+          {\
+            "card_index": 2,\
+            "components": [\
+              {\
+                "type": "header",\
+                "parameters": [\
+                  {\
+                    "type": "image",\
+                    "image": {\
+                      "id": "1587064918516321"\
+                    }\
+                  }\
+                ]\
+              },\
+              {\
+                "type": "button",\
+                "sub_type": "quick_reply",\
+                "index": "0",\
+                "parameters": [\
+                  {\
+                    "type": "payload",\
+                    "payload": "more-echeverias"\
+                  }\
+                ]\
+              },\
+              {\
+                "type": "button",\
+                "sub_type": "url",\
+                "index": "1",\
+                "parameters": [\
+                  {\
+                    "type": "text",\
+                    "text": "black-prince"\
+                  }\
+                ]\
+              }\
+            ]\
+          }\
+        ]\
+      }\
+    ]
+  }
+}'
+```
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Media cards
+
+Creating media card carousel templates
+
+Request syntax
+
+Request parameters
+
+Example request
+
+Sending Media Card Carousel Templates
+
+Request Syntax
+
+Request parameters
+
+Example request
+
+* * *

@@ -1,0 +1,965 @@
+
+# WhatsApp Business - Assigned WhatsApp Business Accounts API
+
+Copy for LLM
+
+[View as Markdown](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/user/assigned-whatsapp-business-accounts-api/v23.0.md/)
+
+Version
+
+v23.0
+
+API for retrieving WhatsApp Business Accounts that have been assigned to a specific user.
+
+This endpoint allows apps to retrieve WhatsApp Business Accounts that are assigned to
+
+specific users.
+
+## Base URL
+
+| https://graph.facebook.com |
+
+## Endpoints
+
+| GET | [/{Version}/{User-ID}/assigned_whatsapp_business_accounts](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/user/assigned-whatsapp-business-accounts-api#get-version-user-id-assigned-whatsapp-business-accounts) |
+
+* * *
+
+## GET /{Version}/{User-ID}/assigned_whatsapp_business_accounts
+
+Retrieve WhatsApp Business Accounts that have been assigned to a specific user.
+
+This endpoint provides information about account assignments, permissions, and
+
+current status corresponding to the GraphAssignedWhatsAppBusinessAccountsEdge node.
+
+Use Cases:
+
+Retrieve all WhatsApp Business Accounts assigned to a user
+
+Check user permissions for specific accounts
+
+Monitor account assignment status and changes
+
+Validate user access before performing business operations
+
+Rate Limiting:
+
+Standard Graph API rate limits apply. Use appropriate retry logic with exponential backoff.
+
+Caching:
+
+Assignment information can be cached for short periods, but permissions and status
+
+may change frequently. Implement appropriate cache invalidation strategies.
+
+### Request Syntax
+
+**GET**/{Version}/{User-ID}/assigned_whatsapp_business_accounts
+
+Try it
+
+Select language
+
+cURLJavaScriptPython
+
+* * *
+
+```
+curl --request GET \
+  --url 'https://graph.facebook.com/{Version}/{User-ID}/assigned_whatsapp_business_accounts' \
+  --header 'Authorization: Bearer <Token>' \
+  --header 'Content-Type: application/json' \
+  --data '{}'
+```
+
+Select status code
+
+200400401403404422429500
+
+* * *
+
+```
+\{
+  "multiple_accounts": {
+    "summary": "User with multiple assigned accounts",
+    "value": {
+      "data": [\
+        {\
+          "id": "1234567890123456",\
+          "name": "Primary Business Account",\
+          "status": "ACTIVE",\
+          "assignment_date": "2023-10-15T14:30:00Z",\
+          "permissions": [\
+            "MANAGE",\
+            "DEVELOP",\
+            "MANAGE_TEMPLATES"\
+          ],\
+          "business_id": "9876543210987654",\
+          "phone_numbers": [\
+            {\
+              "id": "1234567890",\
+              "display_phone_number": "+1 (555) 123-4567",\
+              "verified_name": "Primary Business",\
+              "status": "CONNECTED"\
+            }\
+          ]\
+        },\
+        {\
+          "id": "2345678901234567",\
+          "name": "Secondary Business Account",\
+          "status": "ACTIVE",\
+          "assignment_date": "2023-10-20T09:15:00Z",\
+          "permissions": [\
+            "VIEW_INSIGHTS",\
+            "MESSAGING"\
+          ],\
+          "business_id": "8765432109876543"\
+        }\
+      ]
+    }
+  },
+  "single_account": {
+    "summary": "User with single assigned account",
+    "value": {
+      "data": [\
+        {\
+          "id": "1234567890123456",\
+          "name": "Business Account",\
+          "status": "ACTIVE",\
+          "assignment_date": "2023-10-15T14:30:00Z",\
+          "permissions": [\
+            "FULL_CONTROL"\
+          ],\
+          "business_id": "9876543210987654"\
+        }\
+      ]
+    }
+  },
+  "no_accounts": {
+    "summary": "User with no assigned accounts",
+    "value": {
+      "data": []
+    }
+  }
+}
+```
+
+Header Parameters
+
+* * *
+
+User-Agentstring
+
+The user agent string identifying the client software making the request.
+
+Authorizationstring·required
+
+Bearer token for API authentication. This should be a valid access token obtained through the appropriate OAuth flow or system user token.
+
+Path Parameters
+
+* * *
+
+Versionstring·required
+
+Graph API version to use for this request. Determines the API behavior and available features.
+
+User-IDstring·required
+
+The user ID for whom to retrieve assigned WhatsApp Business Accounts.
+
+This must be a valid user ID within your solution or partnership.
+
+Query Parameters
+
+* * *
+
+fieldsstring
+
+Comma-separated list of fields to include in the response. If not specified,
+
+default fields will be returned (id, name, status).
+
+Available fields: id, name, status, assignment_date, permissions, business_id, phone_numbers
+
+limitinteger \[min: 1, max: 100\]
+
+Maximum number of accounts to return per page. Default is 25, maximum is 100.
+
+afterstring
+
+Cursor for pagination. Use this to get the next page of results.
+
+beforestring
+
+Cursor for pagination. Use this to get the previous page of results.
+
+Responses
+
+* * *
+
+Retrieve WhatsApp Business Accounts that have been assigned to a specific user.
+
+This endpoint provides information about account assignments, permissions, and
+
+current status corresponding to the GraphAssignedWhatsAppBusinessAccountsEdge node.
+
+Use Cases:
+
+Retrieve all WhatsApp Business Accounts assigned to a user
+
+Check user permissions for specific accounts
+
+Monitor account assignment status and changes
+
+Validate user access before performing business operations
+
+Rate Limiting:
+
+Standard Graph API rate limits apply. Use appropriate retry logic with exponential backoff.
+
+Caching:
+
+Assignment information can be cached for short periods, but permissions and status
+
+may change frequently. Implement appropriate cache invalidation strategies.
+
+200
+
+Successfully retrieved assigned WhatsApp Business Accounts
+
+Content Type: application/json
+
+Schema: AssignedAccountsResponse
+
+Show child attributes
+
+* * *
+
+AssignedAccountsResponse
+
+* * *
+
+dataarray of AssignedWhatsAppBusinessAccount·required
+
+List of assigned WhatsApp Business Accounts
+
+Show child attributes
+
+* * *
+
+data\[\]AssignedWhatsAppBusinessAccount
+
+WhatsApp Business Account assigned to a user
+
+Show child attributes
+
+* * *
+
+idstring·required
+
+Unique identifier for the WhatsApp Business Account
+
+* * *
+
+namestring·required
+
+Display name of the WhatsApp Business Account
+
+* * *
+
+statusWhatsAppBusinessAccountStatus
+
+Current status of the WhatsApp Business Account
+
+* * *
+
+assignment_datestring (date-time)
+
+Date and time when the account was assigned to the user
+
+* * *
+
+permissionsarray of WhatsAppBusinessAccountPermission
+
+List of permissions granted to the user for this account
+
+Show child attributes
+
+* * *
+
+permissions\[\]WhatsAppBusinessAccountPermission
+
+Permission level for WhatsApp Business Account access
+
+* * *
+
+business_idstring
+
+Business ID that owns this WhatsApp Business Account
+
+* * *
+
+phone_numbersarray of PhoneNumberInfo
+
+Phone numbers associated with this WhatsApp Business Account
+
+Show child attributes
+
+* * *
+
+phone_numbers\[\]PhoneNumberInfo
+
+Phone number information for WhatsApp Business Account
+
+Show child attributes
+
+* * *
+
+idstring
+
+Phone number ID
+
+* * *
+
+display_phone_numberstring
+
+Formatted phone number for display
+
+* * *
+
+verified_namestring
+
+Verified business name for this phone number
+
+* * *
+
+statusOne of "CONNECTED", "DISCONNECTED", "MIGRATED", "PENDING", "DELETED"
+
+Status of the phone number
+
+* * *
+
+pagingPagingInfo
+
+Pagination information for the response
+
+Show child attributes
+
+* * *
+
+cursorsobject
+
+Show child attributes
+
+* * *
+
+beforestring
+
+Cursor for the previous page
+
+* * *
+
+afterstring
+
+Cursor for the next page
+
+* * *
+
+nextstring
+
+URL for the next page of results
+
+* * *
+
+previousstring
+
+URL for the previous page of results
+
+400
+
+Bad Request - Invalid parameters or malformed request
+
+Content Type: application/json
+
+Schema: GraphAPIError
+
+Show child attributes
+
+* * *
+
+GraphAPIError
+
+* * *
+
+errorobject·required
+
+Show child attributes
+
+* * *
+
+messagestring·required
+
+Human-readable error message
+
+* * *
+
+typestring·required
+
+Error category type
+
+* * *
+
+codeinteger·required
+
+Numeric error code
+
+* * *
+
+error_subcodeinteger
+
+More specific error subcode when available
+
+* * *
+
+fbtrace_idstring
+
+Unique identifier for debugging and support requests with Meta
+
+* * *
+
+is_transientboolean
+
+Indicates whether this error is temporary and the request should be retried
+
+* * *
+
+error_user_titlestring
+
+User-friendly error title for display purposes
+
+* * *
+
+error_user_msgstring
+
+User-friendly error message for display purposes
+
+401
+
+Unauthorized - Invalid or missing access token
+
+Content Type: application/json
+
+Schema: GraphAPIError
+
+Show child attributes
+
+* * *
+
+GraphAPIError
+
+* * *
+
+errorobject·required
+
+Show child attributes
+
+* * *
+
+messagestring·required
+
+Human-readable error message
+
+* * *
+
+typestring·required
+
+Error category type
+
+* * *
+
+codeinteger·required
+
+Numeric error code
+
+* * *
+
+error_subcodeinteger
+
+More specific error subcode when available
+
+* * *
+
+fbtrace_idstring
+
+Unique identifier for debugging and support requests with Meta
+
+* * *
+
+is_transientboolean
+
+Indicates whether this error is temporary and the request should be retried
+
+* * *
+
+error_user_titlestring
+
+User-friendly error title for display purposes
+
+* * *
+
+error_user_msgstring
+
+User-friendly error message for display purposes
+
+403
+
+Forbidden - Insufficient permissions or access denied
+
+Content Type: application/json
+
+Schema: GraphAPIError
+
+Show child attributes
+
+* * *
+
+GraphAPIError
+
+* * *
+
+errorobject·required
+
+Show child attributes
+
+* * *
+
+messagestring·required
+
+Human-readable error message
+
+* * *
+
+typestring·required
+
+Error category type
+
+* * *
+
+codeinteger·required
+
+Numeric error code
+
+* * *
+
+error_subcodeinteger
+
+More specific error subcode when available
+
+* * *
+
+fbtrace_idstring
+
+Unique identifier for debugging and support requests with Meta
+
+* * *
+
+is_transientboolean
+
+Indicates whether this error is temporary and the request should be retried
+
+* * *
+
+error_user_titlestring
+
+User-friendly error title for display purposes
+
+* * *
+
+error_user_msgstring
+
+User-friendly error message for display purposes
+
+404
+
+Not Found - User ID does not exist or is not accessible
+
+Content Type: application/json
+
+Schema: GraphAPIError
+
+Show child attributes
+
+* * *
+
+GraphAPIError
+
+* * *
+
+errorobject·required
+
+Show child attributes
+
+* * *
+
+messagestring·required
+
+Human-readable error message
+
+* * *
+
+typestring·required
+
+Error category type
+
+* * *
+
+codeinteger·required
+
+Numeric error code
+
+* * *
+
+error_subcodeinteger
+
+More specific error subcode when available
+
+* * *
+
+fbtrace_idstring
+
+Unique identifier for debugging and support requests with Meta
+
+* * *
+
+is_transientboolean
+
+Indicates whether this error is temporary and the request should be retried
+
+* * *
+
+error_user_titlestring
+
+User-friendly error title for display purposes
+
+* * *
+
+error_user_msgstring
+
+User-friendly error message for display purposes
+
+422
+
+Unprocessable Entity - Request parameters are valid but cannot be processed
+
+Content Type: application/json
+
+Schema: GraphAPIError
+
+Show child attributes
+
+* * *
+
+GraphAPIError
+
+* * *
+
+errorobject·required
+
+Show child attributes
+
+* * *
+
+messagestring·required
+
+Human-readable error message
+
+* * *
+
+typestring·required
+
+Error category type
+
+* * *
+
+codeinteger·required
+
+Numeric error code
+
+* * *
+
+error_subcodeinteger
+
+More specific error subcode when available
+
+* * *
+
+fbtrace_idstring
+
+Unique identifier for debugging and support requests with Meta
+
+* * *
+
+is_transientboolean
+
+Indicates whether this error is temporary and the request should be retried
+
+* * *
+
+error_user_titlestring
+
+User-friendly error title for display purposes
+
+* * *
+
+error_user_msgstring
+
+User-friendly error message for display purposes
+
+429
+
+Too Many Requests - Rate limit exceeded
+
+Content Type: application/json
+
+Schema: GraphAPIError
+
+Show child attributes
+
+* * *
+
+GraphAPIError
+
+* * *
+
+errorobject·required
+
+Show child attributes
+
+* * *
+
+messagestring·required
+
+Human-readable error message
+
+* * *
+
+typestring·required
+
+Error category type
+
+* * *
+
+codeinteger·required
+
+Numeric error code
+
+* * *
+
+error_subcodeinteger
+
+More specific error subcode when available
+
+* * *
+
+fbtrace_idstring
+
+Unique identifier for debugging and support requests with Meta
+
+* * *
+
+is_transientboolean
+
+Indicates whether this error is temporary and the request should be retried
+
+* * *
+
+error_user_titlestring
+
+User-friendly error title for display purposes
+
+* * *
+
+error_user_msgstring
+
+User-friendly error message for display purposes
+
+500
+
+Internal Server Error - Unexpected server error
+
+Content Type: application/json
+
+Schema: GraphAPIError
+
+Show child attributes
+
+* * *
+
+GraphAPIError
+
+* * *
+
+errorobject·required
+
+Show child attributes
+
+* * *
+
+messagestring·required
+
+Human-readable error message
+
+* * *
+
+typestring·required
+
+Error category type
+
+* * *
+
+codeinteger·required
+
+Numeric error code
+
+* * *
+
+error_subcodeinteger
+
+More specific error subcode when available
+
+* * *
+
+fbtrace_idstring
+
+Unique identifier for debugging and support requests with Meta
+
+* * *
+
+is_transientboolean
+
+Indicates whether this error is temporary and the request should be retried
+
+* * *
+
+error_user_titlestring
+
+User-friendly error title for display purposes
+
+* * *
+
+error_user_msgstring
+
+User-friendly error message for display purposes
+
+Select language
+
+cURLJavaScriptPython
+
+* * *
+
+```
+curl --request GET \
+  --url 'https://graph.facebook.com/{Version}/{User-ID}/assigned_whatsapp_business_accounts' \
+  --header 'Authorization: Bearer <Token>' \
+  --header 'Content-Type: application/json' \
+  --data '{}'
+```
+
+Select status code
+
+200400401403404422429500
+
+* * *
+
+```
+\{
+  "multiple_accounts": {
+    "summary": "User with multiple assigned accounts",
+    "value": {
+      "data": [\
+        {\
+          "id": "1234567890123456",\
+          "name": "Primary Business Account",\
+          "status": "ACTIVE",\
+          "assignment_date": "2023-10-15T14:30:00Z",\
+          "permissions": [\
+            "MANAGE",\
+            "DEVELOP",\
+            "MANAGE_TEMPLATES"\
+          ],\
+          "business_id": "9876543210987654",\
+          "phone_numbers": [\
+            {\
+              "id": "1234567890",\
+              "display_phone_number": "+1 (555) 123-4567",\
+              "verified_name": "Primary Business",\
+              "status": "CONNECTED"\
+            }\
+          ]\
+        },\
+        {\
+          "id": "2345678901234567",\
+          "name": "Secondary Business Account",\
+          "status": "ACTIVE",\
+          "assignment_date": "2023-10-20T09:15:00Z",\
+          "permissions": [\
+            "VIEW_INSIGHTS",\
+            "MESSAGING"\
+          ],\
+          "business_id": "8765432109876543"\
+        }\
+      ]
+    }
+  },
+  "single_account": {
+    "summary": "User with single assigned account",
+    "value": {
+      "data": [\
+        {\
+          "id": "1234567890123456",\
+          "name": "Business Account",\
+          "status": "ACTIVE",\
+          "assignment_date": "2023-10-15T14:30:00Z",\
+          "permissions": [\
+            "FULL_CONTROL"\
+          ],\
+          "business_id": "9876543210987654"\
+        }\
+      ]
+    }
+  },
+  "no_accounts": {
+    "summary": "User with no assigned accounts",
+    "value": {
+      "data": []
+    }
+  }
+}
+```
+
+## Authentication
+
+| **Scheme** | **Type** | **Location** |
+| bearerAuth | HTTP Bearer | Header: Authorization |
+
+### Usage Examples
+
+bearerAuth:
+
+Include Authorization: Bearer your-token-here in request headers
+
+### Global Authentication Requirements
+
+All endpoints require:
+
+bearerAuth
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+* * *

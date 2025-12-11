@@ -1,0 +1,111 @@
+
+# Image messages
+
+Updated: Nov 3, 2025
+
+Image messages are messages that display a single image and an optional caption.
+
+![](https://scontent-lax3-1.xx.fbcdn.net/v/t39.2365-6/440788911_1344094656981591_356280964045551612_n.png?_nc_cat=110&ccb=1-7&_nc_sid=e280be&_nc_ohc=yBfXYvM2iUQQ7kNvwFOWyDC&_nc_oc=Adk8bvcp2OBHXFQKZOdJeTwFaN71dMZTWf0xKt4sRQkwLgAOBl3XyD4mjgcBoU_04Xk&_nc_zt=14&_nc_ht=scontent-lax3-1.xx&_nc_gid=CDLrC_kPWJw6E02g5F8S-w&oh=00_Afkmogwlj2xkiK2nzlpNpMq7P499Ro2L4z22wkRFK7VUXw&oe=69550B89)
+
+## Request syntax
+
+Use the [POST /&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;/messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api) endpoint to send an image message to a WhatsApp user.
+
+```
+curl 'https://graph.facebook.com/&lt;API_VERSION&gt;/&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;/messages' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer &lt;ACCESS_TOKEN&gt;' \
+-d '
+\{
+  "messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": "&lt;WHATSAPP_USER_PHONE_NUMBER&gt;",
+  "type": "image",
+  "image": {
+    "id": "&lt;MEDIA_ID&gt;", <!-- Only if using uploaded media -->
+    "link": "&lt;MEDIA_URL&gt;", <!-- Only if using hosted media (not recommended) -->
+    "caption": "&lt;MEDIA_CAPTION_TEXT&gt;"
+  }
+}'
+```
+
+## Request parameters
+
+| Placeholder | Description | Example Value |
+| --- | --- | --- |
+| `&lt;ACCESS_TOKEN&gt;`<br />_String_ | **Required.**<br />[System token](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#system-user-access-tokens) or [business token](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#business-integration-system-user-access-tokens). | `EAAAN6tcBzAUBOZC82CW7iR2LiaZBwUHS4Y7FDtQxRUPy1PHZClDGZBZCgWdrTisgMjpFKiZAi1FBBQNO2IqZBAzdZAA16lmUs0XgRcCf6z1LLxQCgLXDEpg80d41UZBt1FKJZCqJFcTYXJvSMeHLvOdZwFyZBrV9ZPHZASSqxDZBUZASyFdzjiy2A1sippEsF4DVV5W2IlkOSr2LrMLuYoNMYBy8xQczzOKDOMccqHEZD` |
+| `&lt;API_VERSION&gt;`<br />_String_ | **Optional.**<br />Graph API version. | v24.0 |
+| `&lt;MEDIA_CAPTION_TEXT&gt;`<br />_String_ | **Optional.**<br />Media asset caption text.<br />Maximum 1024 characters. | `The best succulent ever?` |
+| `&lt;MEDIA_ID&gt;`<br />_String_ | **Required if using uploaded media, otherwise omit.**<br />ID of the [uploaded media asset](https://developers.facebook.com/documentation/business-messaging/whatsapp/business-phone-numbers/media#upload-media). | `1013859600285441` |
+| `&lt;MEDIA_URL&gt;`<br />_String_ | **Required if using hosted media, otherwise omit.**<br />URL of the media asset hosted on your public server. For better performance, we recommend using `id` and an [uploaded media asset ID](https://developers.facebook.com/documentation/business-messaging/whatsapp/business-phone-numbers/media#upload-media) instead. | `https://www.luckyshrub.com/assets/succulents/aloe.png` |
+| `&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;`<br />_String_ | **Required.**<br />WhatsApp business phone number ID. | `106540352242922` |
+| `&lt;WHATSAPP_USER_PHONE_NUMBER&gt;`<br />_String_ | **Required.**<br />WhatsApp user phone number. | `+16505551234` |
+
+## Supported image formats
+
+Images must be 8-bit, RGB or RGBA.
+
+| Image Type | Extension | MIME Type | Max Size |
+| --- | --- | --- | --- |
+| JPEG | .jpeg | image/jpeg | 5 MB |
+| PNG | .png | image/png | 5 MB |
+
+## Example request
+
+Example request to send an image message with a caption to a WhatsApp user.
+
+```
+curl 'https://graph.facebook.com/v24.0/106540352242922/messages' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+-d '
+\{
+  "messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": "+16505551234",
+  "type": "image",
+  "image": {
+    "id" : "1479537139650973",
+    "caption": "The best succulent ever?"
+  }
+}'
+```
+
+## Example response
+
+```
+\{
+  "messaging_product": "whatsapp",
+  "contacts": [\
+    {\
+      "input": "+16505551234",\
+      "wa_id": "16505551234"\
+    }\
+  ],
+  "messages": [\
+    {\
+      "id": "wamid.HBgLMTY0NjcwNDM1OTUVAgARGBI1RjQyNUE3NEYxMzAzMzQ5MkEA"\
+    }\
+  ]
+}
+```
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Request syntax
+
+Request parameters
+
+Supported image formats
+
+Example request
+
+Example response
+
+* * *

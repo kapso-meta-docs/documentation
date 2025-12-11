@@ -1,0 +1,303 @@
+
+# Catalog templates
+
+Updated: Nov 14, 2025
+
+This document explains how to create catalog templates. See [Sell Products & Services](https://developers.facebook.com/documentation/business-messaging/whatsapp/catalogs/sell-products-and-services) to learn more about product catalogs and ways to showcase your products.
+
+Catalog templates are marketing templates that allow you to showcase your product catalog entirely within WhatsApp. Catalog templates display a product thumbnail header image of your choice and custom body text, along with a fixed text header and fixed text sub-header.
+
+![](https://scontent-lax7-1.xx.fbcdn.net/v/t39.2365-6/354047426_125269187252102_7173148343631613735_n.png?_nc_cat=105&ccb=1-7&_nc_sid=e280be&_nc_ohc=84GMpH9sAbEQ7kNvwEfu8_l&_nc_oc=AdlOtCLdG4z_Oy34iL9YKwKcXS_jZcgRyXcriX8k8eFUYo6rGZo13apX1DXwAVKDWVs&_nc_zt=14&_nc_ht=scontent-lax7-1.xx&_nc_gid=4yXu0PMY28XAdquiA7sfFA&oh=00_AflbKOQYVc-A3m1c-OJtl9iMaVKv98AsHQymHoQ1Qms69w&oe=695501A6)
+
+When a customer taps the **View catalog** button in a catalog template message, your product catalog appears within WhatsApp.
+
+![](https://scontent-lax3-1.xx.fbcdn.net/v/t39.2365-6/353808079_9331603410246288_3629219693038191737_n.png?_nc_cat=109&ccb=1-7&_nc_sid=e280be&_nc_ohc=J5NJflw9nRMQ7kNvwFT1Dd9&_nc_oc=AdlKtv6K8d4ff7M56h_ZYRl_HB8fh9bzo_H7vaOqZJztrO3hTQ5KZ6IBMiQVDAm-Bto&_nc_zt=14&_nc_ht=scontent-lax3-1.xx&_nc_gid=4yXu0PMY28XAdquiA7sfFA&oh=00_AflYrUgjdMX-ViGq6-RufTBgtOoq_mOA_MvBnbzNRrprOg&oe=69550768)
+
+## Creating catalog templates
+
+### Requirements
+
+You must have [inventory uploaded to Meta](https://developers.facebook.com/documentation/business-messaging/whatsapp/catalogs/sell-products-and-services/upload-inventory) in an e-commerce catalog [connected to your WhatsApp Business Account](https://www.facebook.com/business/help/158662536425974).
+
+### Request Syntax
+
+Use the [WhatsApp Business Account > Message Templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-account/template-api) endpoint to create a catalog template. Once your template is approved, you can use Cloud API to send it in a template message.
+
+```
+curl -X POST "https://graph.facebook.com/&lt;API_VERSION&gt;/&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;/message_templates" \
+  -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;" \
+  -H "Content-Type: application/json" \
+  -d '
+\{
+    "name": "&lt;NAME&gt;",
+    "language": "&lt;LANGUAGE&gt;",
+    "category": "MARKETING",
+    "components": [\
+      {\
+        "type": "BODY",\
+        "text": "&lt;BODY_TEXT&gt;",\
+        "example": {\
+          "body_text": [\
+            [\
+              "&lt;EXAMPLE_BODY_TEXT&gt;"\
+            ]\
+          ]\
+        }\
+      },\
+      {\
+        "type": "FOOTER",\
+        "text": "&lt;FOOTER_TEXT&gt;"\
+      },\
+      {\
+        "type": "BUTTONS",\
+        "buttons": [\
+          {\
+            "type": "CATALOG",\
+            "text": "View catalog"\
+          }\
+        ]\
+      }\
+    ]
+  }'
+```
+
+### Request parameters
+
+| Placeholder | Description | Sample Value |
+| --- | --- | --- |
+| `&lt;BODY_TEXT&gt;`<br />_String_ | **Required.**<br />Template body text. Variables are supported.<br />Maximum 1024 characters. | `Now shop for your favorite products right here on WhatsApp! Get Rs {{1}} off on all orders above {{2}}Rs! Valid for your first {{3}} orders placed on WhatsApp!` |
+| `&lt;EXAMPLE_BODY_TEXT&gt;`<br />_String (of an array of strings)_ | **Required if body text uses variables.**<br />Sample strings to replace variable placeholders in `&lt;BODY_TEXT&gt;` string.<br />Maximum 1024 characters. | `100` |
+| `&lt;FOOTER_TEXT&gt;`<br />_String_ | **Optional.**<br />Template footer text. Variables are supported.<br />Maximum 60 characters. | `Best grocery deals on WhatsApp!` |
+| `&lt;LANGUAGE&gt;`<br />_String_ | **Required.**<br />Template [language and locale code](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/supported-languages). | `en_US` |
+| `&lt;NAME&gt;`<br />_String_ | **Required.**<br />Template name.<br />Maximum 512 characters. | `intro_catalog_offer` |
+
+### Example request
+
+```
+curl 'https://graph.facebook.com/v17.0/102290129340398/message_templates' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+-d '
+\{
+  "name": "intro_catalog_offer",
+  "language": "en_US",
+  "category": "MARKETING",
+  "components": [\
+    {\
+      "type": "BODY",\
+      "text": "Now shop for your favorite products right here on WhatsApp! Get Rs {{1}} off on all orders above {{2}}Rs! Valid for your first {{3}} orders placed on WhatsApp!",\
+      "example": {\
+        "body_text": [\
+          [\
+            "100",\
+            "400",\
+            "3"\
+          ]\
+        ]\
+      }\
+    },\
+    {\
+      "type": "FOOTER",\
+      "text": "Best grocery deals on WhatsApp!"\
+    },\
+    {\
+      "type": "BUTTONS",\
+      "buttons": [\
+        {\
+          "type": "CATALOG",\
+          "text": "View catalog"\
+        }\
+      ]\
+    }\
+  ]
+}'
+```
+
+### Example response
+
+```
+\{
+  "id": "546151681022936",
+  "status": "PENDING",
+  "category": "MARKETING"
+}
+```
+
+## Sending catalog template messages
+
+This document explains how to send approved [catalog templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates/catalog-templates) in a template message. See [Sell Products & Services](https://developers.facebook.com/documentation/business-messaging/whatsapp/catalogs/sell-products-and-services) to learn more about product catalogs and ways to showcase your products.
+
+### Requirements
+
+You must have [inventory uploaded to Meta](https://developers.facebook.com/documentation/business-messaging/whatsapp/catalogs/sell-products-and-services/upload-inventory) in an e-commerce catalog [connected to your WhatsApp Business Account](https://www.facebook.com/business/help/158662536425974).
+
+### Request syntax
+
+Use the [WhatsApp Business Phone Number > Messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api) endpoint to send a catalog template message using a catalog template with an `APPROVED` status.
+
+```
+curl -X POST "https://graph.facebook.com/v19.0/&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;/messages" \
+  -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;" \
+  -H "Content-Type: application/json" \
+  -d '
+\{
+    "messaging_product": "whatsapp",
+    "recipient_type": "individual",
+    "to": "&lt;TO&gt;",
+    "type": "template",
+    "template": {
+      "name": "&lt;NAME&gt;",
+      "language": {
+        "code": "&lt;CODE&gt;"
+      },
+      "components": [\
+        {\
+          "type": "body",\
+          "parameters": [\
+            {\
+              "type": "&lt;TYPE&gt;",\
+              "text": "&lt;TEXT&gt;"\
+            }\
+          ]\
+        },\
+        {\
+          "type": "button",\
+          "sub_type": "CATALOG",\
+          "index": 0,\
+          "parameters": [\
+            {\
+              "type": "action",\
+              "action": {\
+                "thumbnail_product_retailer_id": "&lt;THUMBNAIL_PRODUCT_RETAILER_ID&gt;"\
+              }\
+            }\
+          ]\
+        }\
+      ]
+    }
+  }'
+```
+
+### Request parameters
+
+| Placeholder | Description | Sample Value |
+| --- | --- | --- |
+| `&lt;CODE&gt;`<br />_String_ | **Required.**<br />Template [language and locale code](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/supported-languages). | `en_US` |
+| `&lt;NAME&gt;`<br />_String_ | **Required.**<br />Template name. | `intro_catalog_offer` |
+| `&lt;THUMBNAIL_PRODUCT_RETAILER_ID&gt;`<br />_String_ | **Optional.**<br />Item SKU number. Labeled as Content ID in the Commerce Manager.<br />The thumbnail of this item will be used as the message’s header image.<br />If the `parameters` object is omitted, the product image of the first item in your catalog will be used. | `2lc20305pt` |
+| `&lt;TEXT&gt;`<br />_String_ | **Required if template uses variables.**<br />Template variable. | `100` |
+| `&lt;TO&gt;`<br />_String_ | **Required.**<br />Customer phone number. | `+16505551234` |
+| `&lt;TYPE&gt;`<br />_String_ | **Required if template uses variables.**<br />Template variable type. | `text` |
+
+### Example request
+
+```
+curl 'https://graph.facebook.com/v17.0/106540352242922/messages' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+-d '
+\{
+  "messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": "+16505551234",
+  "type": "template",
+  "template": {
+    "name": "intro_catalog_offer",
+    "language": {
+      "code": "en_US"
+    },
+    "components": [\
+      {\
+        "type": "body",\
+        "parameters": [\
+          {\
+            "type": "text",\
+            "text": "100"\
+          },\
+          {\
+            "type": "text",\
+            "text": "400"\
+          },\
+          {\
+            "type": "text",\
+            "text": "3"\
+          }\
+        ]\
+      },\
+      {\
+        "type": "button",\
+        "sub_type": "CATALOG",\
+        "index": 0,\
+        "parameters": [\
+          {\
+            "type": "action",\
+            "action": {\
+              "thumbnail_product_retailer_id": "2lc20305pt"\
+            }\
+          }\
+        ]\
+      }\
+    ]
+  }
+}'
+```
+
+### Example response
+
+```
+\{
+  "messaging_product": "whatsapp",
+  "contacts": [\
+    {\
+      "input": "+16505551234",\
+      "wa_id": "16505551234"\
+    }\
+  ],
+  "messages": [\
+    {\
+      "id": "wamid.HBgLMTY1MDM4Nzk0MzkVAgARGBI5RkEwM0EyODFEQzQ2NDYzQTMA"\
+    }\
+  ]
+}
+```
+
+## See also
+
+[Sell Products & Services](https://developers.facebook.com/documentation/business-messaging/whatsapp/catalogs/sell-products-and-services)
+[Catalog Messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/catalogs/sell-products-and-services/share-products#catalog-messages)
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Creating catalog templates
+
+Requirements
+
+Request Syntax
+
+Request parameters
+
+Example request
+
+Example response
+
+Sending catalog template messages
+
+Requirements
+
+Request syntax
+
+Request parameters
+
+Example request
+
+Example response
+
+See also
+
+* * *

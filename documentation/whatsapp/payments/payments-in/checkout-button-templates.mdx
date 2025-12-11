@@ -1,0 +1,1631 @@
+
+# Checkout Button Templates
+
+Updated: Nov 3, 2025
+
+Checkout button templates are marketing templates that can showcase one or more products along with corresponding checkout buttons that WhatsApp users can use to make purchases without leaving the WhatsApp client.
+
+![](https://scontent-lax3-1.xx.fbcdn.net/v/t39.2365-6/461864193_1053025166222560_1984323495828319066_n.png?_nc_cat=108&ccb=1-7&_nc_sid=e280be&_nc_ohc=CR9P4QIuBNsQ7kNvwGWwCH5&_nc_oc=AdkHvfmEDnEbYCY3X9al0hDPtEalBYH3N9OjcF8lqdanAjBW8uADd7ZuVGNWUj4KAlk&_nc_zt=14&_nc_ht=scontent-lax3-1.xx&_nc_gid=z5RzOAJo_yQOXVce126uiw&oh=00_Afnc-wbUbSBPxvp1V6MKijrudxwjw0c9Rg3vql0DZoQ56g&oe=695509FC)
+
+## Single Products
+
+Checkout button templates can show a single product image or video header, along with message body text, message footer, a single checkout button, and up to 9 quick-reply buttons.
+
+![](https://scontent-lax3-1.xx.fbcdn.net/v/t39.2365-6/461716389_980926930508984_4731907095777942335_n.png?_nc_cat=109&ccb=1-7&_nc_sid=e280be&_nc_ohc=tPZDm8yHj1gQ7kNvwEgAcFo&_nc_oc=Adkpcnfm9b66Z-uw351yERWpCfltl1g-Izp4gXnbMWCkFQssP_ZymFh3bQTeW_OnO4w&_nc_zt=14&_nc_ht=scontent-lax3-1.xx&_nc_gid=z5RzOAJo_yQOXVce126uiw&oh=00_Afm6-2mFwQh_LilPABmztOISl8G7gMj5vdyhC_mPpdjY8w&oe=69552237)
+
+WhatsApp users who tap the button will see details of the order:
+
+![](https://scontent-lax3-1.xx.fbcdn.net/v/t39.2365-6/461898315_2387340868275631_829544685895208004_n.png?_nc_cat=109&ccb=1-7&_nc_sid=e280be&_nc_ohc=Z_Lfx6PoL4QQ7kNvwEE08DR&_nc_oc=Adk5Pt43Egrsr5P3x_-_m5hMEiAJW1piT1xXbxYTTvJv_kktwyXseDW6T-yYA7zzNM4&_nc_zt=14&_nc_ht=scontent-lax3-1.xx&_nc_gid=z5RzOAJo_yQOXVce126uiw&oh=00_AfnS7BH7q0A_CJ06-ik1_IiKWJNQX38iOQyxUzsb_qJmlQ&oe=6955158B)
+
+Users can proceed by selecting shipping information provided by you (if you know their information and supplied it in the send message payload)...
+
+![](https://scontent-lax3-2.xx.fbcdn.net/v/t39.2365-6/461872330_923861569791765_2740463248926355079_n.png?_nc_cat=107&ccb=1-7&_nc_sid=e280be&_nc_ohc=rNiah9LsWxIQ7kNvwGclH9t&_nc_oc=AdmTENKPgtQEkIthXmCQbCguvNo-Och-nd6l23Qi0TkYjaGgMc-4kmk4weTPSY2UAUM&_nc_zt=14&_nc_ht=scontent-lax3-2.xx&_nc_gid=z5RzOAJo_yQOXVce126uiw&oh=00_AfmlBUrIpwARyupDOUzvw4xYK3Ysw6z48A1lHbxfkKxANA&oe=6955052A)
+
+... or can add their own shipping information:
+
+![](https://scontent-lax3-1.xx.fbcdn.net/v/t39.2365-6/461774395_433815155940531_3266765354702751375_n.png?_nc_cat=108&ccb=1-7&_nc_sid=e280be&_nc_ohc=tih-a1sapB4Q7kNvwHSq6dO&_nc_oc=AdkCbfR6fB6KbkpJ_PEuCXry0Ps4Biv_X8lHkfqiIMNZhV4FJvcqYYt6YCKQxtuDIog&_nc_zt=14&_nc_ht=scontent-lax3-1.xx&_nc_gid=z5RzOAJo_yQOXVce126uiw&oh=00_AfmNUIq5p1HtbKSkqkgKz6dztCGaoXBeYgVGr4KQjgp8ZQ&oe=69551819)
+
+## Enabling coupons, realtime inventory and pricing updates
+
+Enabling coupons, realtime inventory and pricing updates is currently in beta and only available to India businesses and WhatsApp users with an India country calling code. Please reach out to whatsappindia-bizpayments-support@meta.com to know more.
+
+To enable coupons, realtime inventory and pricing updates, you can set up a checkout endpoint that can exchange data in real time to update the order on the WhatsApp client. It enables businesses to receive the shipping address and offers coupons based on the order and allows users to apply the coupon. It also enables businesses to validate inventory and serviceability on the order before the user completes the checkout.
+
+Setting up the checkout endpoint consists of the following steps and it’s the same method that [WhatsApp Flows endpoint](https://developers.facebook.com/docs/whatsapp/flows/guides/implementingyourflowendpoint#implementing-endpoint-for-flows) uses to share the data with WhatsApp clients.
+
+Create a key pair and upload and sign the public key using the [Cloud API](https://developers.facebook.com/docs/whatsapp/cloud-api/reference/whatsapp-business-encryption#set-business-public-key).
+[Setup the endpoint](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/checkout-button-templates#setup_the_endpoint)
+[Implement Payload Encryption/Decryption](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/checkout-button-templates#implement_encryption_decryption)
+[Link the checkout endpoint with payment configuration](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/checkout-button-templates#link_checkout_endpoint)
+[Implement checkout endpoint logic](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/checkout-button-templates#implement_checkout_logic)
+
+### Set up the endpoint
+
+WhatsApp client makes a HTTPS request to exchange the data with the business endpoint. You should make sure the endpoint is configured probably to accept the request and link the endpoint url with the [payment configuration](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/pg#link-your-payment-account):
+
+```
+https://business.com/checkout
+```
+
+Your server must be enabled to receive and process `POST` requests, use `HTTPS` and have a valid TLS/SSL certificate installed. This certificate does not have to be used in payload encryption/decryption.
+
+### Implement Encryption/Decryption
+
+The body of each request contains the encrypted payload and has the following form:
+
+#### Sample endpoint request syntax
+
+```
+\{
+  encrypted_flow_data: "&lt;ENCRYPTED_FLOW_DATA&gt;",
+  encrypted_aes_key: "&lt;ENCRYPTED_AES_KEY&gt;",
+  initial_vector: "&lt;INITIAL_VECTOR&gt;"
+}
+```
+
+| Parameter | Description |
+| --- | --- |
+| `encrypted_flow_data`<br />string | **Required.**<br />The encrypted request payload. |
+| `encrypted_aes_key`<br />string | **Required.**<br />The encrypted 128-bit AES key. |
+| `initial_vector`<br />string | **Required.**<br />The 128-bit initialization vector. |
+
+After processing the decrypted request, create a response and encrypt it before sending it back to the WhatsApp client. Encrypt the payload using the AES key received in the request and send it back as a Base64 string.
+
+You can refer to examples of how to [decrypt and encrypt](https://developers.facebook.com/docs/whatsapp/flows/guides/implementingyourflowendpoint#request-decryption-and-encryption).
+
+If a request can not be decrypted, the endpoint should return HTTP 421 response status code (see [Business Endpoint Error Codes](https://developers.facebook.com/docs/whatsapp/flows/reference/error-codes#endpoint_error_codes) for more details).
+
+#### Sample Endpoint Response
+
+```
+curl -i -H "Content-Type: application/json" -X POST -d '{
+"encrypted_flow_data":"4Wor0bpfvrNqnkH+XQZLn3HnU2Zi7hG\\/UHjISS93Fzn9J7youssaLeXlNUH",
+"encrypted_aes_key":"ufA0fXD1Wz...",
+"initial_vector":"G\\/1rq1naEOMR4TJHFvIs\\/Q==."
+}' 'https://business.com/checkout'
+
+HTTP/2 200
+content-type: text/plain
+content-length: 232
+date: Wed, 06 Jul 2022 14:03:03 GMT
+
+yZcJQaH3AqfzKgjn64vAcASaJrOMN27S6CESyU68WN/cDCP6abskoMa/pPjszXGKyyh/23lw84HW6ZilMfU6KL3j5AWwOx6GWNwtq8Aj7gz/Y7R+LccmJWxKo2UccMu5xJlduIFlFlOS1gAnOwKrk8wpuprsi4jAOspw3xO2uh3J883aC/csu/MhRPiYCaGGy/tTNvVDmb2Gw1WXFmpvLsZ/SBrgG0cDQJjQzpTO
+```
+
+### Link the checkout endpoint with payment configuration
+
+The business should have payment gateway based [payment configuration](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/pg#link-your-payment-account) and reach out to whatsappindia-bizpayments-support@meta.com to enable the WhatsApp business account for checkout endpoint linking with with payment configuration.
+
+Prior to linking the checkout endpoint, you should create a [payment configuration](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/pg#link-your-payment-account) and link with the payment gateway account. We advise you to use the linked payment configuration only with checkout button template integration.
+
+You can achieve the endpoint linking with payment configuration by following [Onboarding API’s - Link data endpoint](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/onboarding-apis#link-or-update-data-endpoint)
+
+### Implement checkout endpoint logic
+
+WhatsApp checkout endpoint integration inherits the ‘data_exchange’ similar to Flows and supports a set of subactions based on the user interaction and passes the relevant information in each of these actions to allow businesses to provide user specific coupons and enable businesses to update the pricing information accordingly.
+
+| Sub Action | Method | Description |
+| --- | --- | --- |
+| `get_coupons` | Request | When users click on a savings offer CTA, WhatsApp passes [order parameters](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/pg#paramobject) excluding the [payment settings](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/pg#paymentsettingsobject). It also passes the `user phone number` as an input parameter.<br />```<br />{<br />  "input":<br />  {<br />    "user_id": "user_phone_number"<br />  }<br />}<br />```<br />Refer [get coupons request](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/checkout-button-templates#get_coupon_request) example to understand the order and input parameters |
+|  | Response | Checkout endpoint expected to pass the list of coupon information, such as code, id and description.<br />```<br />{<br />  "coupons":<br />    [<br />        {<br />            "code": "coupon_code",<br />            "id": "coupon_id",<br />            "description": "coupon_description"<br />        }<br />    ]<br />}<br />```<br />Refer [get coupons response](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/checkout-button-templates#get_coupon_response) example to understand the expected response. |
+| `apply_coupon` | Request | When users select or enter a coupon, WhatsApp passes [order parameters](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/pg#paramobject) excluding the [payment settings](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/pg#paymentsettingsobject). It also passes the `user phone number` and information about the coupon to be applied as an input parameter.<br />```<br />{<br />  "input":<br />  {<br />    "user_id": "user_phone_number",<br />    "coupon":<br />    {<br />      "code": "WELCOME70"<br />    }<br />  }<br />}<br />```<br />Refer [apply coupon request](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/checkout-button-templates#apply_coupon_request) example to understand the order and input parameters |
+|  | Response | Checkout endpoint expected to update the item and order pricing in [order parameters](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/pg#paramobject) and attach the coupon with the order<br />Refer to [apply coupon response](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/checkout-button-templates#apply_coupon_response) example to understand the expected response. |
+| `remove_coupon` | Request | When users try to remove an applied coupon, WhatsApp passes [order parameters](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/pg#paramobject) excluding the [payment settings](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/pg#paymentsettingsobject). It also passes the `user phone number` as an input parameter.<br />```<br />{<br />  "input":<br />  {<br />    "user_id": "user_phone_number"<br />  }<br />}<br />```<br />Refer [remove coupon request](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/checkout-button-templates#remove_coupon_request) example to understand the expected response. |
+|  | Response | Checkout endpoint expected to update the item and order pricing in [order parameters](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/pg#paramobject) and remove the coupon attached with the order.<br />Refer [remove coupon response](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/checkout-button-templates#remove_coupon_response) example to understand the expected response. |
+| `apply_shipping` | Request | When users try to submit a shipping address, WhatsApp passes [order parameters](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/pg#paramobject) excluding the [payment settings](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/pg#paymentsettingsobject). It also passes the `user phone number` and shipping information as an input parameter.<br />```<br />{<br />  "input":<br />  {<br />    "user_id": "user_phone_number"<br />  }<br />}<br />```<br />Refer to the [apply shipping request](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/checkout-button-templates#apply_shipping_request) example to understand the expected response. |
+|  | Response | Checkout endpoint expected to update the item and shipping pricing in [order parameters](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/pg#paramobject).<br />Refer to the [apply shipping response](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/checkout-button-templates#apply_shipping_response) example to understand the expected response. |
+
+We have created a [checkout endpoint example](https://l.facebook.com/l.php?u=https%3A%2F%2Fgithub.com%2FWhatsApp%2FWhatsApp-Checkout-Button-Template-Endpoint&h=AT07IJgIWttdTCKbYMhqcSiQplWq-WXxmjO_YnrDw0xJ1eS5tx9rZz8lx1E109CcSNONrLYSHJE6c7DGNh6gsE0oznbzFH6BzRQvmKUtUeR5qgM_2CCj3oJYmqSeZCcaIdHCu2VrBTqOAQ) in Node.js that you can clone (remix) on Glitch to create your own endpoint and quickly prototype your checkout logic. Follow the instructions in the [README.md](https://l.facebook.com/l.php?u=https%3A%2F%2Fgithub.com%2FWhatsApp%2FWhatsApp-Checkout-Button-Template-Endpoint%2Fblob%2Fmain%2FREADME.md&h=AT07IJgIWttdTCKbYMhqcSiQplWq-WXxmjO_YnrDw0xJ1eS5tx9rZz8lx1E109CcSNONrLYSHJE6c7DGNh6gsE0oznbzFH6BzRQvmKUtUeR5qgM_2CCj3oJYmqSeZCcaIdHCu2VrBTqOAQ) file to get started. Using Glitch is entirely optional. You can clone the example code from Glitch and run it in any environment you prefer.
+Upon completing the above steps, when business sends the checkout template with the linked payment configuration, WhatsApp enables the coupons, realtime inventory and pricing updates and allows users to apply coupons and share shipping addresses.
+
+When enabled the `Apply a savings offer` will appear in the order summary screen
+
+![Image](https://scontent-lax3-1.xx.fbcdn.net/v/t39.2365-6/566208922_1339318471260137_8031940610378006006_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=e280be&_nc_ohc=aoMZH5uJIdMQ7kNvwHmOkDW&_nc_oc=AdmxQ5eBF1DFomjX3IUNW1nPcOrfeiWIWCjfvYmy4TuGu7xaoPv4XKrGYklpX2nP-nw&_nc_zt=14&_nc_ht=scontent-lax3-1.xx&_nc_gid=z5RzOAJo_yQOXVce126uiw&oh=00_AfkA3L12cHBFlLvjDNAGgR2lrcsaXStexCTBCv692nW8SQ&oe=69552060)
+
+User can click on `Apply a savings offer` to explore the coupons, at this point WhatsApp makes `get_coupons` request to fetch the list coupons based on the passed order and `user phone number` information.
+
+![Image](https://scontent-lax3-2.xx.fbcdn.net/v/t39.2365-6/560013461_1339318424593475_5113635030322783543_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=e280be&_nc_ohc=dbg0FQKy2xMQ7kNvwFzLBlC&_nc_oc=AdlZ9b-PyqO88dAPG0uCk7uKqMDWhO4DWafzQVnZtQMhGyr_QfTyH6xlIgT1i_exn_U&_nc_zt=14&_nc_ht=scontent-lax3-2.xx&_nc_gid=z5RzOAJo_yQOXVce126uiw&oh=00_AfklSI0-uXsjkQvHcTPQEw4c6gvoTGuFlaXcVMRF4Oa5tg&oe=6955196B)
+
+When the user tries to apply a coupon, WhatsApp makes `apply_coupon` and allow businesses to update the order or item pricing based on the selected coupon.
+
+![Image](https://scontent-lax3-1.xx.fbcdn.net/v/t39.2365-6/560498579_1339318444593473_8466127193448601632_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=e280be&_nc_ohc=IOHsVsApWg8Q7kNvwEEdfI8&_nc_oc=AdneQMtfVqRoOKaMVmAmFdCbEMKn8ds6oAaQiTXYKMG0IqZuZ1p7e1iTOi7zG_wVP2Q&_nc_zt=14&_nc_ht=scontent-lax3-1.xx&_nc_gid=z5RzOAJo_yQOXVce126uiw&oh=00_AflMZvyU1StPU8GBr_K6xWlIxM4xdldr4vhjp61UYLz5BA&oe=69552F79)
+
+Similar to coupons, user can share the shipping address by clicking on `Add shipping address` and select the addresses saved with the businesses or add new address. WhatsApp makes `apply_shipping` request when user tries to submit the address and allow businesses to check inventory and logistics based on the address provided.
+
+![Image](https://scontent-lax3-2.xx.fbcdn.net/v/t39.2365-6/561725167_1339318187926832_1852627850653076539_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=e280be&_nc_ohc=PvpsfONeJtQQ7kNvwFaHKP4&_nc_oc=AdnU4_rcH81rJSS-Beg_4AFqUCrqPR1HiTjebxCX81QKAjFMZVpDxKfQoz6QHH8LlWA&_nc_zt=14&_nc_ht=scontent-lax3-2.xx&_nc_gid=z5RzOAJo_yQOXVce126uiw&oh=00_AfmgGruwvopxiqzqfAI-Om7_z1Z5P1UsrRgDJEtozKGCVw&oe=69551E12)![Image](https://scontent-lax3-1.xx.fbcdn.net/v/t39.2365-6/560467967_1339318057926845_5662577297785116122_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=e280be&_nc_ohc=rvf5Y3mXslsQ7kNvwHSPJe7&_nc_oc=AdmpycPG0k_x-6BFbHlbaZq28_v7xQ6UYkSuhdjhU5VGgml-GjZiZNgWWdT1uL32CDQ&_nc_zt=14&_nc_ht=scontent-lax3-1.xx&_nc_gid=z5RzOAJo_yQOXVce126uiw&oh=00_AfnxlrCRy7--E4-m2EgVyZVystyrIOk10dRA5NOBnfs_Hw&oe=69551A64)
+
+Users can then continue to place the order using their preferred payment method set up in the WhatsApp client:
+
+![](https://scontent-lax3-1.xx.fbcdn.net/v/t39.2365-6/461783140_456335920794267_694558377704466245_n.png?_nc_cat=108&ccb=1-7&_nc_sid=e280be&_nc_ohc=QiouYFnv64IQ7kNvwGAM_U0&_nc_oc=AdlUggx8v5IoM_OSjdIfyvqUEic_KufdhGC808AuoOPCyhXOH21C2XTAT8jOlyvUEXU&_nc_zt=14&_nc_ht=scontent-lax3-1.xx&_nc_gid=z5RzOAJo_yQOXVce126uiw&oh=00_AfluUVBf_vLqiLqh7-I4YgudGejCr_pNcsGMwOsLh_nBiA&oe=6955155D)
+
+Once the order is processed, a [payment webhook](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/pg#step-2--receive-webhook-about-transaction-status) is triggered.
+
+## Multiple Products
+
+You can create a [media card carousel template](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates/media-card-carousel-templates) that showcases up to 10 products in a card carousel, each with their own checkout button. To do this, simply create a media card carousel template as you normally would, but replace one of the buttons with a [checkout button](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/checkout-button-templates#checkout-buttons), and make sure that it is the first button in the card.
+
+Checkout buttons in media card carousel templates trigger the same order and payment flow as checkout buttons in templates that showcase a single product.
+
+## Checkout Buttons
+
+Each checkout button in a template must correspond to a single product. Checkout buttons, when creating a template, must have the following non-customizable syntax:
+
+```
+\{
+  "type": "order_details",
+  "text": "Buy now"
+}
+```
+
+Note that this is simply a button definition. The actual details about the product that maps to this button are included when you [send the template](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/checkout-button-templates#sending-payment-button-templates) in a template message. For example:
+
+```
+\{
+  "type": "button",
+  "sub_type": "order_details",
+  "index": 0,
+  "parameters": [\
+    {\
+      "type": "action",\
+      "action": {\
+        "order_details": {\
+          "reference_id": "abc.123_xyz-1",\
+          "type": "physical-goods",\
+          "currency": "INR",\
+          "payment_settings": [\
+            {\
+              "type": "payment_gateway",\
+              "payment_gateway": {\
+                "type": "razorpay",\
+                "configuration_name": "prod-razor-pay-config-05"\
+              }\
+            }\
+          ],\
+          "shipping_info": {\
+            "country": "IN",\
+            "addresses": [\
+              {\
+                "name": "Nidhi Tripathi",\
+                "phone_number": "919000090000",\
+                "address": "Bandra Kurla Complex",\
+                "city": "Mumbai",\
+                "state": "Maharastra",\
+                "in_pin_code": "400051",\
+                "house_number": "12",\
+                "tower_number": "5",\
+                "building_name": "One BKC",\
+                "landmark_area": "Near BKC Circle"\
+              }\
+            ]\
+          },\
+          "order": {\
+            "items": [\
+              {\
+                "amount": {\
+                  "offset": 100,\
+                  "value": 200000\
+                },\
+                "sale_amount": {\
+                  "offset": 100,\
+                  "value": 150000\
+                },\
+                "name": "Blue Elf Aloe",\
+                "quantity": 1,\
+                "country_of_origin": "India",\
+                "importer_name": "Lucky Shrub Imports and Exports",\
+                "importer_address": {\
+                  "address_line1": "One BKC",\
+                  "address_line2": "Bandra Kurla Complex",\
+                  "city": "Mumbai",\
+                  "zone_code": "MH",\
+                  "postal_code": "400051",\
+                  "country_code": "IN"\
+                }\
+              }\
+            ],\
+            "subtotal": {\
+              "offset": 100,\
+              "value": 150000\
+            },\
+            "shipping": {\
+              "offset": 100,\
+              "value": 20000\
+            },\
+            "tax": {\
+              "offset": 100,\
+              "value": 10000\
+            },\
+            "discount": {\
+              "offset": 100,\
+              "value": 15000,\
+              "description": "Additional 10% off"\
+            },\
+            "status": "pending",\
+            "expiration": {\
+              "timestamp": "1726627150"\
+            }\
+          },\
+          "total_amount": {\
+            "offset": 100,\
+            "value": 165000\
+          }\
+        }\
+      }\
+    }\
+  ]
+}
+```
+
+If you are sending a [media card carousel template](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates/media-card-carousel-templates) (which can have two or more products), each checkout button must be defined in the template, and the item details that map to each button must be included when sending the template.
+
+## Creating Checkout Button Templates
+
+Use the [**POST /&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;/message_templates**](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-account/template-api#post-version-waba-id-message-templates) endpoint to create a template that uses a checkout button.
+
+### Request Syntax
+
+```
+POST /&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;/message_templates
+```
+
+### Post Body
+
+The post body below is for a checkout button template that shows a single button. See the [Media Card Carousel Templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates/media-card-carousel-templates) document to see carousel template post body syntax.
+
+```
+\{
+  "name": "&lt;TEMPLATE_NAME&gt;",
+  "language": "&lt;TEMPLATE_LANGUAGE&gt;",
+  "category": "marketing",
+  "components": [\
+    {\
+      "type": "header",\
+      "format": "&lt;MESSAGE_HEADER_FORMAT&gt;",\
+      "example": {\
+        "header_handle": [\
+          "&lt;MESSAGE_HEADER_ASSET_HANDLE&gt;"\
+        ]\
+      }\
+    },\
+    {\
+      "type": "body",\
+      "text": "&lt;MESSAGE_BODY_TEXT&gt;",\
+      "example": {\
+        "body_text": [\
+          [\
+            "&lt;MESSAGE_BODY_TEXT_VARIABLE_EXAMPLE&gt;",\
+            "&lt;MESSAGE_BODY_TEXT_VARIABLE_EXAMPLE&gt;"\
+          ]\
+        ]\
+      }\
+    },\
+\
+    /* Footer component is optional */\
+    {\
+      "type": "footer",\
+      "text": "&lt;MESSAGE_FOOTER_TEXT&gt;"\
+    },\
+\
+    {\
+      "type": "buttons",\
+      "buttons": [\
+        {\
+          "type": "order_details",\
+          "text": "Buy now"\
+        },\
+\
+        /* Quick-reply buttons are optional; up to 9 permitted */\
+        {\
+          "type": "quick_reply",\
+          "text": "&lt;QUICK_REPLY_BUTTON_LABEL_TEXT&gt;"\
+        }\
+      ]\
+    }\
+  ]
+}
+```
+
+### Post Body Parameters
+
+| Placeholder | Description | Example Value |
+| --- | --- | --- |
+| `&lt;MESSAGE_BODY_TEXT&gt;`<br />_String_ | **Required.**<br />Message body text. Supports variables.<br />Maximum 1024 characters. | `Hi {{1}}! The {{2}} is back in stock! Order now before it's gone!` |
+| `&lt;MESSAGE_BODY_TEXT_VARIABLE_EXAMPLE&gt;`<br />_String_ | **Required if message body text string uses variables.**<br />Message body text example variable string(s). Number of strings must match the number of variable placeholders in the message body text string.<br />If message body text uses a single variable, `body_text` value can be a string, otherwise it must be an array containing an array of strings. | `Pablo` |
+| `&lt;MESSAGE_FOOTER_TEXT&gt;`<br />_String_ | **Required if using a message footer.**<br />Message footer text string.<br />60 characters maximum. | `Tap 'Stop' below to stop back-in-stock reminders.` |
+| `&lt;MESSAGE_HEADER_ASSET_HANDLE&gt;`<br />_String_ | **Required if using a non-text media header.**<br />Uploaded media asset handle. Use the [Resumable Upload API](https://developers.facebook.com/docs/graph-api/guides/upload) to generate an asset handle.<br />Media assets are automatically cropped to a wide ratio based on the WhatsApp user’s device. | `4::anBlZw==:ARa525ZJ1g0J-8egeiRvb4Z4r9RSi9qeKF7-wXsUiaDFsll5CKbu5H7h_9mTW0TDfA8LEGHC4bAeXtJJiVQADMp5Ooe2huQlhpBxMadJiu3qVg:e:1724535430:634974688087057:100089620928913:ARaQoFQMm6BlbI3MYo4` |
+| `&lt;MESSAGE_HEADER_FORMAT&gt;`<br />_String_ | **Required.**<br />Message header format. Value can be `image` or `video`. | `image` |
+| `&lt;QUICK_REPLY_BUTTON_LABEL_TEXT&gt;`<br />_String_ | **Required if using a quick-reply button.**<br />Quick-reply button label text.<br />Maximum 25 characters. | `Stop` |
+| `&lt;TEMPLATE_LANGUAGE&gt;`<br />_String_ | **Required.**<br />Template [language and locale code](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/supported-languages). | `en_US` |
+| `&lt;TEMPLATE_NAME&gt;`<br />_String_ | **Required.**<br />Template name.<br />Maximum 512 characters. | `item_back_in_stock_v1` |
+
+### Example Request
+
+This example request creates a checkout button template with a single image message header, message body text that uses two variables, a footer, a single checkout button, and a quick-reply button.
+
+```
+curl 'https://graph.facebook.com/v24.0/102290129340398/message_templates' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+-d '
+\{
+  "name": "item_back_in_stock_v1",
+  "language": "en_US",
+  "category": "marketing",
+  "components": [\
+    {\
+      "type": "header",\
+      "format": "image",\
+      "example": {\
+        "header_handle": [\
+          "3:NDU..."\
+        ]\
+      }\
+    },\
+    {\
+      "type": "body",\
+      "text": "Hi {{1}}! The {{2}} is back in stock! Order now before it\'s gone!",\
+      "example": {\
+        "body_text": [\
+          [\
+            "Pablo",\
+            "Blue Elf Aloe"\
+          ]\
+        ]\
+      }\
+    },\
+    {\
+      "type": "footer",\
+      "text": "Tap \'Stop\' below to stop back-in-stock reminders."\
+    },\
+    {\
+      "type": "buttons",\
+      "buttons": [\
+        {\
+          "type": "order_details",\
+          "text": "Buy now"\
+        },\
+        {\
+          "type": "quick_reply",\
+          "text": "Stop"\
+        }\
+      ]\
+    }\
+  ]
+}'
+```
+
+## Sending Checkout Button Templates
+
+Once your checkout button template or carousel template has been approved, you can send it in a template message.
+
+### Request Syntax
+
+Use the [**POST /&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;/messages**](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api) endpoint to send an approved checkout button template or carousel template to a WhatsApp user.
+
+```
+POST /&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;/messages
+```
+
+### Post Body
+
+This post body syntax is for a checkout button template. See [Sending Media Card Carousel Templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates/media-card-carousel-templates) for media card carousel template post body payload syntax.
+
+```
+\{
+  "messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": "&lt;WHATSAPP_USER_PHONE_NUMBER&gt;",
+  "type": "template",
+  "template": {
+    "name": "&lt;TEMPLATE_NAME&gt;",
+    "language": {
+      "policy": "deterministic",
+      "code": "&lt;TEMPLATE_LANGUAGE&gt;"
+    },
+    "components": [\
+      {\
+        "type": "header",\
+        "parameters": [\
+          {\
+            "type": "&lt;MESSAGE_HEADER_FORMAT&gt;",\
+            "&lt;MESSAGE_HEADER_FORMAT&gt;": {\
+              "id": "&lt;MESSAGE_HEADER_ASSET_ID&gt;"\
+            }\
+          }\
+        ]\
+      },\
+      {\
+        "type": "body",\
+        "parameters": [\
+          {\
+            &lt;MESSAGE_BODY_TEXT_VARIABLE&gt;\
+          },\
+          {\
+            &lt;MESSAGE_BODY_TEXT_VARIABLE&gt;\
+          }\
+        ]\
+      },\
+      {\
+        "type": "button",\
+        "sub_type": "order_details",\
+        "index": 0,\
+        "parameters": [\
+          {\
+            "type": "action",\
+            "action": {\
+              "order_details": {\
+                "reference_id": "&lt;REFERENCE_ID&gt;",\
+                "currency": "INR",\
+                "type": "&lt;PRODUCT_TYPE&gt;",\
+                "payment_settings": [\
+                  {\
+                    "type": "payment_gateway",\
+                    "payment_gateway": {\
+                      "type": "&lt;PAYMENT_GATEWAY_NAME&gt;",\
+                      "configuration_name": "&lt;PAYMENT_GATEWAY_CONFIGURATION_NAME&gt;"\
+                    }\
+                  }\
+                ],\
+\
+                /* "shipping_info" required for physical-goods type, else omit */\
+                "shipping_info": {\
+                  "country": "IN",\
+                  "addresses": [\
+\
+                    /* object required if you know recipient's address, otherwise omit (i.e., set "addresses" to an empty array) */\
+                    {\
+                      "name": "&lt;SHIPPING_INFO_NAME&gt;",\
+                      "phone_number": "&lt;SHIPPING_INFO_PHONE_NUMBER&gt;",\
+                      "address": "&lt;SHIPPING_INFO_ADDRESS&gt;",\
+                      "city": "&lt;SHIPPING_INFO_CITY&gt;",\
+                      "state": "&lt;SHIPPING_INFO_STATE&gt;",\
+                      "in_pin_code": "&lt;SHIPPING_INFO_INDIA_PIN&gt;",\
+                      "landmark_area": "&lt;SHIPPING_INFO_LANDMARK_AREA&gt;",\
+                      "house_number": "&lt;SHIPPING_INFO_HOUSE_NUMBER&gt;",\
+                      "tower_number": "&lt;SHIPPING_INFO_TOWER_NUMBER&gt;",\
+                      "building_name": "&lt;SHIPPING_INFO_BUILDING_NAME&gt;"\
+                    }\
+\
+                  ]\
+                },\
+\
+                "order": {\
+                  "items": [\
+                    {\
+                      "amount": {\
+                        "offset": 100,\
+                        "value": &lt;ITEM_PRICE&gt;\
+                      },\
+\
+                      /* "sale_amount" optional */\
+                      "sale_amount": {\
+                        "offset": 100,\
+                        "value": &lt;SALE_PRICE&gt;\
+                      },\
+\
+                      "name": "&lt;ITEM_NAME&gt;",\
+                      "quantity": &lt;ITEM_QUANTITY&gt;,\
+                      "country_of_origin": "&lt;ITEM_COUNTRY_OF_ORIGIN&gt;",\
+                      "importer_name": "&lt;IMPORTER_NAME&gt;",\
+                      "importer_address": {\
+                        "address_line1": "<IMPORTER_ADDRESS_LINE_1>",\
+                        "address_line2": "<IMPORTER_ADDRESS_LINE_2>",\
+                        "city": "&lt;IMPORTER_CITY&gt;",\
+                        "zone_code": "&lt;IMPORTER_ZONE_CODE&gt;",\
+                        "postal_code": "&lt;IMPORTER_POSTAL_CODE&gt;",\
+                        "country_code": "IN"\
+                      }\
+                    }\
+                  ],\
+                  "subtotal": {\
+                    "offset": 100,\
+                    "value": &lt;SUBTOTAL_AMOUNT&gt;\
+                  }\
+                  "shipping": {\
+                    "offset": 100,\
+                    "value": &lt;SHIPPING_AMOUNT&gt;\
+                  },\
+                  "tax": {\
+                    "offset": 100,\
+                    "value": &lt;TAX_AMOUNT&gt;,\
+                    "description": "&lt;TAX_DESCRIPTION&gt;"\
+                  },\
+\
+                  /* "discount" optional */\
+                  "discount": {\
+                    "offset": 100,\
+                    "value": &lt;DISCOUNT_AMOUNT&gt;,\
+                    "description": "&lt;DISCOUNT_DESCRIPTION&gt;"\
+                  },\
+                  "status": "pending",\
+\
+                  /* "expiration" optional */\
+                  "expiration": {\
+                    "timestamp": "&lt;EXPIRATION_TIMESTAMP&gt;"\
+                  }\
+                },\
+                "total_amount": {\
+                  "offset": 100,\
+                  "value": &lt;TOTAL_AMOUNT&gt;\
+                }\
+              }\
+            }\
+          }\
+        ]\
+      }\
+    ]
+  }
+}
+```
+
+### Post Body Parameters
+
+| Placeholder | Description | Example Value |
+| --- | --- | --- |
+| `&lt;DISCOUNT_AMOUNT&gt;`<br />_Integer_ | **Required if using a discount.**<br />Discount amount, multiplied by discount.offset value.<br />For example, to represent a discount of ₹2, the value would be `200`.<br />Discount amount applies to the order subtotal. | `15000` |
+| `&lt;DISCOUNT_DESCRIPTION&gt;`<br />_String_ | **Optional.**<br />Discount description.<br />Maximum 60 characters. | `Additional 10% off` |
+| `&lt;EXPIRATION_TIMESTAMP&gt;`<br />_String_ | **Required if using an order expiration.**<br />UTC timestamp indicating when we should disable the **Buy now** button. The timestamp will be used to generate a text string that appears at the bottom of the **Order details** window. For example:<br />_This order expires on September 30, 2024 at 12:00 PM._<br />WhatsApp users who view the message after this time will be unable to purchase the item using the checkout button.<br />Values must represent a UTC time at least 300 seconds from when the send message request is sent to us. | `1726692927` |
+| `<IMPORTER_ADDRESS_LINE_1>`<br />_String_ | **Required.**<br />Importer address, line 1 (door, tower, number, street, etc.).<br />Maximum 100 characters. | `One BKC` |
+| `<IMPORTER_ADDRESS_LINE_2>`<br />_String_ | **Optional.**<br />Importer address, line 2 (landmark, area, etc.).<br />Maximum 100 characters. | `Bandra Kurla Complex` |
+| `&lt;IMPORTER_CITY&gt;`<br />_String_ | **Required.**<br />Importer city.<br />Maximum 120 characters. | `Mumbai` |
+| `&lt;IMPORTER_NAME&gt;`<br />_String_ | **Required.**<br />Importer name.<br />Maximum 200 characters. | `Lucky Shrub Imports and Exports` |
+| `&lt;IMPORTER_POSTAL_CODE&gt;`<br />_String_ | **Required.**<br />Importer 6-digit postal index number.<br />Maximum 6 digits. | `400051` |
+| `&lt;IMPORTER_ZONE_CODE&gt;`<br />_String_ | **Required.**<br />Importer two-letter zone code. | `MH` |
+| `&lt;ITEM_COUNTRY_OF_ORIGIN&gt;`<br />_String_ | **Required.**<br />Item’s country of origin.<br />Maximum 100 characters. | `India` |
+| `&lt;ITEM_NAME&gt;`<br />_String_ | **Required.**<br />Item name.<br />Maximum 60 characters. | `Blue Elf Aloe` |
+| `&lt;ITEM_PRICE&gt;`<br />_Integer_ | **Required.**<br />Individual item price (price per item), multiplied by amount.offset value.<br />For example, to represent an item price of ₹12.99, the value would be `1299`. | `200000` |
+| `&lt;ITEM_QUANTITY&gt;`<br />_Integer_ | **Required.**<br />Number of items in order, if order is placed.<br />Maximum 100 integers. | `1` |
+| `&lt;MESSAGE_BODY_TEXT_VARIABLE&gt;`<br />_Object_ | **Required if template message body text uses variables, otherwise omit.**<br />Object describing a message variable. If the template uses multiple variables, you must define an object for each variable.<br />Supports `text`, `currency`, and `date_time` types. See [Messages Parameters](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api#parameter-object).<br />There is no maximum character limit on this value, but it does count against the message body text limit of 1024 characters. | ```<br />{<br />"type":"text",<br />"text": "Nidhi"<br />}<br />``` |
+| `&lt;MESSAGE_HEADER_ASSET_ID&gt;`<br />_String_ | **Required.**<br />Header asset’s uploaded media asset ID. Use the [**POST /&lt;BUSINESS_PHONE_NUMBER_ID&gt;/media**](https://developers.facebook.com/documentation/business-messaging/whatsapp/business-phone-numbers/media#upload-media) endpoint to generate an asset ID. | `1558081531584829` |
+| `&lt;MESSAGE_HEADER_FORMAT&gt;`<br />_String_ | **Required.**<br />Indicates header type and a matching property name.<br />Note that the `&lt;MESSAGE_HEADER_FORMAT&gt;` placeholder appears twice in the post body example above, as it serves as a placeholder for the type property’s value and its matching property name.<br />Value can be `image` or `video`. | `image` |
+| `&lt;PAYMENT_GATEWAY_CONFIGURATION_NAME&gt;`<br />_String_ | **Required.**<br />Configuration name of payment gateway you have [configured](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/onboarding-apis) on your WhatsApp Business Account. | `prod-razor-pay-config-05` |
+| `&lt;PAYMENT_GATEWAY_NAME&gt;`<br />_String_ | **Required.**<br />Name of payment gateway you have [configured](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/onboarding-apis) on your WhatsApp Business Account.<br />Values can be:<br />`razorpay`<br />`payu`<br />`zaakpay` | `razorpay` |
+| `&lt;PRODUCT_TYPE&gt;`<br />_String_ | **Required.**<br />Product type. Value can be `digital-goods` or `physical-goods`. | `digital-goods` |
+| `&lt;QUICK_REPLY_BUTTON_PAYLOAD&gt;`<br />_String_ | **Optional.**<br />Value to be included in messages webhooks (`messages.button.payload`) when the button is tapped. | `opt-out` |
+| `&lt;REFERENCE_ID&gt;`<br />_String_ | **Required.**<br />Your unique order or invoice reference ID. Case-sensitive. Cannot be empty. Will be preceded by a hash (#) symbol in the checkout flow.<br />Value must be unique for each checkout button template message. If sending a carousel template, each checkout button must have a unique reference ID.<br />If you need to send multiple messages for the same order/invoice, it is recommended to append a sequence number to the value (for example, -1).<br />Values can only contain English letters, numbers, underscores, dashes, or dots.<br />Maximum 35 characters. | `abc.123_xyz-1` |
+| `&lt;SALE_PRICE&gt;`<br />_Integer_ | **Required if using a sale amount.**<br />Sale price, multiplied by `sale.offset` value.<br />For example, to represent a sale price of ₹10, the value would be `1000`. | `150000` |
+| `&lt;SHIPPING_AMOUNT&gt;`<br />_Integer_ | **Required.**<br />Order shipping cost, multiplied by `shipping.offset` value.<br />For example, to represent a shipping cost of ₹.99, the value would be `99`. | `20000` |
+| `&lt;SHIPPING_INFO_ADDRESS&gt;`<br />_String_ | **Required if you know the recipient’s shipping information.**<br />Product recipient’s address.<br />Maximum 512 characters. | `Bandra Kurla Complex` |
+| `&lt;SHIPPING_INFO_BUILDING_NAME&gt;`<br />_String_ | **Optional.**<br />Product recipient’s building name.<br />Maximum 128 characters. | `One BKC` |
+| `&lt;SHIPPING_INFO_CITY&gt;`<br />_String_ | **Required if you know the recipient’s shipping information.**<br />Full name of product recipient’s city.<br />Maximum 100 characters. | `Mumbai` |
+| `&lt;SHIPPING_INFO_FLOOR_NUMBER&gt;`<br />_String_ | **Optional.**<br />Product recipient’s floor number.<br />Maximum 10 characters. | `2` |
+| `&lt;SHIPPING_INFO_HOUSE_NUMBER&gt;`<br />_String_ | **Optional.**<br />Product recipient’s house number.<br />Maximum 8 characters. | `12` |
+| `&lt;SHIPPING_INFO_INDIA_PIN&gt;`<br />_String_ | **Required if you know the recipient’s shipping information.**<br />Product recipient’s postal index number.<br />Maximum 6 characters. | `400051` |
+| `&lt;SHIPPING_INFO_LANDMARK_AREA&gt;`<br />_String_ | **Optional.**<br />Product recipient’s landmark area.<br />Maximum 128 characters. | `Near BKC Circle` |
+| `&lt;SHIPPING_INFO_NAME&gt;`<br />_String_ | **Required if you know the recipient’s shipping information.**<br />Product recipient’s full name.<br />Maximum 256 characters. | `Nidhi Tripathi` |
+| `&lt;SHIPPING_INFO_PHONE_NUMBER&gt;`<br />_String_ | **Required if you know the recipient’s shipping information.**<br />Product recipient’s WhatsApp phone number.<br />Maximum 12 characters. | `919000090000` |
+| `&lt;SHIPPING_INFO_STATE&gt;`<br />_String_ | **Required if you know the recipient’s shipping information.**<br />Full name of product recipient’s state.<br />Maximum 100 characters. | `Maharastra` |
+| `&lt;SHIPPING_INFO_TOWER_NUMBER&gt;`<br />_String_ | **Optional.**<br />Product recipient’s tower number.<br />Maximum 8 characters. | `2` |
+| `&lt;SUBTOTAL_AMOUNT&gt;`<br />_Integer_ | **Required.**<br />Order subtotal. Calculate by multiplying `&lt;ITEM_PRICE&gt;` by `&lt;ITEM_QUANTITY&gt;` by `subtotal.offset`.<br />For example, if the template is for placing a single order containing 2 items priced at ₹12.99, the value would be `2598`. | `150000` |
+| `&lt;TAX_AMOUNT&gt;`<br />_Integer_ | **Required.**<br />Tax amount, multiplied by `tax.offset`.<br />For example, to represent a tax amount of ₹5, the value would be `500`. | `10000` |
+| `&lt;TAX_DESCRIPTION&gt;`<br />_String_ | **Optional.**<br />Tax description.<br />Maximum 60 characters. | `Sales tax` |
+| `&lt;TEMPLATE_LANGUAGE&gt;`<br />_String_ | **Required.**<br />Template [language and locale code](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/supported-languages). | `en_US` |
+| `&lt;TEMPLATE_NAME&gt;`<br />_String_ | **Required.**<br />Template name.<br />Maximum 512 characters. | `item_back_in_stock_v1` |
+| `&lt;TOTAL_AMOUNT&gt;`<br />_Integer_ | **Required.**<br />Total amount of order, multiplied by `total_amount.offset` value.<br />For example, to represent a total amount of ₹18, value be `1800`.<br />Must be a sum of:<br />`order.subtotal.value`<br />`order.shipping.value`<br />`order.tax.value`<br />Minus:<br />`order.discount.value` | `165000` |
+| `&lt;WHATSAPP_USER_PHONE_NUMBER&gt;`<br />_String_ | **Required.**<br />WhatsApp user phone number. | `+16505551234` |
+
+### Example Request
+
+```
+curl 'https://graph.facebook.com/v24.0/106540352242922/messages' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+-d '
+\{
+  "messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": "+16505551234",
+  "type": "template",
+  "template": {
+    "name": "item_back_in_stock_v2",
+    "language": {
+      "policy": "deterministic",
+      "code": "en_US"
+    },
+    "components": [\
+      {\
+        "type": "header",\
+        "parameters": [\
+          {\
+            "type": "image",\
+            "image": {\
+              "id": "1558081531584829"\
+            }\
+          }\
+        ]\
+      },\
+      {\
+        "type": "body",\
+        "parameters": [\
+          {\
+            "type": "text",\
+            "text": "Nidhi"\
+          },\
+          {\
+            "type": "text",\
+            "text": "Blue Elf Aloe"\
+          }\
+        ]\
+      },\
+      {\
+        "type": "button",\
+        "sub_type": "order_details",\
+        "index": 0,\
+        "parameters": [\
+          {\
+            "type": "action",\
+            "action": {\
+              "order_details": {\
+                "reference_id": "abc.123_xyz-1",\
+                "type": "physical-goods",\
+                "currency": "INR",\
+                "payment_settings": [\
+                  {\
+                    "type": "payment_gateway",\
+                    "payment_gateway": {\
+                      "type": "razorpay",\
+                      "configuration_name": "prod-razor-pay-config-05"\
+                    }\
+                  }\
+                ],\
+                "shipping_info": {\
+                  "country": "IN",\
+                  "addresses": [\
+                    {\
+                      "name": "Nidhi Tripathi",\
+                      "phone_number": "919000090000",\
+                      "address": "Bandra Kurla Complex",\
+                      "city": "Mumbai",\
+                      "state": "Maharastra",\
+                      "in_pin_code": "400051",\
+                      "house_number": "12",\
+                      "tower_number": "5",\
+                      "building_name": "One BKC",\
+                      "landmark_area": "Near BKC Circle"\
+                    }\
+                  ]\
+                },\
+                "order": {\
+                  "items": [\
+                    {\
+                      "amount": {\
+                        "offset": 100,\
+                        "value": 200000\
+                      },\
+                      "sale_amount": {\
+                        "offset": 100,\
+                        "value": 150000\
+                      },\
+                      "name": "Blue Elf Aloe",\
+                      "quantity": 1,\
+                      "country_of_origin": "India",\
+                      "importer_name": "Lucky Shrub Imports and Exports",\
+                      "importer_address": {\
+                        "address_line1": "One BKC",\
+                        "address_line2": "Bandra Kurla Complex",\
+                        "city": "Mumbai",\
+                        "zone_code": "MH",\
+                        "postal_code": "400051",\
+                        "country_code": "IN"\
+                      }\
+                    }\
+                  ],\
+                  "subtotal": {\
+                    "offset": 100,\
+                    "value": 150000\
+                  },\
+                  "shipping": {\
+                    "offset": 100,\
+                    "value": 20000\
+                  },\
+                  "tax": {\
+                    "offset": 100,\
+                    "value": 10000\
+                  },\
+                  "discount": {\
+                    "offset": 100,\
+                    "value": 15000,\
+                    "description": "Additional 10% off"\
+                  },\
+                  "status": "pending",\
+                  "expiration": {\
+                    "timestamp": "1726627150"\
+                  }\
+                },\
+                "total_amount": {\
+                  "offset": 100,\
+                  "value": 165000\
+                }\
+              }\
+            }\
+          }\
+        ]\
+      }\
+    ]
+  }
+}'
+```
+
+The following sample request and responses are only supported with [Enabling coupons, realtime inventory and pricing updates](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/checkout-button-templates#enabling_coupons_inventory) feature and it is currently in beta and only available to India businesses and WhatsApp users with an India country calling code. Please reach out to whatsappindia-bizpayments-support@meta.com to know more.
+
+### Get Coupons - Endpoint Sample Request
+
+```
+      {
+    "data":
+    {
+        "order_details":
+        {
+            "reference_id": "abc.123_xyz-1",
+            "type": "physical-goods",
+            "currency": "INR",
+            "shipping_info":
+            {
+                "country": "IN",
+                "addresses":
+                [\
+                    {\
+                        "name": "Nidhi Tripathi",\
+                        "phone_number": "919000090000",\
+                        "address": "Bandra Kurla Complex",\
+                        "city": "Mumbai",\
+                        "state": "Maharastra",\
+                        "in_pin_code": "400051",\
+                        "house_number": "12",\
+                        "tower_number": "5",\
+                        "building_name": "One BKC",\
+                        "landmark_area": "Near BKC Circle"\
+                    }\
+                ]
+            },
+            "order":
+            {
+                "items":
+                [\
+                    {\
+                        "amount":\
+                        {\
+                            "offset": 100,\
+                            "value": 200000\
+                        },\
+                        "sale_amount":\
+                        {\
+                            "offset": 100,\
+                            "value": 150000\
+                        },\
+                        "name": "Blue Elf Aloe",\
+                        "quantity": 1,\
+                        "country_of_origin": "India",\
+                        "importer_name": "Lucky Shrub Imports and Exports",\
+                        "importer_address":\
+                        {\
+                            "address_line1": "One BKC",\
+                            "address_line2": "Bandra Kurla Complex",\
+                            "city": "Mumbai",\
+                            "zone_code": "MH",\
+                            "postal_code": "400051",\
+                            "country_code": "IN"\
+                        }\
+                    }\
+                ],
+                "subtotal":
+                {
+                    "offset": 100,
+                    "value": 150000
+                },
+                "shipping":
+                {
+                    "offset": 100,
+                    "value": 20000
+                },
+                "tax":
+                {
+                    "offset": 100,
+                    "value": 10000
+                },
+                "discount":
+                {
+                    "offset": 100,
+                    "value": 15000,
+                    "description": "Additional 10% off"
+                },
+                "status": "pending",
+                "expiration":
+                {
+                    "timestamp": "1726627150",
+                    "description": "order expires in 5 min"
+                }
+            },
+            "total_amount":
+            {
+                "offset": 100,
+                "value": 165000
+            }
+        },
+        "input":
+        {
+            "user_id": "919000090000"
+        }
+    },
+    "action": "data_exchange",
+    "sub_action": "get_coupons",
+    "version": "1.0"
+}
+```
+
+### Get Coupons - Endpoint Sample Response
+
+```
+      {
+    "version": "1.0",
+    "sub_action": "get_coupons",
+    "data":
+    {
+        "coupons":
+        [\
+            {\
+                "description": "Save R20 on the order",\
+                "code": "TRYNEW20",\
+                "id": "try_new_20_id"\
+            },\
+            {\
+                "description": "Save R30 on the order",\
+                "code": "TRYNEW30",\
+                "id": "try_new_30_id"\
+            },\
+            {\
+                "description": "Save R50 on the order",\
+                "code": "TRYNEW50",\
+                "id": "try_new50_id"\
+            }\
+        ]
+    }
+}
+```
+
+### Apply Coupon - Endpoint Sample Request
+
+```
+      {
+    "data":
+    {
+        "order_details":
+        {
+            "reference_id": "abc.123_xyz-1",
+            "type": "physical-goods",
+            "currency": "INR",
+            "shipping_info":
+            {
+                "country": "IN",
+                "addresses":
+                [\
+                    {\
+                        "name": "Nidhi Tripathi",\
+                        "phone_number": "919000090000",\
+                        "address": "Bandra Kurla Complex",\
+                        "city": "Mumbai",\
+                        "state": "Maharastra",\
+                        "in_pin_code": "400051",\
+                        "house_number": "12",\
+                        "tower_number": "5",\
+                        "building_name": "One BKC",\
+                        "landmark_area": "Near BKC Circle"\
+                    }\
+                ]
+            },
+            "order":
+            {
+                "items":
+                [\
+                    {\
+                        "amount":\
+                        {\
+                            "offset": 100,\
+                            "value": 200000\
+                        },\
+                        "sale_amount":\
+                        {\
+                            "offset": 100,\
+                            "value": 150000\
+                        },\
+                        "name": "Blue Elf Aloe",\
+                        "quantity": 1,\
+                        "country_of_origin": "India",\
+                        "importer_name": "Lucky Shrub Imports and Exports",\
+                        "importer_address":\
+                        {\
+                            "address_line1": "One BKC",\
+                            "address_line2": "Bandra Kurla Complex",\
+                            "city": "Mumbai",\
+                            "zone_code": "MH",\
+                            "postal_code": "400051",\
+                            "country_code": "IN"\
+                        }\
+                    }\
+                ],
+                "subtotal":
+                {
+                    "offset": 100,
+                    "value": 150000
+                },
+                "shipping":
+                {
+                    "offset": 100,
+                    "value": 20000
+                },
+                "tax":
+                {
+                    "offset": 100,
+                    "value": 10000
+                },
+                "discount":
+                {
+                    "offset": 100,
+                    "value": 15000,
+                    "description": "Additional 10% off"
+                },
+                "status": "pending",
+                "expiration":
+                {
+                    "timestamp": "1726627150",
+                    "description": "order expires in 5 min"
+                }
+            },
+            "total_amount":
+            {
+                "offset": 100,
+                "value": 165000
+            }
+        },
+        "input":
+        {
+            "user_id": "919000090000",
+            "coupon":
+            {
+                "code": "TRYNEW10"
+            }
+        }
+    },
+    "action": "data_exchange",
+    "sub_action": "apply_coupon",
+    "version": "1.0"
+}
+```
+
+### Apply Coupon - Endpoint Sample Response
+
+```
+      {
+    "sub_action": "apply_coupon",
+    "version": "1.0",
+    "data":
+    {
+        "order_details":
+        {
+            "reference_id": "abc.123_xyz-1",
+            "type": "physical-goods",
+            "currency": "INR",
+            "shipping_info":
+            {
+                "country": "IN",
+                "addresses":
+                [\
+                    {\
+                        "name": "Nidhi Tripathi",\
+                        "phone_number": "919000090000",\
+                        "address": "Bandra Kurla Complex",\
+                        "city": "Mumbai",\
+                        "state": "Maharastra",\
+                        "in_pin_code": "400051",\
+                        "house_number": "12",\
+                        "tower_number": "5",\
+                        "building_name": "One BKC",\
+                        "landmark_area": "Near BKC Circle"\
+                    }\
+                ]
+            },
+            "order":
+            {
+                "items":
+                [\
+                    {\
+                        "amount":\
+                        {\
+                            "offset": 100,\
+                            "value": 200000\
+                        },\
+                        "sale_amount":\
+                        {\
+                            "offset": 100,\
+                            "value": 150000\
+                        },\
+                        "name": "Blue Elf Aloe",\
+                        "quantity": 1,\
+                        "country_of_origin": "India",\
+                        "importer_name": "Lucky Shrub Imports and Exports",\
+                        "importer_address":\
+                        {\
+                            "address_line1": "One BKC",\
+                            "address_line2": "Bandra Kurla Complex",\
+                            "city": "Mumbai",\
+                            "zone_code": "MH",\
+                            "postal_code": "400051",\
+                            "country_code": "IN"\
+                        }\
+                    }\
+                ],
+                "subtotal":
+                {
+                    "offset": 100,
+                    "value": 150000
+                },
+                "shipping":
+                {
+                    "offset": 100,
+                    "value": 20000
+                },
+                "tax":
+                {
+                    "offset": 100,
+                    "value": 10000
+                },
+                "discount":
+                {
+                    "offset": 100,
+                    "value": 15000,
+                    "description": "Additional 10% off"
+                },
+                "status": "pending",
+                "expiration":
+                {
+                    "timestamp": "1726627150",
+                    "description": "order expires in 5 min"
+                }
+            },
+            "coupon":
+            {
+                "code": "TRYNEW10",
+                "discount":
+                {
+                    "value": 16500,
+                    "offset": 100
+                }
+            },
+            "total_amount":
+            {
+                "offset": 100,
+                "value": 148500
+            }
+        }
+    }
+}
+```
+
+### Remove Coupon - Endpoint Sample Request
+
+```
+      {
+    "data":
+    {
+        "order_details":
+        {
+            "reference_id": "abc.123_xyz-1",
+            "type": "physical-goods",
+            "currency": "INR",
+            "shipping_info":
+            {
+                "country": "IN",
+                "addresses":
+                [\
+                    {\
+                        "name": "Nidhi Tripathi",\
+                        "phone_number": "919000090000",\
+                        "address": "Bandra Kurla Complex",\
+                        "city": "Mumbai",\
+                        "state": "Maharastra",\
+                        "in_pin_code": "400051",\
+                        "house_number": "12",\
+                        "tower_number": "5",\
+                        "building_name": "One BKC",\
+                        "landmark_area": "Near BKC Circle"\
+                    }\
+                ]
+            },
+            "order":
+            {
+                "items":
+                [\
+                    {\
+                        "amount":\
+                        {\
+                            "offset": 100,\
+                            "value": 200000\
+                        },\
+                        "sale_amount":\
+                        {\
+                            "offset": 100,\
+                            "value": 150000\
+                        },\
+                        "name": "Blue Elf Aloe",\
+                        "quantity": 1,\
+                        "country_of_origin": "India",\
+                        "importer_name": "Lucky Shrub Imports and Exports",\
+                        "importer_address":\
+                        {\
+                            "address_line1": "One BKC",\
+                            "address_line2": "Bandra Kurla Complex",\
+                            "city": "Mumbai",\
+                            "zone_code": "MH",\
+                            "postal_code": "400051",\
+                            "country_code": "IN"\
+                        }\
+                    }\
+                ],
+                "subtotal":
+                {
+                    "offset": 100,
+                    "value": 150000
+                },
+                "shipping":
+                {
+                    "offset": 100,
+                    "value": 20000
+                },
+                "tax":
+                {
+                    "offset": 100,
+                    "value": 10000
+                },
+                "discount":
+                {
+                    "offset": 100,
+                    "value": 15000,
+                    "description": "Additional 10% off"
+                },
+                "status": "pending",
+                "expiration":
+                {
+                    "timestamp": "1726627150",
+                    "description": "order expires in 5 min"
+                }
+            },
+            "coupon":
+            {
+                "code": "TRYNEW10",
+                "discount":
+                {
+                    "value": 16500,
+                    "offset": 100
+                }
+            },
+            "total_amount":
+            {
+                "offset": 100,
+                "value": 148500
+            }
+        },
+        "input":
+        {
+            "user_id": "919000090000"
+        }
+    },
+    "action": "data_exchange",
+    "sub_action": "remove_coupon",
+    "version": "1.0"
+}
+```
+
+### Remove Coupon - Endpoint Sample Response
+
+```
+      {
+    "sub_action": "remove_coupon",
+    "version": "1.0",
+    "data":
+    {
+        "order_details":
+        {
+            "reference_id": "abc.123_xyz-1",
+            "type": "physical-goods",
+            "currency": "INR",
+            "shipping_info":
+            {
+                "country": "IN",
+                "addresses":
+                [\
+                    {\
+                        "name": "Nidhi Tripathi",\
+                        "phone_number": "919000090000",\
+                        "address": "Bandra Kurla Complex",\
+                        "city": "Mumbai",\
+                        "state": "Maharastra",\
+                        "in_pin_code": "400051",\
+                        "house_number": "12",\
+                        "tower_number": "5",\
+                        "building_name": "One BKC",\
+                        "landmark_area": "Near BKC Circle"\
+                    }\
+                ]
+            },
+            "order":
+            {
+                "items":
+                [\
+                    {\
+                        "amount":\
+                        {\
+                            "offset": 100,\
+                            "value": 200000\
+                        },\
+                        "sale_amount":\
+                        {\
+                            "offset": 100,\
+                            "value": 150000\
+                        },\
+                        "name": "Blue Elf Aloe",\
+                        "quantity": 1,\
+                        "country_of_origin": "India",\
+                        "importer_name": "Lucky Shrub Imports and Exports",\
+                        "importer_address":\
+                        {\
+                            "address_line1": "One BKC",\
+                            "address_line2": "Bandra Kurla Complex",\
+                            "city": "Mumbai",\
+                            "zone_code": "MH",\
+                            "postal_code": "400051",\
+                            "country_code": "IN"\
+                        }\
+                    }\
+                ],
+                "subtotal":
+                {
+                    "offset": 100,
+                    "value": 150000
+                },
+                "shipping":
+                {
+                    "offset": 100,
+                    "value": 20000
+                },
+                "tax":
+                {
+                    "offset": 100,
+                    "value": 10000
+                },
+                "discount":
+                {
+                    "offset": 100,
+                    "value": 15000,
+                    "description": "Additional 10% off"
+                },
+                "status": "pending",
+                "expiration":
+                {
+                    "timestamp": "1726627150",
+                    "description": "order expires in 5 min"
+                }
+            },
+            "total_amount":
+            {
+                "offset": 100,
+                "value": 165000
+            }
+        }
+    }
+}
+```
+
+### Apply Shipping - Endpoint Sample Request
+
+```
+      {
+    "data":
+    {
+        "order_details":
+        {
+            "reference_id": "abc.123_xyz-1",
+            "type": "physical-goods",
+            "currency": "INR",
+            "shipping_info":
+            {
+                "country": "IN",
+                "addresses":
+                [\
+                    {\
+                        "name": "Nidhi Tripathi",\
+                        "phone_number": "919000090000",\
+                        "address": "Bandra Kurla Complex",\
+                        "city": "Mumbai",\
+                        "state": "Maharastra",\
+                        "in_pin_code": "400051",\
+                        "house_number": "12",\
+                        "tower_number": "5",\
+                        "building_name": "One BKC",\
+                        "landmark_area": "Near BKC Circle"\
+                    }\
+                ]
+            },
+            "order":
+            {
+                "items":
+                [\
+                    {\
+                        "amount":\
+                        {\
+                            "offset": 100,\
+                            "value": 200000\
+                        },\
+                        "sale_amount":\
+                        {\
+                            "offset": 100,\
+                            "value": 150000\
+                        },\
+                        "name": "Blue Elf Aloe",\
+                        "quantity": 1,\
+                        "country_of_origin": "India",\
+                        "importer_name": "Lucky Shrub Imports and Exports",\
+                        "importer_address":\
+                        {\
+                            "address_line1": "One BKC",\
+                            "address_line2": "Bandra Kurla Complex",\
+                            "city": "Mumbai",\
+                            "zone_code": "MH",\
+                            "postal_code": "400051",\
+                            "country_code": "IN"\
+                        }\
+                    }\
+                ],
+                "subtotal":
+                {
+                    "offset": 100,
+                    "value": 150000
+                },
+                "shipping":
+                {
+                    "offset": 100,
+                    "value": 20000
+                },
+                "tax":
+                {
+                    "offset": 100,
+                    "value": 10000
+                },
+                "discount":
+                {
+                    "offset": 100,
+                    "value": 15000,
+                    "description": "Additional 10% off"
+                },
+                "status": "pending",
+                "expiration":
+                {
+                    "timestamp": "1726627150",
+                    "description": "order expires in 5 min"
+                }
+            },
+            "coupon":
+            {
+                "code": "TRYNEW10",
+                "discount":
+                {
+                    "value": 16500,
+                    "offset": 100
+                }
+            },
+            "total_amount":
+            {
+                "offset": 100,
+                "value": 148500
+            }
+        },
+        "input":
+        {
+            "user_id": "919000090000",
+            "selected_address":
+            {
+                "name": "Nidhi Tripathi",
+                "phone_number": "919000090000",
+                "address": "Bandra Kurla Complex",
+                "city": "Mumbai",
+                "state": "Maharastra",
+                "in_pin_code": "400051",
+                "house_number": "12",
+                "tower_number": "5",
+                "building_name": "One BKC",
+                "landmark_area": "Near BKC Circle"
+            }
+        }
+    },
+    "action": "data_exchange",
+    "sub_action": "apply_shipping",
+    "version": "1.0"
+}
+```
+
+### Apply Shipping - Endpoint Sample Response
+
+```
+      {
+    "sub_action": "apply_shipping",
+    "version": "1.0",
+    "data":
+    {
+        "order_details":
+        {
+            "reference_id": "abc.123_xyz-1",
+            "type": "physical-goods",
+            "currency": "INR",
+            "shipping_info":
+            {
+                "country": "IN",
+                "addresses":
+                [\
+                    {\
+                        "name": "Nidhi Tripathi",\
+                        "phone_number": "919000090000",\
+                        "address": "Bandra Kurla Complex",\
+                        "city": "Mumbai",\
+                        "state": "Maharastra",\
+                        "in_pin_code": "400051",\
+                        "house_number": "12",\
+                        "tower_number": "5",\
+                        "building_name": "One BKC",\
+                        "landmark_area": "Near BKC Circle"\
+                    }\
+                ],
+                "selected_address":
+                {
+                    "name": "Nidhi Tripathi",
+                    "phone_number": "919000090000",
+                    "address": "Bandra Kurla Complex",
+                    "city": "Mumbai",
+                    "state": "Maharastra",
+                    "in_pin_code": "400051",
+                    "house_number": "12",
+                    "tower_number": "5",
+                    "building_name": "One BKC",
+                    "landmark_area": "Near BKC Circle"
+                }
+            },
+            "order":
+            {
+                "items":
+                [\
+                    {\
+                        "amount":\
+                        {\
+                            "offset": 100,\
+                            "value": 200000\
+                        },\
+                        "sale_amount":\
+                        {\
+                            "offset": 100,\
+                            "value": 150000\
+                        },\
+                        "name": "Blue Elf Aloe",\
+                        "quantity": 1,\
+                        "country_of_origin": "India",\
+                        "importer_name": "Lucky Shrub Imports and Exports",\
+                        "importer_address":\
+                        {\
+                            "address_line1": "One BKC",\
+                            "address_line2": "Bandra Kurla Complex",\
+                            "city": "Mumbai",\
+                            "zone_code": "MH",\
+                            "postal_code": "400051",\
+                            "country_code": "IN"\
+                        }\
+                    }\
+                ],
+                "subtotal":
+                {
+                    "offset": 100,
+                    "value": 150000
+                },
+                "shipping":
+                {
+                    "offset": 100,
+                    "value": 40000
+                },
+                "tax":
+                {
+                    "offset": 100,
+                    "value": 10000
+                },
+                "discount":
+                {
+                    "offset": 100,
+                    "value": 15000,
+                    "description": "Additional 10% off"
+                },
+                "status": "pending",
+                "expiration":
+                {
+                    "timestamp": "1726627150",
+                    "description": "order expires in 5 min"
+                }
+            },
+            "coupon":
+            {
+                "code": "TRYNEW10",
+                "discount":
+                {
+                    "value": 16500,
+                    "offset": 100
+                }
+            },
+            "total_amount":
+            {
+                "offset": 100,
+                "value": 168500
+            }
+        }
+    }
+}
+```
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Single Products
+
+Enabling coupons, realtime inventory and pricing updates
+
+Set up the endpoint
+
+Implement Encryption/Decryption
+
+Sample endpoint request syntax
+
+Sample Endpoint Response
+
+Link the checkout endpoint with payment configuration
+
+Implement checkout endpoint logic
+
+Multiple Products
+
+Checkout Buttons
+
+Creating Checkout Button Templates
+
+Request Syntax
+
+Post Body
+
+Post Body Parameters
+
+Example Request
+
+Sending Checkout Button Templates
+
+Request Syntax
+
+Post Body
+
+Post Body Parameters
+
+Example Request
+
+Get Coupons - Endpoint Sample Request
+
+Get Coupons - Endpoint Sample Response
+
+Apply Coupon - Endpoint Sample Request
+
+Apply Coupon - Endpoint Sample Response
+
+Remove Coupon - Endpoint Sample Request
+
+Remove Coupon - Endpoint Sample Response
+
+Apply Shipping - Endpoint Sample Request
+
+Apply Shipping - Endpoint Sample Response
+
+* * *

@@ -1,0 +1,120 @@
+
+# System messages webhook reference
+
+Updated: Oct 22, 2025
+
+This reference describes trigger events and payload contents for the WhatsApp Business Account **messages** webhook for system messages.
+
+Note that unlike other incoming messages webbooks, system **messages** webhooks don’t include a `contacts` array.
+
+## Triggers
+
+A WhatsApp user changes their WhatsApp phone number.
+
+## Syntax
+
+```
+\{
+  "object": "whatsapp_business_account",
+  "entry": [\
+    {\
+      "id": "&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;",\
+      "changes": [\
+        {\
+          "value": {\
+            "messaging_product": "whatsapp",\
+            "metadata": {\
+              "display_phone_number": "&lt;BUSINESS_DISPLAY_PHONE_NUMBER&gt;",\
+              "phone_number_id": "&lt;BUSINESS_PHONE_NUMBER_ID&gt;"\
+            },\
+            "messages": [\
+              {\
+                "from": "&lt;WHATSAPP_USER_PHONE_NUMBER&gt;",\
+                "id": "&lt;WHATSAPP_MESSAGE_ID&gt;",\
+                "timestamp": "&lt;WEBHOOK_TRIGGER_TIMESTAMP&gt;",\
+                "type": "system",\
+                "system": {\
+                  "body": "User &lt;WHATSAPP_USER_PROFILE_NAME&gt; changed from &lt;WHATSAPP_USER_PHONE_NUMBER&gt; to &lt;NEW_WHATSAPP_USER_PHONE_NUMBER&gt;",\
+                  "wa_id": "&lt;NEW_WHATSAPP_USER_ID&gt;",\
+                  "type": "user_changed_number"\
+                }\
+              }\
+            ]\
+          },\
+          "field": "messages"\
+        }\
+      ]\
+    }\
+  ]
+}
+```
+
+## Parameters
+
+| Placeholder | Description | Example value |
+| --- | --- | --- |
+| `&lt;BUSINESS_DISPLAY_PHONE_NUMBER&gt;`<br />_String_ | Business display phone number. | `15550783881` |
+| `&lt;BUSINESS_PHONE_NUMBER_ID&gt;`<br />_String_ | Business phone number ID. | `106540352242922` |
+| `&lt;NEW_WHATSAPP_USER_ID&gt;`<br />_String_ | New WhatsApp user ID. Note that a WhatsApp user’s ID and phone number may not always match. | `12195555358` |
+| `&lt;NEW_WHATSAPP_USER_PHONE_NUMBER&gt;`<br />_String_ | New WhatsApp user phone number. Note that a WhatsApp user’s phone number and ID may not always match. | `12195555358` |
+| `&lt;WEBHOOK_TRIGGER_TIMESTAMP&gt;`<br />_String_ | Unix timestamp indicating when the webhook was triggered. | `1739321024` |
+| `&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;`<br />_String_ | WhatsApp Business Account ID. | `102290129340398` |
+| `&lt;WHATSAPP_MESSAGE_ID&gt;`<br />_String_ | WhatsApp message ID. | `wamid.HBgLMTY1MDM4Nzk0MzkVAgASGBQzQUFERjg0NDEzNDdFODU3MUMxMAA=` |
+| `&lt;WHATSAPP_USER_PHONE_NUMBER&gt;` _String_ | WhatsApp user phone number. Note that a WhatsApp user’s phone number and ID may not always match. | `16505551234` |
+| `&lt;WHATSAPP_USER_PROFILE_NAME&gt;` _String_ | WhatsApp user’s name as it appears in their profile in the WhatsApp client. | `Sheena Nelson` |
+
+## Example
+
+```
+\{
+  "object": "whatsapp_business_account",
+  "entry": [\
+    {\
+      "id": "102290129340398",\
+      "changes": [\
+        {\
+          "value": {\
+            "messaging_product": "whatsapp",\
+            "metadata": {\
+              "display_phone_number": "15550783881",\
+              "phone_number_id": "106540352242922"\
+            },\
+            "messages": [\
+              {\
+                "from": "16505551234",\
+                "id": "wamid.HBgLMTk4MzU1NTE5NzQVAgASGAoxMTgyMDg2MjY3AA==",\
+                "timestamp": "1750269342",\
+                "system": {\
+                  "body": "User Sheena Nelson changed from 16505551234 to 12195555358",\
+                  "wa_id": "12195555358",\
+                  "type": "user_changed_number"\
+                },\
+                "type": "system"\
+              }\
+            ]\
+          },\
+          "field": "messages"\
+        }\
+      ]\
+    }\
+  ]
+}
+```
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Triggers
+
+Syntax
+
+Parameters
+
+Example
+
+* * *

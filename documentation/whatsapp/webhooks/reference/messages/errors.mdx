@@ -1,0 +1,114 @@
+
+# Errors messages webhooks reference
+
+Updated: Oct 22, 2025
+
+This reference describes trigger events and payload contents for the WhatsApp Business Account **messages** webhook for errors messages.
+
+## Triggers
+
+We are unable to process a request due to a system level problem.
+We are unable to process a request due to an app or account level problem.
+
+## Syntax
+
+```
+\{
+  "object": "whatsapp_business_account",
+  "entry": [\
+    {\
+      "id": "&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;",\
+      "changes": [\
+        {\
+          "value": {\
+            "messaging_product": "whatsapp",\
+            "metadata": {\
+              "display_phone_number": "&lt;BUSINESS_DISPLAY_PHONE_NUMBER&gt;",\
+              "phone_number_id": "&lt;BUSINESS_PHONE_NUMBER_ID&gt;"\
+            },\
+            "errors": [\
+              {\
+                "code": &lt;ERROR_CODE&gt;,\
+                "title": "&lt;ERROR_TITLE&gt;",\
+                "message": "&lt;ERROR_MESSAGE&gt;",\
+                "error_data": {\
+                  "details": "&lt;ERROR_DETAILS&gt;"\
+                },\
+                "href": "&lt;ERROR_CODES_URL&gt;"\
+              }\
+            ]\
+          },\
+          "field": "messages"\
+        }\
+      ]\
+    }\
+  ]
+}
+```
+
+## Parameters
+
+| Placeholder | Description | Example value |
+| --- | --- | --- |
+| `&lt;BUSINESS_DISPLAY_PHONE_NUMBER&gt;`<br />_String_ | Business display phone number. | `15550783881` |
+| `&lt;BUSINESS_PHONE_NUMBER_ID&gt;`<br />_String_ | Business phone number ID. | `106540352242922` |
+| `&lt;ERROR_CODE&gt;`<br />_Integer_ | [Error code](https://developers.facebook.com/documentation/business-messaging/whatsapp/support/error-codes). | `130429` |
+| `&lt;ERROR_CODES_URL&gt;`<br />_String_ | Link to [error code documentation](https://developers.facebook.com/documentation/business-messaging/whatsapp/support/error-codes). | `/docs/whatsapp/cloud-api/support/error-codes/` |
+| `&lt;ERROR_DETAILS&gt;`<br />_String_ | [Error code](https://developers.facebook.com/documentation/business-messaging/whatsapp/support/error-codes) details. | `Message failed to send because there were too many messages sent from this phone number in a short period of time` |
+| `&lt;ERROR_MESSAGE&gt;`<br />_String_ | [Error code](https://developers.facebook.com/documentation/business-messaging/whatsapp/support/error-codes) message. This value is the same as the `title` property value. | `Rate limit hit` |
+| `&lt;ERROR_TITLE&gt;`<br />_String_ | [Error code](https://developers.facebook.com/documentation/business-messaging/whatsapp/support/error-codes) title. This value is the same as the `message` property value. | `Rate limit hit` |
+| `&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;`<br />_String_ | WhatsApp Business Account ID. | `102290129340398` |
+
+## Example
+
+```
+\{
+  "object": "whatsapp_business_account",
+  "entry": [\
+    {\
+      "id": "102290129340398",\
+      "changes": [\
+        {\
+          "value": {\
+            "messaging_product": "whatsapp",\
+            "metadata": {\
+              "display_phone_number": "15550783881",\
+              "phone_number_id": "106540352242922"\
+            },\
+            "errors": [\
+              {\
+                "code": 130429,\
+                "title": "Rate limit hit",\
+                "message": "Rate limit hit",\
+                "error_data": {\
+                  "details": "Message failed to send because there were too many messages sent from this phone number in a short period of time"\
+                },\
+                "href": "/documentation/business-messaging/whatsapp/support/error-codes"\
+              }\
+            ]\
+          },\
+          "field": "messages"\
+        }\
+      ]\
+    }\
+  ]
+}
+```
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Triggers
+
+Syntax
+
+Parameters
+
+Example
+
+* * *

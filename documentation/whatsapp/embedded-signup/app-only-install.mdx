@@ -1,0 +1,139 @@
+
+# App-Only Install
+
+Updated: Nov 4, 2025
+
+You can configure Embedded Signup so that only [business tokens](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#business-integration-system-user-access-tokens) can be used to access assets owned by customers onboarded via the flow. This approach offers enhanced security by reducing risk associated with [system tokens](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#system-user-access-tokens), flexibility in simplifying onboarding for other Meta assets, and scalability to support a larger number of onboardings. By using a granular token, you can also reduce the negative impact in case of a compromised token, making it a more secure and efficient way to manage your business customer assets.
+
+Note that App-Only Install can’t be used to [onboard WhatsApp Business app users](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/onboarding-business-app-users).
+
+## Enabling the feature in Embedded Signup v3
+
+To enable this feature, set `features` to `app_only_install` in the Embedded Signup configuration.
+
+```
+\{
+  "config_id": "&lt;CONFIGURATION_ID&gt;",
+  "response_type": "code",
+  "override_default_response_type": true,
+  "extras": {
+    "version": "v3",
+    "features": [\
+      {\
+        "name": "app_only_install"\
+      }\
+    ]
+  }
+}
+```
+
+To enable this feature along with a [Multi-Partner Solution](https://developers.facebook.com/documentation/business-messaging/whatsapp/solution-providers/multi-partner-solutions):
+
+```
+\{
+  "config_id": "&lt;CONFIG_ID&gt;",
+  "response_type": "code",
+  "override_default_response_type": true,
+  "extras": {
+    "version": "v3",
+    "features": [\
+      {\
+        "name": "app_only_install"\
+      }\
+    ],
+    "setup": {
+      "solutionID": "&lt;SOLUTION_ID&gt;"
+    }
+  }
+}
+```
+
+When a business customer successfully completes the flow, the [session logging message event](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/implementation#session-logging-message-event-listener) will have `event` set to `FINISH_GRANT_ONLY_API_ACCESS`:
+
+```
+\{
+  data: {
+    phone_number_id: "&lt;CUSTOMER_BUSINESS_PHONE_NUMBER_ID&gt;",
+    waba_id: "&lt;CUSTOMER_WABA_ID&gt;",
+    business_id: "&lt;CUSTOMER_BUSINESS_ID&gt;",
+  },
+  type: "WA_EMBEDDED_SIGNUP",
+  event: "FINISH_GRANT_ONLY_API_ACCESS",
+}
+```
+
+When a business customer successfully completes the flow, an **account_update** webhook is triggered with `event` set to `PARTNER_APP_INSTALLED`.
+
+```
+\{
+  "entry": [\
+    {\
+      "id": "<PARTNER_BUSINESS_ID_1>",\
+      "time": "&lt;WEBHOOK_TRIGGER_TIMESTAMP&gt;",\
+      "changes": [\
+        {\
+          "value": {\
+            "event": "PARTNER_APP_INSTALLED",\
+            "waba_info": {\
+              "waba_id": "&lt;WABA_ID&gt;",\
+              "owner_business_id": "&lt;WABA_OWNER_BUSINESS_ID&gt;",\
+              "partner_app_id": "&lt;APP_ID&gt;",\
+              "solution_id": "&lt;SOLUTION_ID&gt;",\
+              "solution_partner_business_ids": [\
+                "<PARTNER_BUSINESS_ID_1>",\
+                "<PARTNER_BUSINESS_ID_2>"\
+              ]\
+            }\
+          }\
+        }\
+      ],\
+      "field": "account_update",\
+      "object": "whatsapp_business_account"\
+    }\
+  ]
+}
+```
+
+If an onboarded business customer uses [Meta Business Suite](https://business.facebook.com/) to uninstall/remove the app, an **account_update** webhook is triggered with `event` set to `PARTNER_APP_UNINSTALLED`.
+
+```
+\{
+  "entry": [\
+    {\
+      "id": "&lt;PARTNER_BUSINESS_ID&gt;",\
+      "time": "&lt;WEBHOOK_TRIGGER_TIMESTAMP&gt;",\
+      "changes": [\
+        {\
+          "value": {\
+            "event": "PARTNER_APP_UNINSTALLED"\
+          },\
+          "field": "account_update"\
+        }\
+      ]\
+    }\
+  ],
+  "object": "whatsapp_business_account"
+}
+```
+
+You can use the [Business Token Management API](https://developers.facebook.com/docs/facebook-login/facebook-login-for-business#bisu-token-api) to get an onboarded business customer’s business token.
+
+```
+curl -i -X POST "https://graph.facebook.com/v22.0/&lt;CUSTOMER_BUSINESS_PORTFOLIO_ID&gt;/system_user_access_tokens
+  ?appsecret_proof=&lt;APPSECRET_PROOF_HASH&gt;
+  &access_token=&lt;ACCESS_TOKEN&gt;
+  &system_user_id=&lt;SYSTEM_USER_ID&gt;
+  &fetch_only=true"
+```
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Enabling the feature in Embedded Signup v3
+
+* * *

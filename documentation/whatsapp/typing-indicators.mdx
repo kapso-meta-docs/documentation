@@ -1,0 +1,94 @@
+
+# Typing indicators
+
+Updated: Oct 21, 2025
+
+When you get a **messages** webhook indicating a [received message](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/reference/messages), you can use the `message.id` value to mark the message as read and display a typing indicator so the WhatsApp user knows you are preparing a response. This is good practice if it will take you a few seconds to respond.
+
+![](https://scontent-fra5-1.xx.fbcdn.net/v/t39.2365-6/488360772_654124507349470_2240843625651955811_n.png?_nc_cat=110&ccb=1-7&_nc_sid=e280be&_nc_ohc=B20F-5WctbsQ7kNvwGDb1iI&_nc_oc=AdlpAqpn0WxzuKAQ4CuEhLQVk9jgNOX1Nn8BADlcBZXNTHvVoz2gRaif59SPQJLyDyU&_nc_zt=14&_nc_ht=scontent-fra5-1.xx&_nc_gid=k3jtunPTKSoLfRfPp4WhDw&oh=00_AfmhWWrK4fPgckY7w36-Jjj6F_XbawV0xHWzhGiatWTzdw&oe=695501DC)
+
+The typing indicator will be dismissed once you respond, or after 25 seconds, whichever comes first. To prevent a poor user experience, only display a typing indicator if you are going to respond.
+
+## Request syntax
+
+```
+curl -X POST \
+'https://graph.facebook.com/&lt;API_VERSION&gt;/&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;/messages'
+-H 'Authorization: Bearer &lt;ACCESS_TOKEN&gt;' \
+-H 'Content-Type: application/json' \
+-d '
+\{
+  "messaging_product": "whatsapp",
+  "status": "read",
+  "message_id": "&lt;WHATSAPP_MESSAGE_ID&gt;",
+  "typing_indicator": {
+    "type": "text"
+  }
+}'
+```
+
+## Request parameters
+
+| Placeholder | Description | Example value |
+| --- | --- | --- |
+| `&lt;ACCESS_TOKEN&gt;`<br />_String_ | **Required.**<br />[System token](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#system-user-access-tokens) or [business token](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#business-integration-system-user-access-tokens). | `EAAAN6tcBzAUBOZC82CW7iR2LiaZBwUHS4Y7FDtQxRUPy1PHZClDGZBZCgWdrTisgMjpFKiZAi1FBBQNO2IqZBAzdZAA16lmUs0XgRcCf6z1LLxQCgLXDEpg80d41UZBt1FKJZCqJFcTYXJvSMeHLvOdZwFyZBrV9ZPHZASSqxDZBUZASyFdzjiy2A1sippEsF4DVV5W2IlkOSr2LrMLuYoNMYBy8xQczzOKDOMccqHEZD` |
+| `&lt;API_VERSION&gt;`<br />_String_ | **Optional.**<br />Graph API version. | v24.0 |
+| `&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;`<br />_String_ | **Required.**<br />WhatsApp business phone number ID. | `106540352242922` |
+| `&lt;WHATSAPP_MESSAGE_ID&gt;`<br />_String_ | **Required.**<br />WhatsApp message ID. This ID is assigned to the `messages.id` property in **received message** [messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/reference/messages) webhooks. | `wamid.HBgLMTY1MDM4Nzk0MzkVAgARGBJDQjZCMzlEQUE4OTJBMTE4RTUA` |
+
+## Response
+
+Upon success:
+
+```
+\{
+  "success": true
+}
+```
+
+## Example request
+
+```
+curl 'https://graph.facebook.com/v24.0/106540352242922/messages' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+-d '
+\{
+  "messaging_product": "whatsapp",
+  "status": "read",
+  "message_id": "wamid.HBgLMTY1MDM4Nzk0MzkVAgARGBJDQjZCMzlEQUE4OTJBMTE4RTUA",
+  "typing_indicator": {
+    "type": "text"
+  }
+}'
+```
+
+## Response
+
+Upon success:
+
+```
+\{
+  "success": true
+}
+```
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Request syntax
+
+Request parameters
+
+Response
+
+Example request
+
+Response
+
+* * *

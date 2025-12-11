@@ -1,0 +1,97 @@
+
+# Version 4
+
+Updated: Dec 5, 2025
+
+Release date: October 8, 2025. Check back soon for updates on additional supported products.
+
+To upgrade to the version 4 experience: You need to create a new [Facebook Login for Business Configuration](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/version-4#using-the-facebook-login-for-business-configuration-to-get-started-with-v4), and select your desired products. Selecting the products will automatically set you to v4.
+See screenshots below.
+
+## What’s new
+
+Simplified onboarding experience for businesses:
+You can onboard businesses to more business messaging in a single flow ( [see supported products](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/version-4#supported-products)).
+Asset selection, business information, and permissions are each consolidated onto a single page.
+Asset admins can share assets from other business portfolios.
+Phone numbers are auto-linked to Facebook Pages when onboarding to ads that click to WhatsApp via the Marketing API.
+Value proposition and Terms of Service are clearly presented.
+The [Facebook Login for Business Configuration](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/version-4#using-the-facebook-login-for-business-configuration-to-get-started-with-v4) is used to define which products to add into your onboarding flow.
+
+## Learn more
+
+[Version 4 - Cloud API flow](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/default-flow)
+
+## Supported products
+
+ESv4 supports additional business messaging products, ensuring businesses to set up and manage multiple communication channels from a single platform:
+
+**Conversions API (WhatsApp)**: Track and optimize messaging interactions by selecting the messaging platform you want to monitor, enabling enhanced measurement and optimization.
+**Click to WhatsApp Ads (CTWA)**: Create ads that direct users to initiate WhatsApp conversations with your business.
+**Click to Messenger Ads (CTM)**: Run advertising campaigns that start conversations with users on Facebook Messenger.
+**Click to Direct Ads (CTD)**: Launch Instagram ad campaigns that drive users to direct messaging conversations on Instagram Direct.
+
+## All other supported products
+
+ESv4 continues to support existing business messaging products, allowing businesses to seamlessly manage their established communication channels.
+
+**Cloud API**: Integrate and manage WhatsApp messaging at scale, enabling businesses to send and receive messages, automate workflows, and access advanced messaging features.
+**Marketing Messages API for WhatsApp**: Utilize to manage optimized marketing messaging , providing tools for message analytics, and enhanced customer engagement.
+**WhatsApp Business App users (aka “Coexistence”) support**: Onboarding via Coexistence continues to be supported through the [`feature_type` parameter](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/onboarding-business-app-users#step-2--customize-embedded-signup).
+**Partner-led Business Verification (PLBV) support**: [PLBV](https://developers.facebook.com/documentation/business-messaging/whatsapp/solution-providers/partner-led-business-verification) enables partners to verify business after onboarding via Embedded Signup. If you are considering this option, ensure you are an approved Select Solution or Premier Solution Partner, and [approved for access](https://www.facebook.com/business/help/1091073752691122).
+**Automatic Events API**: [Automatic Events API](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/automatic-events-api) notifies your application about key events that occur through Click-to-WhatsApp ads.
+
+## Use the Facebook Login for Business Configuration to get started with v4
+
+ESv4 enables you to easily set up and change which products you want to include in your onboarding flow:
+
+Step 1: Navigate to [App Dashboard](https://developers.facebook.com/apps) \> **Facebook Login for Business** \> **Configurations** to create a new configuration.
+
+Step 2: Select **Embedded Signup** as the login variation.
+
+![](https://scontent-lax3-2.xx.fbcdn.net/v/t39.2365-6/588554056_1899889040926861_7735493385836726995_n.png?_nc_cat=107&ccb=1-7&_nc_sid=e280be&_nc_ohc=Ly960hJ4cHkQ7kNvwHauy9q&_nc_oc=Adlcqcv_I_o_cQeJ2YHPKvKwUpEwB5XYetrABKK8JswI47_R46Mq8tb_FarjbyxJ3Og&_nc_zt=14&_nc_ht=scontent-lax3-2.xx&_nc_gid=DSLdS7iZg012F7vRyQE3Sg&oh=00_AfmgCWwf1CFvaG-Z7aU2EHxe4fW5O-F7fuyGcqOZHcDz9A&oe=695515B6)
+
+Step 3: Select which products you want to include in your onboarding flow. Selecting more than one product is optional.
+
+![](https://scontent-lax3-2.xx.fbcdn.net/v/t39.2365-6/589045267_1817285795585343_2603642295217157227_n.png?_nc_cat=106&ccb=1-7&_nc_sid=e280be&_nc_ohc=021PrQyovz0Q7kNvwFNJczE&_nc_oc=AdkXnsMLoUhpp5iKk6HsG0znAgH-s937I8zWROxsWKEyS7gyJbHQvDPCo3ck3g6pJEE&_nc_zt=14&_nc_ht=scontent-lax3-2.xx&_nc_gid=DSLdS7iZg012F7vRyQE3Sg&oh=00_AflhQsNcPXDnd2nkQAN3v41h2m4psqxlkspQ99GVXpWAsA&oe=69552E3D)
+
+Step 4: Copy the configuration id to use inside the Facebook Login SDK.
+
+![](https://scontent-lax3-2.xx.fbcdn.net/v/t39.2365-6/588573995_1434645688667306_4273697828818050269_n.png?_nc_cat=107&ccb=1-7&_nc_sid=e280be&_nc_ohc=i6dA6gL0YO8Q7kNvwFoSeMM&_nc_oc=Adly1u7VRn9XNp9ZxwLH5XJadKBG2meu6pFClvPDEZxHbW4k7YqokIZJb9r9-a48eUc&_nc_zt=14&_nc_ht=scontent-lax3-2.xx&_nc_gid=DSLdS7iZg012F7vRyQE3Sg&oh=00_AfnypuPlrwkfFDxPQzwKrUTDfuYhdlB7A-1vBxYYqYrD0w&oe=69553F84)
+
+## Required assets and permissions
+
+When selecting products for ESv4, the flow will automatically select all necessary permissions and assets. You will need advanced access for all permissions automatically selected in the flow. If needed, you can select additional assets and permissions. The table below is a reference on what assets and permissions you need depending on what product you would like to offer.
+
+| Product | Required assets | Required permissions (Advanced Access) |
+| --- | --- | --- |
+| [Cloud API](https://developers.facebook.com/documentation/business-messaging/whatsapp/about-the-platform#whatsapp-cloud-api) | WhatsApp Business accounts | whatsapp_business_management<br />whatsapp_business_messaging |
+| [Click to WhatsApp (CTWA on Marketing API)](https://developers.facebook.com/docs/marketing-api/ad-creative/messaging-ads/click-to-whatsapp) | WhatsApp Business accounts<br />Facebook Pages<br />Ad accounts | ads_read<br />ads_management<br />pages_manage_ads<br />pages_read_engagement<br />pages_show_list |
+| [Click to Messenger (CTM on MAPI)](https://developers.facebook.com/docs/marketing-api/ad-creative/messaging-ads/click-to-messenger) | Facebook Pages<br />Ad accounts | ads_management<br />pages_manage_ads<br />pages_read_engagement<br />pages_show_list |
+| [Click to Instagram (CTD on MAPI)](https://developers.facebook.com/docs/marketing-api/ad-creative/messaging-ads/click-to-instagram) | Facebook Pages<br />Ad accounts<br />Instagram accounts | ads_management<br />pages_manage_ads<br />pages_read_engagement<br />pages_show_list |
+| [Marketing Messages API for WhatsApp](https://developers.facebook.com/documentation/business-messaging/whatsapp/marketing-messages/overview) | WhatsApp Business accounts | whatsapp_business_management<br />whatsapp_business_messaging |
+| [Conversions API for CTWA](https://developers.facebook.com/docs/marketing-api/conversions-api/business-messaging#ads-that-click-to-whatsapp) | WhatsApp Business accounts<br />Pixels | whatsapp_business_manage_events |
+| [Conversions API for CTM](https://developers.facebook.com/docs/marketing-api/conversions-api/business-messaging#ads-that-click-to-messenger) | Facebook Pages<br />Ad accounts<br />Pixels | page_events |
+| [Conversions API for CTD](https://developers.facebook.com/docs/marketing-api/conversions-api/business-messaging#ads-that-click-to-instagram-direct) | Facebook Pages<br />Ad accounts<br />Instagram accounts<br />Pixels | instagram_manage_events |
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+What’s new
+
+Learn more
+
+Supported products
+
+All other supported products
+
+Use the Facebook Login for Business Configuration to get started with v4
+
+Required assets and permissions
+
+* * *

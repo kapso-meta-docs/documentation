@@ -1,0 +1,153 @@
+
+# Unsupported messages webhook reference
+
+Updated: Nov 4, 2025
+
+This reference describes trigger events and payload contents for the WhatsApp Business Account **messages** webhook for messages that are unsupported by the API.
+
+## Triggers
+
+A WhatsApp user sends a message type not supported by Cloud API.
+A business uses the API to send a message to a number already in use with the API. In this case the webhook is sent to the owner of the recipient number.
+
+## Syntax
+
+```
+\{
+  "object": "whatsapp_business_account",
+  "entry": [\
+    {\
+      "id": "&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;",\
+      "changes": [\
+        {\
+          "value": {\
+            "messaging_product": "whatsapp",\
+            "metadata": {\
+              "display_phone_number": "&lt;BUSINESS_DISPLAY_PHONE_NUMBER&gt;",\
+              "phone_number_id": "&lt;BUSINESS_PHONE_NUMBER_ID&gt;"\
+            },\
+            "contacts": [\
+              {\
+                "profile": {\
+                  "name": "&lt;WHATSAPP_USER_PROFILE_NAME&gt;"\
+                },\
+                "wa_id": "&lt;WHATSAPP_USER_ID&gt;",\
+                "identity_key_hash": "&lt;IDENTITY_KEY_HASH&gt;" <!-- only included if identity change check enabled -->\
+              }\
+            ],\
+            "messages": [\
+              {\
+                "from": "&lt;WHATSAPP_USER_PHONE_NUMBER&gt;",\
+                "id": "&lt;WHATSAPP_MESSAGE_ID&gt;",\
+                "timestamp": "&lt;WEBHOOK_TRIGGER_TIMESTAMP&gt;",\
+                "errors": [\
+                  {\
+                    "code": 131051,\
+                    "title": "Message type unknown",\
+                    "message": "Message type unknown",\
+                    "error_data": {\
+                      "details": "Message type is currently not supported."\
+                    }\
+                  }\
+                ],\
+                "type": "unsupported",\
+                "unsupported": {\
+                "type": &lt;UNSUPPORTED_TYPE&gt;\
+              }\
+              }\
+            ]\
+          },\
+          "field": "messages"\
+        }\
+      ]\
+    }\
+  ]
+}
+```
+
+## Parameters
+
+| Placeholder | Description | Example value |
+| --- | --- | --- |
+| `&lt;BUSINESS_DISPLAY_PHONE_NUMBER&gt;`<br />_String_ | Business display phone number. | `15550783881` |
+| `&lt;BUSINESS_PHONE_NUMBER_ID&gt;`<br />_String_ | Business phone number ID. | `106540352242922` |
+| `&lt;IDENTITY_KEY_HASH&gt;`<br />_String_ | Identity key hash. Only included if you have enabled the [identity change check](https://developers.facebook.com/documentation/business-messaging/whatsapp/business-phone-numbers/phone-numbers) feature. | `DF2lS5v2W6x=` |
+| `&lt;UNSUPPORTED_TYPE&gt;` | Contains the type of message that is unsupported. | `edit/poll/button` |
+| `&lt;WEBHOOK_TRIGGER_TIMESTAMP&gt;`<br />_String_ | Unix timestamp indicating when the webhook was triggered. | `1739321024` |
+| `&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;`<br />_String_ | WhatsApp Business Account ID. | `102290129340398` |
+| `&lt;WHATSAPP_MESSAGE_ID&gt;`<br />_String_ | WhatsApp message ID. | `wamid.HBgLMTY1MDM4Nzk0MzkVAgASGBQzQUFERjg0NDEzNDdFODU3MUMxMAA=` |
+| `&lt;WHATSAPP_USER_ID&gt;`<br />_String_ | WhatsApp user ID. Note that a WhatsApp user’s ID and phone number may not always match. | `16505551234` |
+| `&lt;WHATSAPP_USER_PHONE_NUMBER&gt;`<br />_String_ | WhatsApp user phone number. This is the same value returned by the API as the `input` value when sending a message to a WhatsApp user. Note that a WhatsApp user’s phone number and ID may not always match. | `+16505551234` |
+| `&lt;WHATSAPP_USER_PROFILE_NAME&gt;`<br />_String_ | WhatsApp user’s name as it appears in their profile in the WhatsApp client. | `Sheena Nelson` |
+
+## Example
+
+```
+\{
+  "object": "whatsapp_business_account",
+  "entry": [\
+    {\
+      "id": "102290129340398",\
+      "changes": [\
+        {\
+          "value": {\
+            "messaging_product": "whatsapp",\
+            "metadata": {\
+              "display_phone_number": "15550783881",\
+              "phone_number_id": "106540352242922"\
+            },\
+            "contacts": [\
+              {\
+                "profile": {\
+                  "name": "Sheena Nelson"\
+                },\
+                "wa_id": "16505551234"\
+              }\
+            ],\
+            "messages": [\
+              {\
+                "from": "16505551234",\
+                "id": "wamid.HBgLMTY1MDM4Nzk0MzkVAgASGBQzQUFERjg0NDEzNDdFODU3MUMxMAA=",\
+                "timestamp": "1750090702",\
+                "errors": [\
+                  {\
+                    "code": 131051,\
+                    "title": "Message type unknown",\
+                    "message": "Message type unknown",\
+                    "error_data": {\
+                      "details": "Message type is currently not supported."\
+                    }\
+                  }\
+                ],\
+                "type": "unsupported",\
+                "unsupported": {\
+                 "type": "edit"\
+    }\
+              }\
+            ]\
+          },\
+          "field": "messages"\
+        }\
+      ]\
+    }\
+  ]
+}
+```
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Triggers
+
+Syntax
+
+Parameters
+
+Example
+
+* * *

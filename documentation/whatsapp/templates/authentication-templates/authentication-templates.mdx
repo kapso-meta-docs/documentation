@@ -1,0 +1,343 @@
+
+# Authentication templates
+
+Updated: Nov 14, 2025
+
+If your mobile app offers users the option to receive one-time passwords or verification codes via WhatsApp, you must use an authentication template.
+
+Authentication templates consist of:
+
+Fixed, non-customizable **preset text**: _&lt;VERIFICATION_CODE&gt; is your verification code._
+An optional **security disclaimer**: _For your security, do not share this code._
+An optional **expiration warning**: _This code expires in &lt;NUM_MINUTES&gt; minutes._
+Either a **one-tap autofill** button, a **copy code** button, or no button at all if using [zero-tap](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/authentication-templates/authentication-templates#zero-tap-authentication-templates).
+
+![](https://scontent-lax7-1.xx.fbcdn.net/v/t39.2365-6/391704029_868992307740251_3073203578067340408_n.png?_nc_cat=101&ccb=1-7&_nc_sid=e280be&_nc_ohc=sBlhTxhvL1IQ7kNvwFKvUvt&_nc_oc=AdnsOCxrPkIxLkrP2tcpLmjdokDIQQNKkRo8207bRZEEgAeeJR747IfPJh1HB8P-80I&_nc_zt=14&_nc_ht=scontent-lax7-1.xx&_nc_gid=Nu_B8Nrhg61yeNHo_VzvmA&oh=00_Afnavf_LKTbpOcM7umhGvqC2KrKooqNNQ9aSOz8jntWKSw&oe=69551DDE)
+
+One-tap autofill buttons are the preferred solution as they offer the best user experience. However, one-tap autofill buttons are currently only supported on Android and require additional changes to your app’s code.
+
+## Linked device security
+
+![](https://scontent-lax3-2.xx.fbcdn.net/v/t39.2365-6/458481136_1204876024064039_8216873060873003926_n.png?_nc_cat=100&ccb=1-7&_nc_sid=e280be&_nc_ohc=M48TpJ0JIB8Q7kNvwHdpyf2&_nc_oc=AdmpMNbfcxMxJZkDjRSyFBqmkapqt3Q32F3Fc6SjmpRASX1eYmWYfxA_hH08TNCqsbM&_nc_zt=14&_nc_ht=scontent-lax3-2.xx&_nc_gid=Nu_B8Nrhg61yeNHo_VzvmA&oh=00_AfnZ7oPMXWS1QaN8kxHZEOVW1JYcCmsCR4CW6UjxnlfSOg&oe=695520E6)
+
+Authentication templates now feature linked device security. This means that authentication messages are only delivered to a user’s primary WhatsApp device.
+
+Authentication messages that are sent to a user’s linked devices are masked with a prompt instructing the user to view the message on their primary device.
+
+This feature is enabled by default and does not require code changes. It cannot be configured or customized. Only available on Cloud API.
+
+## One-tap autofill authentication templates
+
+Authentication templates include a one-tap autofill button.
+
+![](https://scontent-lax3-1.xx.fbcdn.net/v/t39.2365-6/393789031_872892117564016_6400271480127333734_n.png?_nc_cat=104&ccb=1-7&_nc_sid=e280be&_nc_ohc=z4LslZTWNo0Q7kNvwGxp3x0&_nc_oc=AdlFK8xTPPfCkikf42CQVYwhLIy7ReW65mBu3FmWuhRIkmjwXBUcv6hvUDxmDSkhsUM&_nc_zt=14&_nc_ht=scontent-lax3-1.xx&_nc_gid=Nu_B8Nrhg61yeNHo_VzvmA&oh=00_AfmyNx4BpI_CknzQLRurjl68O_y3oBX7cSKqKBcuHy-tTA&oe=6954FBA8)
+
+When a WhatsApp user taps the autofill button, the WhatsApp client triggers an activity which opens your app and delivers it the password or code.
+
+See [One-Tap Autofill Authentication Templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/authentication-templates/autofill-button-authentication-templates) to learn how to use them.
+
+## Copy code authentication templates
+
+Copy code authentication templates allow you to send a one-time password or code along with a copy code button to your users.
+
+![](https://scontent-lax3-2.xx.fbcdn.net/v/t39.2365-6/391709210_6733218460105388_4204949555628827374_n.png?_nc_cat=107&ccb=1-7&_nc_sid=e280be&_nc_ohc=ufSfgWMQTD8Q7kNvwEiC4Do&_nc_oc=AdmAwFwwaFnWgTWwOEqsuVOzvVOILNOEqcJxmHfcrxD6fMQY7wS64bWnjxkIR2XY2H8&_nc_zt=14&_nc_ht=scontent-lax3-2.xx&_nc_gid=Nu_B8Nrhg61yeNHo_VzvmA&oh=00_AfknZrKvhvnL5ky8_fcBTWcA3GD3XLY4VzphiTaIwCgOeg&oe=695509FD)
+
+When a WhatsApp user taps the copy code button, the WhatsApp client copies the password or code to the device’s clipboard. The user can then switch to your app and paste the password or code into your app.
+
+See [Copy Code Authentication Templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/authentication-templates/copy-code-button-authentication-templates) to learn how to use them.
+
+## Zero-tap authentication templates
+
+Zero-tap authentication templates allow your users to receive one-time passwords or codes via WhatsApp without having to leave your app.
+
+When a user in your app requests a password or code and you deliver it using a zero-tap authentication template, the WhatsApp client broadcasts the included password or code, which your app can then capture with a broadcast receiver.
+
+See [Zero-Tap Authentication Templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/authentication-templates/zero-tap-authentication-templates) to learn how to use them.
+
+## Best practices
+
+Confirm the user’s WhatsApp phone number before sending the one-time password or code to that number.
+Make it clear to your user that the password or code will be delivered to their WhatsApp phone number, especially if you offer multiple ways for the user to receive password or code delivery. See [Getting Opt-In](https://developers.facebook.com/documentation/business-messaging/whatsapp/getting-opt-in) for additional tips.
+When the user pastes the password or code into your app, or your app receives it as part of the one-tap autofill button flow, make it clear to the user that your app has captured it.
+
+See also [Best practices for authenticating users via WhatsApp](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/authentication-templates/authentication-best-practices).
+
+## Customizing time-to-live
+
+See [Time-to-live](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/time-to-live).
+
+## Template previews
+
+You can generate previews of authentication template text in various languages that include or exclude the security recommendation string and code expiration string using the [**GET /&lt;WABA_ID&gt;/message_template_previews**](https://developers.facebook.com/docs/graph-api/reference/whats-app-business-account/message_template_previews#Reading) endpoint.
+
+### Request syntax
+
+```
+GET /&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;/message_template_previews
+  ?category=AUTHENTICATION,
+  &language=&lt;LANGUAGE&gt;, // Optional
+  &add_security_recommendation=&lt;ADD_SECURITY_RECOMMENDATION&gt;, // Optional
+  &code_expiration_minutes=&lt;CODE_EXPIRATION_MINUTES&gt;, // Optional
+  &button_types=&lt;BUTTON_TYPES&gt; // Optional
+```
+
+### Request parameters
+
+| Placeholder | Description | Example Value |
+| --- | --- | --- |
+| `&lt;LANGUAGE&gt;`<br />_Comma-separated list_ | **Optional.**<br />Comma-separated list of [language codes](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/supported-languages) of language versions you want returned.<br />If omitted, versions of all supported languages will be returned. | `en_US,es_ES` |
+| `&lt;ADD_SECURITY_RECOMMENDATION&gt;`<br />_Boolean_ | **Optional.**<br />Set to `true` if you want the security recommendation body string included in the response.<br />If omitted, the security recommendation string will not be included. | `true` |
+| `&lt;CODE_EXPIRATION_MINUTES&gt;`<br />_Int64_ | **Optional.**<br />Set to an integer if you want the code expiration footer string included in the response.<br />If omitted, the code expiration footer string will not be included.<br />Value indicates number of minutes until code expires.<br />Minimum `1`, maximum `90`. | `10` |
+| `&lt;BUTTON_TYPES&gt;`<br />_Comma-separated list of strings_ | **Required.**<br />Comma-separated list of strings indicating button type.<br />If included, the response will include the button text for each button in the response.<br />For authentication templates, this value must be `OTP`. | `OTP` |
+
+### Example request
+
+```
+curl 'https://graph.facebook.com/v17.0/102290129340398/message_template_previews?category=AUTHENTICATION&languages=en_US,es_ES&add_security_recommendation=true&code_expiration_minutes=10&button_types=OTP' \
+-H 'Authorization: Bearer EAAJB...'
+```
+
+### Example response
+
+```
+\{
+  "data": [\
+    {\
+      "body": "*{{1}}* is your verification code. For your security, do not share this code.",\
+      "buttons": [\
+        {\
+          "autofill_text": "Autofill",\
+          "text": "Copy code"\
+        }\
+      ],\
+      "footer": "This code expires in 10 minutes.",\
+      "language": "en_US"\
+    },\
+    {\
+      "body": "Tu código de verificación es *{{1}}*. Por tu seguridad, no lo compartas.",\
+      "buttons": [\
+        {\
+          "autofill_text": "Autocompletar",\
+          "text": "Copiar código"\
+        }\
+      ],\
+      "footer": "Este código caduca en 10 minutos.",\
+      "language": "es_ES"\
+    }\
+  ]
+}
+```
+
+## Bulk management
+
+Use the [**POST /&lt;WABA_ID&gt;/upsert_message_templates**](https://developers.facebook.com/docs/graph-api/reference/whats-app-business-account/upsert_message_templates#Creating) endpoint to bulk update or create authentication templates in multiple languages that include or exclude the optional security and expiration warnings.
+
+If a template already exists with a matching name and language, the template will be updated with the contents of the request, otherwise, a new template will be created.
+
+### Request syntax
+
+```
+POST /&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;/upsert_message_templates
+```
+
+### Post Body
+
+```
+\{
+  "name": "&lt;NAME&gt;",
+  "languages": [&lt;LANGUAGES&gt;],
+  "category": "AUTHENTICATION",
+  "components": [\
+    {\
+      "type": "BODY",\
+      "add_security_recommendation": &lt;ADD_SECURITY_RECOMMENDATION&gt; // Optional\
+    },\
+    {\
+      "type": "FOOTER",\
+      "code_expiration_minutes": &lt;CODE_EXPIRATION_MINUTES&gt; // Optional\
+    },\
+    {\
+      "type": "BUTTONS",\
+      "buttons": [\
+        {\
+          "type": "OTP",\
+          "otp_type": "&lt;OTP_TYPE&gt;",\
+          "supported_apps": [\
+            {\
+              "package_name": "&lt;PACKAGE_NAME&gt;", // One-tap and zero-tap buttons only\
+              "signature_hash": "&lt;SIGNATURE_HASH&gt;" // One-tap and zero-tap buttons only\
+            }\
+          ]\
+        }\
+      ]\
+    }\
+  ]
+}
+```
+
+### Properties
+
+All template creation properties are supported, with these exceptions:
+
+The `language` property is not supported. Instead, use `languages` and set its value to an array of [language and locale code](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/supported-languages) strings. For example: `["en_US","es_ES","fr"]`.
+The `text` property is not supported.
+The `autofill_text` property is not supported.
+
+### Example copy code request
+
+This example creates three authentication templates in English, Spanish, and French, with copy code buttons. Each template is named “authentication_code_copy_code_button” and includes the security recommendation and expiration time.
+
+```
+curl 'https://graph.facebook.com/v17.0/102290129340398/upsert_message_templates' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+-d '
+\{
+  "name": "authentication_code_copy_code_button",
+  "languages": ["en_US","es_ES","fr"],
+  "category": "AUTHENTICATION",
+  "components": [\
+    {\
+      "type": "BODY",\
+      "add_security_recommendation": true\
+    },\
+    {\
+      "type": "FOOTER",\
+      "code_expiration_minutes": 10\
+    },\
+    {\
+      "type": "BUTTONS",\
+      "buttons": [\
+        {\
+          "type": "OTP",\
+          "otp_type": "COPY_CODE"\
+        }\
+      ]\
+    }\
+  ]
+}'
+```
+
+### Example one-tap autofill request
+
+This example (1) updates an existing template with the name “authentication_code_autofill_button” and language “en_US”, and (2) creates two new authentication templates in Spanish and French with one-tap autofill buttons. Both newly created templates are named “authentication_code_autofill_button” and include the security recommendation and expiration time.
+
+```
+curl 'https://graph.facebook.com/v17.0/102290129340398/upsert_message_templates' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+-d '
+\{
+  "name": "authentication_code_autofill_button",
+  "languages": ["en_US","es_ES","fr"],
+  "category": "AUTHENTICATION",
+  "components": [\
+    {\
+      "type": "BODY",\
+      "add_security_recommendation": true\
+    },\
+    {\
+      "type": "FOOTER",\
+      "code_expiration_minutes": 15\
+    },\
+    {\
+      "type": "BUTTONS",\
+      "buttons": [\
+        {\
+          "type": "OTP",\
+          "otp_type": "ONE_TAP",\
+          "supported_apps": [\
+            {\
+              "package_name": "com.example.luckyshrub",\
+              "signature_hash": "K8a/AINcGX7"\
+            }\
+          ]\
+        }\
+      ]\
+    }\
+  ]
+}'
+```
+
+### Example response
+
+```
+\{
+  "data": [\
+    {\
+      "id": "954638012257287",\
+      "status": "APPROVED",\
+      "language": "en_US"\
+    },\
+    {\
+      "id": "969725527415202",\
+      "status": "APPROVED",\
+      "language": "es_ES"\
+    },\
+    {\
+      "id": "969725530748535",\
+      "status": "APPROVED",\
+      "language": "fr"\
+    }\
+  ]
+}
+```
+
+## Sample app
+
+See our [WhatsApp One-Time Password (OTP) Sample App](https://l.facebook.com/l.php?u=https%3A%2F%2Fgithub.com%2FWhatsApp%2FWhatsApp-OTP-Sample-App&h=AT3Xn9MTAau0iTc6vC9lFbjTBElP5zsVrR86IHnKUvfbHSOTSragPHCR42kl84f-H1k5wuMPxF6vEsWpBbsOVhWTcf-Awa8FfjgmnIFzSRk_amvZwaazK6knPV_4HifHSFpxoBrUT_4X7y7XQSJFAA) for Android on Github. The sample app demonstrates how to send and receive OTP passwords and codes via the API, how to integrate the one-tap autofill and copy code buttons, how to create a template, and how to spin up a sample server.
+
+## Learn more
+
+[Official Business Account](https://developers.facebook.com/documentation/business-messaging/whatsapp/official-business-accounts) — You may wish to request Official Business Account status to build trust with your users, which will reduce the likelihood that they dismiss or ignore your messages.
+[Status messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/reference/messages/status) webhooks — We recommend that you subscribe to the messages webhook field so you can be notified when a user receives and reads your authentication template with an OTP button.
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Linked device security
+
+One-tap autofill authentication templates
+
+Copy code authentication templates
+
+Zero-tap authentication templates
+
+Best practices
+
+Customizing time-to-live
+
+Template previews
+
+Request syntax
+
+Request parameters
+
+Example request
+
+Example response
+
+Bulk management
+
+Request syntax
+
+Post Body
+
+Properties
+
+Example copy code request
+
+Example one-tap autofill request
+
+Example response
+
+Sample app
+
+Learn more
+
+* * *

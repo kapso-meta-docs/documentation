@@ -1,0 +1,104 @@
+
+# Location messages
+
+Updated: Nov 3, 2025
+
+Location messages allow you to send a location’s latitude and longitude coordinates to a WhatsApp user.
+
+![](https://scontent-lga3-3.xx.fbcdn.net/v/t39.2365-6/440753150_1614554799358194_4095127988263974385_n.png?_nc_cat=108&ccb=1-7&_nc_sid=e280be&_nc_ohc=XiqeoNu8rzYQ7kNvwHZV1z_&_nc_oc=Adk30X1PY4lzXmpTTG2IriKnkFjqSIAffUewMQCI_ifgTpDdQd7Egazsyk1RWtzfA_E&_nc_zt=14&_nc_ht=scontent-lga3-3.xx&_nc_gid=cPnLQUZTnXlL1Os1xpkOiw&oh=00_AflpnNWyQDmBUe9DTgm3cZpjwIpV8KNKtjRc_5mTKjmqbw&oe=69551261)
+
+## Request syntax
+
+Use the [POST /&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;/messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api) endpoint to send a location message to a WhatsApp user.
+
+```
+curl 'https://graph.facebook.com/&lt;API_VERSION&gt;/&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;/messages' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer &lt;ACCESS_TOKEN&gt;' \
+-d '
+\{
+  "messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": "&lt;WHATSAPP_USER_PHONE_NUMBER&gt;",
+  "type": "location",
+  "location": {
+    "latitude": "&lt;LOCATION_LATITUDE&gt;",
+    "longitude": "&lt;LOCATION_LONGITUDE&gt;",
+    "name": "&lt;LOCATION_NAME&gt;",
+    "address": "&lt;LOCATION_ADDRESS&gt;"
+  }
+}'
+```
+
+## Request parameters
+
+| Placeholder | Description | Example Value |
+| --- | --- | --- |
+| `&lt;ACCESS_TOKEN&gt;`<br />_String_ | **Required.**<br />[System token](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#system-user-access-tokens) or [business token](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#business-integration-system-user-access-tokens). | `EAAAN6tcBzAUBOZC82CW7iR2LiaZBwUHS4Y7FDtQxRUPy1PHZClDGZBZCgWdrTisgMjpFKiZAi1FBBQNO2IqZBAzdZAA16lmUs0XgRcCf6z1LLxQCgLXDEpg80d41UZBt1FKJZCqJFcTYXJvSMeHLvOdZwFyZBrV9ZPHZASSqxDZBUZASyFdzjiy2A1sippEsF4DVV5W2IlkOSr2LrMLuYoNMYBy8xQczzOKDOMccqHEZD` |
+| `&lt;API_VERSION&gt;`<br />_String_ | **Optional.**<br />Graph API version. | v24.0 |
+| `&lt;LOCATION_ADDRESS&gt;`<br />_String_ | **Optional.**<br />Location address. | `101 Forest Ave, Palo Alto, CA 94301` |
+| `&lt;LOCATION_LATITUDE&gt;`<br />_String_ | **Required.**<br />Location latitude in decimal degrees. | `37.44216251868683` |
+| `&lt;LOCATION_LONGITUDE&gt;`<br />_String_ | **Required.**<br />Location longitude in decimal degrees. | `-122.16153582049394` |
+| `&lt;LOCATION_NAME&gt;`<br />_String_ | **Optional.**<br />Location name. | `Philz Coffee` |
+| `&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;`<br />_String_ | **Required.**<br />WhatsApp business phone number ID. | `106540352242922` |
+| `&lt;WHATSAPP_USER_PHONE_NUMBER&gt;`<br />_String_ | **Required.**<br />WhatsApp user phone number. | `+16505551234` |
+
+## Example request
+
+Example request to send a location message with a name and address.
+
+```
+curl 'https://graph.facebook.com/v24.0/106540352242922/messages' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+-d '
+\{
+  "messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": "+16505551234",
+  "type": "location",
+  "location": {
+    "latitude": "37.44216251868683",
+    "longitude": "-122.16153582049394",
+    "name": "Philz Coffee",
+    "address": "101 Forest Ave, Palo Alto, CA 94301"
+  }
+}'
+```
+
+## Example response
+
+```
+\{
+  "messaging_product": "whatsapp",
+  "contacts": [\
+    {\
+      "input": "+16505551234",\
+      "wa_id": "16505551234"\
+    }\
+  ],
+  "messages": [\
+    {\
+      "id": "wamid.HBgLMTY0NjcwNDM1OTUVAgARGBI1RjQyNUE3NEYxMzAzMzQ5MkEA"\
+    }\
+  ]
+}
+```
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Request syntax
+
+Request parameters
+
+Example request
+
+Example response
+
+* * *

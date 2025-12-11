@@ -1,0 +1,415 @@
+
+# Custom marketing templates
+
+Updated: Nov 14, 2025
+
+Learn how to create and send a custom marketing template.
+
+![](https://scontent-lax3-2.xx.fbcdn.net/v/t39.2365-6/555070362_1180641373877493_714272106387148710_n.png?_nc_cat=111&ccb=1-7&_nc_sid=e280be&_nc_ohc=tB9W7EqJydAQ7kNvwGPNuDO&_nc_oc=AdmGsMeClzI-pc8OUhHGmcPIppruL9vOAvyIabnH33nivmmW6LIsVO6oJJgvTX-Qu50&_nc_zt=14&_nc_ht=scontent-lax3-2.xx&_nc_gid=99dcYN5MiPKp2wq2lUTOfg&oh=00_Afl-fkdgcMTCIOAr0VMqIMXR9QiMFYFm_6AnsmFuOE4rkg&oe=6955182A)
+
+## Supported components
+
+Custom marketing templates support the following components:
+
+1 header (optional; all types supported)
+1 body (required)
+1 footer (optional)
+Up to 10 buttons (optional; all types supported)
+
+## Create a custom marketing template
+
+Use the [POST /&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;/message_templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api#Creating) endpoint to create a custom marketing template.
+
+### Request syntax
+
+This example syntax creates a template with an image header, body text with 3 named parameters, a footer, and 3 buttons (url, phone number, and quick-reply).
+
+```
+curl 'https://graph.facebook.com/&lt;API_VERSION&gt;/&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;/message_templates' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer &lt;ACCESS_TOKEN&gt;' \
+-d '
+\{
+  "name": "&lt;TEMPLATE_NAME&gt;",
+  "language": "&lt;TEMPLATE_LANGUAGE&gt;",
+  "category": "marketing",
+  "parameter_format": "&lt;PARAMETER_FORMAT&gt;",
+  "components": [\
+    {\
+      "type": "header",\
+      "format": "image",\
+      "example": {\
+        "header_handle": [\
+          "&lt;HEADER_ASSET_HANDLE&gt;"\
+        ]\
+      }\
+    },\
+    {\
+      "type": "body",\
+      "text": "&lt;BODY_TEXT&gt;",\
+      "example": {\
+        "body_text_named_params": [\
+          {\
+            "param_name": "&lt;BODY_PARAMETER_NAME&gt;",\
+            "example": "&lt;BODY_PARAMETER_EXAMPLE_VALUE&gt;"\
+          },\
+          <!-- additional parameters and example values go here -->\
+        ]\
+      }\
+    },\
+    {\
+      "type": "footer",\
+      "text": "&lt;FOOTER_TEXT&gt;"\
+    },\
+    {\
+      "type": "buttons",\
+      "buttons": [\
+        {\
+          "type": "url",\
+          "text": "&lt;URL_BUTTON_LABEL_TEXT&gt;",\
+          "url": "&lt;URL_BUTTON_URL&gt;"\
+        },\
+        {\
+          "type": "phone_number",\
+          "text": "&lt;PHONE_NUMBER_BUTTON_LABEL_TEXT&gt;",\
+          "phone_number": "&lt;PHONE_NUMBER_BUTTON_PHONE_NUMBER&gt;"\
+        },\
+        {\
+          "type": "quick_reply",\
+          "text": "&lt;QUICK_REPLY_BUTTON_LABEL_TEXT&gt;"\
+        }\
+      ]\
+    }\
+  ]
+}'
+```
+
+### Request parameters
+
+| Placeholder | Description | Sample Value |
+| --- | --- | --- |
+| `&lt;ACCESS_TOKEN&gt;`<br />_String_ | **Required.**<br />Access token. | `EAAAN6tcBzAUBOZC82CW7iR2LiaZBwUHS4Y7FDtQxRUPy1PHZClDGZBZCgWdrTisgMjpFKiZAi1FBBQNO2IqZBAzdZAA16lmUs0XgRcCf6z1LLxQCgLXDEpg80d41UZBt1FKJZCqJFcTYXJvSMeHLvOdZwFyZBrV9ZPHZASSqxDZBUZASyFdzjiy2A1sippEsF4DVV5W2IlkOSr2LrMLuYoNMYBy8xQczzOKDOMccqHEZD` |
+| `&lt;API_VERSION&gt;`<br />_String_ | **Optional.**<br />API version. If omitted, defaults to the newest API version available to your app. | `v23.0` |
+| `&lt;BODY_PARAMETER_EXAMPLE_VALUE&gt;`<br />_String_ | **Required if using a body component string that includes one or more parameters.**<br />Example parameter value. You must supply an example for each parameter defined in your body component string. | `WELCOME20` |
+| `&lt;BODY_PARAMETER_NAME&gt;`<br />_String_ | **Required if using named parameters.**<br />Parameter name. You must supply a name for each parameter defined in your body component string. Must be a unique string, composed of lowercase characters and underscores, wrapped in double curly brackets. | `{{discount_code}}` |
+| `&lt;BODY_TEXT&gt;`<br />_String_ | **Required.**<br />Template body text. Variables are supported.<br />Maximum 1024 characters. | `Welcome to Lucky Shrub, {{first_name}}!\\n\\nUse code *{{discount_code}}* to get {{discount_amount}} off of your first purchase!` |
+| `&lt;FOOTER_TEXT&gt;`<br />_String_ | **Optional.**<br />Footer text.<br />Maximum 60 characters. | `Lucky Shrub: Your gateway to succulents!` |
+| `&lt;PARAMETER_FORMAT&gt;`<br />_String_ | **Optional.**<br />[Parameter format](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/overview#parameter-formats). Value can be:<br />`named`<br />`positional`<br />If the `parameter_format` property is omitted, the template will use positional formatting. | `Lucky Shrub: Your gateway to succulents!` |
+| `&lt;HEADER_ASSET_HANDLE&gt;`<br />_String_ | **Required if using a header with a media asset.**<br />Header [media asset handle](https://developers.facebook.com/docs/graph-api/guides/upload). | `4::aW1hZ2UvcG5n:ARYpf5zqqUjggwGfsZOJ2_o26Zs8ntcO2mss2vKpFb8P_IvskL043YXKpehYTD7IxqEB4t-uZcIzOTxOFRavEcN_tZLhk1WXFb3IOr4S8UKJcQ:e:1759093121:634974688087057:100089620928913:ARYyOAh63uQLhDpqOdk` |
+| `&lt;PHONE_NUMBER_BUTTON_LABEL_TEXT&gt;`<br />_String_ | **Required if using a phone number button.**<br />Button label text. Maximum 25 characters. Alphanumeric characters only. | `Call us` |
+| `&lt;PHONE_NUMBER_BUTTON_PHONE_NUMBER&gt;`<br />_String_ | **Required if using a phone number button component.**<br />Business phone number to be called in the WhatsApp user’s default phone app when tapped by the user. Note that some countries have special phone numbers that have leading zeros after the country calling code (e.g., +55-0-955-585-95436). If you assign one of these numbers to the button, the leading zero will be stripped from the number. If your number will not work without the leading zero, assign an alternate number to the button, or add the number as message body text.<br />Maximum 20 characters. Alphanumeric characters only. | `15550051310` |
+| `&lt;QUICK_REPLY_BUTTON_LABEL_TEXT&gt;` | **Required if using a quick-reply button.**<br />Button label text. Maximum 25 characters. Alphanumeric characters only. | `Unsubscribe` |
+| `&lt;TEMPLATE_LANGUAGE&gt;`<br />_String_ | **Required.**<br />Template [language code](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/supported-languages). | `en_US` |
+| `&lt;TEMPLATE_NAME&gt;`<br />_String_ | **Required.**<br />Template name. Must be unique, unless existing templates with the same name have a different template language.<br />Maximum 512 characters. Lowercase, alphanumeric characters and underscores only. | `reservation_confirmation` |
+| `&lt;URL_BUTTON_URL&gt;`<br />_String_ | **Required if including a URL button.**<br />URL to be loaded in WhatsApp user’s default web browser when tapped. | `https://www.luckyshrubeater.com/reservations` |
+| `&lt;URL_BUTTON_LABEL_TEXT&gt;`<br />_String_ | **Required if using a URL button.**<br />Button label text.<br />Maximum 25 characters. Alphanumeric characters only. | `View deals` |
+| `&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;`<br />_String_ | **Required.**<br />WhatsApp Business Account ID. | `546151681022936` |
+
+### Response syntax
+
+Upon success:
+
+```
+\{
+  "id": "&lt;TEMPLATE_ID&gt;",
+  "status": "&lt;TEMPLATE_STATUS&gt;",
+  "category": "&lt;TEMPLATE_CATEGORY&gt;"
+}
+```
+
+### Response parameters
+
+| Placeholder | Description | Example value |
+| --- | --- | --- |
+| `&lt;TEMPLATE_CATEGORY&gt;` | [Template category](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/template-categorization). | `MARKETING` |
+| `&lt;TEMPLATE_ID&gt;` | Template ID. | `1627019861106475` |
+| `&lt;TEMPLATE_STATUS&gt;` | [Template status](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/overview#template-status). | `PENDING` |
+
+### Example request
+
+```
+curl 'https://graph.facebook.com/v23.0/102290129340398/message_templates' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+-d '
+\{
+  "name": "welcome_discount_template",
+  "language": "en_US",
+  "category": "marketing",
+  "parameter_format": "named",
+  "components": [\
+    {\
+      "type": "header",\
+      "format": "image",\
+      "example": {\
+        "header_handle": [\
+          "4::aW..."\
+        ]\
+      }\
+    },\
+    {\
+      "type": "body",\
+      "text": "Welcome to Lucky Shrub, {{first_name}}!\n\nUse code *{{discount_code}}* to get {{discount_amount}} off of your first purchase!",\
+      "example": {\
+        "body_text_named_params": [\
+          {\
+            "param_name": "first_name",\
+            "example": "Pablo"\
+          },\
+          {\
+            "param_name": "discount_code",\
+            "example": "WELCOME20"\
+          },\
+          {\
+            "param_name": "discount_amount",\
+            "example": "20%"\
+          }\
+        ]\
+      }\
+    },\
+    {\
+      "type": "footer",\
+      "text": "Lucky Shrub: Your gateway to succulents!"\
+    },\
+    {\
+      "type": "buttons",\
+      "buttons": [\
+        {\
+          "type": "url",\
+          "text": "View deals",\
+          "url": "https://www.luckyshrub.com/deals"\
+        },\
+        {\
+          "type": "phone_number",\
+          "text": "Call us",\
+          "phone_number": "+15550051310"\
+        },\
+        {\
+          "type": "quick_reply",\
+          "text": "Unsubscribe"\
+        }\
+      ]\
+    }\
+  ]
+}'
+```
+
+### Example response
+
+```
+\{
+  "id": "1627019861106475",
+  "status": "PENDING",
+  "category": "MARKETING"
+}
+```
+
+## Send a custom marketing template
+
+Use the [POST /&lt;BUSINESS_PHONE_NUMBER_ID&gt;/messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api) endpoint to send an approved marketing template.
+
+### Request syntax
+
+This example syntax is for sending the template described in the [create syntax](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates/custom-marketing-templates#request-syntax) above, which expects a header image asset, and 3 body text parameter values which will replace their parameter placeholders in the body text string.
+
+```
+curl 'https://graph.facebook.com/&lt;API_VERSION&gt;/&lt;BUSINESS_PHONE_NUMBER_ID&gt;/messages' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer &lt;ACCESS_TOKEN&gt;' \
+-d '
+\{
+  "messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": "&lt;WHATSAPP_USER_PHONE_NUMBER&gt;",
+  "type": "template",
+  "template": {
+    "name": "&lt;TEMPLATE_NAME&gt;",
+    "language": {
+      "code": "&lt;TEMPLATE_LANGUAGE&gt;"
+    },
+    "components": [\
+      {\
+        "type": "header",\
+        "parameters": [\
+          {\
+            "type": "image",\
+            "image": {\
+              "id": "&lt;HEADER_ASSET_ID&gt;"\
+            }\
+          }\
+        ]\
+      },\
+      {\
+        "type": "body",\
+        "parameters": [\
+          {\
+            "type": "text",\
+            "parameter_name": "&lt;PARAMETER_NAME&gt;",\
+            "text": "&lt;PARAMETER_VALUE&gt;"\
+          },\
+          <!-- additional parameters and values go here -->\
+        ]\
+      }\
+    ]
+  }
+}'
+```
+
+### Request parameters
+
+| Placeholder | Description | Example value |
+| --- | --- | --- |
+| `&lt;ACCESS_TOKEN&gt;`<br />_String_ | **Required.**<br />Access token | `EAAAN6tcBzAUBOZC82CW7iR2LiaZBwUHS4Y7FDtQxRUPy1PHZClDGZBZCgWdrTisgMjpFKiZAi1FBBQNO2IqZBAzdZAA16lmUs0XgRcCf6z1LLxQCgLXDEpg80d41UZBt1FKJZCqJFcTYXJvSMeHLvOdZwFyZBrV9ZPHZASSqxDZBUZASyFdzjiy2A1sippEsF4DVV5W2IlkOSr2LrMLuYoNMYBy8xQczzOKDOMccqHEZD` |
+| `&lt;API_VERSION&gt;`<br />_String_ | **Optional.**<br />API version. If omitted, defaults to the newest API version available to your app. | `v23.0` |
+| `&lt;BUSINESS_PHONE_NUMBER_ID&gt;`<br />_String_ | **Required.**<br />WhatsApp business phone number ID. | `106540352242922` |
+| `&lt;HEADER_ASSET_ID&gt;`<br />_String_ | **Required if template uses a header media.**<br />Header [media asset ID](https://developers.facebook.com/documentation/business-messaging/whatsapp/business-phone-numbers/media#upload-media). | `1339522734477770` |
+| `&lt;PARAMETER_NAME&gt;`<br />_String_ | **Required if template uses one or more named parameters.**<br />Name of [named parameter](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/overview#named-parameters). | `discount_code` |
+| `&lt;PARAMETER_VALUE&gt;`<br />_String_ | **Required if template uses one or more named parameters.**<br />[Named parameter](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/overview#named-parameters) value. | `WELCOME25` |
+| `&lt;TEMPLATE_LANGUAGE&gt;`<br />_String_ | **Required.**<br />[Template language](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/supported-languages). | `en_US` |
+| `&lt;TEMPLATE_NAME&gt;`<br />_String_ | **Required.**<br />Template name. | `welcome_discount_template` |
+| `&lt;WHATSAPP_USER_PHONE_NUMBER&gt;`<br />_String_ | **Required.**<br />WhatsApp user phone number. | `16505551234` |
+
+### Response syntax
+
+Upon success:
+
+```
+\{
+  "messaging_product": "whatsapp",
+  "contacts": [\
+    {\
+      "input": "&lt;WHATSAPP_USER_PHONE_NUMBER&gt;",\
+      "wa_id": "&lt;WHATSAPP_USER_ID&gt;"\
+    }\
+  ],
+  "messages": [\
+    {\
+      "id": "&lt;WHATSAPP_MESSAGE_ID&gt;",\
+      "message_status": "&lt;PACING_STATUS&gt;"\
+    }\
+  ]
+}
+```
+
+### Response parameters
+
+| Placeholder | Description | Example value |
+| --- | --- | --- |
+| `&lt;PACING_STATUS&gt;` | Template [pacing status](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/template-pacing). | `accepted` |
+| `&lt;WHATSAPP_MESSAGE_ID&gt;` | WhatsApp Message ID.<br />This ID is included in status [messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/reference/messages/status) webhooks for delivery status purposes. | `wamid.HBgLMTY1MDM4Nzk0MzkVAgARGBJBRkJENzExMTRFRjk2NTI1OTEA` |
+| `&lt;WHATSAPP_USER_ID&gt;` | WhatsApp user’s WhatsApp ID. May not match `input` value. | `16505551234` |
+| `&lt;WHATSAPP_USER_PHONE_NUMBER&gt;` | WhatsApp user’s WhatsApp phone number. May not match `wa_id` value. | `16505551234` |
+
+### Example request
+
+```
+curl 'https://graph.facebook.com/v23.0/106540352242922/messages' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+-d '
+\{
+  "messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": "16505551234",
+  "type": "template",
+  "template": {
+    "name": "welcome_discount_template",
+    "language": {
+      "code": "en_US"
+    },
+    "components": [\
+      {\
+        "type": "header",\
+        "parameters": [\
+          {\
+            "type": "image",\
+            "image": {\
+              "id": "1339522734477770"\
+            }\
+          }\
+        ]\
+      },\
+      {\
+        "type": "body",\
+        "parameters": [\
+          {\
+            "type": "text",\
+            "parameter_name": "first_name",\
+            "text": "Jessica"\
+          },\
+          {\
+            "type": "text",\
+            "parameter_name": "discount_code",\
+            "text": "WELCOME25"\
+          },\
+          {\
+            "type": "text",\
+            "parameter_name": "discount_amount",\
+            "text": "25%"\
+          }\
+        ]\
+      }\
+    ]
+  }
+}'
+```
+
+### Example response
+
+```
+\{
+  "messaging_product": "whatsapp",
+  "contacts": [\
+    {\
+      "input": "16505551234",\
+      "wa_id": "16505551234"\
+    }\
+  ],
+  "messages": [\
+    {\
+      "id": "wamid.HBgLMTY1MDM4Nzk0MzkVAgARGBIyQjM2RTlERTY4QjFGNzUwNDgA",\
+      "message_status": "accepted"\
+    }\
+  ]
+}
+```
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Supported components
+
+Create a custom marketing template
+
+Request syntax
+
+Request parameters
+
+Response syntax
+
+Response parameters
+
+Example request
+
+Example response
+
+Send a custom marketing template
+
+Request syntax
+
+Request parameters
+
+Response syntax
+
+Response parameters
+
+Example request
+
+Example response
+
+* * *

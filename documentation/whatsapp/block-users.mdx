@@ -1,0 +1,440 @@
+
+# Block Users API
+
+Updated: Oct 27, 2025
+
+The Block Users API enables your business to block bad actors from contacting you.
+
+## How it Works
+
+When you block a WhatsApp user, the following happens:
+
+The user cannot contact your business or see that you are online.
+Your business cannot message the user. If you do, you will encounter an error.
+You cannot use this API to block another WhatsApp Business
+
+Errors on the API occur per-number since blocks might be successful on some numbers and not others.
+
+The Block Users API is synchronous.
+
+## Limitations
+
+You can only block users that have messaged your business in the last 24 hours.
+64k blocklist limit
+
+## Features
+
+The API contains 3 endpoints:
+
+```
+// Block WhatsApp user numbers
+POST /&lt;PHONE_NUMBER_ID&gt;/block_users
+```
+
+```
+// Unblock WhatsApp user numbers
+DELETE /&lt;PHONE_NUMBER_ID&gt;/block_users
+```
+
+```
+// Get list of blocked WhatsApp user numbers
+GET /&lt;PHONE_NUMBER_ID&gt;/block_users
+```
+
+## Block Users
+
+Use this endpoint to block a list of WhatsApp user numbers.
+
+### Endpoint
+
+```
+POST /&lt;PHONE_NUMBER_ID&gt;/block_users
+```
+
+### Request Body
+
+```
+\{
+  "messaging_product": "whatsapp",
+  // List of WhatsApp user numbers to be blocked
+  "block_users": [\
+    {\
+      "user": "&lt;PHONE_NUMBER&gt; or &lt;WA_ID&gt;"\
+    }\
+  ]
+}
+```
+
+### Request Parameters
+
+| Parameter | Description |
+| --- | --- |
+| `messaging_product`<br />_String_ | _Required_<br />Messaging service used for the request. Must be `"whatsapp"`. |
+| `block_users`<br />_Object_ | _Required_<br />List of user(s) to block.<br />Each element contains a `user` field. |
+| `user`<br />_string_ | The phone number or WhatsApp ID to be blocked. |
+
+### Response Object
+
+```
+SUCCESS (200)
+
+\{
+  "messaging_product": "whatsapp",
+  "block_users": {
+    "added_users": [\
+      {\
+        "input": "&lt;PHONE_NUMBER&gt; or &lt;WA_ID&gt;",\
+        "wa_id": "&lt;WA_ID&gt;"\
+      }\
+    ]
+  }
+}
+```
+
+### Response Parameters
+
+| Parameter | Description |
+| --- | --- |
+| `block_users`<br />_Object_ | Contains two lists:<br />`added-users` — List of successfully blocked users.<br />`failed_users` — List of users failed to be blocked. |
+| `added_users`<br />_Object_ | List of successfully blocked users.
+
+Contains values of both:
+
+|     |     |
+| --- | --- |
+| `input` | _String_ — Phone number of a WhatsApp user |
+
+|     |     |
+| --- | --- |
+| `wa_id` | _String_ — Unique ID of a WhatsApp user | |
+| `failed_users`<br />_Object_ | List of users failed to be blocked
+
+Contains values of both:
+
+|     |     |
+| --- | --- |
+| `input` | _String_ — Phone number of a WhatsApp user |
+
+|     |     |
+| --- | --- |
+| `wa_id` | _String_ — Unique ID of a WhatsApp user | |
+
+```
+MIXED SUCCESS/FAILURE (400)
+
+\{
+  "messaging_product": "whatsapp",
+  "block_users": {
+    "added_users": [\
+      {\
+        "input": "&lt;PHONE_NUMBER&gt; or &lt;WA_ID&gt;",\
+        "wa_id": "&lt;WA_ID&gt;"\
+      },\
+      {\
+        "input": "&lt;PHONE_NUMBER&gt; or &lt;WA_ID&gt;",\
+        "wa_id": "&lt;WA_ID&gt;"\
+      },\
+      ...\
+    ],
+    "failed_users": [\
+      {\
+        "input": "&lt;PHONE_NUMBER&gt; or &lt;WA_ID&gt;",\
+        "wa_id": "&lt;WA_ID&gt;"\
+      },\
+      {\
+        "input": "&lt;PHONE_NUMBER&gt; or &lt;WA_ID&gt;",\
+        "wa_id": "&lt;WA_ID&gt;"\
+      },\
+      ...\
+        "errors": [{\
+          "message": "&lt;MESSAGE&gt;",\
+          "code": "&lt;CODE&gt;",\
+          "error_data": {\
+            "details": "&lt;DETAILS&gt;""\
+          }]\
+        }\
+      }\
+    ]
+  },
+  "error": {
+    "message": "(#139100) Failed to block/unblock users",
+    "type": "OAuthException",
+    "code": 139100,
+    "error_data": {
+      "details": "Failed to block some users, see the block_users response list for details"
+    },
+    "fbtrace_id": "&lt;FBTRACE_ID&gt;"
+  }
+}
+```
+
+## Unblock Users
+
+Use this endpoint to unblock a list of WhatsApp user numbers.
+
+### Endpoint
+
+```
+DELETE /&lt;PHONE_NUMBER_ID&gt;/block_users
+```
+
+### Request Body
+
+```
+\{
+  "messaging_product": "whatsapp",
+  "block_users": [\
+     {\
+       // List of WhatsApp user numbers to be unblocked\
+       "user": "&lt;PHONE_NUMBER&gt; or &lt;WA_ID&gt;"\
+     }\
+   ]
+}
+```
+
+### Request Parameters
+
+| Parameter | Description |
+| --- | --- |
+| `messaging_product`<br />_String_ | _Required_<br />Messaging service used for the request. Must be `"whatsapp"`.<br />[Cloud API](https://developers.facebook.com/documentation/business-messaging/whatsapp/about-the-platform#whatsapp-cloud-api) only. |
+| `block_users`<br />_Object_ | _Required_<br />List of user(s) to block.<br />Each element contains a `user` field. |
+| `user`<br />_string_ | The phone number or WhatsApp ID to be blocked. |
+
+### Response Object
+
+```
+SUCCESS (200)
+
+\{
+  "messaging_product": "whatsapp",
+  "block_users": {
+    "added_users": [\
+      {\
+        "input": "&lt;PHONE_NUMBER&gt; or &lt;WA_ID&gt;",\
+        "wa_id": "&lt;WA_ID&gt;"\
+      }\
+    ]
+  }
+}
+```
+
+### Response Parameters
+
+| Parameter | Description |
+| --- | --- |
+| `block_users`<br />_Object_ | Contains two lists:<br />`added-users` — List of successfully blocked users.<br />`failed_users` — List of users failed to be blocked. |
+| `added_users`<br />_Object_ | List of successfully blocked users.
+
+Contains values of both:
+
+|     |     |
+| --- | --- |
+| `input` | _String_ — Phone number of a WhatsApp user |
+
+|     |     |
+| --- | --- |
+| `wa_id` | _String_ — Unique ID of a WhatsApp user | |
+| `failed_users`<br />_Object_ | List of users failed to be blocked
+
+Contains values of both:
+
+|     |     |
+| --- | --- |
+| `input` | _String_ — Phone number of a WhatsApp user |
+
+|     |     |
+| --- | --- |
+| `wa_id` | _String_ — Unique ID of a WhatsApp user | |
+
+```
+MIXED SUCCESS/FAILURE (400)
+
+\{
+  "messaging_product": "whatsapp",
+  "block_users": {
+    "added_users": [\
+      {\
+        "input": "&lt;PHONE_NUMBER&gt; or &lt;WA_ID&gt;",\
+        "wa_id": "&lt;WA_ID&gt;"\
+      },\
+      {\
+        "input": "&lt;PHONE_NUMBER&gt; or &lt;WA_ID&gt;",\
+        "wa_id": "&lt;WA_ID&gt;"\
+      },\
+      ...\
+    ],
+    "failed_users": [\
+      {\
+        "input": "&lt;PHONE_NUMBER&gt; or &lt;WA_ID&gt;",\
+        "wa_id": "&lt;WA_ID&gt;"\
+      },\
+      {\
+        "input": "&lt;PHONE_NUMBER&gt; or &lt;WA_ID&gt;",\
+        "wa_id": "&lt;WA_ID&gt;"\
+      }\
+      ...\
+        "errors": [{\
+          "message": "&lt;MESSAGE&gt;",\
+          "code": "&lt;CODE&gt;",\
+          "error_data": {\
+            "details": "&lt;DETAILS&gt;""\
+          }]\
+        }\
+      }\
+    ]
+  },
+  "error": {
+    "message": "(#139100) Failed to block/unblock users",
+    "type": "OAuthException",
+    "code": 139100,
+    "error_data": {
+      "details": "Failed to block some users, see the block_users response list for details"
+    },
+    "fbtrace_id": "&lt;FBTRACE_ID&gt;"
+  }
+}
+```
+
+## Get List of Blocked Numbers
+
+Use this endpoint to get a list of blocked numbers on your WhatsApp Business number.
+
+### Endpoint
+
+```
+GET /&lt;PHONE_NUMBER_ID&gt;/block_users
+```
+
+### Query Parameters
+
+```
+?limit=10, // Optional
+&after=&lt;AFTER_CURSOR&gt;,   // Optional
+&before=&lt;BEFORE_CURSOR&gt;  // Optional
+```
+
+### Response Parameters
+
+| Parameter | Description |
+| --- | --- |
+| `limit`<br />_Optional_ | Maximum number of blocked users to fetch in the request. |
+| `after`<br />_Optional_ | Learn more about [Paginated Results in Graph API here](https://developers.facebook.com/docs/graph-api/results) |
+| `before`<br />_Optional_ | Learn more about [Paginated Results in Graph API here](https://developers.facebook.com/docs/graph-api/results) |
+
+### Response Object
+
+```
+SUCCESS
+
+\{
+  "data": [\
+    {\
+      "block_users": [\
+      {\
+        "input": "&lt;PHONE_NUMBER&gt; or &lt;WA_ID&gt;",\
+        "wa_id": "&lt;WA_ID&gt;"\
+      }\
+      ]\
+    }\
+  ],
+  "paging": {
+    "cursors": {
+      "after": "MTAxNTExOTQ1MjAwNzI5NDE=",
+      "before": "NDMyNzQyODI3OTQw"
+    },
+    "previous": "https://graph.facebook.com/{version}/{phone-number-id}/block_users?limit=10&before=NDMyNzQyODI3OTQw",
+    "next": "https://graph.facebook.com/{version}/{phone-number-id}/block_users?limit=25&after=MTAxNTExOTQ1MjAwNzI5NDE="
+  }
+}
+```
+
+### Response Parameters
+
+| Parameter | Description |
+| --- | --- |
+| `block_users`<br />_Object_ | _Required_<br />List of user(s) to block.<br />Each element contains a `user` field. |
+| `wa_id`<br />_String_ | Phone number of the blocked user |
+| `paging`<br />_Object_ | Learn more about [Paginated Results in Graph API here](https://developers.facebook.com/docs/graph-api/results) |
+
+```
+ERROR
+\{
+  "messaging_product": "whatsapp",
+  "error": {
+    "message": "(#135002) Blocklist concurrent update",
+    "type": "OAuthException",
+    "code": 139102,
+    "error_data": {
+        "messaging_product": "whatsapp",
+        "details": "Blocklist was updated during retrieval - retry with offset 0"
+    },
+    "fbtrace_id": "&lt;FBTRACE_ID&gt;"
+  }
+}
+```
+
+## Error Codes
+
+| Code | Description |
+| --- | --- |
+| `139100`<br />Failed to block/unblock some users | Bulk blocking failed to block some or all of the users. |
+| `139101`<br />Blocklist limit reached | The blocklist limit is reached when the 64k limit is met. |
+| `139102`<br />Blocklist concurrent update | Occurs when the block list is updated while performing a pagination request and `version_id` does not match. |
+| `139103`<br />Internal error | Internal error, please try again. |
+| `130429`<br />Rate Limit Hit | Occurs when either:<br />Too many numbers are in the request itself.<br />Or, too many requests are made over a short period of time. |
+| `131021`<br />Self Block | Failed to block self phone number. |
+| `131047`<br />Re-engagement required | Occurs if the business has not received a message from that number in the last 24 hours.<br />This error will also be returned if the number is an invalid WhatsApp user. |
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+How it Works
+
+Limitations
+
+Features
+
+Block Users
+
+Endpoint
+
+Request Body
+
+Request Parameters
+
+Response Object
+
+Response Parameters
+
+Unblock Users
+
+Endpoint
+
+Request Body
+
+Request Parameters
+
+Response Object
+
+Response Parameters
+
+Get List of Blocked Numbers
+
+Endpoint
+
+Query Parameters
+
+Response Parameters
+
+Response Object
+
+Response Parameters
+
+Error Codes
+
+* * *

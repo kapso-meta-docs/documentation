@@ -1,0 +1,352 @@
+
+# Coupon code templates
+
+Updated: Dec 3, 2025
+
+Coupon code templates are marketing templates that display a single copy code button. When tapped, the code is copied to the customer’s clipboard.
+
+![](https://scontent-lax3-2.xx.fbcdn.net/v/t39.2365-6/365756533_1756280054770140_7287687181799037425_n.png?_nc_cat=107&ccb=1-7&_nc_sid=e280be&_nc_ohc=rH4JPp7fqRkQ7kNvwFfwnZo&_nc_oc=Adnh6VQ8QTEznN16gosQMFv1Uqzhcy14Uw4Lx6S9Jn15wPN3NWmaQngTujb-6JdV38c&_nc_zt=14&_nc_ht=scontent-lax3-2.xx&_nc_gid=swTa5akD8lm-_NiU4XZRYg&oh=00_Afmhv7XIFyl8frEttLTKtRbmF0Q2Up_X7_zHvbxVEro9Tg&oe=695521A5)
+
+## Limitations
+
+Coupon code templates are currently not supported by the WhatsApp web client.
+Copy code button text cannot be customized.
+Templates are limited to one copy code button.
+
+## Creating coupon code templates
+
+Use the [POST /&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;/message_templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-account/template-api) endpoint to create coupon code templates.
+
+### Request syntax
+
+```
+curl 'https://graph.facebook.com/&lt;API_VERSION&gt;/&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;/message_templates' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer &lt;ACCESS_TOKEN&gt;' \
+-d '
+\{
+  "name": "&lt;TEMPLATE_NAME&gt;",
+  "language": "&lt;TEMPLATE_LANGUAGE&gt;",
+  "category": "marketing",
+  "components": [\
+\
+    <!-- Only if using a header component -->\
+    {\
+      "type": "header",\
+      "format": "text",\
+      "text": "&lt;HEADER_TEXT&gt;"\
+    },\
+\
+    {\
+      "type": "body",\
+      "text": "&lt;BODY_TEXT&gt;",\
+\
+      <!-- Only include if body text includes one or more parameters -->\
+      "example": {\
+        "body_text": [\
+          [\
+            "&lt;BODY_PARAMETER_EXAMPLE_VALUE&gt;"\
+            <!-- Additional examples values would follow, if using multiple body parameters -->\
+          ]\
+        ]\
+      }\
+    },\
+    {\
+      "type": "buttons",\
+      "buttons": [\
+\
+        <!-- Only if using a quick-reply button -->\
+        {\
+          "type": "quick_reply",\
+          "text": "&lt;QUICK_REPLY_BUTTON_LABEL_TEXT&gt;"\
+        },\
+\
+        {\
+          "type": "copy_code",\
+          "example": "&lt;COPY_CODE_BUTTON_EXAMPLE_CODE&gt;"\
+        }\
+      ]\
+    }\
+  ]
+}'
+```
+
+### Request parameters
+
+| Placeholder | Description | Example Value |
+| --- | --- | --- |
+| `&lt;ACCESS_TOKEN&gt;`<br />_String_ | **Required.**<br />Access token. | `EAAAN...` |
+| `&lt;API_VERSION&gt;`<br />_String_ | **Optional.**<br />API version. If omitted, defaults to the newest API version available to your app. | `v23.0` |
+| `&lt;BODY_PARAMETER_EXAMPLE_VALUE&gt;`<br />_String_ | **Required if using a body component string that includes one or more parameters.**<br />Example parameter value. You must supply an example for each parameter defined in your body component string. | `0itCfer5xDB14SHWLACB` |
+| `&lt;BODY_TEXT&gt;`<br />_String_ | **Required.**<br />Template body text. Variables are supported.<br />Maximum 1024 characters. | `Shop now through the end of December and use the one-time use code {{1}} to get {{2}} off of your entire order!` |
+| `&lt;COPY_CODE_BUTTON_EXAMPLE_CODE&gt;`<br />_String_ | **Required.**<br />Code to be copied to device clipboard when tapped.<br />Maximum 20 characters. | `fLBponPDsqF0KQThzkrf` |
+| `&lt;HEADER_TEXT&gt;`<br />_String_ | **Required if using a text header component.**<br />Header text.<br />Maximum 60 characters. | `Our Winter Sale is on!` |
+| `&lt;QUICK_REPLY_BUTTON_LABEL_TEXT&gt;` | **Required if using a quick-reply button.**<br />Button label text. Maximum 25 characters. Alphanumeric characters only. | `Unsubscribe` |
+| `&lt;TEMPLATE_LANGUAGE&gt;`<br />_String_ | **Required.**<br />Template [language code](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/supported-languages). | `en_US` |
+| `&lt;TEMPLATE_NAME&gt;`<br />_String_ | **Required.**<br />Template name. Must be unique, unless existing templates with the same name have a different template language.<br />Maximum 512 characters. Lowercase, alphanumeric characters and underscores only. | `coupon_code_onetime_winter_2025` |
+| `&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;`<br />_String_ | **Required.**<br />WhatsApp Business Account ID. | `102290129340398` |
+
+### Response syntax
+
+Upon success:
+
+```
+\{
+  "id": "&lt;TEMPLATE_ID&gt;",
+  "status": "&lt;TEMPLATE_STATUS&gt;",
+  "category": "&lt;TEMPLATE_CATEGORY&gt;"
+}
+```
+
+### Response parameters
+
+| Placeholder | Description | Example value |
+| --- | --- | --- |
+| `&lt;TEMPLATE_CATEGORY&gt;` | [Template category](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/template-categorization). | `MARKETING` |
+| `&lt;TEMPLATE_ID&gt;` | Template ID. | `1627019861106475` |
+| `&lt;TEMPLATE_STATUS&gt;` | [Template status](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/overview#template-status). | `PENDING` |
+
+### Example request
+
+```
+curl 'https://graph.facebook.com/v24.0/102290129340398/message_templates' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+-d '
+\{
+  "name": "coupon_code_onetime_winter_2025",
+  "language": "en_US",
+  "category": "marketing",
+  "components": [\
+    {\
+      "type": "header",\
+      "format": "text",\
+      "text": "Our Winter Sale is on!"\
+    },\
+    {\
+      "type": "BODY",\
+      "text": "Shop now through the end of December and use the one-time use code {{1}} to get {{2}} off of your entire order!",\
+      "example": {\
+        "body_text": [\
+          [\
+            "fLBponPDsqF0KQThzkrf",\
+            "30%"\
+          ]\
+        ]\
+      }\
+    },\
+    {\
+      "type": "BUTTONS",\
+      "buttons": [\
+        {\
+          "type": "QUICK_REPLY",\
+          "text": "Unsubscribe"\
+        },\
+        {\
+          "type": "COPY_CODE",\
+          "example": "fLBponPDsqF0KQThzkrf"\
+        }\
+      ]\
+    }\
+  ]
+}'
+```
+
+### Example response
+
+```
+\{
+  "category" : "MARKETING",
+  "id" : "1924084211297547",
+  "status" : "PENDING"
+}
+```
+
+## Sending coupon code templates
+
+### Request syntax
+
+Use the [POST /&lt;BUSINESS_PHONE_NUMBER_ID&gt;/messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api) endpoint to send an approved coupon template in a template message.
+
+```
+curl -X POST "https://graph.facebook.com/&lt;API_VERSION&gt;/&lt;BUSINESS_PHONE_NUMBER_ID&gt;/messages" \
+  -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;" \
+  -H "Content-Type: application/json" \
+  -d '
+\{
+    "messaging_product": "whatsapp",
+    "to": "&lt;USER_PHONE_NUMBDER&gt;",
+    "type": "template",
+    "template": {
+      "name": "&lt;TEMPLATE_NAME&gt;",
+      "language": {
+        "code": "&lt;TEMPLATE_LANGUAGE&gt;"
+      },
+      "components": [\
+        {\
+          "type": "button",\
+          "sub_type": "copy_code",\
+          "index": &lt;BUTTON_INDEX&gt;,\
+          "parameters": [\
+            {\
+              "type": "coupon_code",\
+              "coupon_code": "&lt;COUPON_CODE&gt;"\
+            }\
+          ]\
+        }\
+        <!-- Additional components would follow, if templates requires them -->\
+      ]
+    }
+  }'
+```
+
+### Request parameters
+
+| Placeholder | Description | Example Value |
+| --- | --- | --- |
+| `&lt;ACCESS_TOKEN&gt;`<br />_String_ | **Required.**<br />Access token. | `EAAAN...` |
+| `&lt;API_VERSION&gt;`<br />_String_ | **Optional.**<br />API version. If omitted, defaults to the newest API version available to your app. | `v23.0` |
+| `&lt;BUSINESS_PHONE_NUMBER_ID&gt;`<br />_String_ | **Required.**<br />WhatsApp business phone number ID. | `106540352242922` |
+| `&lt;BUTTON_INDEX&gt;`<br />_Integer_ | **Required.**<br />Indicates order in which button should appear, if the template uses multiple buttons.<br />Buttons are zero-indexed, so setting value to `0` will cause the button to appear first, and another button with an index of `1` will appear next, etc. | `0` |
+| `&lt;COUPON_CODE&gt;`<br />_String_ | **Required.**<br />The coupon code to be copied when the customer taps the button. Only accepting alphanumeric characters.<br />Maximum 20 characters. | `25OFF` |
+| `&lt;TEMPLATE_NAME&gt;`<br />_String_ | **Required.**<br />Name of the template to be sent. | `coupon_code_fall2023_25off` |
+| `&lt;TEMPLATE_LANGUAGE&gt;`<br />_String_ | **Required.**<br />The template’s language and locale code. | `en_US` |
+| `&lt;USER_PHONE_NUMBER&gt;`<br />_String_ | **Required.**<br />The WhatsApp ID or phone number of the customer to send the message to. See [Phone Number Formats](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api). | `+16505551234` |
+
+### Response syntax
+
+Upon success the API will respond with:
+
+```
+\{
+  "messaging_product": "whatsapp",
+  "contacts": [\
+    {\
+      "input": "&lt;WHATSAPP_USER_PHONE_NUMBER&gt;",\
+      "wa_id": "&lt;WHATSAPP_USER_ID&gt;"\
+    }\
+  ],
+  "messages": [\
+    {\
+      "id": "&lt;WHATSAPP_MESSAGE_ID&gt;",\
+      "group_id": "&lt;GROUP_ID&gt;", <!-- Only included if messaging a group -->\
+      "message_status": "&lt;PACING_STATUS&gt;" <!-- Only included if sending a template -->\
+    }\
+  ]
+}
+```
+
+### Response parameters
+
+| Placeholder | Description | Sample Value |
+| --- | --- | --- |
+| `&lt;GROUP_ID&gt;`<br />_String_ | The string identifier of a group made using the Groups API.<br />This field shows when messages are sent, received, or read from a group.<br />[Learn more about the Groups API](https://developers.facebook.com/documentation/business-messaging/whatsapp/groups) | `Y2FwaV9ncm91cDoxNzA1NTU1MDEzOToxMjAzNjM0MDQ2OTQyMzM4MjAZD` |
+| `&lt;PACING_STATUS&gt;`<br />_String_ | Indicates [template pacing](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/template-pacing) status. The `message_status` property is only included in responses when sending a [template message](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/template-messages) that uses a template that is being paced. | `wamid.HBgLMTY0NjcwNDM1OTUVAgARGBI4MjZGRDA0OUE2OTQ3RkEyMzcA` |
+| `&lt;WHATSAPP_USER_PHONE_NUMBER&gt;`<br />_String_ | WhatsApp user’s WhatsApp phone number. May not match `wa_id` value. | `+16505551234` |
+| `&lt;WHATSAPP_USER_ID&gt;`<br />_String_ | WhatsApp user’s WhatsApp ID. May not match `input` value. | `16505551234` |
+| `&lt;WHATSAPP_MESSAGE_ID&gt;`<br />_String_ | WhatsApp Message ID. This ID appears in associated **messages** webhooks, such as sent, read, and delivered webhooks. | `wamid.HBgLMTY0NjcwNDM1OTUVAgARGBI4MjZGRDA0OUE2OTQ3RkEyMzcA` |
+
+### Example Request
+
+```
+curl 'https://graph.facebook.com/v24.0/106540352242922/messages' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+-d '
+\{
+  "messaging_product": "whatsapp",
+  "to": "16505551234",
+  "type": "template",
+  "template": {
+    "name": "coupon_code_fall2023_25off",
+    "language": {
+      "code": "en_US"
+    },
+    "components": [\
+      {\
+        "type": "body",\
+        "parameters": [\
+          {\
+            "type": "text",\
+            "text": "25OFF"\
+          },\
+          {\
+            "type": "text",\
+            "text": "25%"\
+          }\
+        ]\
+      },\
+      {\
+        "type": "button",\
+        "sub_type": "COPY_CODE",\
+        "index": 1,\
+        "parameters": [\
+          {\
+            "type": "coupon_code",\
+            "coupon_code": "25OFF"\
+          }\
+        ]\
+      }\
+    ]
+  }
+}'
+```
+
+### Example Response
+
+```
+\{
+  "messaging_product": "whatsapp",
+  "contacts": [\
+    {\
+      "input": "16505551234",\
+      "wa_id": "16505551234"\
+    }\
+  ],
+  "messages": [\
+    {\
+      "id": "wamid.HBgLMTY1MDM4Nzk0MzkVAgARGBIxRjk1REYzMDBERDE3RUI0RDYA"\
+    }\
+  ]
+}
+```
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Limitations
+
+Creating coupon code templates
+
+Request syntax
+
+Request parameters
+
+Response syntax
+
+Response parameters
+
+Example request
+
+Example response
+
+Sending coupon code templates
+
+Request syntax
+
+Request parameters
+
+Response syntax
+
+Response parameters
+
+Example Request
+
+Example Response
+
+* * *

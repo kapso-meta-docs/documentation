@@ -1,0 +1,119 @@
+
+# smb_message_echoes webhook reference
+
+Updated: Oct 22, 2025
+
+This reference describes trigger events and payload contents for the WhatsApp Business Account **smb_message_echoes** webhook.
+
+The **smb_message_echoes** webhook notifies you of messages sent via the WhatsApp Business app or a [companion (“linked”) device](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/onboarding-business-app-users#linked-devices) by a business customer who has been [onboarded to Cloud API](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/onboarding-business-app-users) via a solution provider.
+
+## Triggers
+
+A business customer with a WhatsApp Business app phone number, who has been [onboarded by a solution provider](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/onboarding-business-app-users), sends a message using the WhatsApp Business app or a [companion device](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/onboarding-business-app-users#linked-devices) to a WhatsApp user or another business.
+
+## Syntax
+
+```
+\{
+  "object": "whatsapp_business_account",
+  "entry": [\
+    {\
+      "id": "&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;",\
+      "changes": [\
+        {\
+          "value": {\
+            "messaging_product": "whatsapp",\
+            "metadata": {\
+              "display_phone_number": "&lt;BUSINESS_DISPLAY_PHONE_NUMBER&gt;",\
+              "phone_number_id": "&lt;BUSINESS_PHONE_NUMBER_ID&gt;"\
+            },\
+            "message_echoes": [\
+              {\
+                "from": "&lt;BUSINESS_DISPLAY_PHONE_NUMBER&gt;",\
+                "to": "&lt;WHATSAPP_USER_PHONE_NUMBER&gt;",\
+                "id": "&lt;WHATSAPP_MESSAGE_ID&gt;",\
+                "timestamp": "&lt;WEBHOOK_TRIGGER_TIMESTAMP&gt;",\
+                "type": "&lt;MESSAGE_TYPE&gt;",\
+                "&lt;MESSAGE_TYPE&gt;": {\
+                  &lt;MESSAGE_CONTENTS&gt;\
+                }\
+              }\
+            ]\
+          },\
+          "field": "smb_message_echoes"\
+        }\
+      ]\
+    }\
+  ]
+}
+```
+
+## Parameters
+
+| Placeholder | Description | Example value |
+| --- | --- | --- |
+| `&lt;BUSINESS_DISPLAY_PHONE_NUMBER&gt;`<br />_String_ | Business display phone number. | `15550783881` |
+| `&lt;BUSINESS_PHONE_NUMBER_ID&gt;`<br />_String_ | Business phone number ID. | `106540352242922` |
+| `&lt;MESSAGE_CONTENTS&gt;`<br />_Object_ | An object describing the message’s contents.<br />This value will vary based on the message `type`, as well as the contents of the message.<br />For example, if a business sends an `image` message without a caption, the object would not include the `caption` property.<br />See [Sending messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/send-messages) for examples of payloads for each message type. | `{"body":"Here's the info you requested! https://www.meta.com/quest/quest-3/"}` |
+| `&lt;MESSAGE_TYPE&gt;`<br />_String_ | [Message type](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/reference/messages). Note that this placeholder appears twice in the syntax above, as it serves as a placeholder for the `type` property’s value and its matching property name. | `text` |
+| `&lt;WEBHOOK_TRIGGER_TIMESTAMP&gt;`<br />_Integer_ | Unix timestamp indicating when the webhook was triggered. | `1739321024` |
+| `&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;`<br />_String_ | The business customer’s WhatsApp Business Account ID. | `102290129340398` |
+| `&lt;WHATSAPP_MESSAGE_ID&gt;`<br />_String_ | WhatsApp message ID. | `wamid.HBgLMTY1MDM4Nzk0MzkVAgASGBQzQUFERjg0NDEzNDdFODU3MUMxMAA=` |
+| `&lt;WHATSAPP_USER_PHONE_NUMBER&gt;`<br />_String_ | WhatsApp user phone number. This is the same value returned by the API as the `input` value when sending a message to a WhatsApp user. Note that a WhatsApp user’s phone number and ID may not always match. | `+16505551234` |
+
+## Example
+
+This example payload describes a text message (`type` is `text`) sent to a WhatsApp user by a business customer using the WhatsApp Business app.
+
+```
+\{
+  "object": "whatsapp_business_account",
+  "entry": [\
+    {\
+      "id": "102290129340398",\
+      "changes": [\
+        {\
+          "value": {\
+            "messaging_product": "whatsapp",\
+            "metadata": {\
+              "display_phone_number": "15550783881",\
+              "phone_number_id": "106540352242922"\
+            },\
+            "message_echoes": [\
+              {\
+                "from": "15550783881",\
+                "to": "16505551234",\
+                "id": "wamid.HBgLMTY0NjcwNDM1OTUVAgARGBIyNDlBOEI5QUQ4NDc0N0FCNjMA",\
+                "timestamp": "1739321024",\
+                "type": "text"\
+                "text": {\
+                  "body": "Here's the info you requested! https://www.meta.com/quest/quest-3/"\
+                }\
+              }\
+            ]\
+          },\
+          "field": "smb_message_echoes"\
+        }\
+      ]\
+    }\
+  ]
+}
+```
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Triggers
+
+Syntax
+
+Parameters
+
+Example
+
+* * *

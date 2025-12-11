@@ -1,0 +1,97 @@
+
+# Embedded Signup Flow Errors
+
+Updated: Nov 10, 2025
+
+This guide helps you get acquainted with the different errors that may arise as you [embed the signup flow](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/implementation) in your website or client portal.
+
+## Abandoned Flow Screens
+
+If a business customer prematurely abandons the Embedded Signup flow, we will send a [message event](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/implementation#session-logging-message-event-listener) to the browser that spawned the flow, that indicates which screen the customer was viewing when they abandoned the flow.
+
+The `data.current_step` property value indicates which screen the customer abandoned:
+
+```
+\{
+  data: {
+    current_step: "&lt;CURRENT_STEP&gt;",
+  },
+  type: "WA_EMBEDDED_SIGNUP",
+  event: "CANCEL",
+  version: 3
+}
+```
+
+| Current step value | Corresponding screen |
+| --- | --- |
+| `&lt;BUSINESS_ACCOUNT_SELECTION&gt;` | [Business portfolio screen](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/default-flow#business-portfolio-screen) |
+| `&lt;WABA_PHONE_PROFILE_PICKER&gt;` | [WABA selection screen](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/default-flow#business-asset-selection-screen) |
+| `&lt;WHATSAPP_BUSINESS_PROFILE_SETUP&gt;` | [WABA creation screen](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/default-flow#business-asset-creation-screen) |
+| `&lt;PHONE_NUMBER_SETUP&gt;` | [Phone number addition screen](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/default-flow#phone-number-addition-screen) |
+| `&lt;PHONE_NUMBER_VERIFICATION&gt;` | [Phone number verification screen](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/default-flow#phone-number-verification-screen) |
+| `&lt;PERMISSIONS&gt;` | [Permissions review screen](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/default-flow#permissions-review-screen) |
+
+## Business Manager Account Creation Errors
+
+| Error | Description |
+| --- | --- |
+| **An error occurred while processing this request. Please try again later.** | Business account creation could have failed due to various reasons, please contact Support for further assistance.<br />Suggested Solution: Use an active Facebook account or contact Support for resolution. |
+| **You have reached the limit for the number of Businesses you can create at this time.** | There is a limit to the number of Business Accounts that you can create.<br />Suggested Solution: Please use an existing Business Account. |
+| **Your Facebook account is too new to create a business account. Try again in an hour.** | New Facebook accounts have to wait for some time to create a Business Manager account. Suggested Solution:<br />Use an existing active Facebook account or wait for a few hours before using your new account. The new Facebook account can be actively used during the wait period. |
+| **We limit how often you can post, comment or do other things in a given amount of time in order to help protect the community from spam. You can try again later.** | Your Facebook account was flagged because of suspicious behavior.<br />Suggested Solution: Use an existing, active Facebook account with no prior issues. |
+| **You’re no longer allowed to use Facebook Products to advertise. You can’t run ads, manage advertising assets or create new ad or business accounts.** | You are unable to create new Business Manager accounts due to previous suspicious behavior.<br />Suggested Solution: Use an existing, active Facebook account with no prior issues. |
+| **Your payment account is disabled** | Your payment account was disabled due to previous suspicious behavior. |
+| **A User Can Only Create One Business User At One Time** | You can only create a single Business Account within a given time period. Suggested Solution: Use an existing Business Account to onboard. |
+| **The name you chose for your business isn’t valid. Consider using xxx.** | Invalid business name. Suggested Solution: Add a valid name that matches the name of your business. |
+
+## WhatsApp Business Account Creation Errors
+
+| Error | Description |
+| --- | --- |
+| **Cannot Edit Verified Name: Name verification already in progress.** | Edit name is not allowed when name verification already in progress. Suggested Solution: Please try again when the current name verification request is completed. |
+| **User does not have permission to create WhatsApp Business Accounts.** | You do not have the Admin level permission needed to create WhatsApp Business Accounts under the Business Account you selected. Suggested Solution: Get Admin access to the Business Account to proceed or select an account you have Admin permissions for. |
+| **You can only create a limited number WhatsApp Business Accounts before your business and WhatsApp account verification is complete. You can create additional accounts after you are verified.** | You tried to create multiple WhatsApp Business Accounts under an unverified business. Suggested Solution: You can create additional WhatsApp Business Accounts only when Business Verification and WhatsApp account checks are complete. Start Business Verification for the account by visiting Business Manager. |
+| **We can’t verify the Meta Business Account that you selected. Go back to the previous screen to select a different account, or go to Meta Business Manager for support.** | The Meta Business Account selected doesn’t comply by our policies to use the WhatsApp Business Platform and couldn’t verified. Suggested Solution: Visit your Business Manager account to get more information about this Facebook Business Account. If your Business Verification submission is rejected, you should have received an email notification with the detailed reasons. You could try resubmitting your Business Verification if you think this was an error or create a WhatsApp Business Account using a Meta Business Account that has already been verified. |
+| **Something has gone wrong. You will need to contact support and try again.** | This could be an intermittent issue on WhatsApp. Suggested Solution: You can retry the flow in a few minutes. |
+
+## Phone Setup Errors
+
+| Error | Description |
+| --- | --- |
+| **Phone Number has been blocked. Please check alert prompt in**<br />**WhatsApp Manager Overview or follow instructions in Business Support Home.** | If a phone number is blocked by WhatsApp it cannot be added to a WABA. Suggested Solution: You can find out the reason why your phone number is blocked and solutions to resolve it<br />by check alert prompt in WhatsApp Manager Overview or following instructions in [Business Support Home](https://business.facebook.com/business-support-home).<br />If you believe your phone number is blocked by error, please contact support. |
+| **You have already linked the maximum number of phone numbers allowed for this Business Account. Delete a phone number to continue or**<br />**request additional numbers. [Learn more](https://developers.facebook.com/documentation/business-messaging/whatsapp/business-phone-numbers/phone-numbers).** | We currently impose phone number limit across all WhatsApp Business Account creation. Please refer to [Register Phone Number](https://developers.facebook.com/documentation/business-messaging/whatsapp/business-phone-numbers/phone-numbers#register-phone-number) for more info about these limits. Suggested Solution: Please ask business admin of the WhatsApp business account to follow steps under Delete Phone Number from a Waba in Phone Numbers doc or contact direct support to request register more than 20 phone numbers across all your WABAs. |
+| **This phone number already exists in your list of phone numbers.** | You are trying to add a phone number that already exists in your WhatsApp Business Account. Suggested Solution: Go back into the flow or restart the flow to select the existing phone number. |
+| **This number is registered to an existing WhatsApp account. To use this number, disconnect it from the existing account. Then, return to this page and re-enter the number. Note: It may take up to 3 minutes for the number to become available.** | The phone number was already registered on our platform (i.e., WhatsApp Messenger, WhatsApp Business App or Whatsapp Business API). Suggested Solution: [Deregister the number](https://developers.facebook.com/documentation/business-messaging/whatsapp/solution-providers/support/migrating-phone-numbers-among-solution-partners-via-embedded-signup) if you want to use it, or register a new number. |
+| **Your verified name violates WhatsApp guidelines. Please edit your verified name and try again.** | The name used for the phone number’s business profile does not meet our guidelines. Suggested Solution: Please reference the [Display Name guidelines](https://www.facebook.com/business/help/757569725593362) and try again. |
+| **Something has gone wrong. You will need to contact support and try again.** | There was a problem in creating the phone number’s Business Profile. Suggested Solution: Re-enter the correct Business Profile name according to the [guidelines](https://www.facebook.com/business/help/757569725593362) and other details. |
+
+## Phone Verification Errors
+
+| Error | Description |
+| --- | --- |
+| **Phone number ownership is already verified.** | This phone number has already been verified. |
+| **Code couldn’t be verified: You tried to register this number too many**<br />**times. Try again later.** | WhatsApp Business APIs only allow a limited number of phone number OTP verification attempts. Suggested Solution: Please try again later. |
+| **Your phone number doesn’t appear to be valid. Please double check it, or try again after 5 minutes.** | An incorrect phone number was entered or we do not support numbers of this format. Suggested Solution:<br />Make sure the number is operational and verified by a telecom provider. We do not currently support Interactive Voice Response (IVR) numbers. |
+| **You have guessed too many times.** | To block spam, the system only allows a limited number of verification attempts. Suggested Solution: You have to wait for about 12 hours before retrying. After this waiting period, come back to the flow and select existing accounts and phone numbers to verify again. |
+| **There was an error verifying this phone number. Please try again later.** | There was a problem with the verification code. Suggested Solution: Please retry again later. |
+| **You have requested your code too many times.** | To block spam, the system only allows a limited number of verification tries. Suggested Solution: We limit the number or times you can request a code within a certain time frame. Come back to the flow after the specified time and select existing accounts and phone numbers to request a code again. |
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Abandoned Flow Screens
+
+Business Manager Account Creation Errors
+
+WhatsApp Business Account Creation Errors
+
+Phone Setup Errors
+
+Phone Verification Errors
+
+* * *

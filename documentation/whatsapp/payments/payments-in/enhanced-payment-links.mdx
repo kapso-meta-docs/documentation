@@ -1,0 +1,224 @@
+
+# Enhanced Payment Links
+
+Updated: Nov 14, 2025
+
+Your business can enable customers to pay using their favorite UPI apps or other payment methods accepted by supporting Payment Gateways without leaving WhatsApp.
+
+Currently, enhanced payment link experience is supported by major Payment Gateways like **PayU**, **RazorPay** and **Cashfree**.
+
+This feature is not publicly available yet. Please reach out to **whatsappindia-bizpayments-support@meta.com** to know more.
+
+Enhanced payment links experience is enabled for following message types
+
+[Interactive Message Templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/enhanced-payment-links#interactive_message_template)
+[Interactive Call-to-Action URL Button](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/enhanced-payment-links#interactive_cta_url_button)
+
+## Interactive Message Templates
+
+You can continue using templates with existing interactive [components](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/components) with Call-to-Action messages as today and opt-in to the enhanced experience. you can opt-in to the enhanced experience at the time of **creating a template** or at the time **sending an existing template**.
+
+![Image](https://scontent-lax3-1.xx.fbcdn.net/v/t39.2365-6/564690767_1339318147926836_7876647427034457125_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=e280be&_nc_ohc=X4-eno8suWAQ7kNvwG3O22L&_nc_oc=Adk-cxJBqgpk1knL5rwqy4tqIBa6H5FPo_KIwyRDRWvuv-e4CPa8kmfghzsWLqWWIVo&_nc_zt=14&_nc_ht=scontent-lax3-1.xx&_nc_gid=AUIqO-NMWKsXYR99o03sFw&oh=00_AfnW9rKuVWaTrY5HBotn1h_jYLsl138Wl-rPvGaZ_krGXQ&oe=69551B13)
+
+Currently, you can enable this experience for your existing templates with interactive components, or create one with following template parameters.
+
+Template with no headers
+
+The enhanced experience is not available to the templates with media [components](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/components), [carousel](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates/media-card-carousel-templates) and [other specialty templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates#specialty-templates)
+
+You can continue using your no-header templates and start [sending the template message](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/enhanced-payment-links#sending-a-template-message). Otherwise please follow steps to [create a template](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/enhanced-payment-links#creating-a-template) with specific parameters
+
+### Sending a template message
+
+To send a template message, make a `POST` call to `/PHONE_NUMBER_ID/messages` endpoint and attach a message object with `type=template`. Then, add a template button component with sub type as URL call-to-action button and `payment_link_preview` set to `true` in parameters. Refer to following message payload.
+
+#### Sample template message payload with enhanced experience
+
+```
+\{
+  "messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": "PHONE_NUMBER",
+  "type": "template",
+  "template": {
+    "name": "{templateName}",
+    "language": {
+      "policy": "deterministic",
+      "code": "LANGUAGE_AND_LOCALE_CODE"
+    },
+    "components": [\
+      {\
+        "type": "body",\
+        "parameters": [\
+          {\
+            "type": "text",\
+            "text": "₹100"\
+          },\
+          {\
+            "type": "text",\
+            "text": "Jan 2029"\
+          },\
+          {\
+            "type": "text",\
+            "text": "penalty!"\
+          }\
+        ]\
+      },\
+      {\
+        "type": "button",\
+        "sub_type": "URL",\
+        "index": 0,\
+        "parameters": [\
+          {\
+            "type": "text",\
+            "text": "unique_identifier",\
+            "payment_link_preview": true\
+          }\
+        ]\
+      }\
+    ]
+  }
+}
+```
+
+### Creating a Template
+
+To create a template with specific parameters there are few ways,
+
+Creating a template from Utility library
+Creating a template on WhatsApp Manager
+Creating a template using the template creation API
+
+#### Creating a template from Template library `(Recommended)`
+
+Template Library makes it faster and easier for you to choose from `pre-approved` templates listed under the `payments` category to create a template with required parameters. Refer [template library guide](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/template-library) on how to create a template.
+
+#### Creating a template on WhatsApp Manager
+
+To create a template, you need a business portfolio with a WhatsApp Business Account.
+
+In WhatsApp Manager > Account tools:
+
+Click on `create template`
+Choose the template category `Utility` or `Marketing`
+Select custom template
+Enter the desired template name and supported locale
+Depending on the number of `locales` selected there will be an equal number of template variants and businesses need to fill in the template details in respective locale.
+Please fill in template components `Body` and optional `footer` text and leave the `Header` component as `None`.
+Once submitted, templates will be [categorized as per the guidelines](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/template-categorization#template-category-guidelines) and undergo the [approval process](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/template-review#approval-process) refrain from having [marketing content](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/template-categorization#marketing-templates) as part of template components.
+The template will be approved or rejected after the template components are verified by the system.
+If business believe the category determined is not consistent with our template category guidelines, please confirm there are no common issues that leads to rejections and if you are looking for further clarification you may [request a review](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/template-categorization#requesting-review) of the template via [Business Support](https://business.facebook.com/business-support-home/)
+Once approved template status will be changed to `ACTIVE`
+Please be informed that template’s status can change automatically from `ACTIVE` to `PAUSED` or `DISABLED` based on customer feedback and engagement. We recommend that you [monitor status changes](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/template-review#common-rejection-reasons) and take appropriate actions whenever such change occurs.
+
+![Image](https://scontent-lax3-2.xx.fbcdn.net/v/t39.2365-6/565124678_1339318001260184_6879565339340357099_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=e280be&_nc_ohc=pCBiqMfFMysQ7kNvwEqv4TV&_nc_oc=AdnZwZ_z3jrgNoNdg1z62j4nRQWfVyUtRKunqu-TsUNocHmRJysZzPQqLvWX5uCFI14&_nc_zt=14&_nc_ht=scontent-lax3-2.xx&_nc_gid=AUIqO-NMWKsXYR99o03sFw&oh=00_AfnpTg7fy7VVExdbgIfsplvI0HFv100F68FgxOrxbgW-VQ&oe=6955145C)
+
+#### Creating a template using the template creation API
+
+To create a template through API and understand the general syntax, required categories and components please see our [Templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/overview) document. Additionally, you would need to specify `payment_link_preview` to `true` to enable the enhanced payment link experience.
+
+All the guidelines outlined above in creating templates apply through API as well.
+
+```
+POST https://graph.facebook.com/v19.0/WABA_ID/message_templates
+\{
+    "name": "{templateName}",
+    "language": "LANGUAGE_AND_LOCALE_CODE",
+    "category": "TEMPLATE_CATEGORY",
+    "components":
+    [\
+        {\
+            "type": "BODY",\
+            "text": "Your payment of {{1}} is due on {{2}}.Pay now to avoid {{3}}. If you already paid, please ignore this message.",\
+            "example":\
+            {\
+                "body_text":\
+                [\
+                    [\
+                        "₹12.34",\
+                        "Jan 1, 2029",\
+                        "late fees"\
+                    ]\
+                ]\
+            }\
+        },\
+        {\
+            "type": "BUTTONS",\
+            "buttons":\
+            [\
+                {\
+                    "type": "URL",\
+                    "text": "Pay now",\
+                    "url": "https://payment_link_domain/{{1}}",\
+                    "example":\
+                    [\
+                        "https://payment_link_domain/unique_identifier"\
+                    ],\
+"payment_link_preview": true\
+                }\
+            ]\
+        }\
+    ]
+}
+```
+
+## Interactive Call-to-Action URL Button
+
+You can continue sending the [interactive call-to-action url button](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/interactive-cta-url-messages) message and opt-in to the enhanced payment link experience by specifying `payment_link_preview` to true in the action parameters.
+
+Currently, similar to templates with interactive [components](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/components) \[interactive message template\], the enhanced payment link experience is supported only to no-header interactive call-to-action button messages.
+
+### Sending an Interactive Call-to-Action message
+
+To send an interactive call-to-action message, make a `POST` call to `/PHONE_NUMBER_ID/messages` endpoint and attach a message object with `type=interactive`. Then, add a template button component with sub type as `URL` call-to-action button and `payment_link_preview` set to `true` in parameters.
+
+```
+    {
+  "messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": "PHONE_NUMBER",
+  "type": "interactive",
+  "interactive": {
+    "type": "cta_url",
+    "body": {
+      "text": "Your payment of 2.00 is due on Jan 1, 2026.\nPay now to avoid penalty!.\n If you already paid, please ignore this message."
+    },
+    "action": {
+      "name": "cta_url",
+      "parameters": {
+        "display_text": "Pay now",
+        "url": "https://payment_link_domain/unique_identifier"
+        "payment_link_preview": true
+      }
+    }
+  }
+}
+```
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Interactive Message Templates
+
+Sending a template message
+
+Sample template message payload with enhanced experience
+
+Creating a Template
+
+Creating a template from Template library (Recommended)
+
+Creating a template on WhatsApp Manager
+
+Creating a template using the template creation API
+
+Interactive Call-to-Action URL Button
+
+Sending an Interactive Call-to-Action message
+
+* * *

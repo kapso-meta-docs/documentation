@@ -1,0 +1,190 @@
+
+# Versions
+
+Updated: Nov 4, 2025
+
+The latest Embedded Signup Version is: `v4`
+
+This guide provides an overview on versioning in Embedded Signup. The versioning cadence will align with Graph API. The versions are not
+exclusive, partners can gradually roll out a new version of ES to reduce risk. The Embedded Signup version is determined inside of the **extras object** of the implementation code.
+
+**Note: The refreshed UI, currently available in the public preview, will be rolled out to all versions of Embedded Signup in early September.**
+
+## Available ES Versions
+
+| Version | Date Introduced | Available Until |
+| --- | --- | --- |
+| [v4](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/version-4) | October 8th, 2025 | TBD |
+| [v3-public-preview](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/version-3-public-preview) | August 14, 2025 | October, 2026 |
+| [v2-public-preview](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/version-2-public-preview) | August 14, 2025 | October, 2026 |
+| [v3.0](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/version-3) | May 29, 2025 | October, 2026 |
+| v2.0 | January 2023 | October, 2026 |
+
+## Overview of feature availability
+
+| Version | Feature types | Features | Completion State | Prefilled Info | [Session Info Logging](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/implementation#session-logging-message-event-listener) | Products (via login config) |
+| --- | --- | --- | --- | --- | --- | --- |
+| `V4` | `whatsapp_business_app_onboarding` | `app_only_install` | Users can finish with a verified, unverified or no phone number | Can fill business information, no screens will be skipped. | Sent back for all flows | Marketing Messages Lite API (MM Lite)<br />Click to WhatsApp Ads (CTWA)<br />Conversions API (WhatsApp) |
+| `v3-public-preview` | `whatsapp_business_app_onboarding` | `app_only_install`<br />`marketing_messages_lite` | Users can finish with a verified, unverified or no phone number | Can fill business information, no screens will be skipped. | Sent back for all flows | Not supported |
+| `v2-public-preview` | `only_waba_sharing`<br />`whatsapp_business_app_onboarding`<br />`marketing_messages_lite` | `app_only_install`<br />`marketing_messages_lite` | Users will finish with a verified phone number | Can fill business information, no screens will be skipped. | Sent back for all flows | Not supported |
+| `V3` | `whatsapp_business_app_onboarding` | `app_only_install`<br />`marketing_messages_lite` | Users can finish with a verified, unverified or no phone number | Can fill business information, no screens will be skipped. | Sent back for all flows | Not supported |
+| `V2` | `only_waba_sharing`<br />`whatsapp_business_app_onboarding`<br />`marketing_messages_lite` | `marketing_messages_lite` | Users will finish with a verified phone number | Can fill business information and skip screens | Partners are required to add a `sessionInfoVersion` to receive the callback | Not supported |
+
+## Version 4
+
+**Released:** October 8, 2025 \| [Detailed changes](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/version-4)
+
+**Login Configuration**
+
+**Extras Configuration**
+
+```
+extras: {
+    setup: "&lt;SETUP_DATA&gt;",
+    features: [\
+      {\
+        name: "&lt;FEATURE_NAME&gt;"\
+      }\
+    ],
+    featureType: "&lt;FEATURE_TYPE&gt;",
+}
+```
+
+| Placeholder | Description | Example Value |
+| --- | --- | --- |
+| `&lt;PREFILL_DATA&gt;` | Prefilled business data to inject data into Embedded Signup. | ```<br />{<br />  "business": {<br />  "name": "Jaspers Market"<br />  }<br />}<br />``` |
+| `&lt;FEATURE_NAME&gt;` | Indicates a flow or feature to enable. | **Possible Values:**<br />`app_only_install` — Allows partners to access WABAs via API using a granular token (BISU), without creating a (SUAT) |
+| `&lt;FEATURE_TYPE&gt;` | Indicates a flow or feature to enable. | **Possible Values:**<br />`whatsapp_business_app_onboarding` — Enables the [Whatsapp Business App phone number onboarding](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/onboarding-business-app-users) custom flow. |
+
+To continue using Marketing Messages Lite, create a new Facebook Login Configuration with the MM Lite product selected. Click here to learn more.
+
+## Version 3 Public Preview
+
+**Released:** August 14, 2025 \| **Available until:** October, 2026 \| [Detailed changes](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/version-3-public-preview)
+
+**Extras Configuration**
+
+```
+extras: {
+    setup: "&lt;SETUP_DATA&gt;",
+    features: [\
+      {\
+        name: "&lt;FEATURE_NAME&gt;"\
+      }\
+    ],
+    featureType: "&lt;FEATURE_TYPE&gt;",
+    version: "v3-public-preview"
+}
+```
+
+| Placeholder | Description | Example Value |
+| --- | --- | --- |
+| `&lt;PREFILL_DATA&gt;` | Prefilled business data to inject data into Embedded Signup. | ```<br />{<br />  "business": {<br />  "name": "Jaspers Market"<br />   }<br />}<br />``` |
+| `&lt;FEATURE_NAME&gt;` | Indicates a flow or feature to enable. | **Possible Values:**<br />`app_only_install` — Allows partners to access WABAs via API using a granular token (BISU), without creating a (SUAT)<br />`marketing_messages_lite` — Enables the [Marketing Messages Lite API onboarding](https://developers.facebook.com/docs/whatsapp/marketing-messages-lite-api) flow. |
+| `&lt;FEATURE_TYPE&gt;` | Indicates a flow or feature to enable. | **Possible Values:**<br />`whatsapp_business_app_onboarding` — Enables the [Whatsapp Business App phone number onboarding](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/onboarding-business-app-users) custom flow.<br />Leave **blank** to enable the default onboarding flow. |
+
+## Version 2 Public Preview
+
+**Released:** August 14, 2025 \| **Available until:** October, 2026 \| [Detailed changes](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/version-2-public-preview)
+
+**Extras Configuration**
+
+```
+extras: {
+    setup: "&lt;SETUP_DATA&gt;",
+    features: [\
+      {\
+        name: "&lt;FEATURE_NAME&gt;"\
+      }\
+    ],
+    featureType: "&lt;FEATURE_TYPE&gt;",
+    sessionInfoVersion: "3"
+    version: "v2-public-preview"
+}
+```
+
+| Placeholder | Description | Example Value |
+| --- | --- | --- |
+| `&lt;PREFILL_DATA&gt;` | Prefilled business data to inject data into Embedded Signup. | ```<br />{<br />  "business": {<br />  "name": "Jaspers Market"<br />   }<br />}<br />``` |
+| `&lt;FEATURE_NAME&gt;` | Indicates a flow or feature to enable. | **Possible Values:**<br />`app_only_install` — Allows partners to access WABAs via API using a granular token (BISU), without creating a (SUAT)<br />`marketing_messages_lite` — Enables the [Marketing Messages Lite API onboarding](https://developers.facebook.com/docs/whatsapp/marketing-messages-lite-api) flow. |
+| `&lt;FEATURE_TYPE&gt;` | Indicates a flow or feature to enable. | **Possible Values:**<br />`whatsapp_business_app_onboarding` — Enables the [Whatsapp Business App phone number onboarding](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/onboarding-business-app-users) custom flow.<br />`only_waba_sharing` \- Enables the [Whatsapp Business App phone number onboarding](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/onboarding-business-app-users) custom flow. Will **NOT** show the new consolidated UI.<br />`marketing_messages_lite` \- Enables the [Marketing Messages Lite API onboarding](https://developers.facebook.com/docs/whatsapp/marketing-messages-lite-api) custom flow. Will **NOT** show the new consolidated UI.<br />Leave **blank** to enable the default onboarding flow. |
+
+## Version 3
+
+|     |     |     |     |
+| --- | --- | --- | --- |
+| **Released:** May 29, 2025 | **Available until:** October, 2026 | [Blog post](https://developers.facebook.com/blog/post/2025/05/29/introducing-graph-api-v23-and-marketing-api-v23/) | [Detailed changes](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/version-3) |
+
+**Extras Configuration**
+
+```
+extras: {
+    setup: "&lt;SETUP_DATA&gt;",
+    features: [\
+      {\
+        name: "&lt;FEATURE_NAME&gt;"\
+      }\
+    ],
+    featureType: "&lt;FEATURE_TYPE&gt;",
+    version: "v3"
+}
+```
+
+| Placeholder | Description | Example Value |
+| --- | --- | --- |
+| `&lt;PREFILL_DATA&gt;` | Prefilled business data to inject data into Embedded Signup. | ```<br />{<br />  "business": {<br />  "name": "Jaspers Market"<br />   }<br />}<br />``` |
+| `&lt;FEATURE_NAME&gt;` | Indicates a flow or feature to enable. | **Possible Values:**<br />`app_only_install` — Allows partners to access WABAs via API using a granular token (BISU), without creating a (SUAT)<br />`marketing_messages_lite` — Enables the [Marketing Messages Lite API onboarding](https://developers.facebook.com/docs/whatsapp/marketing-messages-lite-api) flow. |
+| `&lt;FEATURE_TYPE&gt;` | Indicates a flow or feature to enable. | **Possible Values:**<br />`whatsapp_business_app_onboarding` — Enables the [Whatsapp Business App phone number onboarding](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/onboarding-business-app-users) custom flow.<br />Leave **blank** to enable the default onboarding flow. |
+
+## Version 2
+
+|     |     |
+| --- | --- |
+| **Released:** January 2023 | **Available until:** October, 2026 |
+
+**Extras Configuration**
+
+```
+extras: {
+    setup: "&lt;SETUP_DATA&gt;",
+    features: [\
+      {\
+        name: "&lt;FEATURE_NAME&gt;"\
+      }\
+    ],
+    featureType: "&lt;FEATURE_TYPE&gt;",
+    sessionInfoVersion: "3"
+}
+```
+
+Head to the [pre-fill screens page](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/pre-filled-data#injecting-data) to see how to inject customer business data into Embedded Signup.
+
+| Placeholder | Description | Example Value |
+| --- | --- | --- |
+| `&lt;PREFILL_DATA&gt;` | Prefilled business data to inject data into Embedded Signup. | ```<br />{<br />  "business": {<br />  "name": "Jaspers Market"<br />   }<br />}<br />``` |
+| `&lt;FEATURE_NAME&gt;` | Indicates a flow or feature to enable. | **Possible Values:**<br />`app_only_install` — Allows partners to access WABAs via API using a granular token (BISU), without creating a (SUAT)<br />`marketing_messages_lite` — Enables the [Marketing Messages Lite API onboarding](https://developers.facebook.com/docs/whatsapp/marketing-messages-lite-api) flow. |
+| `&lt;FEATURE_TYPE&gt;` | Indicates a flow or feature to enable. | **Possible Values:**<br />`whatsapp_business_app_onboarding` — Enables the [Whatsapp Business App phone number onboarding](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/onboarding-business-app-users) custom flow.<br />`only_waba_sharing` \- Enables the [Whatsapp Business App phone number onboarding](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/onboarding-business-app-users) custom flow.<br />`marketing_messages_lite` \- Enables the [Marketing Messages Lite API onboarding](https://developers.facebook.com/docs/whatsapp/marketing-messages-lite-api) custom flow.<br />Leave **blank** to enable the default onboarding flow. |
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Available ES Versions
+
+Overview of feature availability
+
+Version 4
+
+Version 3 Public Preview
+
+Version 2 Public Preview
+
+Version 3
+
+Version 2
+
+* * *

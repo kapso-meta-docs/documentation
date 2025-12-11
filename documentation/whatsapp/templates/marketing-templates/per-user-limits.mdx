@@ -1,0 +1,54 @@
+
+# Per-user marketing template message limits
+
+Updated: Nov 4, 2025
+
+**Upcoming changes**
+
+_Starting March 3, 2025_, we will take into account the overall volume of personal and business messages in a user’s inbox in addition to their recent marketing message read rates when determining if a given WhatsApp user should receive fewer marketing template messages, and what their limit should be. This means that if a person has low inbox activity or they have not engaged with many of the marketing messages they received lately they may receive fewer marketing messages to ensure a healthy balance of messages in their inbox. From late Q2 we will also align the per user marketing limit with upcoming per-message pricing changes so that all marketing messages delivered will now count towards the per user marketing limit.
+
+_Starting April 1, 2025_, we will temporarily pause delivery of all marketing template messages to WhatsApp users who have a United States phone number (a number composed of a +1 dialing code and a US area code). This pause is intended to allow us to focus on building a better consumer experience in the US, which will ultimately lead to improved outcomes for businesses. Attempting to send a template message to a WhatsApp user with a US phone number after this date will [result in an error](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates/per-user-limits#how-we-notify-via-error-code).
+
+## What is it?
+
+WhatsApp may limit the number of marketing template messages a person receives from any business in a given period of time where users are less likely to be receptive and engage with them. This is determined based on a number of factors, including a dynamic view of an individual’s recent marketing message read rate and how many messages they currently have in their inbox from friends, family and businesses.
+Starting April 1, 2025, to focus on building the consumer experience, WhatsApp will not deliver any marketing template messages to individuals with United States phone numbers (numbers composed of a +1 dialing code and a US area code).
+
+## Why it’s important
+
+WhatsApp has found that per-user marketing template limits maximize marketing message engagement and improve the user experience, measured through improvements in user read rates and sentiment. This limit helps WhatsApp users find business messaging more valuable and feel less like they receive too many business messages.
+How this Applies to Your Business
+
+Our per user marketing limit adapts automatically over time based on a person’s recent engagement levels. While this may mean delivering fewer messages to some users during periods of lower marketing read rates or overall inbox activity, rest assured your ability to reach people when they are most engaged will not change.
+
+## Aligning Per-User Marketing Limits with Upcoming Per Message Pricing Changes
+
+Gradually rolling out from late Q2 2025, the per user marketing limit will align with upcoming per-message [pricing changes](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing). Previously, the limit only applied to marketing template messages that would normally open a new marketing conversation, and businesses could send one additional marketing template message if a marketing conversation is already open between you and a WhatsApp user.
+
+Now businesses will be able to send an unlimited number of marketing messages, however each message delivered will now count towards the per user marketing limit. One exception is, if a person responds to a marketing message it will start a 24h [customer service window](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/send-messages#customer-service-windows). Marketing messages sent within this window will not count towards a person’s limit.
+
+## How We Notify via Error Code
+
+If a marketing template message is not sent due to per-user marketing template limit enforcement, a messages webhook will be triggered with status set to failed and (error) code set to `131049` (for Cloud API).
+
+If you do receive this error code and suspect it is due to the limit, wait at least 24 hours before resending the template message. Doing so will only result in another error response since the limit may be in effect for differing periods of time.
+
+We will continue to refine our approach, and we appreciate your partnership as we invest in making WhatsApp the best possible experience for your business and your customers.
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+What is it?
+
+Why it’s important
+
+Aligning Per-User Marketing Limits with Upcoming Per Message Pricing Changes
+
+How We Notify via Error Code
+
+* * *

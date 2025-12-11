@@ -1,0 +1,119 @@
+
+# Document messages
+
+Updated: Nov 3, 2025
+
+Document messages are messages that display a document icon, linked to a document, that a WhatsApp user can tap to download.
+
+![](https://scontent-lax7-1.xx.fbcdn.net/v/t39.2365-6/441287424_3695370760733536_48188157634176922_n.png?_nc_cat=101&ccb=1-7&_nc_sid=e280be&_nc_ohc=IY3Fnis3xNwQ7kNvwE4VNvF&_nc_oc=Adn2E3mxRJyanVWLLH9vUi8SToYwjhHHLE80PQVKRsDrudIfgRF-9PYhBq65zSyICBk&_nc_zt=14&_nc_ht=scontent-lax7-1.xx&_nc_gid=gsSJWTE_Z6ePBK1qA6TF_A&oh=00_Afn20dKMmtQPisfQGR76L7c4l83RaAbT1qdwFSDGXIWx4A&oe=69551A08)
+
+## Request syntax
+
+Use the [POST /&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;/messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api) endpoint to send a document message to a WhatsApp user.
+
+```
+curl 'https://graph.facebook.com/&lt;API_VERSION&gt;/&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;/messages' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+-d '
+\{
+  "messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": "&lt;WHATSAPP_USER_PHONE_NUMBER&gt;",
+  "type": "document",
+  "document": {
+    "id": "&lt;MEDIA_ID&gt;", <!-- Only if using uploaded media -->
+    "link": "&lt;MEDIA_URL&gt;", <!-- Only if using hosted media (not recommended) -->
+    "caption": "&lt;MEDIA_CAPTION_TEXT&gt;",
+    "filename": "&lt;MEDIA_FILENAME&gt;",
+    "caption": "&lt;MEDIA_CAPTION_TEXT&gt;"
+  }
+}'
+```
+
+## Request parameters
+
+| Placeholder | Description | Example Value |
+| --- | --- | --- |
+| `&lt;ACCESS_TOKEN&gt;`<br />_String_ | **Required.**<br />[System token](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#system-user-access-tokens) or [business token](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#business-integration-system-user-access-tokens). | `EAAAN6tcBzAUBOZC82CW7iR2LiaZBwUHS4Y7FDtQxRUPy1PHZClDGZBZCgWdrTisgMjpFKiZAi1FBBQNO2IqZBAzdZAA16lmUs0XgRcCf6z1LLxQCgLXDEpg80d41UZBt1FKJZCqJFcTYXJvSMeHLvOdZwFyZBrV9ZPHZASSqxDZBUZASyFdzjiy2A1sippEsF4DVV5W2IlkOSr2LrMLuYoNMYBy8xQczzOKDOMccqHEZD` |
+| `&lt;API_VERSION&gt;`<br />_String_ | **Optional.**<br />Graph API version. | v24.0 |
+| `&lt;MEDIA_CAPTION_TEXT&gt;`<br />_String_ | **Optional.**<br />Media asset caption text.<br />Maximum 1024 characters. | `Lucky Shrub Invoice` |
+| `&lt;MEDIA_FILENAME&gt;`<br />_String_ | **Optional.**<br />Document filename, with extension. The WhatsApp client will use an appropriate file type icon based on the extension. | `lucky-shrub-invoice.pdf` |
+| `&lt;MEDIA_ID&gt;`<br />_String_ | **Required if using uploaded media, otherwise omit.**<br />ID of the [uploaded media asset](https://developers.facebook.com/documentation/business-messaging/whatsapp/business-phone-numbers/media#upload-media). | `1013859600285441` |
+| `&lt;MEDIA_URL&gt;`<br />_String_ | **Required if using hosted media, otherwise omit.**<br />URL of the media asset hosted on your public server. For better performance, we recommend using `id` and an [uploaded media asset ID](https://developers.facebook.com/documentation/business-messaging/whatsapp/business-phone-numbers/media#upload-media) instead. | `https://www.luckyshrub.com/invoices/FmOzfD9cKf/lucky-shrub-invoice.pdf` |
+| `&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;`<br />_String_ | **Required.**<br />WhatsApp business phone number ID. | `106540352242922` |
+| `&lt;WHATSAPP_USER_PHONE_NUMBER&gt;`<br />_String_ | **Required.**<br />WhatsApp user phone number. | `+16505551234` |
+
+## Supported document types
+
+| Document Type | Extension | MIME Type | Max Size |
+| --- | --- | --- | --- |
+| Text | .txt | text/plain | 100 MB |
+| Microsoft Excel | .xls | application/vnd.ms-excel | 100 MB |
+| Microsoft Excel | .xlsx | application/vnd.openxmlformats-officedocument.spreadsheetml.sheet | 100 MB |
+| Microsoft Word | .doc | application/msword | 100 MB |
+| Microsoft Word | .docx | application/vnd.openxmlformats-officedocument.wordprocessingml.document | 100 MB |
+| Microsoft PowerPoint | .ppt | application/vnd.ms-powerpoint | 100 MB |
+| Microsoft PowerPoint | .pptx | application/vnd.openxmlformats-officedocument.presentationml.presentation | 100 MB |
+| PDF | .pdf | application/pdf | 100 MB |
+
+## Example request
+
+Example request to send a PDF in a document message with a caption to a WhatsApp user.
+
+```
+curl 'https://graph.facebook.com/v24.0/106540352242922/messages' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+-d '
+\{
+  "messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": "+16505551234",
+  "type": "document",
+  "document": {
+    "id": "1376223850470843",
+    "filename": "order_abc123.pdf",
+    "caption": "Your order confirmation (PDF)"
+  }
+}'
+```
+
+## Example response
+
+```
+\{
+  "messaging_product": "whatsapp",
+  "contacts": [\
+    {\
+      "input": "+16505551234",\
+      "wa_id": "16505551234"\
+    }\
+  ],
+  "messages": [\
+    {\
+      "id": "wamid.HBgLMTY0NjcwNDM1OTUVAgARGBI1RjQyNUE3NEYxMzAzMzQ5MkEA"\
+    }\
+  ]
+}
+```
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Request syntax
+
+Request parameters
+
+Supported document types
+
+Example request
+
+Example response
+
+* * *

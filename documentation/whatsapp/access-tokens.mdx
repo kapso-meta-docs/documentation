@@ -1,0 +1,141 @@
+
+# Access tokens
+
+Updated: Nov 20, 2025
+
+The platform supports the following access token types. The type you use depends on who will be using your application, and whether or not you are a [solution provider](https://developers.facebook.com/documentation/business-messaging/whatsapp/solution-providers/overview).
+
+If you are a **direct developer**, meaning only you or your business will be accessing your own data, use a [System User access token](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#system-user-access-tokens).
+If you are a **Tech Provider**, use a [Business Integration System User access token](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#business-integration-system-user-access-tokens).
+If you are a **Solution Partner**, use [System User access tokens](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#system-user-access-tokens) to share your line of credit with newly onboarded customers, and [Business Integration System User access tokens](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#business-integration-system-user-access-tokens) for everything else.
+
+## System user access tokens
+
+System user access tokens (“system tokens”) represent you, your business or organization, or people within your business or organization. The main advantage of these tokens is that they are long-lived and can represent automated services within your business that don’t require any user input.
+
+System tokens rely on system users. Most endpoints check if the user identified by the token has access to the queried resource. If the user does not have access to the resource, the request will be rejected with error code `200`.
+
+System users can be [admins](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#admin-system-users) or [employees](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#employee-system-users).
+
+### Admin system users
+
+By default, admin system users have full access to all WABAs and their assets owned by or shared with you or your business portfolio.
+
+Admin system users are useful if your app needs access to all of the business portfolio’s assets, without having to manually grant business asset access to each asset whenever it is created, or shared with your business portfolio.
+
+Note that you can override an admin system user’s default business asset access by granting partial access on a per-WABA basis. See [Business Asset Access](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#business-asset-access) to learn how to set and override access.
+
+### Employee system users
+
+Employee system users must be granted access to individual WABAs that are owned by, or shared with, your business portfolio. If your app will only need access to a few WABAs that you own, an employee system user should be sufficient.
+
+Once created, you must grant **Partial** or **Full** [business asset access](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#business-asset-access) to each WABA that the system user needs to access.
+
+### Generating System User Access Tokens
+
+To generate a system token, access the [**Business settings**](https://business.facebook.com/settings/) panel and then click **System Users**:
+
+![](https://scontent-lax7-1.xx.fbcdn.net/v/t39.2365-6/465045103_469826065488878_468932947489962332_n.png?_nc_cat=105&ccb=1-7&_nc_sid=e280be&_nc_ohc=CIYGvWURw04Q7kNvwEqogyE&_nc_oc=Adl6f5bBkBAYoGqbItlD2y0yy1QUNhFm_XTHStiT680PeIMweR27Spyc-Ha9m2BX93U&_nc_zt=14&_nc_ht=scontent-lax7-1.xx&_nc_gid=h99xKWWNQnzcgHE8DD_Vhw&oh=00_Afly29WvbeGJ1Q7E9IQqcPbkd5HDTKZmugcS-OVKRDRzyg&oe=695529BE)
+
+Click the **+Add** button, and in the **Create system user** window that appears, enter a system user name and assign it an **Admin** or **Employee** role:
+
+![](https://scontent-lax3-2.xx.fbcdn.net/v/t39.2365-6/465150702_510049308508353_7881035250572985544_n.png?_nc_cat=107&ccb=1-7&_nc_sid=e280be&_nc_ohc=eh8sXk2Ha_IQ7kNvwFdis77&_nc_oc=AdnlsP1DQKwHPbSjvBkEVwb1X8VV9ZuO3GiaFHU6_juRRxRll1dn4PJg0vbiZvIALlQ&_nc_zt=14&_nc_ht=scontent-lax3-2.xx&_nc_gid=h99xKWWNQnzcgHE8DD_Vhw&oh=00_AfkTVla5pke5I3N8vy5_c4-MPrhtcwdR8omqV2nAuuLrHQ&oe=6955304E)
+
+Once the admin system user has been created, it will appear in the list of system users. Click the system user’s name to display the asset assignment overlay:
+
+![](https://scontent-lax3-2.xx.fbcdn.net/v/t39.2365-6/465056956_862633796067178_7287331611550335065_n.png?_nc_cat=111&ccb=1-7&_nc_sid=e280be&_nc_ohc=cBMkYbTOboEQ7kNvwFsdUbx&_nc_oc=AdkA6eATw5yBcqyodFwNpCPr0ablseWq8MoMIcC6aoPeeRRCty1yGWddKWXe4xQN2UA&_nc_zt=14&_nc_ht=scontent-lax3-2.xx&_nc_gid=h99xKWWNQnzcgHE8DD_Vhw&oh=00_AfmISZFoeDeDdZ88yu6kckRHGZr4DAWdVIGOnAu6AzRUIg&oe=695538D6)
+
+Click the **Assign assets** button to display the **Select assets and assign permissions** window:
+
+![](https://scontent-lax3-2.xx.fbcdn.net/v/t39.2365-6/465238023_523683013888319_4402098107854849013_n.png?_nc_cat=111&ccb=1-7&_nc_sid=e280be&_nc_ohc=Fp51zn0GM2EQ7kNvwEGgiUi&_nc_oc=AdmAG-9N8jl4d1QuLwJgWu2BXWNwYvjZIH1FlsST9mltBI9-WT7pUcf7FKjpBkt729o&_nc_zt=14&_nc_ht=scontent-lax3-2.xx&_nc_gid=h99xKWWNQnzcgHE8DD_Vhw&oh=00_Afl2QV0RRfQyY76-TpjPgLFuwBzGjmGSeE6fyX7P0mKFMw&oe=695511BF)
+
+Select your app and grant your system user the **Manage app** permission, then click the **Assign assets** button to confirm and dismiss the window.
+
+Back in the **System Users** panel, reload the page to confirm that your system user has been granted **Full control** of your app. It may take a few minutes for the permissions to be granted, so reload the page after a few minutes if your app doesn’t appear as an assigned asset. Once the asset has been assigned, it should look like this:
+
+![](https://scontent-lax3-2.xx.fbcdn.net/v/t39.2365-6/465048557_1084025226566535_5772232306997286547_n.png?_nc_cat=111&ccb=1-7&_nc_sid=e280be&_nc_ohc=ab44ARf-Ne0Q7kNvwEM14ld&_nc_oc=AdkHoVMS5uL25iKZbZEyiqQmm6KVGas9zJDlke8VPoje_a3NOdVhlgSZ6QESac0AMjM&_nc_zt=14&_nc_ht=scontent-lax3-2.xx&_nc_gid=h99xKWWNQnzcgHE8DD_Vhw&oh=00_Afm3Z6EsdeNF0PKzvhFxGdEbdYWbezhqRqFS7hFsVC85eQ&oe=69550718)
+
+Once you see that your system user has been granted full control of your app, in the asset assignment overlay, click the **Generate token** button. In the window that appears, select your app, choose a token expiration preference, and assign your app these three Graph API permissions:
+
+`business_management`
+`whatsapp_business_management`
+`whatsapp_business_messaging`
+
+You can search for “business” to find these permissions quickly:
+
+![](https://scontent-lax3-1.xx.fbcdn.net/v/t39.2365-6/465115001_533379429601225_2797461055613545929_n.png?_nc_cat=104&ccb=1-7&_nc_sid=e280be&_nc_ohc=4NHvZYbvGbwQ7kNvwHzbvE1&_nc_oc=AdkveMTcZzWqBj18P6QCAggTOnfIn6XkG3XxC3eqHkYGdnXnysc5C9-ke_8F4sig7As&_nc_zt=14&_nc_ht=scontent-lax3-1.xx&_nc_gid=h99xKWWNQnzcgHE8DD_Vhw&oh=00_Aflqv_6dND_kQpS7jKO40esSk8wo_YxdhPsk_B_HaD-b2g&oe=69551DD9)
+
+Click the **Generate token** button and copy the token when it appears.
+
+## Business Integration system user access tokens
+
+Business Integration system user access tokens (“business tokens”) are scoped to individual onboarded customers and should be used by Tech Providers and Solution Partners when accessing onboarded customer data.
+
+These tokens are useful for apps that perform programmatic, automated actions on customer WABAs, without having to rely on input from an app user, or requiring future re-authentication.
+
+To generate a Business Integration System User access tokens, you must implement Embedded Signup (configured with Facebook Login for Businesses) and exchange the code returned to you when a customer completes the flow.
+
+See the [Embedded Signup](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/overview) document and the [Business Integration System User access tokens](https://developers.facebook.com/docs/facebook-login/facebook-login-for-business#business-integration-system-user-access-tokens) document to learn more about these tokens and how they are generated.
+
+## User access tokens
+
+Although User access tokens are supported and can be used by all app developers, you likely will only use them when you first use the App Dashboard to [send your first test message](https://developers.facebook.com/documentation/business-messaging/whatsapp/get-started). As you develop your app, however, you most likely will switch to a System User access token (and eventually a Business System User access token, if you are Tech Provider or Solution Provider). This is because user access tokens expire quickly, so you will have to keep generating a new one every few hours.
+
+There are several ways to generate a User access token:
+
+Access the **App Dashboard** \> **WhatsApp** \> **API setup** panel. This panel always generates a new User access token whenever you visit it. The token is automatically scoped to your user, since you are signed into your developer account when you access the panel.
+Use [Graph API Explorer](https://developers.facebook.com/tools/explorer).
+Implement [Facebook Login](https://developers.facebook.com/docs/facebook-login).
+
+## Using tokens in requests
+
+When making API requests, include your token in an authorization request header, preceded by `Bearer`. For example:
+
+```
+curl 'https://graph.facebook.com/v18.0/102290129340398/message_templates' \
+-H 'Authorization: Bearer EAAJB...' \
+```
+
+## Business asset access
+
+After creating a system user, you must set business asset access levels. Many endpoints require the system user whose token is included in API requests to have either **Partial** or **Full** business asset access to the WABA being queried (or its assets). If the system user does not have this access, these endpoints will return error code `200`.
+
+Note that if you set a system user’s business asset access on a WABA to **Partial** access, you can further restrict access to certain assets or actions on the WABA. For example, if you have a large business and want a certain department to only have read access to a WABA’s template and business phone number data, you could create a system user for that department and set granular access to view only for that data.
+
+To set business asset access on a WABA:
+
+Sign into [Meta Business Suite](https://business.facebook.com/).
+Locate your business portfolio in the top-left dropdown menu and click its **Settings** (gear) icon.
+Navigate to **Accounts** \> **WhatsApp Accounts**.
+Select the appropriate WABA.
+Select the **WhatsApp Account Access** tab.
+Click the **+Add people** button.
+Select the appropriate system user and assign appropriate access levels on the WABA.
+
+![](https://scontent-lax3-2.xx.fbcdn.net/v/t39.2365-6/458274092_845026414442989_6944264004016403962_n.png?_nc_cat=103&ccb=1-7&_nc_sid=e280be&_nc_ohc=y6pSAZV8Vo4Q7kNvwFwxMoA&_nc_oc=AdmNMG7Ce5gz2PGq6AWjE5g7kpdjHOGKV-Ef2N0nu8Ybu1NeCVWgu5k8ZUZSXNAcjJE&_nc_zt=14&_nc_ht=scontent-lax3-2.xx&_nc_gid=h99xKWWNQnzcgHE8DD_Vhw&oh=00_AfkcTyzYfKudxLIZEvGoQvagb0jzt5Cqo8XJGGZfhtm5Dw&oe=69553C2E)
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+System user access tokens
+
+Admin system users
+
+Employee system users
+
+Generating System User Access Tokens
+
+Business Integration system user access tokens
+
+User access tokens
+
+Using tokens in requests
+
+Business asset access
+
+* * *

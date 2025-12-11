@@ -1,0 +1,1685 @@
+
+# Changelog
+
+Updated: Dec 8, 2025
+
+This document is a log of changes to the WhatsApp Business Platform.
+
+For Marketing Messages API for WhatsApp changes, see the [MM API for WhatsApp changelog](https://developers.facebook.com/documentation/business-messaging/whatsapp/marketing-messages/changelog).
+
+## December 8, 2025
+
+_Cloud API, Business Management API_
+
+Added [business portfolio pacing](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/portfolio-pacing), a new template message delivery batching mechanism that allows time to gather feedback on any template sent as part of a large-scale messaging campaign.
+
+## December 3, 2025
+
+_Cloud API_
+
+[Coupon code templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates/coupon-templates) now support codes with up to 20 characters, instead of 15.
+
+## December 1, 2025
+
+_Cloud API_
+
+Added [No Storage](https://developers.facebook.com/documentation/business-messaging/whatsapp/no-storage), an alternative [Local Storage](https://developers.facebook.com/documentation/business-messaging/whatsapp/local-storage) configuration. With No Storage, in-transit data is kept for a shorter period of time, and at-rest data is not persisted.
+
+## November 26, 2025
+
+_Embedded Signup_
+
+Added a note in [embedded signup](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/overview#how-it-works) indicating users may experience a new completion flow for all versions. A new **View your setup guide** button will take users to a new setup guidance page in the WhatsApp Manager, which will provide next steps on:
+
+Business verification
+Resolving integrity issues and accessing Business Support Home
+Sending the first message via a partner solution
+Sending business-initiated messages using templates
+
+## November 25, 2025
+
+_Embedded Signup_
+
+The following messages event webhooks are now supported for [Coexistence](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/onboarding-business-app-users#edit) in Embedded Signup:
+
+[Edit messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/onboarding-business-app-users#edit)
+[Revoke messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/onboarding-business-app-users#revoke)
+
+## November 3, 2025
+
+_Cloud API_
+
+Updated the [unsupported messages webhook](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/reference/messages/unsupported) by adding details about the actual message type.
+Added new `played` [status messages webhook](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/reference/messages/status)`status` value, which indicates when a voice message is played by the Whatsapp user.
+
+## October 23, 2025
+
+_Embedded Signup_
+
+The following countries/regions are now supported for [Coexistence](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/onboarding-business-app-users#onboarding-whatsapp-business-app-users--aka--coexistence--) in Embedded Signup:
+
+Australia
+Japan
+Philippines
+Russia
+South Korea
+Turkey
+European Economic Area (EEA)
+European Union (EU)
+United Kingdom (UK)
+
+## October 20, 2025
+
+_Cloud API_
+
+Ad click IDs will not be included in incoming [text messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/reference/messages/text) webhooks payloads describing an incoming message that originated from a [WhatsApp Status ad placements](https://www.facebook.com/business/help/1074444721456755?id=805840565113559).
+
+## October 17, 2025
+
+_Embedded Signup_
+
+If you don’t want to configure and host the Embedded Signup [implementation code](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/implementation) on your website or customer portal, you can now use [Hosted Embedded Signup](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/hosted-es) (“Hosted ES”) instead.
+
+Hosted ES is a pre-configured implementation of Embedded Signup that is hosted by Meta. You can get a link to Hosted ES in the App Dashboard and add it to your website or customer portal. Business customers who click the link will be presented with a webpage with a “Get started” button that launches the Embedded Signup flow:
+
+![](https://scontent-fra3-1.xx.fbcdn.net/v/t39.2365-6/557247008_1487309905743315_2332288243528054136_n.png?_nc_cat=105&ccb=1-7&_nc_sid=e280be&_nc_ohc=884HKmwz9hEQ7kNvwE9pSVP&_nc_oc=AdlOUhsgaGibO20fJbgN4byfYx2KDOD2ym7dIJP-TesdrOw041n5NFNdVIWLNvK_t8U&_nc_zt=14&_nc_ht=scontent-fra3-1.xx&_nc_gid=DVzPCjIBOuSuu-yyrWTqXg&oh=00_AfksovbfBV1hQhtaMBCPyV99Q9KcEf3sDAEfWHp6xb3TXQ&oe=69553F4A)
+
+## October 16, 2025
+
+_Cloud API, Business Management API_
+
+Incoming media messages webhooks ( [image messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/reference/messages/image), [video messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/reference/messages/video), etc.) now include the incoming media asset’s media URL, which is assigned to the `url` property.
+You can now designate an [audio message](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/audio-messages) as a **voice message**. Delivered voice messages appear in the WhatsApp client with a play icon, waveform graphic, profile image, and a microphone icon. If the recipient has enabled [voice message transcripts](https://l.facebook.com/l.php?u=https%3A%2F%2Ffaq.whatsapp.com%2F241617298315321%2F&h=AT0XnZBo0108wy4rJoo8xlWFEe5U6AbzGrvUQ-8Otl6ycq1r4g8AyGdjSbcBbbGWObORWFNwfb62bEL-qseHinT7szrJmkcUamdyx3P1wSj1ETVqziLwKzSZr2LeQ8a36nz3UO94CC1nHQ), a text transcription of the message can also appear:
+
+![](https://scontent-fra5-1.xx.fbcdn.net/v/t39.2365-6/562379210_2249057198900177_5743647093897895635_n.png?_nc_cat=100&ccb=1-7&_nc_sid=e280be&_nc_ohc=EU7odH0GQdAQ7kNvwHwB0TV&_nc_oc=AdknAsIIO842CixtN8bVbKNb_cfYDQ9taavYboUrrB7dmPIR6T1miqmeXy67PNFR_Nw&_nc_zt=14&_nc_ht=scontent-fra5-1.xx&_nc_gid=DVzPCjIBOuSuu-yyrWTqXg&oh=00_Afne9UNiEY7h3D_n2GPydR8F4Fd4gNIwgCbGsUZRagVmxA&oe=6955464C)
+
+## October 8, 2025
+
+_Cloud API, Business Management API_
+
+[Messaging limits](https://developers.facebook.com/documentation/business-messaging/whatsapp/messaging-limits) are now business portfolio-based instead of business phone number-based, and the initial increase via scaling path is now 2,000 instead of 1,000. To support this change, for version 24.0 and newer requests, a new `whatsapp_business_manager_messaging_limit` field has been added, which returns the owning business portfolio’s messaging limit. This field is available on the following endpoints:
+
+[GET /&lt;BUSINESS_PORTFOLIO_ID&gt;](https://developers.facebook.com/docs/marketing-api/reference/business#Reading)
+[GET /&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-account/whatsapp-business-account-api#Reading)
+[GET /&lt;BUSINESS_PHONE_NUMBER_ID&gt;](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/whatsapp-business-account-phone-number-api#Reading)
+For version 24.0 and newer requests, the `messaging_limit_tier` on the [GET /&lt;BUSINESS_PHONE_NUMBER_ID&gt;](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/whatsapp-business-account-phone-number-api#Reading) endpoint now returns the owning business portfolio’s messaging limit.
+For version 24.0 and newer requests, added error code `131059` which is returned when querying the [GET /&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;/message_templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-account/template-api#Reading) endpoint with an invalid [pagination cursor](https://developers.facebook.com/docs/graph-api/results#cursors). If you get this error, retry your request without `before` or `after` cursors. This will generate and return new cursors for paginated responses.
+For version 24.0 and newer requests, the [status messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/reference/messages/status) webhook no longer includes the `conversation` object, unless the webhook is for a message sent during an open [Free Entry Point window](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing#free-entry-point-windows).
+
+_Embedded Signup_
+
+[Embedded Signup version 4](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/version-4) is now available. Version 4 provides a simplified onboarding experience and allows you to onboard business customers to multiple products (WhatsApp Cloud API, Marketing Messages Lite API, [Ads that click-to-WhatsApp](https://l.facebook.com/l.php?u=https%3A%2F%2Fbusiness.whatsapp.com%2Fproducts%2Fads-that-click-to-whatsapp&h=AT0XnZBo0108wy4rJoo8xlWFEe5U6AbzGrvUQ-8Otl6ycq1r4g8AyGdjSbcBbbGWObORWFNwfb62bEL-qseHinT7szrJmkcUamdyx3P1wSj1ETVqziLwKzSZr2LeQ8a36nz3UO94CC1nHQ) and the [Conversions API](https://developers.facebook.com/docs/marketing-api/conversions-api)).
+
+## October 6, 2025
+
+_Groups API_
+
+Introducing [WhatsApp Groups API](https://developers.facebook.com/documentation/business-messaging/whatsapp/groups), which enables programmatic creation and management of groups on WhatsApp.
+
+## October 3, 2025
+
+_Solution providers_
+
+[Access verification](https://developers.facebook.com/docs/development/release/access-verification) is no longer required to become a [Tech Provider](https://developers.facebook.com/documentation/business-messaging/whatsapp/solution-providers/get-started-for-tech-providers).
+
+## October 1, 2025
+
+_Cloud API, Marketing Messages Lite API, Pricing_
+
+Changed [WhatsApp Business Platform rates](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing#rates).
+
+Increased marketing message rates for United Arab Emirates.
+Increased utility and authentication message rates for Colombia.
+Decreased marketing message rates for Mexico.
+Decreased utility and authentication message rates for Saudi Arabia, Argentina, and Egypt.
+Zimbabwe is now mapped to our “Rest of Africa” region vs. “Other.” Messages delivered to WhatsApp users with a +263 country calling code (Zimbabwe) will now be charged “Rest of Africa” rates.
+
+## September 24, 2025
+
+_Cloud API_
+
+Added [note in the media document](https://developers.facebook.com/documentation/business-messaging/whatsapp/business-phone-numbers/media#upload-media) when retrieving a media from a media ID received via webhook, the media ID will only be available to download for 30 days. After October 9th this will only be available for 7 days.
+
+## September 08, 2025
+
+_Cloud API_
+
+Updated [v3 document](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/version-3) to display an example of the v3 syntax.
+Added [Call Permissions Request](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api) type under interactive objects for messages.
+
+## August 27, 2025
+
+_Embedded Signup_
+
+Updated [v3 document](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/version-3) to display an example of the v3 syntax.
+
+_Cloud API_
+
+Added [Call Permissions Request](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api) type under interactive objects for messages.
+
+## August 14, 2025
+
+_Embedded Signup_
+
+In September we are simplifying the Embedded Signup flow across all versions. You can preview the simplified flow by configuring Embedded Signup with `v#-public-preview` (e.g. `v3-public-preview`) and launching the flow. See [Versions](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/versions) for additional details.
+
+## August 12, 2025
+
+_Cloud API_
+
+Added `AD_ACCOUNT_LINKED` event to the [`account_update webhook`](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/reference/account_update), which triggers when a WABA has onboarded to MM LITE through Embedded Signup or Intent API giving the partner access to its ad accounts.
+
+## August 11, 2025
+
+_Business Management API_
+
+Added [Welcome Message Sequences](https://developers.facebook.com/documentation/business-messaging/whatsapp/ctwa/welcome-message-sequences), which allow you to populate a set of pre-defined text and FAQs or a prefilled message, that can appear in a WhatsApp thread when a user taps a Click-to-WhatsApp ad.
+
+## August 4, 2025
+
+_Cloud API_
+
+Added new [whatsapp_business_manage_events](https://developers.facebook.com/docs/whatsapp/embedded-signup/app-review) permission to log events.
+
+## July 30, 2025
+
+_Cloud API_
+
+Changed the [Media Card Carousel Template](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates/media-card-carousel-templates) requirements so that card body text is no longer mandatory.
+
+## July 25, 2025
+
+_Cloud API_
+
+Added the [Tap target title URL override](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/tap-target-url-title-override) message template.
+
+## July 15, 2025
+
+_Cloud API_
+
+[WhatsApp Business Calling API](https://developers.facebook.com/documentation/business-messaging/whatsapp/calling) now available.
+
+_WhatsApp Business Platform_
+
+[Multi-solution Conversations is now available in open beta](https://developers.facebook.com/documentation/business-messaging/whatsapp/solution-providers/multi-solution-conversations)
+
+Multi-solution Conversations enables businesses to use multiple partners and solutions on the same phone number, enabling a seamless chat thread experience for their customers.
+
+## July 7, 2025
+
+_Business Management API_
+
+Added `PROFILE_PICTURE_LOST` as a new `alert_type` to [account_alerts](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/reference/account_alerts) webhooks, to notify you when a business phone number’s business profile photo has been deleted.
+
+## July 1, 2025
+
+_Cloud API_
+
+[Per-message pricing](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing) is now live.
+
+## June 18, 2025
+
+_Embedded Signup_
+
+[Solution Partners](https://developers.facebook.com/documentation/business-messaging/whatsapp/solution-providers/overview#solution-partners) can now claim [sandbox accounts](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/overview#sandbox-accounts).
+
+## June 13, 2025
+
+_Cloud API_
+
+You can now [request Official Business Account status via API](https://developers.facebook.com/documentation/business-messaging/whatsapp/whatsapp-business-accounts#requesting-oba-status-via-api) and [edit your display name via API](https://developers.facebook.com/documentation/business-messaging/whatsapp/business-phone-numbers/phone-numbers#updating-display-name-via-api). Before you could only do this using WhatsApp Manager.
+
+## June 5, 2025
+
+_Embedded Signup_
+
+Embedded Signup now gives business customers the option to have us automatically identify purchase or lead gen events in message threads that originate from ads that click to WhatsApp.
+
+![](https://scontent-fra5-2.xx.fbcdn.net/v/t39.2365-6/503425036_1029531339304862_7305936950282438326_n.png?_nc_cat=106&ccb=1-7&_nc_sid=e280be&_nc_ohc=dvRMnhPj-J0Q7kNvwGm4XsX&_nc_oc=AdnQ8bPiWCuLo_o-NpTDX2J4BbxNm9rLeLgrIwztPso8ZmXop2XvXGq5i9F33D3-bRA&_nc_zt=14&_nc_ht=scontent-fra5-2.xx&_nc_gid=DVzPCjIBOuSuu-yyrWTqXg&oh=00_Afk4xtW1GNR63_kGmjPQ1yh0FT1Faa3RuCRoFUrNRv5Y9A&oe=69552E4D)
+
+To be notified of these events, you can subscribe to the new new **automatic_events** webhook, and optionally, report them via Conversions API. See [Automatic Events API](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/automatic-events-api) for more details.
+
+## June 4, 2025
+
+_Business Management API_
+
+A [phone_number_quality_update](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/reference/phone_number_quality_update) webhook with `event` set to `THROUGHPUT_UPGRADE` and `current_limit` set to `TIER_UNLIMITED` will now be triggered if your business phone number is upgraded to [higher throughput](https://developers.facebook.com/documentation/business-messaging/whatsapp/throughput).
+
+## May 29, 2025
+
+_Cloud API_
+
+Added [error code](https://developers.facebook.com/documentation/business-messaging/whatsapp/support/error-codes)`132018` for help diagnosing invalid parameters when attempting to send a template message. Applies to version 23.0 and newer versions.
+
+_Embedded Signup_
+
+[Version 3](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/version-3) is now available. As part of this release, we have introduced versioning that will align with Graph API’s release cadence. The following changes apply to version 3:
+
+`only_waba_sharing` is no longer a valid `extras.featureType` value, since [bypassing the phone number screen](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/bypass-phone-addition) is obsolete now that business customers are able to complete the flow with a verified business phone number, unverified number, or no number at all.
+Added `extras.version` which must be set to `3` to enable version 3.
+Added `extras.features` for enabling [Marketing Messages Lite API](https://developers.facebook.com/docs/whatsapp/marketing-messages-lite-api) and [App-Only Install](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/app-only-install) onboarding.
+Added `extras.features.api_access_only` for enabling App-Only Install onboarding.
+Enabling Marketing Messages Lite API onboarding must now be done through the `extras.features` instead of `extras.featureType`.
+[Session info](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/implementation#session-logging-message-event-listener) will be automatically enabled for all users. Partners will still have to add an event listener on the same window to process incoming information.
+`coexistence` is no longer a valid `extras.featureType` value, you must use `whatsapp_business_app_onboarding` to launch the [Whatsapp Business App onboarding](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/onboarding-business-app-users) flow.
+Measurement partners currently cannot use version 3.
+[Pre-filled data](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/pre-filled-data) will no longer bypass any screens, to provide business customers the opportunity to review and change data.
+
+## May 5, 2025
+
+_Embedded Signup_
+
+Solution providers can now [onboard WhatsApp Business app users](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/onboarding-business-app-users) who have a WhatsApp Business app phone number with an India country dialing code.
+
+## April 9, 2025
+
+_Template Categorization_
+
+We no longer support the `allow_category_change` property during template creation. Previously, if set to true in a template creation request, this allowed us to update a template’s category to marketing, if we determined marketing to be its category per its content and our guidelines. This is now the default behavior.
+
+## April 8, 2025
+
+_Cloud API_
+
+Added [typing indicators](https://developers.facebook.com/documentation/business-messaging/whatsapp/typing-indicators) so you can let WhatsApp users know that you are preparing a response.
+
+## April 2, 2025
+
+_WhatsApp Manager_
+
+Added ability to [create](https://developers.facebook.com/documentation/business-messaging/whatsapp/whatsapp-business-accounts#create-a-waba-via-meta-business-suite) and [share](https://developers.facebook.com/documentation/business-messaging/whatsapp/whatsapp-business-accounts#share-your-waba-with-a-solution-provider) WhatsApp Business Accounts using WhatsApp Manager.
+
+## April 1, 2025
+
+_Pricing_
+
+Lowered [authentication-international pricing rates](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing/authentication-international-rates) for Egypt, Nigeria, Pakistan, and South Africa.
+
+## March 31, 2025
+
+_Cloud API, On-Premises API_
+
+Payments API for business portfolios with Singapore addresses is no longer available.
+
+## March 20, 2025
+
+_Cloud API_
+
+Added [partner-initiated WABA creation](https://developers.facebook.com/documentation/business-messaging/whatsapp/solution-providers/overview) to replace the [On-Behalf-Of](https://developers.facebook.com/documentation/business-messaging/whatsapp/solution-providers/obo-model-deprecation) (“OBO”) account ownership model, which is [being deprecated](https://developers.facebook.com/documentation/business-messaging/whatsapp/solution-providers/obo-model-deprecation). Starting September 30, 2025, WABAs can no longer be onboarded to the OBO model.
+
+## February 27, 2025
+
+_App Dashboard_
+
+Added additional tiles to the [App Dashboard](https://developers.facebook.com/apps) \> **WhatsApp** \> **Quickstart** panel to make it easier for you to get started with complementary products that can help you scale business messaging:
+
+[Marketing Messages Lite API](https://developers.facebook.com/docs/whatsapp/marketing-messages-lite-api)
+[Conversions API](https://developers.facebook.com/docs/marketing-api/conversions-api)
+[Marketing API](https://developers.facebook.com/docs/marketing-apis)
+
+These tiles make it easier to find documentation for these products and automatically add required permissions to an App Review request, which you can review and submit at your convenience.
+
+![](https://scontent-fra3-1.xx.fbcdn.net/v/t39.2365-6/485152013_950048063974284_3173044385037889136_n.png?_nc_cat=101&ccb=1-7&_nc_sid=e280be&_nc_ohc=xqx6syEDQ_YQ7kNvwFMrZhC&_nc_oc=AdloXoh0mg1qd8rhAYhNxgYGdFLccFWLR3Q9EUiXMpW-Goo2VUv1rZDnyKNhytwxC2g&_nc_zt=14&_nc_ht=scontent-fra3-1.xx&_nc_gid=DVzPCjIBOuSuu-yyrWTqXg&oh=00_AfmfB1XG4Kfs1CeR3KR2dh-_HQsyrn42hFNRjkLagjS31A&oe=6955288F)
+
+Note that these tiles only appear for products that you are eligible to use.
+
+## February 14, 2025
+
+_Cloud API_
+
+Added new endpoints to support [template groups](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/template-groups) and [template group analytics](https://developers.facebook.com/documentation/business-messaging/whatsapp/analytics#template-group-analytics), which allows you group sets of templates for easier analytic analysis.
+
+Added [GET /&lt;WABA_ID&gt;/template_groups](https://developers.facebook.com/docs/graph-api/reference/whats-app-business-account/template_groups#Reading)
+Added [POST /&lt;WABA_ID&gt;/template_groups](https://developers.facebook.com/docs/graph-api/reference/whats-app-business-account/template_groups#Creating)
+Added [GET /&lt;WABA_ID&gt;/template_group_analytics](https://developers.facebook.com/docs/graph-api/reference/whats-app-business-account/template_group_analytics#Reading)
+Added [GET /&lt;TEMPLATE_GROUP_ID&gt;](https://developers.facebook.com/docs/graph-api/reference/business-messaging-template-group#Reading)
+Added [POST /&lt;TEMPLATE_GROUP_ID&gt;](https://developers.facebook.com/docs/graph-api/reference/business-messaging-template-group#Updating)
+Added [DELETE /&lt;TEMPLATE_GROUP_ID&gt;](https://developers.facebook.com/docs/graph-api/reference/business-messaging-template-group#Deleting)
+
+## February 11, 2025
+
+_Embedded Signup_
+
+Added ability for solution providers to [onboard WhatsApp Business app users](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/onboarding-business-app-users) via Embedded Signup (aka “Coexistence”).
+
+## February 1, 2025
+
+_Pricing_
+
+Lowered [authentication pricing rates](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing#rates) for Egypt, Malaysia, Nigeria, Pakistan, Saudi Arabia, South Africa, and the United Arab Emirates.
+
+Added [authentication-international pricing rates](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing/authentication-international-rates) for Egypt, Malaysia, Nigeria, Pakistan, Saudi Arabia, South Africa, and the United Arab Emirates.
+
+## January 23, 2025
+
+_Embedded Signup_
+
+Added ability for business customers of solution providers to claim [“555” business phone numbers](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/overview#555-business-phone-numbers) when onboarding via Embedded Signup.
+
+## January 16, 2025
+
+_Cloud API_
+
+Added the [Block API](https://developers.facebook.com/documentation/business-messaging/whatsapp/block-users) giving businesses the ability to manage unwanted spam by blocking or unblocking specific customer phone numbers.
+
+## January 7, 2025
+
+_Multi-Partner Solutions_
+
+Added ability to migrate business customers off of Multi-Partner Solutions [via Embedded Signup](https://developers.facebook.com/documentation/business-messaging/whatsapp/solution-providers/support/migrating-customers-off-solutions-via-embedded-signup) and [via Meta Business Suite](https://developers.facebook.com/documentation/business-messaging/whatsapp/solution-providers/support/migrating-customers-off-solutions-via-meta-business-suite). Both methods skip business phone number re-verification.
+Added `app_id` parameter to the [POST /&lt;WHATSAPP_BUSINESS_ACCOUNT&gt;/set_solution_migration_intent](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-account/set-solution-migration-intent-api#Creating) endpoint to allow for migration off of Multi-Partner Solutions.
+
+## December 10, 2024
+
+_Embedded Signup_
+
+Added [Sandbox accounts](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/overview#sandbox-accounts) for easier testing of the Embedded Signup flow.
+
+## November 18, 2024
+
+_Cloud API_
+
+Added [user preferences for marketing messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/template-messages#user-preferences-for-marketing-messages).
+Added [user_preferences](https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/user_preferences) webhook field for user preferences for marketing messages.
+Added error code `131050` for messages webhooks, indicating message non-delivery due user marketing preferences.
+
+## November 13, 2024
+
+_Cloud API_
+
+Added [GET /&lt;SOLUTION_ID&gt;/access_token](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-solution/access-token-api#Reading) endpoint for [getting business tokens](https://developers.facebook.com/documentation/business-messaging/whatsapp/solution-providers/multi-partner-solutions#getting-customer-business-tokens) of business customers who have onboarded to the platform via a Multi-Partner Solution.
+
+## November 12, 2024
+
+_Cloud API_
+
+Added [POST /&lt;WHATSAPP_BUSINESS_ACCOUNT&gt;/set_solution_migration_intent](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-account/set-solution-migration-intent-api#Creating) endpoint to enable Tech Providers to [migrate business customers](https://developers.facebook.com/docs/whatsapp/embedded-signup/migrating-customer-assets#switching-solution-partners-with-multi-partner-solutions) from one Solution Partner and Multi-Partner Solution to another Solution Partner and Multi-Partner Solution.
+
+## November 5, 2024
+
+_Cloud API, Business Management API_
+
+Added [POST /&lt;BUSINESS_PORTFOLIO_ID&gt;/self_certify_whatsapp_business](https://developers.facebook.com/docs/marketing-api/reference/business/self_certify_whatsapp_business#Creating) endpoint for [partner-led business verifiation](https://developers.facebook.com/documentation/business-messaging/whatsapp/solution-providers/partner-led-business-verification).
+
+## November 1, 2024
+
+_Cloud API, Pricing_
+
+[Service conversations](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing#service-conversations) are now free for all businesses, including via AI-enabled conversational experiences.
+
+## October 11, 2024
+
+_Business Management API_
+
+Added [**POST /&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;/set_solution_migration_intent**](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-account/set-solution-migration-intent-api#Creating) endpoint for [adding a WABA to an active multi-partner solution](https://developers.facebook.com/docs/whatsapp/embedded-signup/migrating-customer-assets#adding-a-waba-to-a-multi-partner-solution).
+
+## October 2, 2024
+
+_Cloud API_
+
+Starting with version 21.0 the `package_name` and `signature_hash` parameters must be defined within the `supported_apps` array when creating [one-tap autofill](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/authentication-templates/autofill-button-authentication-templates#post-body) and [zero-tap](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/authentication-templates/zero-tap-authentication-templates#post-body) authentication templates.
+Starting with version 21.0, to enable [local storage](https://developers.facebook.com/documentation/business-messaging/whatsapp/local-storage) on a business phone number, the number must be in an unregistered state, and you must use the [**POST /&lt;WHATSAPP_BUSINESS_PHONE_NUMBER&gt;/settings**](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/settings-api#Updating) endpoint to enable local storage before registering the number (instead of enabling during registration). To support these changes:
+
+Added a `storage_configuration` parameter to the [**POST /&lt;WHATSAPP_BUSINESS_PHONE_NUMBER&gt;/settings**](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/settings-api#Updating) endpoint, which can be used to enable or disable local storage.
+Removed the `data_localization_region` parameter from the [**POST /&lt;WHATSAPP_BUSINESS_PHONE_NUMBER&gt;/register**](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/register-api#Creating) endpoint.
+
+## October 1, 2024
+
+_Cloud API, Pricing_
+
+Updated [pricing rates](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing#rates) in India, Saudi Arabia, the United Arab Emirates, and the United Kingdom.
+
+## September 25, 2024
+
+_Cloud API_
+
+Changed steps in the App Dashboard to make it easier to [become a Tech Provider](https://developers.facebook.com/documentation/business-messaging/whatsapp/solution-providers/get-started-for-tech-providers).
+
+## September 24, 2024
+
+_Cloud API_
+
+Added [checkout button templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/checkout-button-templates) (only available to India businesses that use business phone numbers with India country calling codes).
+
+## September 11, 2024
+
+_Cloud API_
+
+Added [single-product message templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates/spm-templates).
+Added [product card carousel templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates/product-card-carousel-templates).
+
+## September 10, 2024
+
+_Cloud API_
+
+Changed media asset caching behavior from developer definable (via Cache-Control header) to a fixed time period of 10 minutes. You can still force us to fetch assets from your server instead of our cache, however. See [Media Caching](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/send-messages#media-caching).
+
+## September 6, 2024
+
+_Cloud API_
+
+Added **Messages** [business asset access](https://developers.facebook.com/documentation/business-messaging/whatsapp/get-started#business-asset-access) for more granular control of WhatsApp Business Account access.
+Added ability to create [Multi-Partner Solutions via embeddable button](https://developers.facebook.com/documentation/business-messaging/whatsapp/solution-providers/multi-partner-solution-embedded-creation).
+
+## August 1, 2024
+
+_Cloud API, Pricing_
+
+Lowered utility conversation [pricing rates](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing#rates).
+
+## June 1, 2024
+
+_Cloud API_
+
+Added ability to set a [custom time-to-live](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/overview#customizing-time-to-live) on utility templates.
+
+_Business Management API_
+
+Added automatic category updates to correct templates that are miscategorized according to our guidelines.
+
+## April 10, 2024
+
+_Cloud API_
+
+Added [Utility Template Library](https://developers.facebook.com/docs/whatsapp/cloud-api/guides/send-message-templates/utility-templates)
+
+## April 10, 2024
+
+_Cloud API_
+
+Added [webook callback URL override on business phone numbers](https://developers.facebook.com/docs/whatsapp/embedded-signup/webhooks/override#set-phone-number-alternate-callback).
+
+## March 18, 2024
+
+_Cloud API_
+
+Added the [Conversational Components API](https://developers.facebook.com/documentation/business-messaging/whatsapp/business-phone-numbers/conversational-components#using-the-api).
+
+## February 13, 2024
+
+_Cloud API_
+
+Changed business phone number [registration/deregistration](https://developers.facebook.com/documentation/business-messaging/whatsapp/business-phone-numbers/registration) attempt limits to 10 requests per business number in a 72 hour moving window (was a one-week moving window).
+
+## February 6, 2024
+
+_Cloud API_, _On-Premises API_
+
+Added [per-user marketing template message limits](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/template-messages#per-user-marketing-template-message-limits) to help deliver high-quality user experiences.
+
+## January 26, 2024
+
+_Cloud API_
+
+Changed Cloud API template message delivery retry time-to-live from 24 hours to 30 days. You can still [override this value](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/authentication-templates/authentication-templates#time-to-live) for authentication templates.
+Changed [`biz_opaque_callback_data`](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api) character maximum from 256 to 512.
+
+## January 18, 2024
+
+_Cloud API_
+
+Added [Conversational Components](https://developers.facebook.com/documentation/business-messaging/whatsapp/business-phone-numbers/conversational-components).
+
+## December 18, 2023
+
+_Cloud API_
+
+Added [location request messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/location-request-messages).
+
+## December 12, 2023
+
+_Business Management API_
+
+Added `cta_url_link_tracking_opted_out` field on WhatsApp Message Template node for [enabling/disabling button click tracking](https://developers.facebook.com/documentation/business-messaging/whatsapp/analytics#disabling-button-click-analytics).
+[Template analytics](https://developers.facebook.com/documentation/business-messaging/whatsapp/analytics#template-analytics) now include button clicks in templates categorized as `UTILITY`.
+
+## November 20, 2023
+
+_Business Management API_
+
+Added [console logging](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/authentication-templates/error-signals#console-logging) to help with debugging one-tap and zero-tap authentication templates.
+
+## November 14, 2023
+
+_Cloud API_
+
+Added `health_status` field to various nodes for checking [messaging health status](https://developers.facebook.com/documentation/business-messaging/whatsapp/support/health-status).
+Added [`biz_opaque_callback_data` field](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api) to free-form messages for including arbitrary strings in [**messages** webhooks](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/reference/messages/status).
+
+_Embedded Signup_
+
+Embedded Signup can now be used to [migrate customer business phone numbers](https://developers.facebook.com/docs/whatsapp/business-management-api/guides/migrate-phone-to-different-waba) from one WhatsApp Business Account to another.
+
+## November 3, 2023
+
+_Business Management API_
+
+[Carousel template](https://developers.facebook.com/docs/whatsapp/business-management-api/message-templates/carousel-templates) creation now requires at least one button.
+
+## October 23, 2023
+
+_Business Management API_, _Cloud API_, _On-Premises API_
+
+Added [zero-tap authentication messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/authentication-templates/zero-tap-authentication-templates).
+
+## October 10, 2023
+
+_Cloud API_
+
+[WhatsApp Flows](https://developers.facebook.com/docs/whatsapp/flows) is now available.
+Added new `data_localization_region` field on [WhatsApp Business Phone Number > Register](https://developers.facebook.com/documentation/business-messaging/whatsapp/business-phone-numbers/registration) endpoint for enabling [local storage](https://developers.facebook.com/documentation/business-messaging/whatsapp/local-storage).
+Added new [click-to-action URL buttons](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/send-messages#cta-url-buttons) for free-form interactive messages.
+
+## October 4, 2023
+
+_Business Management API_, _Cloud API_, _On-Premises API_
+
+[Authentication templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/authentication-templates/authentication-templates) using the code expiration warning now use the `code_expiration_minutes` value (instead of a default of 10 minutes) to determine if the delivered template message should display an autofill button or copy code button.
+Autofill buttons displayed in a delivered template message will become disabled after the amount of time indicated by the template’s `code_expiration_minutes` value, if present (or after 10 minutes, if not present).
+
+## October 2, 2023
+
+_Cloud API_
+
+Added new [limited time offer templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates/limited-time-offer-templates) and new `limited_time_offer` template component.
+
+## September 27, 2023
+
+_Cloud API_
+
+Added `ctwa_clid` property to `referral` object in [messages webhooks](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/reference/messages). Indicates the click ID generated when the user taps an ad that clicks to WhatsApp in order to send the message.
+
+## September 18, 2023
+
+_Cloud API_, _On-Premises API_
+
+Legacy authentication templates (authentication templates without [one-time password buttons](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/authentication-templates/authentication-templates)) can continue to be sent, edited, and appealed until April 1, 204 (extended from October 2, 2023).
+
+## September 12, 2023
+
+_Business Management API_
+
+GET request responses on [authentication templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/authentication-templates/authentication-templates) now include `add_security_recommendation` and `code_expiration_minutes` template components in `component` value.
+Added new [WhatsApp Business Account Access](https://developers.facebook.com/documentation/business-messaging/whatsapp/get-started#whatsapp-business-account-control) levels for more granular control.
+GET requests on [WhatsApp Business Account > Phone Numbers](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-account/phone-number-management-api) and [WhatsApp Business Account > Message Templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-account/template-api) now return error code `200` if the user identified by token has not been granted appropriate [WhatsApp Business Account Access](https://developers.facebook.com/documentation/business-messaging/whatsapp/get-started#whatsapp-business-account-control).
+Added [Template Migration](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/template-migration).
+
+_Cloud API_
+
+Added `throughput` and `platform_type` fields to [WhatsApp Business Phone Numbers](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/whatsapp-business-account-phone-number-api).
+Added [Carousel Templates](https://developers.facebook.com/docs/whatsapp/business-management-api/message-templates/carousel-templates).
+
+_Cloud API_, _On-Premises API_
+
+[Migrating business phone numbers](https://developers.facebook.com/documentation/business-messaging/whatsapp/support/migrating-from-onprem-to-cloud) that have multiconnect running 2 or more shards from On-Premises API to Cloud API automatically upgrades the numbers to higher Cloud API throughput.
+
+## August 28, 2023
+
+_Cloud API_, _On-Premises API_
+
+Added [template pacing](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/template-pacing) (beta, for select countries).
+
+## August 28, 2023
+
+_Embedded Signup_
+
+Added a new boolean field, [override_default_response_type](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/implementation#launch-method-and-callback-registration). When set to `true`, any response types passed in `response_type` will take precedence over the default types.
+
+## August 15, 2023
+
+_Business Management API_
+
+Added [`template_analytics`](https://developers.facebook.com/documentation/business-messaging/whatsapp/analytics#template-analytics) (in beta).
+
+## August 9, 2023
+
+_Embedded Signup_
+
+Added [granular business tokens](https://developers.facebook.com/docs/whatsapp/embedded-signup/embed-the-flow) that exist at the client business level as an opt-in feature to help partners improve account security. In addition, we have updated the creation screens for [Pre Filled Data](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/pre-filled-data).
+
+## August 8, 2023
+
+_Cloud API_
+
+Added Cloud API localized storage status to [WhatsApp Business API Status](https://l.facebook.com/l.php?u=https%3A%2F%2Fmetastatus.com%2Fwhatsapp-business-api&h=AT0XnZBo0108wy4rJoo8xlWFEe5U6AbzGrvUQ-8Otl6ycq1r4g8AyGdjSbcBbbGWObORWFNwfb62bEL-qseHinT7szrJmkcUamdyx3P1wSj1ETVqziLwKzSZr2LeQ8a36nz3UO94CC1nHQ) page.
+
+_Business Management API_
+
+Added [copy code button](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/components#copy-code-buttons) component for use with [coupon code templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates/coupon-templates).
+Increased template [button component](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/components#buttons) total limit to 10, quick reply buttons can now be mixed with other button types, and URL button limit increased to 2.
+Added [template bulk management](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/authentication-templates/authentication-templates#bulk-management).
+Added [template previews](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/authentication-templates/authentication-templates#template-previews) for previewing template text in multiple languages.
+
+_Embedded Signup_
+
+Added ability to [bypass phone number selection](https://developers.facebook.com/docs/whatsapp/embedded-signup/custom-flows/bypass-phone-selection) in Embedded Signup.
+Added [business phone number programmatic/bulk registration](https://developers.facebook.com/documentation/business-messaging/whatsapp/solution-providers/registering-phone-numbers).
+Added [pre-verified business phone numbers bulk registration](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/pre-verified-numbers#registering-pre-verified-numbers-programmatically).
+Added [pre-verified business phone number sharing](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/pre-verified-numbers#sharing-and-unsharing-pre-verified-numbers).
+
+## August 2, 2023
+
+_Business Management API_
+
+[Pre-verified business phone numbers](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/pre-verified-numbers) now have a `VERIFIED` status of 28 days (up from 14).
+
+## July 11, 2023
+
+_Cloud API_
+
+Scheduling and performing an upgrade to a business phone number’s [throughput](https://developers.facebook.com/documentation/business-messaging/whatsapp/throughput) no longer requires a live call.
+You can now specify an upgrade time when submitting a Direct Support ticket to request an upgrade to a business phone number’s throughput.
+Downtime for business phone numbers undergoing a throughput upgrade reduced to 5 minutes or less.
+
+## July 7, 2023
+
+_Business Management API_
+
+[Authentication template](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/authentication-templates/authentication-templates) copy code button text and autofill button text are now optional upon creation.
+
+## July 6, 2023
+
+_Embedded Signup_
+
+We are [requiring Solution Partners to request the whatsapp_business_messaging permission](https://developers.facebook.com/docs/whatsapp/embedded-signup/steps#meta-app) to use the API calls on the Cloud API, hosted by Meta. There is now a [permissions acknowledgement screen](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/default-flow#permissions-review-screen) businesses must go through in order to complete Embedded Signup.
+
+## June 13, 2023
+
+_Cloud API_
+
+Added latency to the [WhatsApp Business API Status Page](https://l.facebook.com/l.php?u=https%3A%2F%2Fmetastatus.com%2Fwhatsapp-business-api&h=AT0XnZBo0108wy4rJoo8xlWFEe5U6AbzGrvUQ-8Otl6ycq1r4g8AyGdjSbcBbbGWObORWFNwfb62bEL-qseHinT7szrJmkcUamdyx3P1wSj1ETVqziLwKzSZr2LeQ8a36nz3UO94CC1nHQ).
+
+_Business Management API_
+
+Added Business Management API [error code `2494100`](https://developers.facebook.com/documentation/business-messaging/whatsapp/support/error-codes) that indicates a business phone number is temporarily in maintenance mode.
+
+_Cloud API_
+
+Added [identity change check](https://developers.facebook.com/documentation/business-messaging/whatsapp/business-phone-numbers/phone-numbers) feature.
+Added [catalog messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/catalogs/sell-products-and-services/share-products#catalog-messages).
+Added [catalog templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates/catalog-templates).
+
+## May 26, 2023
+
+_Cloud API_
+
+Added [error signals](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/authentication-templates/error-signals) that can help debug authentication templates with one-time password autofill buttons.
+
+## May 23, 2023
+
+_Cloud API_
+
+Attempting to send a paused template in a template message using v17 or later now returns [error code `132015`](https://developers.facebook.com/documentation/business-messaging/whatsapp/support/error-codes#other-errors) instead of `132001`.
+Attempting to send a disabled template in a template message using v17 or later now returns [error code `132016`](https://developers.facebook.com/documentation/business-messaging/whatsapp/support/error-codes#other-errors) instead of `132001`.
+
+_On-Premises API_
+
+Attempting to send a paused template in a template message now returns [error code `2061`](https://developers.facebook.com/docs/whatsapp/on-premises/errors).
+Attempting to send a disabled template in a template message now returns [error code `2062`](https://developers.facebook.com/docs/whatsapp/on-premises/errors).
+
+## May 9, 2023
+
+_Business Management API_
+
+Added [multi-product message templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates/mpm-templates).
+
+_Cloud API_
+
+Added [Stripe payments](https://developers.facebook.com/docs/whatsapp/cloud-api/payments-api/payments-sg) (Singapore only).
+Added [address messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/send-messages#address-messages) for requesting customer addresses (Singapore and India only).
+Added [1,000 messages per second](https://developers.facebook.com/documentation/business-messaging/whatsapp/about-the-platform#how-to-request-1-000-mps) throughput.
+
+_On-Premises API_
+
+Added [Stripe payments](https://developers.facebook.com/docs/whatsapp/on-premises/payments-api/payments-sg) (Singapore only).
+Added [address messages](https://developers.facebook.com/docs/whatsapp/api/messages/address-messages) for requesting customer addresses (Singapore and India only).
+
+## May 1, 2023
+
+_Business Management API_
+
+Added new webhooks notifying you of denials of messaging limit increases to the [`account_alerts` webhooks field](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/overview#account-alerts).
+All templates must now be categorized as `AUTHENTICATION`, `MARKETING`, or `UTILITY`.
+
+## April 26, 2023
+
+_Business Management API_
+
+Added `hsm_id` field to DELETE [WhatsApp Business Account > Message Templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-account/template-api#Deleting) endpoint. If included, deletes a single template that matches the supplied ID (instead of deleting all templates that match the supplied name).
+
+## April 18, 2023
+
+_Cloud API_
+
+Added `last_onboarded_time` to [WhatsApp Business Phone Number](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/whatsapp-business-account-phone-number-api) node. Indicates when a user created a business phone number on their WhatsApp Business Account by completing the Embedded Signup flow.
+
+## April 17, 2023
+
+_Business Management API_
+
+Added `last_onboarded_time` field to the [GET /&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/whatsapp-business-account-phone-number-api#Reading) and [GET &lt;WABA_ID&gt;/phone_numbers](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-account/phone-number-management-api#Reading) endpoints to enable sorting results by when a user last onboarded the [Embedded Signup](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/overview) flow. If this parameter is not specified, the results are sorted in descending order.
+
+## April 11, 2023
+
+_Cloud API_
+
+Added [WhatsApp Business Phone Number > Business Compliance Info](https://developers.facebook.com/docs/graph-api/reference/whats-app-business-account-to-number-current-status/business_compliance_info) endpoint for adding/updating a business phone number’s India-based compliance information.
+
+_Embedded Signup_
+
+Added the following endpoints to support [pre-verified business phone numbers](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/pre-verified-numbers) for [Embedded Signup](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/overview) users:
+
+[WhatsApp Business Pre-Verified Phone Number](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/business/whatsapp-business-pre-verified-phone-numbers-api)
+[WhatsApp Business Pre-Verified Phone Number > Request Code](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-pre-verified-phone-number/request-verification-code-api)
+[WhatsApp Business Pre-Verified Phone Number > Verify Code](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-pre-verified-phone-number/verify-code-api)
+[Business > Add Phone Numbers](https://developers.facebook.com/docs/marketing-api/reference/business/add_phone_numbers)
+In Version 2 of the Embedded Signup Flow, you can now [retrieve both the phone number and WABA ID](https://developers.facebook.com/docs/whatsapp/embedded-signup/embed-the-flow#step-5--optional---get-selected-phone-number-id-and-waba-id-at-the-end-of-the-flow) you selected by specifying the sessionInfoVersion inside the extras object at the end of the flow.
+
+## April 4, 2023
+
+_Business Management AI_, _Cloud API_, _On-Premises API_
+
+The first template category migration is complete.
+Category validation is now part of the template review process for [newly created templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/overview#create-message-templates). Applies to version v16.0+.
+API responses to [template creation or editing](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/overview) requests now include template status and template category. Applies to all API versions.
+Added `allow_category_change` parameter to [POST WhatsApp Business Account > Message Templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-account/template-api#post-version-waba-id-message-templates) endpoint.
+Added `INCORRECT_CATEGORY` as a new rejection `reason` value for [template status webhooks](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/overview).
+Templates that rely on variables now require sample values upon [creation or editing](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/overview). Applies to all versions.
+Added `previous_category` field to [WhatsApp Message Templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-account/template-api).
+Business-initiated conversations are no longer eligible for free tier conversations. If your WhatsApp Business Account relies on the services of a Solution Partner or a Meta partner, you are exempt from these changes until June 1, 2023.
+
+## March 17, 2023
+
+_Business Management API_
+
+Added a new `template_category_update` [webhook subscription field](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/overview#available-subscription-fields). If subscribed to this field, anytime a template’s category changes you will receive a webhook indicating the template’s previous and new category.
+API responses to [template creation and editing requests](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/overview) now include the template’s status and category.
+
+## March 14, 2023
+
+_Cloud API_
+
+You can now share location information with users by adding a [Location Header](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/components#location-headers) in your template.
+
+_On-Premises API_
+
+Conversely, users can now share their location information with businesses via [Location Request Messages](https://developers.facebook.com/docs/whatsapp/guides/interactive-messages#location-request-messages).
+
+## March 1, 2023
+
+_Cloud API_, _On-Premises API_
+
+Migrating an India-based business phone number from On-Premises API to Cloud API no longer deletes its [online selling compliance data](https://www.facebook.com/business/help/1104628230079278), so you no longer have to manually repopulate this data after migration.
+
+## February 15, 2023
+
+_Business Management API_
+
+Added a new [template comparison](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/template-comparison) endpoint that allows you to compare template send counts and block ratios.
+
+## February 3, 2023
+
+_Cloud API_, _On-Premises API_
+
+Added a new [WhatsApp Business Phone Number > Commerce Settings](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/phone-number-api) endpoint to enable/disable the shopping cart and product catalog on individual business phone numbers. See [Set Commerce Settings](https://developers.facebook.com/documentation/business-messaging/whatsapp/catalogs/sell-products-and-services/set-commerce-settings) for Cloud API and [Set Commerce Settings](https://developers.facebook.com/docs/whatsapp/on-premises/guides/commerce-guides) for On-Premises API for usage instructions and to learn how these settings can help you sell products and services.
+
+## February 2, 2023
+
+_Business Management API_, _Cloud API_
+
+Graph API version 16 is now available. Changes to [message template categories](https://developers.facebook.com/documentation/business-messaging/whatsapp/changelog#new-message-template-categories), [API error responses](https://developers.facebook.com/documentation/business-messaging/whatsapp/changelog#api-error-response-behavior), and [webhooks](https://developers.facebook.com/documentation/business-messaging/whatsapp/changelog#webhooks) have been introduced as part of this version.
+
+_Cloud API_
+
+Templates [created or edited](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/overview) using v16.0 must now be categorized using one of the following categories; all other categories are no longer supported. Applies to Cloud API v16.0+. Will apply to all versions May 1, 2023. This change has been introduced to support our June 1, 2023 switch to a new conversation-based pricing model.
+
+`AUTHENTICATION`
+`MARKETING`
+`UTILITY`
+Error subcodes, which are rarely used and should not be relied upon, will no longer be included in v16.0+ error responses. Use `code` and `details` instead.
+Error code 100 (`"code":100`) had multiple unique titles which indicated the nature of a given 100 error. All code 100 errors will now use `Invalid parameter` as their title. Old titles that described the nature of a given code 100 error have been moved to the `details` property. This change is also now reflected in webhooks payloads that describe a code 100 error response.
+
+_Cloud API Webhooks_
+
+The `errors` object in webhooks triggered by v16.0+ request errors now include `message` and `error_data.details` properties, and `title` values have changed for multiple error codes. Now, `errors` objects have the following structure and data:
+
+```
+[\
+  {\
+    "code": &lt;CODE&gt;,\
+    "title" : "&lt;TITLE&gt;",\
+    "message": "&lt;MESSAGE&gt;",\
+    "error_data": {\
+      "details": "&lt;DETAILS&gt;"\
+    }\
+  },\
+  ...\
+]
+```
+
+The `title` property value has been updated for the following error codes. Their old values now appear in `error_data.details`.
+
+`130470` new title is now `Re-engagement message`
+`130429` new title is now `Rate limit hit`
+`131045` new title is now `Incorrect certificate`
+`131031` new title is now `Business Account locked`
+`131053` new title is now `Media upload error`
+`131027` new title is now `Something went wrong`
+`131042` new title is now `Business eligibility payment issue`
+`131026` new title is now `Message Undeliverable`
+`131000` new title is now `Something went wrong`
+The `message` property value is the same as the `title` property value, which indicates the error code’s title.
+This property maps to the `message` property in [API error response payloads](https://developers.facebook.com/documentation/business-messaging/whatsapp/support/error-codes).
+The `error_data.details` property now includes error code titles from the error codes listed above and describes the underlying cause of the error. This value maps to the `details` property in API error response payloads.
+
+These changes are reflected in the following `errors` properties in error-related webhooks:
+
+`entry.changes.value.errors`
+`entry.changes.value.messages.errors`
+`entry.changes.value.statuses.errors`
+
+## January 30, 2023
+
+_Cloud API_
+
+Unverified businesses can now initiate up to 250 conversations in a rolling 24-hour period.
+
+## January 10, 2023
+
+_Embedded Signup_
+
+We have started rolling out the [new embedded signup UI](https://developers.facebook.com/docs/whatsapp/embedded-signup/embed-the-flow).
+
+## December 13, 2022
+
+_Cloud API_
+
+Added new optional `phone_number_id` field to the [Media](https://developers.facebook.com/documentation/business-messaging/whatsapp/business-phone-numbers/media) endpoint. If you include this parameter and a business phone number ID, the operation will only be processed if the phone number ID matches the ID of the phone number upon which the media was uploaded.
+
+## December 8, 2022
+
+_Cloud API_
+
+Cloud API [HTTP media caching](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/send-messages#media-http-caching) is out of beta and available to everyone.
+Cloud API will now reattempt to deliver failed webhooks notifications for up to 7 days instead of up to 30 days. See [Webhooks Delivery Failure](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/overview#webhook-delivery-failure).
+
+## November 23, 2022
+
+_Business Management API_
+
+Added a new [`template_performance_metrics`](https://developers.facebook.com/docs/graph-api/webhooks/reference/whatsapp-business-account#template_performance_metrics) field. Notifies you weekly of all template performance metrics, including messages sent count, messages opened count, and top reasons for blocks.
+
+## November 22, 2022
+
+_Cloud API, Business Management API, Webhooks_
+
+**Webhooks**
+
+New [`account_alerts`](https://developers.facebook.com/docs/graph-api/webhooks/reference/whatsapp-business-account#account_alerts) field:
+
+Added a new [`account_alerts`](https://developers.facebook.com/docs/graph-api/webhooks/reference/whatsapp-business-account#account_alerts) field. Notifies you of Business, WhatsApp Business Account, and business phone number alerts.
+
+New [`account_update`](https://developers.facebook.com/docs/graph-api/webhooks/reference/whatsapp-business-account#account_update) field values:
+
+Added a new [`account_update.events`](https://developers.facebook.com/docs/graph-api/webhooks/reference/whatsapp-business-account#account_update) value: `ACCOUNT_DELETED`. Indicates that a phone number has been de-registered or deleted from a WhatsApp Business Account.
+Added a new [`message_template_status_update.events`](https://developers.facebook.com/docs/graph-api/webhooks/reference/whatsapp-business-account#message_template_status_update) value: `PENDING_DELETION`. Indicates a message template has been marked for deletion.
+
+Sample Webhooks notifications that are sent when these new events are triggered:
+
+`ACCOUNT_DELETED` : [WhatsApp Business Account Deleted](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/overview#WABA-deleted)
+`PENDING_DELETION` : [Template Message Pending Deletion](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/overview#template-msg-pending-delete)
+
+**New WhatsApp Business Account endpoint fields**
+
+Added the following [WhatsApp Business Account](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-account/whatsapp-business-account-api) node fields:
+
+`country` (applies to `v15.0+`)
+`ownership_type` (applies to `v15.0+`)
+`business_verification_status` (applies to all versions)
+
+**New Business portfolio endpoint filters**
+
+Added the following filter options to the [Business Client Whatsapp Business Accounts](https://developers.facebook.com/docs/marketing-api/reference/business/client_whatsapp_business_accounts) endpoint:
+
+Filter by WhatsApp Business Account `creation_time` field using `GREATER_THAN`, `LESS_THAN`, or `IN_RANGE` operators.
+Filter by WhatsApp Business Account `ownership_type` using `EQUAL` or `IN` operators.
+
+Added the following filter options to the [Business Owned WhatsApp Business Accounts](https://developers.facebook.com/docs/marketing-api/reference/business/owned_whatsapp_business_accounts) endpoint:
+
+Filter by WhatsApp Business Account `creation_time` using `GREATER_THAN`, `LESS_THAN`, or `IN_RANGE` operators.
+Filter by WhatsApp Business Account `ownership_type` using `EQUAL` or `IN` operators.
+Filter by WhatsApp Business Account `country` using `EQUAL` or `IN` operators.
+
+Applies to v15.0 and newer.
+
+**New business phone number node fields**
+
+Added the following [WhatsApp Business Phone Number](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/whatsapp-business-account-phone-number-api) node fields:
+
+`is_official_business_account`
+`messaging_limit_tier`
+
+In addition, you can filter [WhatsApp Business Account Phone Numbers](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-account/phone-number-management-api) endpoint by `is_official_business_account`.
+
+Applies to v15.0 and newer.
+
+## November 3, 2022
+
+_Cloud API_
+
+**Messages Per Second**
+
+Cloud API now supports up to 500 (up from 350) messages per second (mps) of combined text and media messages, by request. See [Throughput](https://developers.facebook.com/documentation/business-messaging/whatsapp/throughput) for details.
+
+If you already have 350 mps it will be increased to 500 mps automatically. If you already requested 350 mps but the process has not been completed, you will receive 500 mps upon completion.
+
+**Media HTTP Caching**
+
+We are now beta testing Cloud API media HTTP caching. If you are a Solution Partner, see [Media HTTP Caching](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/send-messages#media-http-caching) to learn how to use headers in your server responses that instruct us to cache your media assets for reuse with future messages.
+
+**Document Captions**
+
+Cloud API now supports captions on documents sent to and received from customers. See **Media Object** in the [Media](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api) reference.
+
+## October 25, 2022
+
+_Business Management API_
+
+**Message Template Limit Increased**
+
+WhatsApp Business Accounts can now have up to 6,000 message templates if their parent business has been [verified](https://www.facebook.com/business/help/1095661473946872) and at least one of the parent business’s WhatsApp Business Accounts has a business phone number with an approved [display name](https://www.facebook.com/business/help/338047025165344).
+
+As part of this change, translated versions of a message template now count against a WhatsApp Business Account’s template limit.
+
+## October 20, 2022
+
+_Cloud API_
+
+Businesses in India can now use a credit card to pay for messages sent using the platform. See [Add a Credit Card to Your WhatsApp Business Platform Account](https://www.facebook.com/business/help/488291839463771).
+
+## October 12, 2022
+
+_Business Management API_
+
+You can now migrate a business phone number to and from Cloud API WhatsApp Business Accounts. See [Migrate Phone Number to a Different WABA](https://developers.facebook.com/docs/whatsapp/business-management-api/guides/migrate-phone-to-different-waba#preparing-the-destination-waba).
+
+## October 6, 2022
+
+_Cloud API_
+
+You can now use different callback URLs for each of your WhatsApp Business Accounts without having to create a unique app for each WhatsApp Business Account. See [Overriding the Callback URL](https://developers.facebook.com/documentation/business-messaging/whatsapp/solution-providers/manage-webhooks#overriding-the-callback-url) for details.
+All Cloud API endpoints now support version 15 calls.
+Text parameters (`components.parameters.text`) for message templates that only use a body component (`components.type:body`) can now total up to 32,768 characters. See [Parameters object](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api).
+Cloud API now supports up to 350 (up from 250) messages per second (mps) of combined text and media messages, by request. See [Throughput](https://developers.facebook.com/documentation/business-messaging/whatsapp/throughput) for details. If you already have 250 mps it will be increased to 350 mps automatically. If you already requested 250 mps but the process has not been completed, you will receive 350 mps upon completion.
+
+_Embedded Signup_
+
+[Embedded Signup](https://developers.facebook.com/docs/whatsapp/embedded-signup/overview) now supports mobile web browsers. The user interface will automatically optimize for a mobile experience when it detects that the viewer is using a mobile web browser.
+
+## September 30, 2022
+
+_Embedded Signup_
+
+Businesses that have been onboarded by a Solution Partner through the [Embedded Signup](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/overview) or “On Behalf Of” process can now initiate up to 250 conversations with unique customers in a rolling 24-hour period, immediately.
+
+## September 22, 2022
+
+_Cloud API_
+
+Reactions are now supported. See [Send Messages - Reaction Messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/send-messages#reaction-messages) to learn how to send and receive reactions and [Payload Examples - Reaction Messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/overview#reaction-messages) for webhook payload notification examples.
+The `about` field on business profiles is now supported. See [Business Profiles](https://developers.facebook.com/documentation/business-messaging/whatsapp/business-phone-numbers/business-profiles) for details.
+
+## September 7, 2022
+
+_Cloud API_
+
+Latest documentation for requesting migration from 80 messages per second to 250 messages per second of combined sending and receiving of text and media messages is now available. See [Throughput](https://developers.facebook.com/documentation/business-messaging/whatsapp/throughput).
+
+## August 25, 2022
+
+_Cloud API_
+
+You can now include animated stickers in outbound, business-initiated messages and receive [message webhooks](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/reference/messages) describing those messages the same way you would if you were sending a non-animated sticker. Refer to the [Message](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api) object’s `sticker` property and for animated sticker asset requirements.
+You can now include products and services in messages sent to customers, and customers can add them to shopping carts without having to leave the chat thread. Refer to the [Sell Products & Services](https://developers.facebook.com/documentation/business-messaging/whatsapp/catalogs/sell-products-and-services) guide to learn how to send Single and Multi-Product messages to customers.
+
+## July 21, 2022
+
+_Cloud API_
+
+Businesses can now reply to any message in a conversation thread. Replies will include a contextual bubble referencing the replied-to message. Refer to the [Send Messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/send-messages#replies) guide to learn how to reply to a message.
+Cloud API now supports up to 250 messages per second of combined sending and receiving (inclusive of text and media messages), by request. If you are an enterprise partner you can open a [Direct Support](https://business.facebook.com/direct-support) ticket to request 250 MPS throughput by selecting Question Topic: “Cloud API Issues”, Request Type: “Request to migrate to 250 MPS throughput” and filling out the required information.
+
+## October 11, 2022
+
+_On-Premises API_
+
+**v2.43**
+
+Starting in `v2.43`, there will be changes to the behavior of the [`contacts` endpoint](https://developers.facebook.com/docs/whatsapp/on-premises/reference/contacts)
+[Responses for `status` will change](https://developers.facebook.com/docs/whatsapp/on-premises/reference/contacts#returned-fields). Regardless of whether a user has WhatsApp, it will always return `valid` for `status` in the response and a `wa_id`. There is no guarantee that the returned wa_id will be valid. These changes are applicable for both direct responses, as well as webhook responses for non-blocking calls
+Ensure your code avoids relying on `status` and `wa_id` returned in the `contacts` node. In addition, [sending a message](https://developers.facebook.com/docs/whatsapp/on-premises/reference/messages) on `v2.39.1` or higher can be completed without calling the `contacts` node
+Ensure your code handles a potential `1013` **User is not valid** error when trying to send a template message, which will be returned if you attempt to send the template message to a phone number without a WhatsApp account
+For non template messages, sending a message to a phone number without a WhatsApp account will return a `470` error
+
+**v2.45, January 10, 2023**
+
+Starting in `v2.45`, the [optional `cert` parameter](https://developers.facebook.com/docs/whatsapp/multiconnect_mc#parameters) in the `shards` node will become mandatory for all requests. Please update your integration to always include a valid `cert` when calling the `shards` node
+Starting in `v2.41.2`, businesses can use the [`application` node](https://developers.facebook.com/docs/whatsapp/on-premises/reference/settings/app) to filter out sent message statuses they are not interested in through the `message` object within the `webhooks` object. In `v2.45`, `sent_status` will be deprecated, so update your integration to use the [`webhooks` object in the `application` node](https://developers.facebook.com/docs/whatsapp/on-premises/reference/settings/app#webhooks) for all webhook controls
+As of `v2.39.1`, `recipient_id` is available in both the [`statuses` object](https://developers.facebook.com/docs/whatsapp/on-premises/webhooks/outbound#status--message-sent) and in the `message` object. In `v2.45`, `recipient_id` will be removed in the [`statuses` object](https://developers.facebook.com/docs/whatsapp/on-premises/webhooks/outbound#status--message-sent), so update your integration to use `recipient_id` under the `message` object
+
+## September 19, 2022
+
+_On-Premises API_
+
+**v2.41.3**
+
+The `v2.41.3` version of our Business API client added a new table index on `message_receipt_log` that could benefit partners with high throughput needs. For instance, this improvement allows partners to send more than 200 messages/second.
+
+## June 27, 2022
+
+_On-Premises API_
+
+**Best practices for a seamless upgrade to v2.41.2**
+
+In v2.41.2, we are introducing DB schema changes to improve the performance of the system. As a result, upgrades from v2.37.2 and v2.39.x for set ups with large databases which have millions of message and contact entries will take longer than usual.
+
+Generally, perform upgrades during off-peak hours and upgrade lower-throughput setups first.
+
+For large databases, follow these steps:
+
+Run garbage collection via the [/services/message/gc](https://developers.facebook.com/docs/whatsapp/on-premises/reference/services) endpoint before your upgrade, and ensure it completes successfully
+Please use the [dbupgrade tool](https://developers.facebook.com/docs/whatsapp/on-premises/get-started/installation/dev-multiconnect#for-mysql-database-users-upgrading-to-v2-23-x-and-above) to upgrade the DB schemas prior to the version upgrade.
+
+Once done, you will be able to upgrade API versions with minimal down time. It is strongly recommended to bring the API client down before using the dbupgrade tool.
+
+Ensure the dbupgrade tool completes successfully (exit code 0), and avoid or limit API requests while the upgrade is taking place.
+
+We recommend increasing the query timeout on your database servers to one hour, until the upgrade completes successfully.
+
+**v2.41.2 features and updates**
+
+Improvements to the latency of the bulk [/contacts](https://developers.facebook.com/docs/whatsapp/on-premises/reference/contacts) endpoint requests and resolution of deadlock issues.
+Improvements to the performance and reliability of the [garbage collection process](https://developers.facebook.com/docs/whatsapp/on-premises/reference/services).
+Businesses now have the ability to enable/disable `delivered` and `read` webhook notifications which gives them greater control over webhook notifications for messages. This can be achieved through the [settings/applications](https://developers.facebook.com/docs/whatsapp/on-premises/reference/settings/app) endpoint.
+`namespace` field is optional for the [template object](https://developers.facebook.com/docs/whatsapp/on-premises/reference/messages#template-object).
+More robust handling of media download errors so businesses should experience less issues downloading media sent by customers.
+Additional reliability and bug fixes within the send message and registration workflows.
+
+## May 19, 2022
+
+_Cloud API_
+
+Starting today, the WhatsApp Business Cloud API is open to all developers building products or services for themselves or their organizations. To get started, [see our guide](https://developers.facebook.com/docs/whatsapp/getting-started/signing-up). If you are interested in offering API access to your customers, please [join our waitlist](https://l.facebook.com/l.php?u=http%3A%2F%2Fbusiness.whatsapp.com%2Flearn-more&h=AT0XnZBo0108wy4rJoo8xlWFEe5U6AbzGrvUQ-8Otl6ycq1r4g8AyGdjSbcBbbGWObORWFNwfb62bEL-qseHinT7szrJmkcUamdyx3P1wSj1ETVqziLwKzSZr2LeQ8a36nz3UO94CC1nHQ).
+
+_Business Management API_
+
+The following values for the `category` parameter for the `/WHATSAPP-BUSINESS-ACCOUNT-ID/message_template` endpoint have been deprecated for `v14.0` and later:
+
+`ACCOUNT_UPDATE`
+`ALERT_UPDATE`
+`APPOINTMENT_UPDATE`
+`AUTO_REPLY`
+
+`ISSUE_RESOLUTION`
+`PAYMENT_UPDATE`
+`PERSONAL_FINANCE_UPDATE`
+`RESERVATION_UPDATE`
+
+`SHIPPING_UPDATE`
+`TICKET_UPDATE`
+`TRANSPORTATION_UPDATE`
+
+The following values have been added:
+
+`TRANSACTIONAL`
+`MARKETING`
+
+## May 10, 2022
+
+_On-Premises API_
+
+**v2.39.4**
+
+This client version contains [all features and fixes shipped with `v2.39.1`](https://developers.facebook.com/documentation/business-messaging/whatsapp/changelog#on-prem-v2391). Additionally, this release:
+
+Fixes a bug that prevented video messages from being sent under certain circumstances. _This fix was also included in `v2.39.2`._
+Fixes a bug that prevented businesses from sending messages to a customer, if the customer was the first to initiate an interaction between the two parties on WhatsApp, and that initiation happened more than 7 days ago. This fix was also included in `v2.39.3`.
+Fixes a bug that prevented businesses from receiving disappearing messages from customers. After `v2.39.4` is installed, businesses will get notified they received a disappearing message by a webhooks notification with type set to `"ephemeral"`. Businesses will not be able to see the message’s content.
+
+When we launched `v2.39.3`, the disappearing messages issue was handled by WhatsApp automatically disabling these messages in the chat thread with the client. For `v2.39.4`, we will not do that. With this version, businesses that receive disappearing messages must ask the customer to disable disappearing messages and resend their latest message.
+
+## May 4, 2022
+
+_On-Premises API_
+
+**v2.3.8**
+
+AWS Service Templates and Template URLs:
+
+Enterprise: [https://wa-biz-cfn.s3-us-west-2.amazonaws.com/wa_ent.yml?versionId=0pACuWHFUL7U1RjxGcTkAsza7rj._5tK](https://l.facebook.com/l.php?u=https%3A%2F%2Fwa-biz-cfn.s3-us-west-2.amazonaws.com%2Fwa_ent.yml%3FversionId%3D0pACuWHFUL7U1RjxGcTkAsza7rj._5tK&h=AT0XnZBo0108wy4rJoo8xlWFEe5U6AbzGrvUQ-8Otl6ycq1r4g8AyGdjSbcBbbGWObORWFNwfb62bEL-qseHinT7szrJmkcUamdyx3P1wSj1ETVqziLwKzSZr2LeQ8a36nz3UO94CC1nHQ)
+DB: [https://wa-biz-cfn.s3-us-west-2.amazonaws.com/wa_ent_db.yml?versionId=4BtYzof0_z0yl7Pbat9mln8Xj5CYS07Z](https://l.facebook.com/l.php?u=https%3A%2F%2Fwa-biz-cfn.s3-us-west-2.amazonaws.com%2Fwa_ent_db.yml%3FversionId%3D4BtYzof0_z0yl7Pbat9mln8Xj5CYS07Z&h=AT0XnZBo0108wy4rJoo8xlWFEe5U6AbzGrvUQ-8Otl6ycq1r4g8AyGdjSbcBbbGWObORWFNwfb62bEL-qseHinT7szrJmkcUamdyx3P1wSj1ETVqziLwKzSZr2LeQ8a36nz3UO94CC1nHQ)
+Lambda: [https://wa-biz-cfn.s3-us-west-2.amazonaws.com/wa_ent_lambda.yml?versionId=o1JUcpuOHKfTU_hRExFxhib5YCeXeZx.](https://l.facebook.com/l.php?u=https%3A%2F%2Fwa-biz-cfn.s3-us-west-2.amazonaws.com%2Fwa_ent_lambda.yml%3FversionId%3Do1JUcpuOHKfTU_hRExFxhib5YCeXeZx.&h=AT0XnZBo0108wy4rJoo8xlWFEe5U6AbzGrvUQ-8Otl6ycq1r4g8AyGdjSbcBbbGWObORWFNwfb62bEL-qseHinT7szrJmkcUamdyx3P1wSj1ETVqziLwKzSZr2LeQ8a36nz3UO94CC1nHQ)
+Network: [https://wa-biz-cfn.s3-us-west-2.amazonaws.com/wa_ent_net.yml?versionId=_D2yaFcS1zEqRLf23t2Wesnh3M.Qw1UF](https://l.facebook.com/l.php?u=https%3A%2F%2Fwa-biz-cfn.s3-us-west-2.amazonaws.com%2Fwa_ent_net.yml%3FversionId%3D_D2yaFcS1zEqRLf23t2Wesnh3M.Qw1UF&h=AT0XnZBo0108wy4rJoo8xlWFEe5U6AbzGrvUQ-8Otl6ycq1r4g8AyGdjSbcBbbGWObORWFNwfb62bEL-qseHinT7szrJmkcUamdyx3P1wSj1ETVqziLwKzSZr2LeQ8a36nz3UO94CC1nHQ)
+Monitoring: [https://wa-biz-cfn.s3-us-west-2.amazonaws.com/wa_ent_monitoring.yml?versionId=H534ejFNiHnMpWyy1ERh3kr9TvM5VtyS](https://l.facebook.com/l.php?u=https%3A%2F%2Fwa-biz-cfn.s3-us-west-2.amazonaws.com%2Fwa_ent_monitoring.yml%3FversionId%3DH534ejFNiHnMpWyy1ERh3kr9TvM5VtyS&h=AT0XnZBo0108wy4rJoo8xlWFEe5U6AbzGrvUQ-8Otl6ycq1r4g8AyGdjSbcBbbGWObORWFNwfb62bEL-qseHinT7szrJmkcUamdyx3P1wSj1ETVqziLwKzSZr2LeQ8a36nz3UO94CC1nHQ)
+
+Changelog:
+
+Updating AMIs for CentOS 7 machines
+
+## May 3, 2022
+
+_Cloud API_
+
+Fixed an issue related to disappearing messages from users.
+Better determination of thumbnail quality for media messages.
+
+## April 26, 2022
+
+_On-Premises API_
+
+**v2.3.7**
+
+AWS Service Templates and Template URLs
+
+Enterprise: [https://wa-biz-cfn.s3-us-west-2.amazonaws.com/wa_ent.yml?versionId=bNECfwPYZZNGlhzkfCyheoQugydIiui4](https://l.facebook.com/l.php?u=https%3A%2F%2Fwa-biz-cfn.s3-us-west-2.amazonaws.com%2Fwa_ent.yml%3FversionId%3DbNECfwPYZZNGlhzkfCyheoQugydIiui4&h=AT0XnZBo0108wy4rJoo8xlWFEe5U6AbzGrvUQ-8Otl6ycq1r4g8AyGdjSbcBbbGWObORWFNwfb62bEL-qseHinT7szrJmkcUamdyx3P1wSj1ETVqziLwKzSZr2LeQ8a36nz3UO94CC1nHQ)
+DB: [https://wa-biz-cfn.s3-us-west-2.amazonaws.com/wa_ent_db.yml?versionId=RRa0vGtuodHnWNyww8uLyZUAWFOfQ7hN](https://l.facebook.com/l.php?u=https%3A%2F%2Fwa-biz-cfn.s3-us-west-2.amazonaws.com%2Fwa_ent_db.yml%3FversionId%3DRRa0vGtuodHnWNyww8uLyZUAWFOfQ7hN&h=AT0XnZBo0108wy4rJoo8xlWFEe5U6AbzGrvUQ-8Otl6ycq1r4g8AyGdjSbcBbbGWObORWFNwfb62bEL-qseHinT7szrJmkcUamdyx3P1wSj1ETVqziLwKzSZr2LeQ8a36nz3UO94CC1nHQ)
+Lambda: [https://wa-biz-cfn.s3-us-west-2.amazonaws.com/wa_ent_lambda.yml?versionId=Sp2BO2LgxkVWH2XTxZ6pgOx3yf1xEqUQ](https://l.facebook.com/l.php?u=https%3A%2F%2Fwa-biz-cfn.s3-us-west-2.amazonaws.com%2Fwa_ent_lambda.yml%3FversionId%3DSp2BO2LgxkVWH2XTxZ6pgOx3yf1xEqUQ&h=AT0XnZBo0108wy4rJoo8xlWFEe5U6AbzGrvUQ-8Otl6ycq1r4g8AyGdjSbcBbbGWObORWFNwfb62bEL-qseHinT7szrJmkcUamdyx3P1wSj1ETVqziLwKzSZr2LeQ8a36nz3UO94CC1nHQ)
+Network: [https://wa-biz-cfn.s3-us-west-2.amazonaws.com/wa_ent_net.yml?versionId=uNubDzGLs1WddCGB0EgEa6OMSF1vw4Mn](https://l.facebook.com/l.php?u=https%3A%2F%2Fwa-biz-cfn.s3-us-west-2.amazonaws.com%2Fwa_ent_net.yml%3FversionId%3DuNubDzGLs1WddCGB0EgEa6OMSF1vw4Mn&h=AT0XnZBo0108wy4rJoo8xlWFEe5U6AbzGrvUQ-8Otl6ycq1r4g8AyGdjSbcBbbGWObORWFNwfb62bEL-qseHinT7szrJmkcUamdyx3P1wSj1ETVqziLwKzSZr2LeQ8a36nz3UO94CC1nHQ)
+Monitoring: [https://wa-biz-cfn.s3-us-west-2.amazonaws.com/wa_ent_monitoring.yml?versionId=HyC5PA5IZy9d.CFDkNTGDBEyxSHf5gHI](https://l.facebook.com/l.php?u=https%3A%2F%2Fwa-biz-cfn.s3-us-west-2.amazonaws.com%2Fwa_ent_monitoring.yml%3FversionId%3DHyC5PA5IZy9d.CFDkNTGDBEyxSHf5gHI&h=AT0XnZBo0108wy4rJoo8xlWFEe5U6AbzGrvUQ-8Otl6ycq1r4g8AyGdjSbcBbbGWObORWFNwfb62bEL-qseHinT7szrJmkcUamdyx3P1wSj1ETVqziLwKzSZr2LeQ8a36nz3UO94CC1nHQ)
+
+Changelog:
+
+Moved from using pip to pip3 to install AWS bootstrap scripts.
+Fixed an issue with awscli installation.
+
+## April 14, 2022
+
+_Embedded Signup_
+
+We’re making it easier for businesses and partners to scale on the WhatsApp Business Platform with an improved onboarding experience. Starting May 2, 2022, businesses will be able to message customers immediately after signup and only need to complete Business Verification when they’re ready to scale business-initiated conversations or request to become an Official Business Account.
+
+The changes mean that onboarded businesses will be able to:
+
+Respond to unlimited customer-initiated conversations.
+Send business-initiated conversations to 50 unique customers in a rolling 24-hour period.
+
+These are the changes being implemented on May 2, 2022:
+
+WhatsApp Account checks and display name review will no longer be a requirement to get started on the platform. After signup, a compliance check with the WhatsApp Platform Policy Checks will be auto-triggered and will be performed in the background.
+Display name review will be initiated after Business Verification is completed. Businesses should still follow the display name best practice guidelines when adding a new phone number. For more information, see Display Names.
+Business Verification only needs to be completed when businesses are ready to scale business-initiated conversations or request to become an Official Business Account (OBA). For more information, see how to increase limits.
+Since businesses get access to sending messages after sign up, the Unverified Trial Experience will be deprecated.
+Businesses will be able to see the messaging limits in the Overview Dashboard in WhatsApp Manager -after completing the signup process.
+
+The changes listed above have no impact on pricing. See pricing for more details.
+
+## April 5, 2022
+
+_Cloud API_
+
+Starting today, the Cloud API is generally available to all existing Solution Partners and direct clients. Additionally, we’re releasing the following features for Cloud API developers:
+
+**Messages with Stickers**: Send media messages containing third-party static stickers. See the following documentation for more details: [Reference, Messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api) and [Reference, Media](https://developers.facebook.com/documentation/business-messaging/whatsapp/business-phone-numbers/media). We support inbound both and outbound stickers. For outbound, we only support static third-party stickers. For inbound, we support all types of stickers.
+**Deregister Phone Number API**: Make `POST` calls to `PHONE_NUMBER_ID/deregister` in order to remove a phone number from the WhatsApp Business API. See [Registration](https://developers.facebook.com/documentation/business-messaging/whatsapp/business-phone-numbers/registration#deregister-phone) for information.
+**New Phone Verification Option**: Verify your business phone number via Graph API calls. See [Phone Numbers](https://developers.facebook.com/documentation/business-messaging/whatsapp/business-phone-numbers/phone-numbers#verify) for information.
+**New Referral Webhooks**: Receive Webhooks notifications when a user clicks on an ad that clicks to WhatsApp and sends a message to the business. See [Webhooks](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/overview#received-message-triggered-by-click-to-whatsapp-ads) for information. Be aware that the Cloud API’s webhooks `referral` object is different from the On-Premises API’s `referral` object.
+
+Additionally, we are announcing that App Review is no longer required for first-party developers using the Cloud API. All developers are subject to the [WhatsApp Business Platform messaging limits](https://developers.facebook.com/docs/whatsapp/api/rate-limits#messaging).
+
+## March 26, 2022
+
+_On-Premises API_
+
+**v2.37.2**
+
+This version contains the same features as [`v2.37.1`](https://developers.facebook.com/docs/whatsapp/changelog/archive#wa237), but there’s a different expiration date. `v2.37.2` expires on Sep 22, 2022.
+
+Known Issues:
+
+Some Kubernetes developers may see `CrashLoopBackOff` for their webapp container and their container may fail to start. To fix that, add following line in the Kubernetes deployment `YML` file under webapp configuration:
+
+```
+command: ["/opt/whatsapp/bin/wait_on_mysql.sh", "/opt/whatsapp/bin/launch_within_docker.sh"]
+```
+
+## March 25, 2022
+
+_On-Premises API_
+
+**v2.39.3**
+
+The `v2.39.3` version of our Business API client is available for developers today. The new client includes two fixes and additional logs to support debugging. The two fixes are:
+
+Fixed a bug that prevented businesses from sending messages to a customer, if the customer was the first to initiate an interaction between the two parties on WhatsApp, and that initiation happened more than 7 days ago.
+Fixed a bug that prevented businesses from receiving disappearing messages from customers. After v2.39.3 is installed, businesses will get notified they received a disappearing message by a webhooks notification. On their end, customers will see a warning saying that the disappearing messages mode has been turned off.
+
+## March 15, 2022
+
+_Cloud API_
+
+**List Messages and Reply Buttons**
+
+Starting today, Cloud API beta users can start sending and list and reply button messages. See the following documentation for more details:
+
+[Reference, Messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api)
+Webhooks: [List Messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/overview#list-messages) and [Reply Button](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/overview#reply-button)
+[Webhooks, Components](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/overview#interactive-object)
+
+**Preview URL**
+
+Starting today, Cloud API beta users can add a preview URL box to text messages that include a URL. See the following documentation for more details:
+
+[Reference, Messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api)
+
+**New Documentation Guides**
+
+[Migrate Between On-Premises and Cloud API](https://developers.facebook.com/documentation/business-messaging/whatsapp/support/migrating-from-onprem-to-cloud)
+
+## March 4, 2022
+
+_On-Premises API_
+
+**v2.39.2**
+
+We just released the On-Premises API `v2.39.2`. This version fixes a bug that prevented video messages from being sent under certain circumstances.
+
+Known Issues:
+
+A bug exists that prevents businesses from sending messages to a customer, if the customer was the first to initiate an interaction between the two parties on WhatsApp, and that initiation happened more than 7 days ago.
+A bug exists that prevents businesses from receiving disappearing messages from customers.
+
+## March 1, 2022
+
+_Cloud API_
+
+Cloud API beta users can start sending and receiving video messages. The following documentation provides more information:
+
+[Media, Upload Media](https://developers.facebook.com/documentation/business-messaging/whatsapp/business-phone-numbers/media#upload-media)
+[Supported Media Types](https://developers.facebook.com/documentation/business-messaging/whatsapp/business-phone-numbers/media#supported-media-types)
+[Messages, Examples, Media Messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api)
+[Webhooks, Components](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/overview#fields)
+
+## February 1, 2022
+
+_Cloud API_
+
+Starting today, WhatsApp has switched from a notification-based pricing model to a conversation-based pricing model. Businesses are charged per conversation, which includes all messages delivered in a 24 hour session. See [Conversation-Based Pricing](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing) for information.
+
+Starting today, Cloud API beta users can start sending and receiving location and contact messages. See the documentation below for more information:
+Reference, Messages: [Location](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api) and [Contacts](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api)
+Webhooks, Examples: [Received Messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/overview#examples--received-messages)
+We now support 80 messages per second peak throughput per phone number. This includes incoming and outgoing messages, as well as text, template and media messages.
+
+_On-Premises API_
+
+**v2.39.1**
+
+The `2.39.1` version of our Business API client is available for developers starting today. The new client includes:
+
+[New field for the Set Shards API](https://developers.facebook.com/documentation/business-messaging/whatsapp/changelog#set-shards-api).
+[New hostname added to network requirements](https://developers.facebook.com/documentation/business-messaging/whatsapp/changelog#new-hostname).
+[New error code `1031`](https://developers.facebook.com/documentation/business-messaging/whatsapp/changelog#error-code-updates).
+[Deprecations of the `hsm` type and the `webhook_payload_conversation_pricingmodel_disabled` application setting](https://developers.facebook.com/documentation/business-messaging/whatsapp/changelog#deprecations-v239).
+
+**Set Shards API**
+
+Starting with the new API client version, you may provide your phone’s certificate when you are setting up multiconnect. That means that, when calling the /v1/account/shards endpoint, you can add the Base64-encoded certificate in the cert field. See [Scale Your API Client With Multiconnect](https://developers.facebook.com/docs/whatsapp/multiconnect_mc) for information.
+
+**New Hostname**
+
+We have added `graph.whatsapp.com` to the list of WhatsApp server hostnames that the Business API client requires connectivity to. See [Set Up and Debug Your Network, Hostnames](https://developers.facebook.com/docs/whatsapp/guides/network-requirements) for information.
+
+**Error Code Updates**
+
+With `v2.39`, we have added error code `1031`. You will get this error if your account has been locked and can’t send any messages due to an integrity policy violation. See [Error and Status Messages](https://developers.facebook.com/docs/whatsapp/api/errors#error) and [Policy Enforcement](https://developers.facebook.com/documentation/business-messaging/whatsapp/policy-enforcement) for information.
+
+**Deprecations**
+
+**Messages API**: The `hsm` type has been deprecated with `v2.39`. You should use the `template` type instead.
+**Application Setting**: The application setting `webhook_payload_conversation_pricingmodel_disabled` has been deprecated.
+
+**Known Issues**
+
+Some video messages fail to send under certain circumstances.
+
+## November 15, 2021
+
+_Cloud API_
+
+**Audio Messages**
+
+Starting today, Cloud API beta users can start sending [audio messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api) to their customers. For supported audio types, see our [media documentation](https://developers.facebook.com/documentation/business-messaging/whatsapp/business-phone-numbers/media#supported-media-types).
+
+**Webhooks**
+
+We have updated our [webhooks documentation](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/overview) to clarify the following: **if you receive a message type that is not yet supported by Cloud API, you will be notified via an [unknown message webhook](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/overview#received-unknown-messages)**. This means that, for the current API beta release, you will get an unknown message webhook if you receive any of the following message types: Media Messages (Video), Contact Messages, Location Messages, Stickers, Stickerpacks.
+
+## October 21, 2021
+
+_Cloud API_
+
+**Feature Availability**
+
+We have updated the [list of features that will be available for the Cloud API Beta release](https://developers.facebook.com/docs/whatsapp/cloud-api/overview/on-premises-cloud-api-comparison). This is an updated snapshot of the features and their availability:
+
+Available for beta:
+
+Text Messages
+Text-Based Message Templates
+Media Messages (Images and Documents)
+Media-Based Message Templates (Images and Documents)
+Interactive Message Templates
+
+Not available for beta:
+
+Media Messages (Audio and Video)
+Media-Based Message Templates (Audio and Video)
+Contact Messages
+Location Messages
+Stickers and Stickerpacks
+List Messages
+Dynamic Reply Buttons
+Multi-Product Messages
+
+Endpoint Availability:
+
+The following endpoints will not be available for the Cloud API Beta release:
+
+`/PHONE_NUMBER_ID/deregister`
+`/PHONE_NUMBER_ID/application_settings`
+
+Staged Onboarding:
+
+We’ve added specific instructions for each stage of the beta implementation. See more information [here](https://developers.facebook.com/docs/whatsapp/cloud-api/alpha-and-beta-program#staged-onboarding).
+
+Migrating Between On-Premises and Cloud API:
+
+We’ve added instructions to migrate from the Cloud API back to On-Premises, if needed. See more information [here](https://developers.facebook.com/documentation/business-messaging/whatsapp/about-the-platform#migration).
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+December 8, 2025
+
+December 3, 2025
+
+December 1, 2025
+
+November 26, 2025
+
+November 25, 2025
+
+November 3, 2025
+
+October 23, 2025
+
+October 20, 2025
+
+October 17, 2025
+
+October 16, 2025
+
+October 8, 2025
+
+October 6, 2025
+
+October 3, 2025
+
+October 1, 2025
+
+September 24, 2025
+
+September 08, 2025
+
+August 27, 2025
+
+August 14, 2025
+
+August 12, 2025
+
+August 11, 2025
+
+August 4, 2025
+
+July 30, 2025
+
+July 25, 2025
+
+July 15, 2025
+
+July 7, 2025
+
+July 1, 2025
+
+June 18, 2025
+
+June 13, 2025
+
+June 5, 2025
+
+June 4, 2025
+
+May 29, 2025
+
+May 5, 2025
+
+April 9, 2025
+
+April 8, 2025
+
+April 2, 2025
+
+April 1, 2025
+
+March 31, 2025
+
+March 20, 2025
+
+February 27, 2025
+
+February 14, 2025
+
+February 11, 2025
+
+February 1, 2025
+
+January 23, 2025
+
+January 16, 2025
+
+January 7, 2025
+
+December 10, 2024
+
+November 18, 2024
+
+November 13, 2024
+
+November 12, 2024
+
+November 5, 2024
+
+November 1, 2024
+
+October 11, 2024
+
+October 2, 2024
+
+October 1, 2024
+
+September 25, 2024
+
+September 24, 2024
+
+September 11, 2024
+
+September 10, 2024
+
+September 6, 2024
+
+August 1, 2024
+
+June 1, 2024
+
+April 10, 2024
+
+April 10, 2024
+
+March 18, 2024
+
+February 13, 2024
+
+February 6, 2024
+
+January 26, 2024
+
+January 18, 2024
+
+December 18, 2023
+
+December 12, 2023
+
+November 20, 2023
+
+November 14, 2023
+
+November 3, 2023
+
+October 23, 2023
+
+October 10, 2023
+
+October 4, 2023
+
+October 2, 2023
+
+September 27, 2023
+
+September 18, 2023
+
+September 12, 2023
+
+August 28, 2023
+
+August 28, 2023
+
+August 15, 2023
+
+August 9, 2023
+
+August 8, 2023
+
+August 2, 2023
+
+July 11, 2023
+
+July 7, 2023
+
+July 6, 2023
+
+June 13, 2023
+
+May 26, 2023
+
+May 23, 2023
+
+May 9, 2023
+
+May 1, 2023
+
+April 26, 2023
+
+April 18, 2023
+
+April 17, 2023
+
+April 11, 2023
+
+April 4, 2023
+
+March 17, 2023
+
+March 14, 2023
+
+March 1, 2023
+
+February 15, 2023
+
+February 3, 2023
+
+February 2, 2023
+
+January 30, 2023
+
+January 10, 2023
+
+December 13, 2022
+
+December 8, 2022
+
+November 23, 2022
+
+November 22, 2022
+
+November 3, 2022
+
+October 25, 2022
+
+October 20, 2022
+
+October 12, 2022
+
+October 6, 2022
+
+September 30, 2022
+
+September 22, 2022
+
+September 7, 2022
+
+August 25, 2022
+
+July 21, 2022
+
+October 11, 2022
+
+September 19, 2022
+
+June 27, 2022
+
+May 19, 2022
+
+May 10, 2022
+
+May 4, 2022
+
+May 3, 2022
+
+April 26, 2022
+
+April 14, 2022
+
+April 5, 2022
+
+March 26, 2022
+
+March 25, 2022
+
+March 15, 2022
+
+March 4, 2022
+
+March 1, 2022
+
+February 1, 2022
+
+November 15, 2021
+
+October 21, 2021
+
+* * *

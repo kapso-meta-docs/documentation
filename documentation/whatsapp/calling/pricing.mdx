@@ -1,0 +1,235 @@
+
+# Calling API Pricing
+
+Updated: Dec 9, 2025
+
+**All user-initiated calls are free.**
+
+## Overview
+
+Business-initiated calls are charged based on:
+
+Duration of the call (calculated in six-second pulses)
+Country code of the phone number being called.
+Volume tier (based on minutes called within the calendar month)
+
+Note: Our systems count fractional pulses as one pulse. For example, a 56-second call (9.33 pulses) would be counted as 10 pulses.
+
+For calls that cross pricing tiers (e.g. from the 0 - 50,000 tier to the 50,001 - 250,000 tier), the entire call is priced at the lower rate (i.e. the rate of the higher volume tier).
+
+A valid payment method is required to place calls.
+
+**Note:** Call permission request messages are subject to [per-messaging pricing](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing).
+
+## Volume-Based Pricing (VBP) rate cards
+
+These rate cards represent the current VBP rates for the WhatsApp Business Calling API effective August 1, 2025:
+
+[Rates in USD](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lga3-1.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F520671944_623223040377923_7736077446508180620_n.csv%3F_nc_cat%3D102%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3D35Bk5guA8-AQ7kNvwHXBowB%26_nc_oc%3DAdnVYEPg7nwjBg5zNhgE8sOuCiCxQhwTKrvw-7OY_1OH2tll5L3oAHLTcZyUX3ObWdM%26_nc_zt%3D14%26_nc_ht%3Dscontent-lga3-1.xx%26_nc_gid%3D56F3jwNPFxdmdjcnnH259g%26oh%3D00_AfmVoOcNNYDW1sMyTa6o-9ajIS3Itu-8LIxRetLr3xk9bA%26oe%3D6940C7D1&h=AT3qb9msbQjbrib7w0N77Dv3KJb6BEZx8kTqBHzgm8t-HxOAaZQ2lyfDEgJwrOeM02zqRGwEcff14Vh9_Tmb24SuUFyGcpCWZBwdBc2DW0ToO7ZmTgK36FWdMObYSOicTW7I2tEzMX3rRQ)
+[Rates in INR](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lga3-2.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F520297017_2631484657208999_4027192314064932495_n.csv%3F_nc_cat%3D105%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DU5WZhMbKHFwQ7kNvwGxmqOw%26_nc_oc%3DAdnH-Ti7QGUzd5MTeoNkR3PF9S_qAobS9RVo3tPL_pwF42AAeiQ5H7Q3PTwM1jWNBjY%26_nc_zt%3D14%26_nc_ht%3Dscontent-lga3-2.xx%26_nc_gid%3D56F3jwNPFxdmdjcnnH259g%26oh%3D00_AflwG5y7M6sbjMIpmofCgGixw_1kQH2H1KtshRaTGouluA%26oe%3D6940A127&h=AT3qb9msbQjbrib7w0N77Dv3KJb6BEZx8kTqBHzgm8t-HxOAaZQ2lyfDEgJwrOeM02zqRGwEcff14Vh9_Tmb24SuUFyGcpCWZBwdBc2DW0ToO7ZmTgK36FWdMObYSOicTW7I2tEzMX3rRQ)
+[Rates in IDR](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lga3-2.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F522403360_1317814323248646_3679642822059879321_n.csv%3F_nc_cat%3D105%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DqpW_CzGc9CsQ7kNvwGGj_wW%26_nc_oc%3DAdkuLh8VdQKwg9VuwqqwP4p6bBI4qTiJBY6vcjS0qfff2UZnzwxm4nA9pdaCSjySMt0%26_nc_zt%3D14%26_nc_ht%3Dscontent-lga3-2.xx%26_nc_gid%3D56F3jwNPFxdmdjcnnH259g%26oh%3D00_AfkcpsxUvAIxFbE4TdU0GnwSB-HF4buxIPI4kKy_sWIgwA%26oe%3D6940B16E&h=AT3qb9msbQjbrib7w0N77Dv3KJb6BEZx8kTqBHzgm8t-HxOAaZQ2lyfDEgJwrOeM02zqRGwEcff14Vh9_Tmb24SuUFyGcpCWZBwdBc2DW0ToO7ZmTgK36FWdMObYSOicTW7I2tEzMX3rRQ)
+[Rates in EUR](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lga3-2.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F521916945_1437343154178501_4307701949709939168_n.csv%3F_nc_cat%3D105%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DZaFjh74gQ3UQ7kNvwEl3RMx%26_nc_oc%3DAdkmZaQQ1FxRVqEGhsW1ZhOFANuNHedjX65gaqSTP9xUL8w6lVbJnGBH455FrBFpcDs%26_nc_zt%3D14%26_nc_ht%3Dscontent-lga3-2.xx%26_nc_gid%3D56F3jwNPFxdmdjcnnH259g%26oh%3D00_Afk_SPEg7vcRp5iZQflEWeHh8W4ZX76pcyraft5S8yjqHg%26oe%3D6940C4E5&h=AT3qb9msbQjbrib7w0N77Dv3KJb6BEZx8kTqBHzgm8t-HxOAaZQ2lyfDEgJwrOeM02zqRGwEcff14Vh9_Tmb24SuUFyGcpCWZBwdBc2DW0ToO7ZmTgK36FWdMObYSOicTW7I2tEzMX3rRQ)
+[Rates in GBP](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lga3-1.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F523820415_1707220083238148_129381165576389329_n.csv%3F_nc_cat%3D111%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DKuYedebPzhgQ7kNvwFLmBpE%26_nc_oc%3DAdl-JU-FTGPWEt_BW2z9BnPA1--OBsTuStJiUMzVSM0hN81jlSL63aJ2C2T9Z7SsMAk%26_nc_zt%3D14%26_nc_ht%3Dscontent-lga3-1.xx%26_nc_gid%3D56F3jwNPFxdmdjcnnH259g%26oh%3D00_AfkbTTqoCTflYBy1dY2wbCxMIIoOLFbdHCFGK8jFnhnEPg%26oe%3D6940C0F6&h=AT3qb9msbQjbrib7w0N77Dv3KJb6BEZx8kTqBHzgm8t-HxOAaZQ2lyfDEgJwrOeM02zqRGwEcff14Vh9_Tmb24SuUFyGcpCWZBwdBc2DW0ToO7ZmTgK36FWdMObYSOicTW7I2tEzMX3rRQ)
+[Rates in AUD](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lga3-3.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F518358957_1395180011780140_6900177198446866717_n.csv%3F_nc_cat%3D106%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DExzSFF8zM8YQ7kNvwEvl54-%26_nc_oc%3DAdkgt14Xf1-1coImlpy8EGRdMolD2zB7Yivft5OmbyTMkOXhFZnQnqxYXtAlCSASj78%26_nc_zt%3D14%26_nc_ht%3Dscontent-lga3-3.xx%26_nc_gid%3D56F3jwNPFxdmdjcnnH259g%26oh%3D00_Afk1JpqmV5ujvXXQHAWQd8pvwUkhGV89hqsWqa_JRgRF2Q%26oe%3D6940AAC6&h=AT3qb9msbQjbrib7w0N77Dv3KJb6BEZx8kTqBHzgm8t-HxOAaZQ2lyfDEgJwrOeM02zqRGwEcff14Vh9_Tmb24SuUFyGcpCWZBwdBc2DW0ToO7ZmTgK36FWdMObYSOicTW7I2tEzMX3rRQ)
+
+## How calling changes the 24 hour customer service window
+
+Available since October 1, 2024
+
+Currently, when a WhatsApp user messages you, a [24-hour timer called a customer service window](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/send-messages#customer-service-windows) begins, or refreshes.
+
+When you are within the window, your business is allowed to send any type of message to the WhatsApp user, which is otherwise not allowed.
+
+With the introduction of the Calling API, the customer service window now also starts or refreshes for calls:
+
+When a WhatsApp user calls you, regardless of if you accept the call or not
+When a WhatsApp user accepts your call.
+
+## Get cost and call analytics
+
+You can call the `GET /&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;` endpoint with a `?fields=call_analytics` query parameter to obtain call analytics for your WhatsApp Business Account (WABA).
+
+The endpoints can provide useful information like cost, counts of completed calls, and average call duration.
+
+### Get call analytics
+
+Use this endpoint to get analytics for your calls, like cost, counts of completed calls, and average call duration.
+
+#### Request syntax
+
+```
+GET /&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;?fields=call_analytics
+  .&lt;FILTERING_PARAMETERS&gt;
+  &access_token=&lt;ACCESS_TOKEN&gt;
+```
+
+| Parameter | Description | Sample Value |
+| --- | --- | --- |
+| `&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;`<br />_String_ | **Required**<br />Your WhatsApp Business Account ID.<br />[Learn how to find your WABA ID](https://developers.facebook.com/documentation/business-messaging/whatsapp/whatsapp-business-accounts) | `102290129340398` |
+| `&lt;FILTERING_PARAMETERS&gt;`<br />_Multiple_ | **Required**<br />Filtering parameters for call analytics data.<br />[See Filtering Parameters below](https://developers.facebook.com/documentation/business-messaging/whatsapp/calling/pricing#filtering-parameters) | [See Filtering Parameters below](https://developers.facebook.com/documentation/business-messaging/whatsapp/calling/pricing#filtering-parameters) |
+| `&lt;ACCESS_TOKEN&gt;`<br />_String_ | **Required**<br />Your access token. |  |
+
+#### Example response
+
+```
+\{
+  "call_analytics": {
+    "data": [\
+      {\
+        "data_points": [\
+          {\
+            "start": 1676361600,\
+            "end": 1676448000,\
+            "cost": 10,\
+            "count": 10,\
+            "average_duration": 1\
+          }\
+        ]\
+      }\
+    ]
+  },
+  "id": "114525791557199"
+}
+```
+
+#### Filtering parameters
+
+| Parameter | Description | Sample Value |
+| --- | --- | --- |
+| `start`<br />_Integer_ | **Required**<br />The unix timestamp start date for the date range you want call analytics for. | `1676361600` |
+| `end`<br />_Integer_ | **Required**<br />The unix timestamp end date for the date range you want call analytics for. | `1676448000` |
+| `granularity`<br />_Enum_ | **Required**<br />The desired sampling of the analytics you would like to retrieve.<br />Supported options: `HALF_HOUR` \| `DAILY` \| `MONTHLY` | `MONTHLY` |
+| `country_codes`<br />_Array of String_ | **Optional**<br />Filter data by country codes which you have called.<br />Provide an array with 2 letter country codes for the countries you would like to include.<br />If `country_codes` is not provided in your filter parameters, analytics for all countries you have called are returned.<br />[View list of approved country codes](https://developers.facebook.com/documentation/business-messaging/whatsapp/calling/faq#supported-codes) | `["011","55"]` |
+| `phone_numbers`<br />_Array of String_ | **Optional**<br />Filter data by specific business phone numbers on your WABA.<br />If `phone_numbers` is not provided, all phone numbers added to your WABA are included. | `["550987659923","17862258930"]` |
+| `metric_types`<br />_List of Enum_ | **Optional**<br />The list of metrics you would like to receive.<br />If metric_types is not provided we return results for all metric types.<br />Supported options:<br />`COST` — Cost calculated for total duration of the call by applying the rate card based on direction of the call and consumer country code.<br />`COUNT` — Total number of calls completed.<br />`AVERAGE_DURATION` — Average duration of calls completed computed by<br />sum of call duration of all calls divided by count of the calls | `[COST, COUNT]` |
+| `directions`<br />_Enum_ | **Optional**<br />Filter data by the calling direction of the placed call.<br />If `directions` is not provided, all phone numbers added to your WABA are included.<br />Supported options: `USER_INITIATED` \| `BUSINESS_INITIATED` | `BUSINESS_INITIATED` |
+| `dimensions`<br />_Enum_ | **Required**<br />List of breakdowns you would like to apply to your metrics.<br />If `dimensions` is not provided, we return results without any breakdowns.<br />Supported options: `DIRECTION` \| `COUNTRY` \| `PHONE` | `DIRECTION` |
+
+#### Error response
+
+[View Calling API Error Codes and Troubleshooting for more information](https://developers.facebook.com/documentation/business-messaging/whatsapp/calling/troubleshooting)
+
+[View general Cloud API Error Codes here](https://developers.facebook.com/documentation/business-messaging/whatsapp/support/error-codes)
+
+## Sample cost and call analytics requests
+
+### Only required parameters
+
+#### Request
+
+```
+GET /{whatsapp-business-account-id}?fields=call_analytics
+      .start(1643702400).end(1646121600)
+      .granularity(MONTHLY)
+      .phone_numbers([])
+  &access_token={access-token}
+```
+
+#### Response
+
+```
+\{
+  "call_analytics": {
+    "data": [\
+      {\
+        "data_points": [\
+          {\
+            "start": 1676361600,\
+            "end": 1676448000,\
+            "cost": 10,\
+            "count": 10,\
+            "average_duration": 1\
+          }\
+        ]\
+      }\
+    ]
+  },
+  "id": "114525791557199"
+}
+```
+
+### With breakdowns
+
+#### Request
+
+```
+GET /{whatsapp-business-account-id}?fields=call_analytics
+      .start(1643702400).end(1646121600)
+      .granularity(MONTHLY)
+      .dimensions([DIRECTION])
+  &access_token={access-token}
+```
+
+#### Response
+
+```
+\{
+  "call_analytics": {
+    "data": [\
+      {\
+        "data_points": [\
+          {\
+            "start": 1676361600,\
+            "end": 1676448000,\
+            "direction":"USER_INITIATED",\
+            "cost": 0.6,\
+            "count": 5,\
+            "average_duration": 1\
+          },\
+          {\
+            "start": 1676361600,\
+            "end": 1676448000,\
+            "direction": "BUSINESS_INITIATED",\
+            "cost": 0.4,\
+            "count": 5,\
+            "average_duration": 1\
+          }\
+        ]\
+      }\
+    ]
+  },
+  "id": "114525791557199"
+}
+```
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Overview
+
+Volume-Based Pricing (VBP) rate cards
+
+How calling changes the 24 hour customer service window
+
+Get cost and call analytics
+
+Get call analytics
+
+Request syntax
+
+Example response
+
+Filtering parameters
+
+Error response
+
+Sample cost and call analytics requests
+
+Only required parameters
+
+Request
+
+Response
+
+With breakdowns
+
+Request
+
+Response
+
+* * *

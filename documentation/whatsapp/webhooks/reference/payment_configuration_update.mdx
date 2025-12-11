@@ -1,0 +1,99 @@
+
+# payment_configuration_update webhook reference
+
+Updated: Oct 22, 2025
+
+This reference describes trigger events and payload contents for the WhatsApp Business Account **payment_configuration_update** webhook.
+
+The **payment_configuration_update** webhook notifies you of changes to payment configurations for [Payments API India](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/overview) and [Payments API Brazil](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-br/overview).
+
+## Triggers
+
+The payment configuration associated with a WhatsApp Business Account has been connected to a payment gateway account.
+The payment configuration associated with a WhatsApp Business Account has been disconnected from a payment gateway account.
+The payment configuration associated with a WhatsApp Business Account is now active.
+
+## Syntax
+
+```
+\{
+  "entry": [\
+    {\
+      "id": "&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;",\
+      "time": &lt;WEBHOOK_TRIGGER_TIMESTAMP&gt;,\
+      "changes": [\
+        {\
+          "field": "payment_configuration_update",\
+          "value": {\
+            "configuration_name": "&lt;PAYMENT_CONFIGURATION_NAME&gt;",\
+            "provider_name": "PAYMENT_GATEWAY_PROVIDER_NAME",\
+            "provider_mid": "&lt;PAYMENT_GATEWAY_MERCHANT_ACCOUNT_ID&gt;",\
+            "status": "&lt;PAYMENT_CONFIGURATION_STATUS&gt;",\
+            "created_timestamp": &lt;PAYMENT_CONFIGURATION_CREATION_TIMESTAMP&gt;,\
+            "updated_timestamp": &lt;PAYMENT_CONFIGURATION_UPDATE_TIMESTAMP&gt;\
+          }\
+        }\
+      ]\
+    }\
+  ],
+  "object": "whatsapp_business_account"
+}
+```
+
+## Parameters
+
+| Placeholder | Description | Example value |
+| --- | --- | --- |
+| `&lt;PAYMENT_CONFIGURATION_CREATION_TIMESTAMP&gt;`<br />_Integer_ | UNIX timestamp indicated when the payment configuration was created. | `1748827100` |
+| `&lt;PAYMENT_CONFIGURATION_NAME&gt;`<br />_String_ | Payment configuration name to be used in the Order Details messages. | `razorpay-prod` |
+| `&lt;PAYMENT_CONFIGURATION_STATUS&gt;`<br />_String_ | Payment configuration status.<br />Values can be:<br />`Active` — Indicates the payment configuration has been tested in WhatsApp manager and can now be used with Payments API.<br />`Needs Connecting` — Indicates the payment configuration has been disconnected from the payment gateway and needs to be connected again.<br />`Needs Testing` — Indicates the payment configuration has been connected to the payment gateway but still needs testing in WhatsApp Manager. | `Needs Connecting` |
+| `&lt;PAYMENT_CONFIGURATION_UPDATE_TIMESTAMP&gt;`<br />_Integer_ | UNIX timestamp indicated when the payment configuration was updated. | `1749320300` |
+| `&lt;PAYMENT_GATEWAY_MERCHANT_ACCOUNT_ID&gt;`<br />_String_ | Payment gateway merchant account ID. | `acc_GP4lfNA0iIMn5B` |
+| `&lt;PAYMENT_GATEWAY_PROVIDER_NAME&gt;`<br />_String_ | Name of the payment gateway provider associated with the payment configuration. Values can be:<br />`billdesk`<br />`payu`<br />`razorpay`<br />`zaakpay` | `razorpay` |
+| `&lt;WEBHOOK_TRIGGER_TIMESTAMP&gt;`<br />_Integer_ | Unix timestamp indicating when the webhook was triggered. | `1739321024` |
+| `&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;`<br />_String_ | WhatsApp Business Account ID. | `102290129340398` |
+
+## Example payload
+
+```
+\{
+  "entry": [\
+    {\
+      "id": "102290129340398",\
+      "time": 1739321024,\
+      "changes": [\
+        {\
+          "field": "payment_configuration_update",\
+          "value": {\
+            "configuration_name": "razorpay-prod",\
+            "provider_name": "razorpay",\
+            "provider_mid": "acc_GP4lfNA0iIMn5B",\
+            "status": "Needs Testing",\
+            "created_timestamp": 1748827100,\
+            "updated_timestamp": 1749320300\
+          }\
+        }\
+      ]\
+    }\
+  ],
+  "object": "whatsapp_business_account"
+}
+```
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Triggers
+
+Syntax
+
+Parameters
+
+Example payload
+
+* * *

@@ -1,0 +1,443 @@
+
+# Pricing on the WhatsApp Business Platform
+
+Updated: Dec 10, 2025
+
+This document explains how pricing works on the WhatsApp Business Platform.
+
+## Cloud API and Marketing Messages API for WhatsApp
+
+To align with industry-standards, effective July 1, 2025, we now charge on a **per-message basis**:
+
+We only charge when a [template message](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/template-messages) is delivered (`"type":"template"`).
+Rates vary based on the template’s [category](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing#message-template-categories) and the recipient WhatsApp phone number’s [country calling code](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing#country-calling-codes).
+
+We provide value to businesses in several ways:
+
+All non-template messages are free (`"type":"text"`, `"type":"image"`, etc.). These can only be sent within an open [customer service window](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/send-messages#customer-service-windows). See [Sending messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/send-messages#sending-messages) for a list of message types.
+Utility templates delivered within an open customer service window are free.
+You can unlock [lower rates](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing#volume-tiers) for utility and authentication template messages, based on messaging volume.
+All messages are free for 72 hours, including template messages, if sent within an open [free entry point window](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing#free-entry-point-windows).
+
+## Pricing explainer
+
+Our pricing explainer PDF outlines how we charge, and the various ways we provide value to businesses, in PDF form:
+
+[Pricing Explainer PDF](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-2.xx.fbcdn.net%2Fv%2Ft39.2365-6%2F506409115_515804291560768_5477144239594007982_n.pdf%3F_nc_cat%3D111%26ccb%3D1-7%26_nc_sid%3De280be%26_nc_ohc%3DUy-zvzOu21EQ7kNvwGEJ5uR%26_nc_oc%3DAdlVRMTdGWLA7BL9sOrY7oAmyVpNYfw3hriEr7ivhqxo6ephtoL2ovKG1qWOjoU0wxM%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-2.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_AfkreAx57lRQTBaMBraM1240UA2fVVSvHjZm4JLAKLYWwg%26oe%3D69552E3A&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+
+## Message template categories
+
+Unlike non-template messages, template messages are the only message type that can be sent outside of a customer service window. Templates can be categorized as:
+
+Marketing
+Utility
+Authentication
+
+See [Template categorization](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/template-categorization) to learn how template categorization works.
+
+### Template messages vs. non-template messages
+
+![](https://scontent-lax3-1.xx.fbcdn.net/v/t39.2365-6/571069280_1541820816822527_6328052606712176022_n.png?_nc_cat=109&ccb=1-7&_nc_sid=e280be&_nc_ohc=tyJ6QeOR9BkQ7kNvwE9rSwe&_nc_oc=AdkYz6ZlcYzZ3qM7wZ7InV6xOoA6C0LYLdd8WT9cMwgrC9qyiimZ7ivy1p1Sg5zm5dQ&_nc_zt=14&_nc_ht=scontent-lax3-1.xx&_nc_gid=Yx_AwQFeSrBvR9m_4ZYmJw&oh=00_Afm2pH4ecFLY7YvnJ6KQPWbvCghF7YDda69bsx3Ln2fONg&oe=6955282F)
+
+CSW = [Customer service window](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/send-messages#customer-service-windows)
+FEP = [Free entry point window](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing#free-entry-point-windows)
+
+Businesses are responsible for reviewing the category assigned to their approved templates. Whenever a template is used, a business accepts the charges associated with the category applied to the template at time of use.
+
+## Charge example
+
+In the example below, a business sends 4 messages to a WhatsApp user but is only charged for 2 (1 marketing charge, 1 utility charge).
+
+| Hour | Action | Rate | Reason |
+| --- | --- | --- | --- |
+| 0 | You send a marketing template message to a WhatsApp user, promoting your new product. | Marketing | All marketing template messages are charged. |
+| 2 | The user messages you about the product.<br />This opens a 24 hour [customer service window](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/send-messages#customer-service-windows) (“CSW”). | - | Messages sent from a WhatsApp user to a business are not charged. |
+| 3 | You send a [text message](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/text-messages) to the user (`"type":"text"`), describing the product in more detail. | None | All non-template messages are free within an open customer service window. |
+| 4 | The user purchases the product and you send them a utility template confirming their order. | None | The CSW is still open, and utility templates sent within an open CSW are free. |
+| 26 | The CSW closes, which means you can no longer send non-template messages. | - | 24 hours have passed since the user last messaged you. |
+| 30 | You send a utility template message to the user, updating them on their order. | Utility | Utility template messages sent outside of a CSW are charged, and no open CSW exists between you and the user. |
+
+## Pricing calendar
+
+To better enable our customers to plan and prepare for pricing updates, the following pricing calendar applies for messaging and voice on the WhatsApp Business Platform:
+
+Meta may update pricing only _on the 1st day of each quarter_, thus up to 4 times per year: January 1, April 1, July 1, and/or October 1.
+Meta will provide advanced notice that is better aligned to the effort required to implement different types of pricing updates, per below:
+
+| Type of pricing update | Examples | Minimum advance notice |
+| --- | --- | --- |
+| **Rate card update** | Updating the [rate](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing#rates) for a given market–product<br />Updating the volume tiers for a given market–product (utility and authentication only)<br />Moving a market from one [pricing region](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing#country-calling-codes) (e.g. “Other”) to another or to be standalone on the rate card | 1 month |
+| **Pricing model add-on** | Our July 1, 2025, introduction of new [volume tiers](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing#volume-tiers) for utility and authentication messages | 3 months |
+| **Pricing model change** | Our July 1, 2025 update to our pricing model, from conversation-based pricing to per-message pricing | 6 months |
+
+## Rates
+
+Rates vary based on [template category](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/template-categorization), [volume tier](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing#volume-tiers), and [country/region](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing#country-calling-codes) rate.
+
+### Rate cards and volume tiers
+
+These rate cards reflect our current rates and volume tiers, effective October 1, 2025, based on WhatsApp Business Account timezone. This information is also available interactively on our [WhatsApp Business website](https://l.facebook.com/l.php?u=https%3A%2F%2Fbusiness.whatsapp.com%2Fproducts%2Fplatform-pricing%23rates&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w).
+
+Rates and volume tiers in USD:
+
+[USD rates CSV](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-1.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F557636343_817908614017168_9066613099892889401_n.csv%3F_nc_cat%3D108%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DC8Z4fv6QnwQQ7kNvwEbC-D8%26_nc_oc%3DAdlGr0MISPYx6eqhVtyUO0XpYT--vdb8oSHev0OC0a0XYKuLuuQoXuwkV66BQ0FRBAo%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-1.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_Aflk6188a9rMc40iqPspennhwTttCiqyXXo_G6HOP39URQ%26oe%3D694090E1&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+[USD volume tiers CSV](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax7-1.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F556818142_1827640941173413_7929040447386400731_n.csv%3F_nc_cat%3D105%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3Df2dte2wwk2IQ7kNvwE3T6TU%26_nc_oc%3DAdm3ADkQoZN6vw1XMtm0A9wXSyi6n-01RbwB1zR4jo6itWAFFNHRwIu0MVR8TUNmy3M%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax7-1.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_Afm6k00nVjjtoVvJiQobJgk-L4NREDHj3qnvAdI7Slj27w%26oe%3D6940C008&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+[USD rates and volume tiers PDF](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-1.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F557104697_1823032481924098_4782241935694017716_n.pdf%3F_nc_cat%3D108%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DxzVC2y3qSScQ7kNvwEUwDW2%26_nc_oc%3DAdk_vNYLqNbhwD5TAtB32eWSQj0Qj1r_eTMA-nQcTphotMS3Kk6CsXaQ4s5KDi7mJpE%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-1.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_AflKJHFx3MdaDNRU8K07DT1XVj9aeANYRnV05vUSBTDdpA%26oe%3D6940C0CF&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+Rates and volume tiers in INR:
+
+[INR rates CSV](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-2.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F557635547_757917087238644_814395677413795991_n.csv%3F_nc_cat%3D103%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DnyfiSU0uvCsQ7kNvwHjjLEz%26_nc_oc%3DAdm6-6PJrJ8udnze7jlWSC6fSFD9Zumn3ehOncEVXOtgaWm_VE0rJcXwJebMWszXzA8%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-2.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_AfkeiQlt7WTdTeXaX65W8zglzTuQVUcf7iKGk9hLpwqfJA%26oe%3D6940AC6C&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+[INR volume tiers CSV](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-2.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F556577613_2305912433163376_4014408024159294112_n.csv%3F_nc_cat%3D107%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DPT5ZkrhiFy0Q7kNvwE5j3KV%26_nc_oc%3DAdnWudPDEX9Y_brganZrA2uvTfxCd0cf7OM1RzbTUSPd_dvIJm2LOV8oAKloN_fF75g%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-2.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_AfmE_pZ7ZqkqTmVfihCnEES8U70xMUFwdCTm5mYf684noA%26oe%3D6940AA83&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+[INR rates and volume tiers PDF](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-2.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F556236655_776101971914218_2480089454730311036_n.pdf%3F_nc_cat%3D111%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DXpkvuiq7NfcQ7kNvwF4ozuN%26_nc_oc%3DAdk71jqNGvlhzS2KvSo2cUUufLpjSot-mBH0Cx3TclOID528L9e3Jfzm9XpoNstDEiw%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-2.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_AflSUMZP8DyP90vcggHs9-5G6d8N8X1NV07bCfer1Kj0Yg%26oe%3D6940A833&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+Rates and volume tiers in IDR:
+
+[IDR rates CSV](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-1.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F557638144_1126483659041930_5747581239272064272_n.csv%3F_nc_cat%3D110%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DfEsP0JbOmwAQ7kNvwHqHFAy%26_nc_oc%3DAdks0kdra2_J3lv2wzlAB4g4dvLxRPu6MxM-ljd357vdQyzqCKCk1Dvm7hqTdHrnlWU%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-1.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_AfnNLb70YFOIOSiZKeHtsONYrBkTj1m-a669BVeM05VS_w%26oe%3D69409A21&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+[IDR volume tiers CSV](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-1.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F557132201_1593100242057727_5352582585143961471_n.csv%3F_nc_cat%3D108%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3D9tNTNgPKs8oQ7kNvwHczgqd%26_nc_oc%3DAdnGNuZYQYUHgZDUiUIOK1qvRrWyZYFi8CEivo9o4tnYSsxqXZueSeNyMGaV2ZxrR7s%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-1.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_Afla5u1kPlzfntVOgJoogNeB5OmJGxFOfM5knAwKgBYNWg%26oe%3D69408C2C&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+[IDR rates and volume tiers PDF](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax7-1.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F556736972_2638119056528579_2889533011772240391_n.pdf%3F_nc_cat%3D105%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DdZPbxOOnEEoQ7kNvwH9VYav%26_nc_oc%3DAdngbfTNBHyQIwuQ2f-EbzCQbDiX4voQ1VwF85jDT3UzEh1LZgsW0YmiQnF8ZIDJinQ%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax7-1.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_AfnYrXE31jes56mVYo_NJNpymBJE0QaKJNqYPPpHqgZEuQ%26oe%3D6940A00C&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+Rates and volume tiers in EUR:
+
+[EUR rates CSV](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-1.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F556512163_786912034183068_4689619475093722786_n.csv%3F_nc_cat%3D104%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DrrWHy-OgPVIQ7kNvwHzAL5R%26_nc_oc%3DAdlIVzWjjqMGXlrX6YzWj-e6ZKgs4wophv-1QIzJkQ9T-6CXjTTZKB_kKoRmgIt4NBQ%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-1.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_Afm4ZiWf-E2S_BA8z77n3-CJMIBDjugNW8SrBhiVdbiDQg%26oe%3D69409A9B&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+[EUR volume tiers CSV](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-2.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F557633743_1897872671098302_7841419432681147816_n.csv%3F_nc_cat%3D100%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3Dm43dJqUvjfcQ7kNvwFUWa7z%26_nc_oc%3DAdlXBObxRhWUDbXNV7q5IGyqoBUeOipoMRjTp5sguDP4ahD-3pdmMpn7Znv5VgOqxZg%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-2.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_Aflcl8x2oq37O5nQkfk0b-rTP1tyhyPDd3hzXx8D7F-8Kg%26oe%3D6940BEAC&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+[EUR rates and volume tiers PDF](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-1.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F557635441_639404779045715_6234566353547080220_n.pdf%3F_nc_cat%3D104%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DfaU5yUK3rRwQ7kNvwFCs-7-%26_nc_oc%3DAdlTNIgaoQ9fRx97loxLCfDDxDhscF7FWFi1xbMyAAGlGaFp_SWVAkM8Kpau4r2zTZc%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-1.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_Afl2K0TSwhzzlpU1Fi8LJAPIaTwVSmZiN9Hq8_5vfxbBjw%26oe%3D6940B189&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+Rates and volume tiers in GBP:
+
+[GBP rates CSV](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax7-1.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F557617018_1811943299692210_4227937681798477321_n.csv%3F_nc_cat%3D101%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DiuedRzrJ4r4Q7kNvwHPw3Ki%26_nc_oc%3DAdkWqah4rElXQ8k4JYq6ZIwheOgYTdj2BDrqprPeUky56VQeaPl4ZdB68Oktc6k4B1I%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax7-1.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_AfkHdrbTidec91o90gx6_NpHg9jVTwPXQky5fua0AjqYSA%26oe%3D6940A470&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+[GBP volume tiers CSV](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-2.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F556947993_1456011442334361_7728446290449567480_n.csv%3F_nc_cat%3D106%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DjRKr5Owk56wQ7kNvwGIzapM%26_nc_oc%3DAdnoGmxi_fn_qYbJLr55gG5cVJqGRnAonu144Yd3tkq-svZuijQSdF8tG1XqVlyblUI%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-2.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_AfnxzZO5u7OlT2_RHX_GCI95dRGmzh-pBx6-4Iwp_CLvEw%26oe%3D69409B2D&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+[GBP rates and volume tiers PDF](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-2.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F556576758_1333746308286100_7140891643781096222_n.pdf%3F_nc_cat%3D106%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3D9sTIIM7_jdkQ7kNvwFGGqMt%26_nc_oc%3DAdmQLkhbcqQ_M7upjw2ttXN-F557Xe9lt9XSk1jtgffucJNGLWRVK2iL2oyKZjT7Eng%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-2.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_Afn5kD5JQ7ipExza69ZdrDVnCbJfAVGttIu4J_iF1hN51g%26oe%3D6940B0B0&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+Rates and volume tiers in AUD:
+
+[AUD rates CSV](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-2.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F557628248_816467277609167_5319255993926778749_n.csv%3F_nc_cat%3D103%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3D4GujH6_eNxgQ7kNvwH_tqgL%26_nc_oc%3DAdnx3bnsiB8fLGkuoSVArLG7yOWi6N2lZcVZ2kgVWwmKOR_Y7CHvdrXlQnDywXVUeFo%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-2.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_AfmQ8jPbURP8XRPgdb6QBXRU3CC0XvxoWdJdLZmBQ8AOgw%26oe%3D6940AE18&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+[AUD volume tiers CSV](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-2.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F556577608_595570603545860_5695074684850338615_n.csv%3F_nc_cat%3D111%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3D8orGKdMKSWwQ7kNvwHZBdo1%26_nc_oc%3DAdm1AOS6BbDxoqnVGj-ANH5x7QN7Foqmc2GMq8EVCPXhiZeNM5h2X5TSi30dt_O8S5k%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-2.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_AfnAMaMCbjVeTp1lG-zsftnFN3svU12nvZNiDMqHWJlopw%26oe%3D694096F7&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+[AUD rates and volume tiers PDF](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-2.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F558365866_2021637291906509_7991974390756730763_n.pdf%3F_nc_cat%3D103%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DIM1s_5U7vRMQ7kNvwH5R9jW%26_nc_oc%3DAdm6wur1ZiDl7NzstwZX-bDqFt6tNCfs_Kg1gwJBSjnsxfjPRoGsThcjzudZHsNW9jE%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-2.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_AfnGLJKHfVcTHH5blb8mBfrvduEqCoLFzv1DRerR4jGslw%26oe%3D69409E52&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+
+### Updates to rate cards
+
+What is below represents future updates to our rates. See our [rate cards](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing#rate-cards-and-volume-tiers) above for current rates.
+
+**Rate card updates effective January 1, 2026**
+
+Effective Jan 1, 2026, at 12am, by WhatsApp Business Account timezone, the rates below will apply. These updates reflect:
+
+Marketing messages — Lower rate for France and Egypt. Higher rate for India.
+
+Utility and authentication messages — Lower rate for North America.
+Rates and volume tiers in USD effective January 1, 2026:
+
+[USD rates CSV](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-2.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F585407803_1189604166599946_7183357612023251384_n.csv%3F_nc_cat%3D106%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DKYzEpm_KkVUQ7kNvwFuRhnv%26_nc_oc%3DAdkeSSKbVX9dBAPjC-yEgQxUx6XhySauCB3ijpusyVa5mX4FVK4pqiso8uu8oijiFnA%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-2.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_AfmT2LzJs_1nII3mM5Y0LilyN5mZURK1MSASceSg9BxBoA%26oe%3D6940C051&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+[USD volume tiers CSV](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-1.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F585570198_698248413358350_2802860528269294050_n.csv%3F_nc_cat%3D102%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DjZX5ytNtKmQQ7kNvwGO4FB-%26_nc_oc%3DAdlE3gteXnKtg8OKGCAwnjmWtWSxSAMQ2DjlejjNZ3CnSAeqiIDvo4FwMkszbFY-00w%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-1.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_AfltoqhJuV4QPDdmxK-4U9WZkRB74JATf0YTVbmSqsBdFg%26oe%3D69409A5C&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+[USD rates and volume tiers PDF](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-2.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F586848924_1313890277091961_6978135553635100372_n.pdf%3F_nc_cat%3D107%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3D6cmuCquLpoMQ7kNvwE-9d_5%26_nc_oc%3DAdkglXF8yoxOwqKUir8h5Gb390wCQvAkdrfRBlQg2vBoQgejHT54X1JklxvMgp9VMro%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-2.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_Afmk1qw462dg4LtAoE1znFDTBz0cEjZks3tDQCtz4S8EeQ%26oe%3D6940AF40&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+Rates and volume tiers in INR effective January 1, 2026:
+
+[INR rates CSV](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-2.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F586347161_1914669046060261_1124818880292377423_n.csv%3F_nc_cat%3D103%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DEoJw2MTKfIUQ7kNvwFfs6gC%26_nc_oc%3DAdn-FAStceEEP2hewcQ0M74lEvyFJ4WWdawVFcb4MNs-Kf6kHs3d_fLXwmaBK-MwyvM%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-2.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_AflpjOaN3xQuMHs9Donc7BCMg7hbGepCIGDYfjyLPeO3NQ%26oe%3D6940B093&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+[INR volume tiers CSV](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-1.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F587220819_1334502114598716_5584478346627490366_n.csv%3F_nc_cat%3D108%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DZhpBRAIKlgIQ7kNvwGHI4b6%26_nc_oc%3DAdnzYQE5dSbTQAyLkcESEJM1OuP5T0JsnL_Hdkl6GMeQiLHp0WPNfBu1hXUKTOx6Fjg%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-1.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_Afn5_CbUoT-XEITJ99Q9NvLIh_rCbmQgc_uMx0q_VbyH0Q%26oe%3D6940BFC5&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+[INR rates and volume tiers PDF](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-1.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F587221699_3791125094353921_4065848581491975038_n.pdf%3F_nc_cat%3D104%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DJyaUbqK5CIwQ7kNvwFGZrLj%26_nc_oc%3DAdnBbtxbnWDXAKT-gQC6lEw0p2qEIiLvD5siGfMEW93S1WoTNzQJH57XoaeiTbE8F0k%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-1.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_AfkAG-SNa5cbg4OMLDaBE_ZPKs8v947hhMRQ28yu24D40w%26oe%3D69409063&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+Rates and volume tiers in IDR effective January 1, 2026:
+
+[IDR rates CSV](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-1.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F586580584_1396646212180363_3520386634046359127_n.csv%3F_nc_cat%3D108%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DVxC6tC1AcHsQ7kNvwHXt6oF%26_nc_oc%3DAdnrSFzkDOOHaYWLDzKnidY5gWho_QiDSzXNJWgkRooQwFUqDDNJNZpTkrS2eyVbSI4%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-1.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_AfkyDizz--_s0E3su-3rYPRj91SRG3gJw0fhI8S2V6vcvg%26oe%3D6940B4A4&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+[IDR volume tiers CSV](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-1.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F585707997_922001740404305_8491390179129697471_n.csv%3F_nc_cat%3D109%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DjI38SB8ozN4Q7kNvwE35PUU%26_nc_oc%3DAdkG35KJMkBAzBh9qF5riK3EPXAi_ElakuCoUVpdcRuLVlfbWcXPJKKy2swiiLkPh2Q%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-1.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_AflEcFalYQNHPmQYUcUvoDE2wadXrIZscaixWQqZqBMU4Q%26oe%3D6940B39A&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+[IDR rates and volume tiers PDF](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-2.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F586226425_25256701850639411_4528321655839370556_n.pdf%3F_nc_cat%3D106%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DtmeVOk0PryAQ7kNvwGfdOst%26_nc_oc%3DAdlV4IfhqxWi2BMJcMAzYD4z4h8Sjk12NBT1d2mpoQJp1nILOrOCVgZKEdU1ak585c8%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-2.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_AfkWytdvplEZ5GAGsdNGf_izxz_0q1tVQ4jU4U1GZtTjhw%26oe%3D6940A12E&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+Rates and volume tiers in EUR effective January 1, 2026:
+
+[EUR rates CSV](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-1.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F586437992_1566700314336449_2610930321540003963_n.csv%3F_nc_cat%3D110%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DYKOWSpLjCTMQ7kNvwHE-C0b%26_nc_oc%3DAdlVNo49oHVM-jaA7UNdDmor0vXdhKpt8Dg80iHW5TVz1rk6Fwsd98gq4kfHtXfmpag%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-1.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_Afkc5jLdyHvJRlA-LhBI6TKHXaMHDdLb1T-UF6ejBQoqHw%26oe%3D69408B33&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+[EUR volume tiers CSV](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-2.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F586150344_2286420725165730_1265126427402205911_n.csv%3F_nc_cat%3D111%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DAlPbq-SRSCYQ7kNvwHwwNT9%26_nc_oc%3DAdmSKG9e8KCEj5qTz1Ik5xXVFa8NiJYOBcupsvUl7iSWZIvq9QuXD5RnELP-Ns9bfo8%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-2.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_Afm0ubIfJfk16seZKynvsgFkTD79GrHIfRlCYfm10MI_JQ%26oe%3D69408A63&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+[EUR rates and volume tiers PDF](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-1.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F584773728_2017216502386084_7200319351228309349_n.pdf%3F_nc_cat%3D108%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DHC36ENCJLEAQ7kNvwHgd_ii%26_nc_oc%3DAdmbyMjz79cQ32rkUiLo4tVfmHdt_SZ94JfvukLRTQOfkl5LXJ_BZgGdc6-I0fWUlgI%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-1.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_AfndD75SHcol2y_N-tppgxB9LuQfE_3b2x5Io03C9_8m1g%26oe%3D69408F01&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+Rates and volume tiers in GBP effective January 1, 2026:
+
+[GBP rates CSV](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-1.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F585566806_1481400432939884_5134626236202272067_n.csv%3F_nc_cat%3D108%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DchMrfF7NacMQ7kNvwHaAx1w%26_nc_oc%3DAdlN7uIm70RvfH9Cyt4YaKzLDlNsW7MNuh_QtgXeQCQSJhDfzMp7hRH9xQvSTYW9rDQ%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-1.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_AflJlzAyy22Aklnx6Z0WrwRbcQN0gBVMOSugvq2gNH5gYA%26oe%3D6940B2A4&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+[GBP volume tiers CSV](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-1.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F584662820_1609226566924394_1773452237569082938_n.csv%3F_nc_cat%3D109%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DUEdh6DWmhJ0Q7kNvwF4lpbe%26_nc_oc%3DAdlpBTh2OLGRqpvAvgNfWJrAPN5SoA-STwdoI1y3tFl6yLiImAPBah0STQCpi4HhGsM%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-1.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_AfnYdfEJ1kHL9GgjrG_OQ88GBBb0SfzKIX1KECemg3P3NQ%26oe%3D6940A839&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+[GBP rates and volume tiers PDF](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax7-1.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F584447388_1073494311453911_1735044017057301164_n.pdf%3F_nc_cat%3D101%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DRVub9U9r-40Q7kNvwHuijW3%26_nc_oc%3DAdl2863l1-71qLo4SgKS3o_18fIsjsjGOt3DumbIDmcEWCpQd2qtL0iFUP1sHF13vPY%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax7-1.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_AfmfEzgunRfgKCPwB5d8wtvq-PRRiZkQLge-sL_FKu1tig%26oe%3D6940BAEF&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+Rates and volume tiers in AUD effective January 1, 2026:
+
+[AUD rates CSV](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax7-1.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F585556382_855305646935830_1850580872565007628_n.csv%3F_nc_cat%3D101%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DGIGjk4rS5AsQ7kNvwEV6ww5%26_nc_oc%3DAdlWjwabbc0QRKt45Kw9Ny2hK6Q5v6IWLAVpjoGFoE0m68tHTuJrPj2hqbPqmOwXF1Y%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax7-1.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_AfmhhVCPQyxnnFCdl9IQBDZp43DOqhuGYuinog2BCmiIRw%26oe%3D6940BE5B&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+[AUD volume tiers CSV](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-2.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F587310724_1527557858513762_1357686677666785414_n.csv%3F_nc_cat%3D107%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3D3HPJgId5-bQQ7kNvwGHod0d%26_nc_oc%3DAdnR62hy3r8tGIqsMjAsjXwmF1vKLsLIZ3rRmbeSs60w0zCQEEfqd39psdZqVBsdRv0%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-2.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_AfmnQegghBJvq7HX2q6DAPmagLPcPNnVXuaWCYuId7KA3g%26oe%3D6940A8C3&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+[AUD rates and volume tiers PDF](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-2.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F584935035_1852047375423033_3458748007895701620_n.pdf%3F_nc_cat%3D111%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DbJsRYbkyZ8MQ7kNvwG3Wesa%26_nc_oc%3DAdmAmPq2FRITf5LwY5zWvKdhe6JAUEO-zQDM-s8ipXXiJF4lSC8y14jbjbmTUES824M%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-2.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_AfkWeRtwUX-oELaZQomn_wIiugOvMjuP2Sx6bsUzEtw2xQ%26oe%3D69409DF4&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+NEW: Rates and volume tiers in MXN effective January 1, 2026:
+
+[MXN rates CSV](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax7-1.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F585702916_2046975132799177_9170819095691676122_n.csv%3F_nc_cat%3D105%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3D24-I_qEEJ34Q7kNvwHtqGw_%26_nc_oc%3DAdkxNYtK15kOiblcP0cVzVK6m2Fj1r-VsVttN4v-sNqOv44vGtG33acHW3sAnfaNPLo%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax7-1.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_AfnttrKGwn3_tKFBBakzZ1py0SXijQjvOtYEtw1z9DNyrQ%26oe%3D69408F10&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+[MXN volume tiers CSV](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-2.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F587239455_25092086297152165_8683655642380318775_n.csv%3F_nc_cat%3D103%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DTMEO1zmdfugQ7kNvwGTm76Y%26_nc_oc%3DAdkrreUj9c2alKd7TGQHpF4BH5LMcUHaigA4i1NDUmUm1GZJmK_FRHcUw9gamLTwiC0%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-2.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_AflrMTqYPOTGqJIxnxpvumXGtw5oEx9z613ii8mtPP6S-w%26oe%3D6940B809&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+[MXN rates and volume tiers PDF](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-1.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F587803603_3420494938097987_5812175023063479834_n.pdf%3F_nc_cat%3D104%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3D7vrnY9HGqdgQ7kNvwHpoPZY%26_nc_oc%3DAdn7fpm2NhcEWd3WgwD4GCUWOKzjiEviirz3l_-la7wOEARGSVLShKERCfaScmBh0os%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-1.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_AfkJsWJ9N-kPXJHEgtSeCC_MzxjyRCTt1yBeGbW5tvlcmA%26oe%3D6940BC47&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+
+**Rate cards in new currencies launching in 2026**
+
+In 2026, we are introducing rates for messaging and [calling](https://developers.facebook.com/documentation/business-messaging/whatsapp/calling/pricing) in 10 new currencies, to offer rates in 16 currencies by end-of-2026 for the WhatsApp Business Platform. Customers can choose to opt into these these newly-available currencies by creating a new WhatsApp Business Account (WABAs) and selecting that currency, as of 9am PT on the dates below:
+
+January 1, 2026 — 1 new currency: **MXN** (Mexico). Only available to businesses with credit lines. Will be made available to all businesses on April 1, 2026.
+April 1, 2026 — 8 new currencies: **AED** (United Arab Emirates), **ARS** (Argentina), **CLP** (Chile), **COP** (Colombia), **MYR** (Malaysia), **PEN** (Peru), **SAR** (Saudi Arabia), and **SGD** (Singapore). In addition, **MXN** (Mexico) will be available to all businesses.
+Second half of 2026 (the exact date is pending) — 1 new currency: **BRL** (Brazil).
+
+Our to-be MXN rates are published above and reflect updates to rates launching January 1, 2026. For the currencies launching April 1, 2026, we plan to publish them by March 1, 2026, aligned to our [pricing calendar](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing#pricing-calendar).
+
+Note that _the currency of an existing WABA cannot be changed_. The only way to take advantage of newly-available currencies is to create a new WABA and select that currency.
+
+**Local billing launching for India and Brazil in 2026**
+
+We are introducing local billing for eligible customers in India as of January 2026 and for Brazil in the second half of 2026 (the exact date is pending).
+
+**Previous updates**
+
+Effective October 1, 2025 at 12am by WhatsApp Business Account timezone, the rates below will apply. These updates reflect:
+Increased marketing message rates for United Arab Emirates.
+Increased utility and authentication message rates for Colombia.
+Decreased marketing message rates for Mexico.
+Decreased utility and authentication message rates for Saudi Arabia, Argentina, and Egypt.
+Zimbabwe is now mapped to our “Rest of Africa” region vs. “Other.”” Messages delivered to WhatsApp users with a +263 country calling code (Zimbabwe) will now be charged “Rest of Africa” rates.
+Effective July 1, 2025 – Lower utility and authentication message rates across several markets, to ensure we price on-par to alternate channels for these use cases. Marketing conversation rates became marketing message rates.
+Effective April 1, 2025 – Lowered [authentication-international conversation rates](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing/authentication-international-rates) for Egypt, Nigeria, Pakistan, and South Africa.
+Effective February 1, 2025 – Lowered [authentication conversation rates](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing#rates) for Egypt, Malaysia, Nigeria, Pakistan, Saudi Arabia, South Africa, and the United Arab Emirates.
+Effective November 1, 2024 – [Service conversations](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing/conversation-based-pricing#service-conversations) are now free for all businesses.
+Effective October 1, 2024 – Updated [marketing conversation rates](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing#rates) in India, Saudi Arabia, the United Arab Emirates, and the United Kingdom.
+Effective August 1, 2024 – Lowered [utility conversation rates](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing#rates).
+
+### Authentication-international rates
+
+Specific countries have an authentication-international rate. Our rate cards reflect these rates. See [Authentication-International rates](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing/authentication-international-rates) to learn about these rates and if they apply to you.
+
+### Country calling codes
+
+Charges for conversations are based on the country calling code of the recipient WhatsApp phone number. The table below shows how we map country calling codes to countries or regions. If a country is not listed below, it maps to **Other**.
+
+This information is also available in a CSV file:
+
+[Country Calling Codes and Regional Rate Mapping CSV](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-2.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F559604326_1510649803514615_3972087685039081235_n.csv%3F_nc_cat%3D111%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3DCdFn5KU-6-MQ7kNvwFlORZY%26_nc_oc%3DAdlg_OSgwTqEz2IquTKA1pExsNgAN0XanfNOeJOu3wrjU30TsicPz5dBxI90x3YT9No%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-2.xx%26_nc_gid%3DYx_AwQFeSrBvR9m_4ZYmJw%26oh%3D00_Afk7ZhiPsylnpBuYXB6ThXT7uCC4LR0RCnb9A9IGC9PF8A%26oe%3D69408A53&h=AT0Eu2tb8_A4gO9JyDRyFM_1ibA2vfRon8pQqF48gu7-wswrlDuwws4oG6E-lBs6hr_6AJy2xCNODPjoMZGrnes3B820QU--Fo2IPpLymUHvciGyjNOQU-Plqg92R3gLW3ulElS7Ui2g_w)
+
+| Markets | Calling Code<br />(and network prefix if applicable) |
+| --- | --- |
+| Countries<br />Argentina<br />Brazil<br />Chile<br />Colombia<br />Egypt<br />France<br />Germany<br />India<br />Indonesia<br />Israel<br />Italy<br />Malaysia<br />Mexico<br />Netherlands<br />Nigeria<br />Pakistan<br />Peru<br />Russia<br />Saudi Arabia<br />South Africa<br />Spain<br />Turkey<br />United Arab Emirates<br />United Kingdom | 54<br />55<br />56<br />57<br />20<br />33<br />49<br />91<br />62<br />972<br />39<br />60<br />52<br />31<br />234<br />92<br />51<br />7<br />966<br />27<br />34<br />90<br />971<br />44 |
+| North America<br />Canada<br />United States | 1<br />1 |
+| Rest of Africa<br />Algeria<br />Angola<br />Benin<br />Botswana<br />Burkina Faso<br />Burundi<br />Cameroon<br />Chad<br />Republic of the Congo (Brazzaville)<br />Eritrea<br />Ethiopia<br />Gabon<br />Gambia<br />Ghana<br />Guinea-Bissau<br />Ivory Coast<br />Kenya<br />Lesotho<br />Liberia<br />Libya<br />Madagascar<br />Malawi<br />Mali<br />Mauritania<br />Morocco<br />Mozambique<br />Namibia<br />Niger<br />Rwanda<br />Senegal<br />Sierra Leone<br />Somalia<br />South Sudan<br />Sudan<br />Swaziland<br />Tanzania<br />Togo<br />Tunisia<br />Uganda<br />Zambia<br />Zimbabwe | 213<br />244<br />229<br />267<br />226<br />257<br />237<br />235<br />242<br />291<br />251<br />241<br />220<br />233<br />245<br />225<br />254<br />266<br />231<br />218<br />261<br />265<br />223<br />222<br />212<br />258<br />264<br />227<br />250<br />221<br />232<br />252<br />211<br />249<br />268<br />255<br />228<br />216<br />256<br />260<br />263 |
+| Rest of Asia Pacific<br />Afghanistan<br />Australia<br />Bangladesh<br />Cambodia<br />China<br />Hong Kong<br />Japan<br />Laos<br />Mongolia<br />Nepal<br />New Zealand<br />Papua New Guinea<br />Philippines<br />Singapore<br />Sri Lanka<br />Taiwan<br />Tajikistan<br />Thailand<br />Turkmenistan<br />Uzbekistan<br />Vietnam | 93<br />61<br />880<br />855<br />86<br />852<br />81<br />856<br />976<br />977<br />64<br />675<br />63<br />65<br />94<br />886<br />992<br />66<br />993<br />998<br />84 |
+| Rest of Central & Eastern Europe<br />Albania<br />Armenia<br />Azerbaijan<br />Belarus<br />Bulgaria<br />Croatia<br />Czech Republic<br />Georgia<br />Greece<br />Hungary<br />Latvia<br />Lithuania<br />Moldova<br />North Macedonia<br />Poland<br />Romania<br />Serbia<br />Slovakia<br />Slovenia<br />Ukraine | 355<br />374<br />994<br />375<br />359<br />385<br />420<br />995<br />30<br />36<br />371<br />370<br />373<br />389<br />48<br />40<br />381<br />421<br />386<br />380 |
+| Rest of Western Europe<br />Austria<br />Belgium<br />Denmark<br />Finland<br />Ireland<br />Norway<br />Portugal<br />Sweden<br />Switzerland | 43<br />32<br />45<br />358<br />353<br />47<br />351<br />46<br />41 |
+| Rest of Latin America<br />Bolivia<br />Costa Rica<br />Dominican Republic<br />Ecuador<br />El Salvador<br />Guatemala<br />Haiti<br />Honduras<br />Jamaica<br />Nicaragua<br />Panama<br />Paraguay<br />Puerto Rico<br />Uruguay<br />Venezuela | 591<br />506<br />1 (809, 829, 849)<br />593<br />503<br />502<br />509<br />504<br />1 (658, 876)<br />505<br />507<br />595<br />1 (787, 939)<br />598<br />58 |
+| Rest of Middle East<br />Bahrain<br />Iraq<br />Jordan<br />Kuwait<br />Lebanon<br />Oman<br />Qatar<br />Yemen | 973<br />964<br />962<br />965<br />961<br />968<br />974<br />967 |
+| Other<br />All other countries | Varies by country |
+
+## Volume tiers
+
+You can unlock lower utility and authentication rates based on the number of messages you send in a month.
+
+### Tiering accrual
+
+**Messages are aggregated at the business portfolio level, across all WhatsApp Business Accounts (WABAs) owned by the portfolio** — To determine what tier rates may apply in a given month for a given market–category pair, we aggregate messages across all of a business portfolio’s WABAs for each market-category pair (e.g., Brazil–authentication, Brazil–utility, India–authentication, etc.).
+**Only messages that are charged count toward the tiers** — Thus, the following messages do not count:
+
+Utility templates delivered to WhatsApp users within an open customer service window.
+Utility templates delivered within a [free entry point window](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing#free-entry-point-windows).
+**Volume tiers will be determined solely by Meta** — All insights data is approximate due to small variations in data processing. Undue reliance should not be placed on insights data.
+
+### Key dynamics
+
+**Tiers are market–category specific** — Volume tiers are aligned to our rate cards and differ by market (e.g., Brazil or Rest of Latin America) and category (utility, authentication).
+**Rates are tier-specific** — When a business sends enough messages at a given market–category pair to reach the next tier, they unlock the rate of the next tier, specifically for messages in that tier. This rate applies across all of their WABAs.
+**Tiers reset monthly** — At the start of the next month (12am WABA timezone), message count resets to 0 and businesses begin to accrue messages toward that month.
+
+### Volume tiers examples
+
+The table below is illustrative and only highlights the dynamics of volume tiers. Please refer to our [rate cards](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing#rate-cards-and-volume-tiers) to see what we charge.
+
+![](https://scontent-lax3-1.xx.fbcdn.net/v/t39.2365-6/502514970_1202956304344062_4629097874159039633_n.png?_nc_cat=108&ccb=1-7&_nc_sid=e280be&_nc_ohc=k2wXMlfFnhoQ7kNvwEGsrIk&_nc_oc=Adnapc7kQvMDxW5kE8SbTuarh4IVaIheisq4k6ukz_CINSBXArndQqo7vy2A8zqjWWo&_nc_zt=14&_nc_ht=scontent-lax3-1.xx&_nc_gid=Yx_AwQFeSrBvR9m_4ZYmJw&oh=00_AfnP8RxmaFOpOP7tc_x7ygldoDK10e-pwnoHww7PYmrcEQ&oe=69552851)
+
+Below are several examples to highlight how our tiers work and what we would charge in a given month, for a given market–category. These examples refer to the illustrative table above:
+
+Example 1: A business that sends a total of B authentication messages in a month to India is charged:
+
+List rate for the first A messages.
+Tier rate 1 for messages A+1 to B.
+Total charges for that month = Rate per tier 𝗑 messages in each tier.
+
+Example 2: A business that starts to be charged our authentication-international rates on the 15th day of the month:
+
+Day 1 to 14 of that month: Volume tiers apply on the authentication rate.
+Day 15 onward of that month: Volume tiers apply on the authentication-international rate, with messages continuing to accrue in that month. For example, if a business has already reached the Tier 2, the business would be charged Tier 2’s authentication-international rate:
+
+Example 3: A business has 3 WABAs sending authentication messages to India. For WABA A, it is still July 31 based on their timezone. For WABAs B and C, it is already August 1 based on their timezone. For July, the business is already being charged Tier Rate 1.
+
+The business portfolio will be accruing toward tiers for both July (via WABA A) and August (via WABAs B, C) for a period of time.
+The business can reach the next tier for July, via WABA A. If that happens, messages for the remainder of July for WABA A will be charged Tier Rate 2.
+
+Example 4: A business has 3 WABAs, integrated across 2 solution providers. Provider 1 sends the first B messages in a given month, and provider 2 starts sending messages as of when the business is in the 3rd tier. The business does not send enough messages that month to reach the next tier. What we would charge each provider:
+
+Provider 1: List rate for A messages, then Tier Rate 1 from A+1 to B, and Tier Rate 2 for B+1 to C.
+Provider 2: Tier Rate 2 across all of their messages.
+
+### Tiering webhooks
+
+Starting October 1, 2025, an [account_update](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/reference/account_update) webhook with `event` set to `VOLUME_BASED_PRICING_TIER_UPDATE` will be triggered when your WhatsApp Business Account reaches a new volume tier, in any market, in a given month. This complements our [pricing_analytics](https://developers.facebook.com/documentation/business-messaging/whatsapp/analytics#pricing-analytics) endpoint, which will continue to provide intra-month tiering progress and tiering information for delivered messages.
+
+Example webhook:
+
+```
+\{
+  "object": "whatsapp_business_account",
+  "entry": [\
+    {\
+      "id": "102290129340398",\
+      "time": 1743451903,\
+      "changes": [\
+        {\
+          "value": {\
+            "volume_tier_info": {\
+                "tier_update_time": 1743451903,\
+                "pricing_category": "UTILITY",\
+                "tier": "25000001:50000000",\
+                "effective_month": "2025-11",\
+                "region": "India"\
+            },\
+            "event": "VOLUME_BASED_PRICING_TIER_UPDATE"\
+          },\
+          "field": "account_update"\
+        }\
+      ]\
+    }\
+  ]
+}
+```
+
+`tier_update_time` tells when your WABA reached a higher volume tier (Unix timestamp).
+`pricing_category` tells you the template category for which your new volume tier rate applies.
+`tier` tells you the new volume tier’s lower and upper bounds.
+`effective_month` tells you the month in which your new volume tier rate is in effect.
+`region` tells you the WhatsApp user country/region for which your new volume tier rate applies.
+
+Note that it’s possible for multiple [account_update](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/reference/account_update) webhooks to be triggered that describe the same tier switch event. In these cases, use the webhook with the smaller `tier_update_time` Unix timestamp as the official webhook.
+
+### Tiering analytics
+
+You can get [volume tier information](https://developers.facebook.com/documentation/business-messaging/whatsapp/analytics#volume-tier-information) via [template analytics](https://developers.facebook.com/documentation/business-messaging/whatsapp/analytics#template-analytics).
+
+## Free non-template messages
+
+Non-template messages, which can only be sent within an open [customer service window](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/send-messages#customer-service-windows), are free. These messages will have `type` set to `free_customer_service` in the `pricing` object of status [messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/reference/messages/status) webhooks:
+
+```
+"pricing": {
+  "billable": false,
+  "pricing_model": "PMP",
+  "type": "free_customer_service",
+  "category": "service"
+}
+```
+
+Note that for On-Premises API users running version 2.60 and lower, `type` is omitted, so a `category` of `service` and `billable` set to `false` identifies these messages.
+
+## Free utility template messages
+
+Utility template messages sent within an open [customer service window](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/send-messages#customer-service-windows) are free. These messages will have `type` set to `free_customer_service` and `category` set to `utility` in the `pricing` object of status [messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/reference/messages/status) webhooks:
+
+```
+"pricing": {
+  "billable": false,
+  "pricing_model": "PMP",
+  "type": "free_customer_service",
+  "category": "utility"
+}
+```
+
+Note that for On-Premises API users running version 2.60 and lower, `type` is omitted, so a `category` of `utility` and `billable` set to `false` identifies these messages.
+
+### Edge case
+
+If you send a message to a WhatsApp user prior July 1, 2025 (which is when we switched from conversation-based pricing to per-message pricing), a utility conversation is opened between you and a user that spans the switch to per-message pricing (the conversation was opened before the switch but won’t close until after the switch). In this case, utility templates sent to the user after the switch while the conversation is open will be free, but attributed to the open conversation. In status [messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/reference/messages/status) webhooks, these messages will have a `pricing_model` of `CBP` and the utility conversation ID will be assigned to `conversation.id`. Once the conversation closes, subsequent utility messages will use per-message pricing, which will be reflected in new webhooks.
+
+## Free Entry Point windows
+
+If a WhatsApp user messages you via a Click to WhatsApp Ad or Facebook Page Call-to-Action button using a device running our Android or iOS app (our desktop and web apps are not supported):
+
+A 24-hour [customer service window](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/send-messages#customer-service-windows) is opened (as normal).
+If you respond within 24 hours using any type of message, the message will be free, and a Free Entry Point (“FEP”) window will be opened, starting from the time when you responded.
+
+FEP windows remain open for 72 hours. While open, you can send any type of message to the user at no charge. Note, however, that the customer service window is independent of the FEP window, so if the customer service window closes, you will only be able to send template messages.
+
+## Analytics
+
+Use the [pricing_analytics field](https://developers.facebook.com/documentation/business-messaging/whatsapp/analytics#pricing-analytics) to get per-message pricing breakdowns and tiering information for delivered messages.
+
+## Webhooks
+
+Billable messages have `type` set to `regular` in the `pricing` object of status [messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/reference/messages/status) webhooks:
+
+```
+"pricing": {
+  "billable": true,
+  "pricing_model": "PMP",
+  "type": "regular",
+  "category": "&lt;PRICING_CATEGORY&gt;"
+}
+```
+
+The `&lt;PRICING_CATEGORY&gt;` tells you what rate was applied (e.g. `marketing`). See the status messages webhook reference for a list of possible values.
+
+Note that currently, tiering information is not included in any webhooks. Use the [pricing_analytics field](https://developers.facebook.com/documentation/business-messaging/whatsapp/analytics#pricing-analytics) to get tiering information for delivered messages.
+
+## Billing
+
+Billing and billing-related actions are handled through the Meta Business Suite. See [About Billing For Your WhatsApp Business Account](https://www.facebook.com/business/help/2225184664363779) for more information.
+
+## WhatsApp Business Calling API pricing
+
+The WhatsApp Business Calling API has different pricing. See our [Calling API pricing document](https://developers.facebook.com/documentation/business-messaging/whatsapp/calling/pricing) to learn more.
+
+## Conversation-based pricing
+
+[Conversation-based pricing](https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing/conversation-based-pricing) is deprecated. It was replaced with per-message pricing on July 1, 2025.
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Cloud API and Marketing Messages API for WhatsApp
+
+Pricing explainer
+
+Message template categories
+
+Template messages vs. non-template messages
+
+Charge example
+
+Pricing calendar
+
+Rates
+
+Rate cards and volume tiers
+
+Updates to rate cards
+
+Authentication-international rates
+
+Country calling codes
+
+Volume tiers
+
+Tiering accrual
+
+Key dynamics
+
+Volume tiers examples
+
+Tiering webhooks
+
+Tiering analytics
+
+Free non-template messages
+
+Free utility template messages
+
+Edge case
+
+Free Entry Point windows
+
+Analytics
+
+Webhooks
+
+Billing
+
+WhatsApp Business Calling API pricing
+
+Conversation-based pricing
+
+* * *

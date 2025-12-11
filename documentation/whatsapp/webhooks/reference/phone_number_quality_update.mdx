@@ -1,0 +1,92 @@
+
+# phone_number_quality_update webhook reference
+
+Updated: Nov 14, 2025
+
+This reference describes trigger events and payload contents for the WhatsApp Business Account **phone_number_quality_update** webhook.
+
+The **phone_number_quality_update** webhook notifies you of changes to a business phone number’s [throughput level](https://developers.facebook.com/documentation/business-messaging/whatsapp/throughput).
+
+## Triggers
+
+A business phone number’s throughput level changes.
+
+## Syntax
+
+```
+\{
+    "entry": [\
+      {\
+        "id": "&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;",\
+        "time": &lt;WEBHOOK_TRIGGER_TIMESTAMP&gt;,\
+        "changes": [\
+          {\
+            "value": {\
+              "display_phone_number": "&lt;BUSINESS_DISPLAY_PHONE_NUMBER&gt;",\
+              "event": "&lt;EVENT&gt;",\
+              "old_limit": "&lt;OLD_LIMIT&gt;", <!-- only included for messaging limit changes -->\
+              "current_limit": "&lt;CURRENT_LIMIT&gt;",\
+              "max_daily_conversations_per_business": "&lt;MAX_DAILY_MESSAGES_LIMIT&gt;"\
+            },\
+            "field": "phone_number_quality_update"\
+          }\
+        ]\
+      }\
+    ],
+    "object": "whatsapp_business_account"
+  }
+```
+
+## Parameters
+
+| Placeholder | Description | Example value |
+| --- | --- | --- |
+| `&lt;BUSINESS_DISPLAY_PHONE_NUMBER&gt;`<br />_String_ | Business display phone number. | `15550783881` |
+| `&lt;CURRENT_LIMIT&gt;`<br />_String_ | **This field will be removed in February, 2026. Use `max_daily_conversations_per_business` instead.**<br />Indicates current [messaging limit](https://developers.facebook.com/documentation/business-messaging/whatsapp/messaging-limits) or [throughput](https://developers.facebook.com/documentation/business-messaging/whatsapp/throughput) level.<br />Values can be:<br />`TIER_50` — Indicates a messaging limit of 50.<br />`TIER_250` — Indicates a messaging limit of 250.<br />`TIER_2K` — Indicates a messaging limit of 2,000.<br />`TIER_10K` — Indicates a messaging limit of 10,000.<br />`TIER_100K` — Indicates a messaging limit of 100,000.<br />`TIER_NOT_SET` — Indicates the business phone number has not been used to send a message yet.<br />`TIER_UNLIMITED` — Indicates the business phone number has higher throughput. | `TIER_UNLIMITED` |
+| `&lt;EVENT&gt;`<br />_String_ | [Messaging limit](https://developers.facebook.com/documentation/business-messaging/whatsapp/messaging-limits) change or [throughput](https://developers.facebook.com/documentation/business-messaging/whatsapp/throughput) change event.<br />Values can be:<br />`ONBOARDING` — Indicates the business phone number is still being registered.<br />`THROUGHPUT_UPGRADE` — Indicates the business phone number’s throughput level has increased to higher throughput. | `THROUGHPUT_UPGRADE` |
+| `&lt;MAX_DAILY_MESSAGES_LIMIT&gt;`<br />_String_ | Indicates a change to the owning business portfolio’s [messaging limit](https://developers.facebook.com/documentation/business-messaging/whatsapp/messaging-limits) or [throughput](https://developers.facebook.com/documentation/business-messaging/whatsapp/throughput) change.<br />Values can be:<br />`TIER_50` — Indicates a messaging limit of 50.<br />`TIER_250` — Indicates a messaging limit of 250.<br />`TIER_2K` — Indicates a messaging limit of 2,0001,000.<br />`TIER_10K` — Indicates a messaging limit of 10,000.<br />`TIER_100K` — Indicates a messaging limit of 100,000.<br />`TIER_NOT_SET` — Indicates the business phone number has not been used to send a message yet.<br />`TIER_UNLIMITED` — Indicates the business phone number has higher throughput. | `TIER_2K` |
+| `&lt;OLD_LIMIT&gt;`<br />_String_ | **This parameter will be removed in February, 2026. Use `max_daily_conversations_per_business` instead.**<br />Indicates old [messaging limit](https://developers.facebook.com/documentation/business-messaging/whatsapp/messaging-limits).<br />Values can be:<br />`TIER_50` — Indicates a messaging limit of 50.<br />`TIER_250` — Indicates a messaging limit of 250.<br />`TIER_2K` — Indicates a messaging limit of 2,000.<br />`TIER_10K` — Indicates a messaging limit of 10,000.<br />`TIER_100K` — Indicates a messaging limit of 100,000.<br />`TIER_NOT_SET` — Indicates the business phone number has not been used to send a message yet. | `TIER_UNLIMITED` |
+| `&lt;WEBHOOK_TRIGGER_TIMESTAMP&gt;`<br />_Integer_ | Unix timestamp indicating when the webhook was triggered. | `1739321024` |
+| `&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;`<br />_String_ | WhatsApp Business Account ID. | `102290129340398` |
+
+## Example
+
+```
+\{
+  "entry": [\
+    {\
+      "id": "102290129340398",\
+      "time": 1748454394,\
+      "changes": [\
+        {\
+          "value": {\
+            "display_phone_number": "15550783881",\
+            "event": "THROUGHPUT_UPGRADE",\
+            "current_limit": "TIER_UNLIMITED"\
+          },\
+          "field": "phone_number_quality_update"\
+        }\
+      ]\
+    }\
+  ],
+  "object": "whatsapp_business_account"
+}
+```
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Triggers
+
+Syntax
+
+Parameters
+
+Example
+
+* * *

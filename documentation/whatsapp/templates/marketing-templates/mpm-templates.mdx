@@ -1,0 +1,595 @@
+
+# Multi-product message templates
+
+Updated: Nov 4, 2025
+
+This document describes multi-product message (“MPM”) templates, their uses, and how to use them.
+
+MPM templates are marketing templates that allow you to showcase up to 30 products from your ecommerce catalog, organized in up to 10 sections, in a single message.
+
+![](https://scontent-lax7-1.xx.fbcdn.net/v/t39.2365-6/345336924_1476472873159435_9050004394387774321_n.png?_nc_cat=105&ccb=1-7&_nc_sid=e280be&_nc_ohc=9qNRIRewfisQ7kNvwHeZw_I&_nc_oc=AdndnQSvdTGl7iKlHufUgG0VWS4w4pkVCJEg5IR_gTBY6XgougNuNDfsTCjr1YcaCAA&_nc_zt=14&_nc_ht=scontent-lax7-1.xx&_nc_gid=xWQHEZ-hVwea1G9QkRTFiw&oh=00_AfkNUdwOHGEar21pITDIbhOcUH8HAAPYCpTlrLAFsc8juA&oe=6955255C)
+
+Customers can browse products and sections within the message, view details for each product, add and remove products from their cart, and submit their cart to place an order. Orders are then sent to you via a webhook.
+
+![](https://scontent-lax7-1.xx.fbcdn.net/v/t39.2365-6/345301814_777009393786308_8675106872073624223_n.png?_nc_cat=101&ccb=1-7&_nc_sid=e280be&_nc_ohc=4oFLuvKeoRIQ7kNvwH6iGxS&_nc_oc=Adlo4K-MsiJ07fDFX65IHarVu4BRHThTG0a_I36-XCaUe45pwWBlHNI6LZV7cbUNnTs&_nc_zt=14&_nc_ht=scontent-lax7-1.xx&_nc_gid=xWQHEZ-hVwea1G9QkRTFiw&oh=00_AfnpBxvSn0rLhsi1O8dt07GnO_-bCstem4vQ483sRHi_zA&oe=69550C29)
+
+See our help center article [About Multi-product message templates on WhatsApp](https://www.facebook.com/business/help/978451836847222) for common use cases and tips on how to make the most of MPM templates.
+
+## Requirements
+
+In order to create and use MPM templates you must have an ecommerce product catalog, with inventory, connected to your WhatsApp Business Account. See the Cloud API [Commerce](https://developers.facebook.com/documentation/business-messaging/whatsapp/catalogs/sell-products-and-services) guide.
+
+## Limitations
+
+Customers must be using WhatsApp v2.22.24 or greater.
+MPM templates cannot be forwarded to other customers.
+
+## Creating MPM templates
+
+You can create MPM templates using the [WhatsApp Business Account > Message Templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-account/template-api) endpoint or the [**WhatsApp Manager**](https://business.facebook.com/wa/manage/home/) \> **Account tools** \> **Message templates** panel. Once your template is approved, you can use Cloud API or On-Premises API to send it in a template message.
+
+### Request syntax
+
+```
+curl -X POST "https://graph.facebook.com/v23.0/&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;/message_templates" \
+  -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "&lt;NAME&gt;",
+    "category": "&lt;CATEGORY&gt;",
+    "language": "&lt;LANGUAGE&gt;",
+    "components": [&lt;COMPONENTS&gt;]
+  }'
+```
+
+### Request parameters
+
+| Placeholder | Description | Sample Value |
+| --- | --- | --- |
+| `&lt;CATEGORY&gt;` | **Required.**<br />Template category. Set this to `MARKETING`. | `MARKETING` |
+| `&lt;COMPONENTS&gt;` | **Required.**<br />Array of objects that describe the components that make up the template. See [Components](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates/mpm-templates#components) below. | See [Components](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates/mpm-templates#components) below. |
+| `&lt;LANGUAGE&gt;` | **Required.**<br />Template [language and locale code](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/supported-languages). | `en_US` |
+| `&lt;NAME&gt;` | **Required.**<br />Template name.<br />Maximum 512 characters. | `abandoned_cart` |
+
+### Components
+
+The `components` value must be an array of objects that describes each component that makes up the template. MPM templates must have the following components:
+
+a single header component
+a single body component
+a single footer component (optional)
+a single MPM button component
+
+```
+[\
+  {\
+    "type": "HEADER",\
+    "format": "TEXT",\
+    "text": "&lt;HEADER_TEXT&gt;",\
+\
+    /* Example required if header uses a variable */\
+    "example": {\
+      "header_text": [\
+        "&lt;HEADER_EXAMPLE_TEXT&gt;"\
+      ]\
+    }\
+  },\
+  {\
+    "type": "BODY",\
+    "text": "&lt;BODY_TEXT&gt;",\
+\
+    /* Example required if body uses variables */\
+​​    "example": {\
+      "body_text": [\
+        [\
+          "&lt;BODY_EXAMPLE_TEXT&gt;"\
+        ]\
+      ]\
+    }\
+  },\
+  {\
+    "type": "FOOTER",\
+    "text": "&lt;FOOTER_TEXT&gt;"\
+  },\
+  {\
+    "type":"BUTTONS",\
+    "buttons": [\
+      {\
+        "type": "MPM",\
+        "text": "View items"\
+      }\
+    ]\
+  }\
+]
+```
+
+### Request parameters
+
+| Placeholder | Description | Sample Value |
+| --- | --- | --- |
+| `&lt;BODY_EXAMPLE_TEXT&gt;` | String or array of strings. Example body variable value(s). | `10OFF` |
+| `&lt;BODY_TEXT&gt;` | Template body text. Supports multiple variables.<br />If the string contains variables, you must include the example property and sample variable values.<br />1024 characters maximum. | `Forget something, {{1}}?` |
+| `&lt;FOOTER_TEXT&gt;` | Template footer text.<br />60 characters maximum. | `Lucky Shrub, 1 Hacker Way, Menlo Park, CA 94025` |
+| `&lt;HEADER_EXAMPLE_TEXT&gt;` | Example header variable value. | `Pablo` |
+| `&lt;HEADER_TEXT&gt;` | Template header text. Supports 1 variable.<br />If the string contains a variable, you must include the example property and a sample variable value.<br />60 characters maximum. | `Looks like you left these items in your cart, still interested? Use code {{1}} to get 10% off!` |
+
+### Response
+
+Upon success, the API will respond with:
+
+```
+\{
+  "id": "&lt;ID&gt;",
+  "status": "&lt;STATUS&gt;",
+  "category": "MARKETING"
+}
+```
+
+### Response parameters
+
+| Placeholder | Description | Sample Value |
+| --- | --- | --- |
+| `&lt;ID&gt;` | Template ID. | `546151681022936` |
+| `&lt;STATUS&gt;` | Template status. Only templates with an `APPROVED` status can be sent in a template message. | `PENDING` |
+
+### Example request
+
+```
+curl 'https://graph.facebook.com/v24.0/102290129340398/message_templates' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+-d '
+\{
+  "name": "abandoned_cart",
+  "language": "en_US",
+  "category": "MARKETING",
+  "components": [\
+    {\
+      "type": "HEADER",\
+      "format": "TEXT",\
+      "text": "Forget something, {{1}}?",\
+      "example": {\
+        "header_text": [\
+          "Pablo"\
+        ]\
+      }\
+    },\
+    {\
+      "type": "BODY",\
+      "text": "Looks like you left these items in your cart, still interested? Use code {{1}} to get 10% off!",\
+      "example": {\
+        "body_text": [\
+          [\
+            "10OFF"\
+          ]\
+        ]\
+      }\
+    },\
+    {\
+      "type":"BUTTONS",\
+      "buttons": [\
+        {\
+          "type": "MPM",\
+          "text": "View items"\
+        }\
+      ]\
+    }\
+  ]
+}'
+```
+
+### Sample response
+
+```
+\{
+  "id": "546151681022936",
+  "status": "PENDING",
+  "category": "MARKETING"
+}
+```
+
+## Webhooks
+
+When a customer adds one or more products to their cart and submits an order, we will send you a webhook that describes the order.
+
+### Webhook syntax
+
+```
+\{
+  "object": "whatsapp_business_account",
+  "entry": [\
+    {\
+      "id": "<ENTRY.ID>",\
+      "changes": [\
+        {\
+          "value": {\
+            "messaging_product": "whatsapp",\
+            "metadata": {\
+              "display_phone_number": "&lt;DISPLAY_PHONE_NUMBER&gt;",\
+              "phone_number_id": "&lt;PHONE_NUMBER_ID&gt;"\
+            },\
+            "contacts": [\
+              {\
+                "profile": {\
+                  "name": "&lt;NAME&gt;"\
+                },\
+                "wa_id": "&lt;WA_ID&gt;"\
+              }\
+            ],\
+            "messages": [\
+              {\
+                "from": "&lt;FROM&gt;",\
+                "id": "<MESSAGES.ID>",\
+                "timestamp": "&lt;TIMESTAMP&gt;",\
+                "type": "order",\
+                "order": {\
+                  "catalog_id": "&lt;CATALOG_ID&gt;",\
+                  "product_items": [\
+                    {\
+                      "product_retailer_id": "&lt;PRODUCT_RETAILER_ID&gt;",\
+                      "quantity": &lt;QUANTITY&gt;,\
+                      "item_price": &lt;ITEM_PRICE&gt;,\
+                      "currency": "&lt;CURRENCY&gt;"\
+                    }\
+                  ]\
+                }\
+              }\
+            ]\
+          },\
+          "field": "messages"\
+        }\
+      ]\
+    }\
+  ]
+}
+```
+
+### Webhook contents
+
+| Placeholder | Description | Sample Value |
+| --- | --- | --- |
+| `&lt;CATALOG_ID&gt;` | Ecommerce product catalog ID. | `1537566713439863` |
+| `&lt;CURRENCY&gt;` | Item currency. | `USD` |
+| `&lt;DISPLAY_PHONE_NUMBER&gt;` | Business phone number display number. | `15550051310` |
+| `<ENTRY.ID>` | WhatsApp Business Account ID. | `102290129340398` |
+| `&lt;ITEM_PRICE&gt;` | Item price. | `99.99` |
+| `<MESSAGES.ID>` | WhatsApp message ID. | `wamid.HBgLMTY1MDM4Nzk0MzkVAgARGBJDOEI3ODgxNzQzMjJBQTdEQTcA` |
+| `&lt;NAME&gt;` | Customer’s name. | `Pablo Morales` |
+| `&lt;PHONE_NUMBER_ID&gt;` | Business phone number ID. | `106540352242922` |
+| `&lt;PRODUCT_RETAILER_ID&gt;` | The item SKU number. Labeled as **Content ID** in the Commerce Manager. | `2lc20305pt` |
+| `&lt;QUANTITY&gt;` | Number of items ordered (for this particular item). | `1` |
+| `&lt;TIMESTAMP&gt;` | UNIX timestamp indicating when we sent you the webhook. | `1677522117` |
+| `&lt;WA_ID&gt;` | Customer’s WhatsApp phone number. | `16505551234` |
+
+### Sample webhook
+
+```
+\{
+  "object": "whatsapp_business_account",
+  "entry": [\
+    {\
+      "id": "102290129340398",\
+      "changes": [\
+        {\
+          "value": {\
+            "messaging_product": "whatsapp",\
+            "metadata": {\
+              "display_phone_number": "15550051310",\
+              "phone_number_id": "106540352242922"\
+            },\
+            "contacts": [\
+              {\
+                "profile": {\
+                  "name": "Pablo Morales"\
+                },\
+                "wa_id": "16505551234"\
+              }\
+            ],\
+            "messages": [\
+              {\
+                "from": "16505551234",\
+                "id": "wamid.HBgLMTY1MDM4Nzk0MzkVAgASGBQzQTMxNzA1QzNENEI4ODY0OTY2MAA=",\
+                "timestamp": "1683223069",\
+                "type": "order",\
+                "order": {\
+                  "catalog_id": "1537566713439863",\
+                  "product_items": [\
+                    {\
+                      "product_retailer_id": "n6k6x0y7oe",\
+                      "quantity": 1,\
+                      "item_price": 99.99,\
+                      "currency": "USD"\
+                    }\
+                  ]\
+                }\
+              }\
+            ]\
+          },\
+          "field": "messages"\
+        }\
+      ]\
+    }\
+  ]
+}
+```
+
+## Sending MPM template messages
+
+This document explains how to send [multi-product message (MPM) templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates/mpm-templates) in template messages.
+
+### Components
+
+MPM template messages must have:
+
+a **header** component (only required if template uses a header variable)
+a **body** component (only required if template uses a body variable)
+a single **MPM button** component
+
+Use the MPM button component to define sections and their titles that will appear when the customer taps the **View items** button, and to designate which products appear in each of those sections.
+
+![](https://scontent-lax3-2.xx.fbcdn.net/v/t39.2365-6/345454978_257502929976881_8980265032321705247_n.png?_nc_cat=103&ccb=1-7&_nc_sid=e280be&_nc_ohc=rvyGl_JjH_gQ7kNvwEpyDwE&_nc_oc=Admlkajmi16zJlF8nXVCx5Qf5MThPmNJ-7nMnRA-wUZbuHW_VL6IqSaA9QKypCPsD0M&_nc_zt=14&_nc_ht=scontent-lax3-2.xx&_nc_gid=xWQHEZ-hVwea1G9QkRTFiw&oh=00_Afn3yC6wPcE8613KHi5u3ryIhAc7ZcLpVxDx1hq8fc11Qw&oe=6955314B)
+
+To send an approved MPM template in a template message, send a POST request to the [WhatsApp Business Phone Number > Messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api) endpoint. Use the POST body to define the contents of the message and to describe any variables to inject into the template itself.
+
+### Request syntax
+
+```
+curl -X POST "https://graph.facebook.com/v23.0/&lt;BUSINESS_PHONE_NUMBER_ID&gt;/messages" \
+  -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;" \
+  -H "Content-Type: application/json" \
+  -d '
+\{
+    "messaging_product": "whatsapp",
+    "recipient_type": "individual",
+    "to": "&lt;TO&gt;",
+    "type": "template",
+    "template": {
+      "name": "&lt;NAME&gt;",
+      "language": {
+        "code": "&lt;CODE&gt;"
+      },
+      "components": [\
+        {\
+          "type": "header",\
+          "parameters": [\
+            {\
+              "type": "text",\
+              "text": "&lt;HEADER_TEXT&gt;"\
+            }\
+          ]\
+        },\
+        {\
+          "type": "body",\
+          "parameters": [\
+            {\
+              "type": "text",\
+              "text": "&lt;BODY_TEXT&gt;"\
+            }\
+          ]\
+        },\
+        {\
+          "type": "button",\
+          "sub_type": "mpm",\
+          "index": 0,\
+          "parameters": [\
+            {\
+              "type": "action",\
+              "action": {\
+                "thumbnail_product_retailer_id": "&lt;THUMBNAIL_PRODUCT_RETAILER_ID&gt;",\
+                "sections": [\
+                  {\
+                    "title": "&lt;TITLE&gt;",\
+                    "product_items": [\
+                      {\
+                        "product_retailer_id": "<PRODUCT_RETAILER_ID_1>"\
+                      },\
+                      {\
+                        "product_retailer_id": "<PRODUCT_RETAILER_ID_2>"\
+                      }\
+                      // ... Add up to 30 product items per section\
+                    ]\
+                  }\
+                  // ... Add up to 10 section objects as needed\
+                ]\
+              }\
+            }\
+          ]\
+        }\
+      ]
+    }
+  }'
+```
+
+### Request parameters
+
+| Placeholder | Description | Sample Value |
+| --- | --- | --- |
+| `&lt;BODY_TEXT&gt;` | **Required if template uses variables.**<br />String or array of strings. Text to replace body variable(s) defined in the template. | `10OFF` |
+| `&lt;CODE&gt;` | Template [language and locale code](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/supported-languages). | `en_US` |
+| `&lt;HEADER_TEXT&gt;` | **Required if template uses a variable.**<br />Text to replace header variable defined in the template. | `Pablo` |
+| `&lt;NAME&gt;` | Template name. | `abandoned_cart` |
+| `&lt;PRODUCT_RETAILER_ID&gt;` | SKU number of the item you want to appear in the section.<br />SKU numbers are labeled as **Content ID** in the Commerce Manager.<br />Supports up to 30 products total, across all sections. | `2lc20305pt` |
+| `&lt;THUMBNAIL_PRODUCT_RETAILER_ID&gt;` | Item SKU number. Labeled as **Content ID** in the Commerce Manager.<br />The thumbnail of this item will be used as the template message’s header image. | `2lc20305pt` |
+| `&lt;TITLE&gt;` | Section title text.<br />You can define up to 10 sections.<br />Maximum 24 characters. Markdown is not supported. | `Popular Bundles` |
+| `&lt;TO&gt;` | Customer phone number. | `16505551234` |
+
+### Response
+
+Upon success, the API will respond with:
+
+```
+\{
+  "messaging_product": "whatsapp",
+  "contacts": [\
+    {\
+      "input": "&lt;INPUT&gt;",\
+      "wa_id": "&lt;WA_ID&gt;"\
+    }\
+  ],
+  "messages": [\
+    {\
+      "id": "&lt;ID&gt;"\
+    }\
+  ]
+}
+```
+
+### Response parameters
+
+| Placeholder | Description | Sample Value |
+| --- | --- | --- |
+| `&lt;ID&gt;` | WhatsApp message ID. | `wamid.HBgLMTY1MDM4Nzk0MzkVAgARGBJDOEI3ODgxNzQzMjJBQTdEQTcA` |
+| `&lt;INPUT&gt;` | Customer WhatsApp phone number. | `16505551234` |
+| `&lt;WA_ID&gt;` | Customer WhatsApp ID. | `16505551234` |
+
+### Example request
+
+This example sends an approved template named “abandoned_cart” and injects a variable (the customer’s first name) into the template header and a discount code into the template body. It also defines two sections (“Popular Bundles” and “Premium Packages”) and identifies the products (a total of 3) that should be injected into those sections.
+
+```
+curl 'https://graph.facebook.com/v24.0/106540352242922/messages' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+-d '
+\{
+  "messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": "16505551234",
+  "type": "template",
+  "template": {
+    "name": "abandoned_cart",
+    "language": {
+      "code": "en_US"
+    },
+    "components": [\
+      {\
+        "type": "header",\
+        "parameters": [\
+          {\
+            "type": "text",\
+            "text": "Pablo"\
+          }\
+        ]\
+      },\
+      {\
+        "type": "body",\
+        "parameters": [\
+          {\
+            "type": "text",\
+            "text": "10OFF"\
+          }\
+        ]\
+      },\
+      {\
+        "type": "button",\
+        "sub_type": "mpm",\
+        "index": 0,\
+        "parameters": [\
+          {\
+            "type": "action",\
+            "action": {\
+              "thumbnail_product_retailer_id": "2lc20305pt",\
+              "sections": [\
+                {\
+                  "title": "Popular Bundles",\
+                  "product_items": [\
+                    {\
+                      "product_retailer_id": "2lc20305pt"\
+                    },\
+                    {\
+                      "product_retailer_id": "nseiw1x3ch"\
+                    }\
+                  ]\
+                },\
+                {\
+                  "title": "Premium Packages",\
+                  "product_items": [\
+                    {\
+                      "product_retailer_id": "n6k6x0y7oe"\
+                    }\
+                  ]\
+                }\
+              ]\
+            }\
+          }\
+        ]\
+      }\
+    ]
+  }
+}'
+```
+
+### Example response
+
+```
+\{
+  "messaging_product": "whatsapp",
+  "contacts": [\
+    {\
+      "input": "16505551234",\
+      "wa_id": "16505551234"\
+    }\
+  ],
+  "messages": [\
+    {\
+      "id": "wamid.HBgLMTY1MDM4Nzk0MzkVAgARGBJDOEI3ODgxNzQzMjJBQTdEQTcA"\
+    }\
+  ]
+}
+```
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Requirements
+
+Limitations
+
+Creating MPM templates
+
+Request syntax
+
+Request parameters
+
+Components
+
+Request parameters
+
+Response
+
+Response parameters
+
+Example request
+
+Sample response
+
+Webhooks
+
+Webhook syntax
+
+Webhook contents
+
+Sample webhook
+
+Sending MPM template messages
+
+Components
+
+Request syntax
+
+Request parameters
+
+Response
+
+Response parameters
+
+Example request
+
+Example response
+
+* * *

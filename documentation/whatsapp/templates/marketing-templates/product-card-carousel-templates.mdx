@@ -1,0 +1,386 @@
+
+# Product card carousel templates
+
+Updated: Nov 4, 2025
+
+Product card carousel templates allow you to send a single text message accompanied by a set of up to 10 product cards in a horizontally scrollable view:
+
+![](https://scontent-fra3-1.xx.fbcdn.net/v/t39.2365-6/456451243_832660229062364_6760679807399209749_n.png?_nc_cat=108&ccb=1-7&_nc_sid=e280be&_nc_ohc=O75ePXKxH18Q7kNvwFKfA5M&_nc_oc=AdmRqofXGqEExcvQ5sHAjMwh3KPslsONVxDcX2ATbQI3HaInvLkqJDzPpAejKoiAIWk&_nc_zt=14&_nc_ht=scontent-fra3-1.xx&_nc_gid=3HbZAPfy-JE8zbVNbrPpKA&oh=00_Afnk4VTfl2zIKPJHrFrE8iWd0QDFe_4OmZQs-rNMgiZLYw&oe=695509A3)
+
+When a WhatsApp user taps the **View** button, they can view more information about the product, add the product to a shopping cart, and place an order, all without leaving the WhatsApp client experience. If instead you prefer to send the user to your website when they click the button, see [Media Card Carousel Templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates/media-card-carousel-templates).
+
+## Product cards
+
+Carousel templates support up to 10 product cards, composed of message body text, a product image, product title, product price, and a single View button or URL button. All cards defined on a template must have the same components.
+
+![](https://scontent-fra3-1.xx.fbcdn.net/v/t39.2365-6/456183425_819329683713319_8287896812760303277_n.png?_nc_cat=108&ccb=1-7&_nc_sid=e280be&_nc_ohc=bQGpmschie8Q7kNvwHh-JQi&_nc_oc=AdkCX4tVJK8rxABk0d4e-zKMh1rw34jK8OBC6nGdG5xF3FJ953HJvWNADjMIcpl2-xQ&_nc_zt=14&_nc_ht=scontent-fra3-1.xx&_nc_gid=3HbZAPfy-JE8zbVNbrPpKA&oh=00_AfkK8OVKdJG38etvX1smDgXClHUbP6gqGuczvmGfR7XVTw&oe=695513FA)
+
+## View buttons
+
+When a WhatsApp user taps the button, the product details view appears, displaying product information pulled from your product catalog.
+
+![](https://scontent-fra3-1.xx.fbcdn.net/v/t39.2365-6/456536571_1403706086934453_4366317090049712342_n.png?_nc_cat=103&ccb=1-7&_nc_sid=e280be&_nc_ohc=rAxYvE4W-pgQ7kNvwEshkkH&_nc_oc=AdkfSq6oc4wTudlreapyuo4jzqByijduB7G8wd-_OPGRHjnzAwenh9uH-Xbcaj34bYs&_nc_zt=14&_nc_ht=scontent-fra3-1.xx&_nc_gid=3HbZAPfy-JE8zbVNbrPpKA&oh=00_AfkXA-qbBWZK1t8H1Em_Xh6Lj54UnFJzsMhlPZNyPkmVoA&oe=69551A7A)
+
+Users can then add the product to a cart and place an order.
+
+![](https://scontent-fra3-1.xx.fbcdn.net/v/t39.2365-6/456294794_1915042982315160_3191620650033958999_n.png?_nc_cat=105&ccb=1-7&_nc_sid=e280be&_nc_ohc=TxXUgP7GRqQQ7kNvwF5kLyS&_nc_oc=AdmCrKjR_O-THJJEXhjDDDWR4_NAcGm_J2kkSz640qZPRlzfGOavmMSZ_QzakSw7P6c&_nc_zt=14&_nc_ht=scontent-fra3-1.xx&_nc_gid=3HbZAPfy-JE8zbVNbrPpKA&oh=00_AfkbsPccWnF6FPHnXgBEoDhnDxzW9XT0Z9qJO84NmNp9EQ&oe=695512AE)
+
+When a user submits the cart, a [webhook](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates/product-card-carousel-templates#webhooks) will be triggered describing the order, and an order confirmation message will appear in the message thread.
+
+![](https://scontent-fra5-2.xx.fbcdn.net/v/t39.2365-6/456482022_473045605708419_6165153125141611284_n.png?_nc_cat=107&ccb=1-7&_nc_sid=e280be&_nc_ohc=reJFaMqFZIEQ7kNvwEWNe8Q&_nc_oc=AdlwgWMgnuY1VPGsPS3RbrcCzs2tdkKwibpsNMHcIyQeKpQFAiZQaLToxODs_64p57w&_nc_zt=14&_nc_ht=scontent-fra5-2.xx&_nc_gid=3HbZAPfy-JE8zbVNbrPpKA&oh=00_Afk7HKayLccAFx8MD0MexY56Y5Mr-R677hArLH5gkdNz5g&oe=695528A1)
+
+Users who have placed an order can see the contents of the order by tapping the **View details** button.
+
+![](https://scontent-fra3-1.xx.fbcdn.net/v/t39.2365-6/456576172_505851605146576_6951890413402171834_n.png?_nc_cat=105&ccb=1-7&_nc_sid=e280be&_nc_ohc=R2mScaqkzPEQ7kNvwG-lznl&_nc_oc=AdmqVNFG8LLPj01ByHJxntPSvLwi8NcGDxSy00rcexPzB4iN6Foa-2xX1LVEN7JBjQw&_nc_zt=14&_nc_ht=scontent-fra3-1.xx&_nc_gid=3HbZAPfy-JE8zbVNbrPpKA&oh=00_Afkj1pTlniyXihuReEalXhHgHvaDgjRYY0emdqvhW7m5OA&oe=6954FD81)
+
+## URL buttons
+
+Instead of **View** buttons you may wish to use **URL** buttons. When a WhatsApp user taps a URL button to buy a product, the URL mapped to the button is loaded in the device’s default web browser, which takes the user out of the WhatsApp client experience. This can be useful if, for example, you wish to load the product in your mobile checkout page where users can add promo codes and find related products.
+
+WIth URL button flows, since order placement happens outside of the WhatsApp client, webhooks describing the order are not triggered.
+
+## Catalogs
+
+To use product card carousel templates, you must have an ecommerce product catalog, with inventory, connected to your WhatsApp Business Account. See the Cloud API [Commerce](https://developers.facebook.com/documentation/business-messaging/whatsapp/catalogs/sell-products-and-services) guide to learn more about connecting a catalog to your account.
+
+## Webhooks
+
+If you send a carousel template composed of product cards that use a **View** button, when a customer adds one or more products to their cart and submits an order, an [order messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/reference/messages/order) webhook is triggered, describing the order.
+
+## Creating product card carousel templates
+
+Use the [**POST /&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;/message_templates**](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-account/template-api#post-version-waba-id-message-templates) endpoint to create a product card carousel template.
+
+### Request syntax
+
+It is only necessary to define two product cards upon template creation. An approved template with two product cards can be used to send up to 10 cards in a template message.
+
+```
+curl -X POST "https://graph.facebook.com/v23.0/&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;/message_templates" \
+  -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;" \
+  -H "Content-Type: application/json" \
+  -d '
+\{
+    "name": "&lt;TEMPLATE_NAME&gt;",
+    "language": "&lt;TEMPLATE_LANGUAGE&gt;",
+    "category": "marketing",
+    "components": [\
+      {\
+        "type": "body",\
+        "text": "&lt;MESSAGE_BODY_TEXT&gt;",\
+        "example": {\
+          "body_text": [\
+            [\
+              "<MESSAGE_BODY_TEXT_VARIABLE_EXAMPLE_1>",\
+              "<MESSAGE_BODY_TEXT_VARIABLE_EXAMPLE_2>"\
+            ]\
+          ]\
+        }\
+      },\
+      {\
+        "type": "carousel",\
+        "cards": [\
+          {\
+            "components": [\
+              {\
+                "type": "header",\
+                "format": "product"\
+              },\
+              {\
+                "type": "buttons",\
+                "buttons": [\
+                  {\
+                    "type": "spm",\
+                    "text": "View"\
+                  }\
+                  // OR, for a URL button, use the following instead:\
+                  // {\
+                  //   "type": "url",\
+                  //   "text": "&lt;URL_BUTTON_LABEL_TEXT&gt;",\
+                  //   "url": "&lt;URL_BUTTON_URL&gt;",\
+                  //   "example": [\
+                  //     "&lt;URL_BUTTON_URL_VARIABLE_EXAMPLE&gt;"\
+                  //   ]\
+                  // }\
+                ]\
+              }\
+            ]\
+          }\
+          // Add a second product card here, following the same structure as above\
+        ]\
+      }\
+    ]
+  }'
+```
+
+### Request parameters
+
+| Placeholder | Description | Example Value |
+| --- | --- | --- |
+| `&lt;MESSAGE_BODY_TEXT&gt;`<br />_String_ | **Required.**<br />Message body text. Supports variables.<br />Maximum 1024 characters. | `Rare succulents for sale! {{1}}, add these unique plants to your collection.` |
+| `&lt;MESSAGE_BODY_TEXT_VARIABLE_EXAMPLE&gt;`<br />_String_ | **Required if message body text string uses variables.**<br />Message body text example variable string(s). Number of strings must match the number of variable placeholders in the message body text string.<br />If message body text uses a single variable, `body_text` value can be a string, otherwise it must be an array containing an array of strings. | `Pablo` |
+| `&lt;TEMPLATE_LANGUAGE&gt;`<br />_String_ | **Required.**<br />Template [language and locale code](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/supported-languages). | `en_US` |
+| `&lt;TEMPLATE_NAME&gt;`<br />_String_ | **Required.**<br />Template name.<br />Maximum 512 characters. | `carousel_template_product_cards_v1` |
+| `&lt;URL_BUTTON_LABEL_TEXT&gt;`<br />_String_ | **Required if using a URL button.**<br />URL button label text.<br />25 characters maximum. | `Buy now` |
+| `&lt;URL_BUTTON_URL&gt;`<br />_String_ | **Required if using a URL button.**<br />URL to be loaded in the device’s default web browser when the WhatsApp user taps the button.<br />Supports 1 variable. Variable placeholder must be appended to the end of the URL string.<br />Maximum 2000 characters. | `https://www.luckyshrub.com/rare-succulents/{{1}}` |
+| `&lt;URL_BUTTON_URL_VARIABLE_EXAMPLE&gt;`<br />_String_ | **Required if URL button URL uses a variable.**<br />URL button URL example variable string.<br />Maximum 2000 characters. | `BUDDHA` |
+
+### Example request
+
+This example request creates a product card carousel template with a message body that uses a single variable and two product cards. Once approved, it can be used to send up to 10 product cards in a template message.
+
+```
+curl 'https://graph.facebook.com/v24.0/161311403722088/message_templates' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+-d '
+\{
+  "name": "carousel_template_product_cards_v1",
+  "language": "en_US",
+  "category": "marketing",
+  "components": [\
+    {\
+      "type": "body",\
+      "text": "Rare succulents for sale! {{1}}, add these unique plants to your collection. All three of these rare succulents are available for purchase on our website, and they come with a 100% satisfaction guarantee. Whether you're a seasoned succulent enthusiast or just starting your plant collection, these rare succulents are sure to impress. Shop now and add some unique and beautiful plants to your collection!",\
+      "example": {\
+        "body_text": "Pablo"\
+      }\
+    },\
+    {\
+      "type": "carousel",\
+      "cards": [\
+        {\
+          "components": [\
+            {\
+              "type": "header",\
+              "format": "product"\
+            },\
+            {\
+              "type": "buttons",\
+              "buttons": [\
+                {\
+                  "type": "spm",\
+                  "text": "View"\
+                }\
+              ]\
+            }\
+          ]\
+        },\
+        {\
+          "components": [\
+            {\
+              "type": "header",\
+              "format": "product"\
+            },\
+            {\
+              "type": "buttons",\
+              "buttons": [\
+                {\
+                  "type": "spm",\
+                  "text": "View"\
+                }\
+              ]\
+            }\
+          ]\
+        }\
+      ]\
+    }\
+  ]
+}'
+```
+
+## Sending product card carousel templates
+
+### Request syntax
+
+Use the [**POST /&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;/messages**](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api) endpoint to send an approved product card carousel template to a WhatsApp user.
+
+```
+curl -X POST "https://graph.facebook.com/v23.0/&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;/messages" \
+  -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;" \
+  -H "Content-Type: application/json" \
+  -d '
+\{
+    "messaging_product": "whatsapp",
+    "recipient_type": "individual",
+    "to": "&lt;WHATSAPP_USER_PHONE_NUMBER&gt;",
+    "type": "template",
+    "template": {
+      "name": "&lt;TEMPLATE_NAME&gt;",
+      "language": {
+        "code": "&lt;TEMPLATE_LANGUAGE&gt;"
+      },
+      "components": [\
+        {\
+          "type": "body",\
+          "parameters": [\
+            { "type": "text", "text": "<MESSAGE_BODY_TEXT_VARIABLE_1>" },\
+            { "type": "text", "text": "<MESSAGE_BODY_TEXT_VARIABLE_2>" }\
+          ]\
+        },\
+        {\
+          "type": "carousel",\
+          "cards": [\
+            {\
+              "card_index": 0,\
+              "components": [\
+                {\
+                  "type": "header",\
+                  "parameters": [\
+                    {\
+                      "type": "product",\
+                      "product": {\
+                        "product_retailer_id": "<PRODUCT_ID_1>",\
+                        "catalog_id": "&lt;CATALOG_ID&gt;"\
+                      }\
+                    }\
+                  ]\
+                }\
+                // Add additional components (e.g., buttons) here if your template defines them\
+              ]\
+            }\
+            // Add additional cards here, incrementing card_index for each\
+          ]\
+        }\
+      ]
+    }
+  }'
+```
+
+### Request parameters
+
+| Placeholder | Description | Example Value |
+| --- | --- | --- |
+| `&lt;CARD_INDEX&gt;`<br />_Integer_ | **Required.**<br />Zero-indexed order in which card should appear within the card carousel. `0` indicates first card, `1` indicates second card, etc. | `0` |
+| `&lt;CATALOG_ID&gt;`<br />_String_ | **Required.**<br />ID of [connected ecommerce catalog](https://www.facebook.com/business/help/158662536425974) containing the product. | `194836987003835` |
+| `&lt;MESSAGE_BODY_TEXT_VARIABLE&gt;`<br />_Object_ | **Required if template message body text uses variables, otherwise omit.**<br />Object describing a message variable. If the template uses multiple variables, you must define an object for each variable.<br />Supports `text`, `currency`, and `date_time` types. See [Messages Parameters](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api#parameter-object).<br />There is no maximum character limit on this value, but it does count against the message body text limit of 1024 characters. | ```<br />{<br />"type":"text",<br />"text": "Pablo"<br />}<br />``` |
+| `&lt;PRODUCT_ID&gt;`<br />_String_ | **Required.**<br />Product ID. | `vrpj01fvwp` |
+| `&lt;TEMPLATE_LANGUAGE&gt;`<br />_String_ | **Required.**<br />Template [language and locale code](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/supported-languages). | `en_US` |
+| `&lt;TEMPLATE_NAME&gt;`<br />_String_ | **Required.**<br />Template name.<br />Maximum 512 characters. | `carousel_template_media_cards_v1` |
+| `&lt;WHATSAPP_USER_PHONE_NUMBER&gt;`<br />_String_ | **Required.**<br />WhatsApp user phone number. | `+16505551234` |
+
+### Example request
+
+This example request sends an approved template named “carousel_template_product_cards_v1”. It supplies a single body text variable value (which the template requires) and three product cards. Each card identifies where it should appear in the carousel (card_index), as well as the product ID and catalog ID where the card’s product details (title, description, price, etc.) can be found.
+
+```
+curl 'https://graph.facebook.com/v24.0/179776755229976/messages' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+-d '
+\{
+  "messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": "+16505551234",
+  "type": "template",
+  "template": {
+    "name": "carousel_template_product_cards_v1",
+    "language": {
+      "code": "en_US"
+    },
+    "components": [\
+      {\
+        "type": "body",\
+        "parameters": [\
+          {\
+            "type": "text",\
+            "text": "Pablo"\
+          }\
+        ]\
+      },\
+      {\
+        "type": "carousel",\
+        "cards": [\
+          {\
+            "card_index": 0,\
+            "components": [\
+              {\
+                "type": "header",\
+                "parameters": [\
+                  {\
+                    "type": "product",\
+                    "product": {\
+                      "product_retailer_id": "vrpj01fvwp",\
+                      "catalog_id": "194836987003835"\
+                    }\
+                  }\
+                ]\
+              }\
+            ]\
+          },\
+          {\
+            "card_index": 1,\
+            "components": [\
+              {\
+                "type": "header",\
+                "parameters": [\
+                  {\
+                    "type": "product",\
+                    "product": {\
+                      "product_retailer_id": "va2l5ioeat",\
+                      "catalog_id": "194836987003835"\
+                    }\
+                  }\
+                ]\
+              }\
+            ]\
+          },\
+          {\
+            "card_index": 2,\
+            "components": [\
+              {\
+                "type": "header",\
+                "parameters": [\
+                  {\
+                    "type": "product",\
+                    "product": {\
+                      "product_retailer_id": "sqpjv0mgde",\
+                      "catalog_id": "194836987003835"\
+                    }\
+                  }\
+                ]\
+              }\
+            ]\
+          }\
+        ]\
+      }\
+    ]
+  }
+}'
+```
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Product cards
+
+View buttons
+
+URL buttons
+
+Catalogs
+
+Webhooks
+
+Creating product card carousel templates
+
+Request syntax
+
+Request parameters
+
+Example request
+
+Sending product card carousel templates
+
+Request syntax
+
+Request parameters
+
+Example request
+
+* * *

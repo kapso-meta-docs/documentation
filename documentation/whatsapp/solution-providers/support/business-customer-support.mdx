@@ -1,0 +1,110 @@
+
+# Support for onboarded business customers
+
+Updated: Nov 14, 2025
+
+This document is intended to solve common problems encountered by business customers who have been onboarded onto the WhatsApp Business Platform by a [solution provider](https://developers.facebook.com/documentation/business-messaging/whatsapp/solution-providers/overview).
+
+## Contacting support
+
+If you were onboarded to the WhatsApp Business Platform by a solution provider and you have [registered](https://developers.facebook.com/async/registration/) as a Meta developer, you can get help by opening a Direct Support ticket using the **Ask a Question** button at:
+
+[https://business.facebook.com/direct-support/](https://business.facebook.com/direct-support/)
+
+See our [Direct Support Information](https://www.facebook.com/business/help/182669425521252) Help Center article for more information about Direct Support.
+
+## Billing and payments
+
+### Billing and payment support
+
+To get support specifically related to billing, payments, and payment methods, open a [Direct Support](https://business.facebook.com/direct-support/) ticket with the following form selections:
+
+**Topic** — **Dev: Billing, Credit & Pricing**
+**Request Type** — **Credit Card Billing**
+
+If you do not see the **Dev: Billing, Credit & Pricing** topic, please contact your Tech Provider or Tech Partner and ask them to open a ticket for you.
+
+### Add a payment method
+
+If you have been onboarded to the WhatsApp Business Platform by a Tech Provider or Tech Partner, you must add a payment method to your WhatsApp Business Account before you can use their app to send and receive messages to WhatsApp users.
+
+See our [Add a credit card to your WhatsApp Business Platform account](https://www.facebook.com/business/help/488291839463771) Help Center article to learn how to add a payment method to your account.
+
+For more information about how pricing works on the WhatsApp Business Platform, see our [About billing for your WhatsApp Business account](https://www.facebook.com/business/help/2225184664363779?id=2129163877102343) Help Center article.
+
+### Switch partners and remove previous line of credit
+
+If your business customer worked with a partner in the past and still shares the previous credit line, they may see an error when attempting to switch to a new partner.
+
+Backup your business customer’s messages.
+Disconnect the business from Whatsapp Business app.
+Reconnect your business in Whatsapp Business app.
+Start onboarding process using the [coexistence](https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/onboarding-business-app-users#onboarding-whatsapp-business-app-users--aka--coexistence--) flow.
+
+### Transaction support
+
+To get support for a specific transaction:
+
+access the Meta Business Suite **Billing & payments** panel at [https://business.facebook.com/billing_hub/](https://business.facebook.com/billing_hub/).
+locate the transaction in either the **Accounts > Whats Business accounts** tab, or the **Payment activity** panel.
+copy the entire transaction ID
+open a [Direct Support](https://business.facebook.com/direct-support/) ticket and include the transaction ID in the ticket
+
+![](https://scontent-lax3-2.xx.fbcdn.net/v/t39.2365-6/466908269_1627253861482438_5318686688053211395_n.png?_nc_cat=100&ccb=1-7&_nc_sid=e280be&_nc_ohc=gJGPRJaRwksQ7kNvwHP6irK&_nc_oc=AdmzZv9EohN1fQlek9lTi_cNixUQVvGzGAx7ZKiB2tkSnvDV7EkpRxUEZhwo7hnEBq8&_nc_zt=14&_nc_ht=scontent-lax3-2.xx&_nc_gid=sSgI5mj2j9tea4klTeHwyw&oh=00_AfmmQoV9TBqToknYyCpNTaSi5y3uR0TbsKkvGEvfkJ7bBQ&oe=695524B8)
+
+### Payment errors
+
+These are common payment errors you may encounter in the Meta Business Suite. If the proposed possible solutions do not work, please [contact support](https://developers.facebook.com/documentation/business-messaging/whatsapp/solution-providers/support/business-customer-support#contacting-support).
+
+| Error title and description | Possible solution |
+| --- | --- |
+| **_&lt;CARD_TYPE&gt; &lt;CARD_NUMBER&gt; hasn’t been verified._**<br />_We weren’t able to complete verification, please try again._ | Try again, making sure you are correctly entering the one-time-password sent to you by your bank.<br />Make sure you are able to receive your bank’s one-time-password code.<br />Contact your card’s issuing bank and ask if or why your card was blocked.<br />Try again after a few days.<br />Try another card. |
+| **Couldn’t save payment method**<br />Couldn’t save payment method. You’ve already saved this payment method to the maximum number of ad accounts. Please use a different payment method. | Use an alternative credit card.<br />Note that we cannot increase the maximum number of accounts sharing a given credit card. There are no exceptions to this limitation. |
+| **Request Not Completed**<br />We noticed something unusual and, for your security, this request couldn’t be completed. Please try again later, or visit our Help Center. | Ask your card’s issuing bank if any restrictions have been placed on the card.<br />Try another card. |
+| **Something went wrong**<br />We couldn’t complete your request. Please try again later. | Try again in a few days.<br />Try another card. |
+
+## Display names
+
+Once a business phone number’s display name is reviewed, business customers can change their display name using WhatsApp Manager. Newly edited display names must under display name review again.
+
+To edit a display name via WhatsApp Manager:
+
+Access WhatsApp Manager at [https://business.facebook.com/wa/manage/home/](https://business.facebook.com/wa/manage/home/).
+Navigate to **Account tools** \> **Phone numbers**.
+Click the phone number.
+Click the **Profile** tab.
+Under **Display name**, use the **Edit** button to submit a new name.
+
+This action, as well as the review outcome, triggers a [phone_number_name_update](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/reference/phone_number_name_update) webhook.
+
+## Unable to send template messages
+
+If you are unable to send template messages, you likely have not added a valid payment method to your account. See our [Add a credit card to your WhatsApp Business Platform account](https://www.facebook.com/business/help/488291839463771) Help Center article to learn now to add a valid payment method.
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Contacting support
+
+Billing and payments
+
+Billing and payment support
+
+Add a payment method
+
+Switch partners and remove previous line of credit
+
+Transaction support
+
+Payment errors
+
+Display names
+
+Unable to send template messages
+
+* * *

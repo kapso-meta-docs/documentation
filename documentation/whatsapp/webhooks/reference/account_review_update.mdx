@@ -1,0 +1,84 @@
+
+# account_review_update webhook reference
+
+Updated: Oct 22, 2025
+
+This reference describes trigger events and payload contents for the WhatsApp Business Account `account_review_update` webhook.
+
+The **account_review_update** webhook notifies you when a WhatsApp Business Account has been reviewed against our policy guidelines.
+
+## Triggers
+
+A WhatsApp Business Account is approved.
+A WhatsApp Business Account is rejected.
+A decision on a WhatsApp Business Account approval has been deferred or is awaiting more information.
+
+## Syntax
+
+```
+\{
+  "entry": [\
+    {\
+      "id": "&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;",\
+      "time": &lt;WEBHOOK_TRIGGER_TIMESTAMP&gt;,\
+      "changes": [\
+        {\
+          "value": {\
+            "decision": "&lt;DECISION&gt;"\
+          },\
+          "field": "account_review_update"\
+        }\
+      ]\
+    }\
+  ],
+  "object": "whatsapp_business_account"
+}
+```
+
+## Payload parameters
+
+| Placeholder | Description | Example value |
+| --- | --- | --- |
+| `&lt;DECISION&gt;`<br />_String_ | Indicates WhatsApp Business Account (“WABA”) review outcome.<br />Values can be:<br />`APPROVED` — Indicates WABA approved and ready for use.<br />`REJECTED` — Indicates WABA was rejected because it doesn’t meet our policy requirements and cannot be used with our APIs.<br />`PENDING` — Indicates a review decision is still pending and WABA currently cannot be used with our APIs.<br />`DEFERRED` — Indicates a review decision has been deferred and the WABA currently cannot be used with our APIs. | `APPROVED` |
+| `&lt;WEBHOOK_TRIGGER_TIMESTAMP&gt;`<br />_Integer_ | Unix timestamp indicating when the webhook was triggered. | `1739321024` |
+| `&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;`<br />_String_ | WhatsApp Business Account ID. | `102290129340398` |
+
+## Example payload
+
+```
+\{
+  "entry": [\
+    {\
+      "id": "102290129340398",\
+      "time": 1739321024,\
+      "changes": [\
+        {\
+          "value": {\
+            "decision": "APPROVED"\
+          },\
+          "field": "account_review_update"\
+        }\
+      ]\
+    }\
+  ],
+  "object": "whatsapp_business_account"
+}
+```
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Triggers
+
+Syntax
+
+Payload parameters
+
+Example payload
+
+* * *

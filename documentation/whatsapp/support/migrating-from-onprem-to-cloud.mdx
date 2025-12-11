@@ -1,0 +1,309 @@
+
+# Migrating from On-Premises API to Cloud API
+
+Updated: Nov 5, 2025
+
+This document explains how to migrate business phone numbers from On-Premises API to Cloud API.
+
+Note that migrating a business phone number from one API to another is not the same as [migrating a number from one WhatsApp Business Account (WABA) to another](https://developers.facebook.com/docs/whatsapp/business-management-api/guides/migrate-phone-to-different-waba).
+
+## How It Works
+
+The migration process involves generating metadata about the business phone number, then using that data to register the number for use with Cloud API. This in turn deregisters the number from On-Premises API, since a number can only be registered for use with one API at a time.
+
+Migration does NOT affect:
+
+the business phone number’s display name, verification status, or quality rating
+templates used by the business phone number, or their statuses
+the owning WABA, its Official Business Account status, or its messaging limit
+
+In order to support migration, however, you must be aware of any [API differences](https://developers.facebook.com/documentation/business-messaging/whatsapp/support/migrating-from-onprem-to-cloud#api-differences) and take appropriate action to address them before performing the migration steps described in this document.
+
+## Requirements
+
+### Meta App
+
+You must have a Meta business app that is able to use Cloud API and Business Management API with onboarded customer data, and that is able to digest Cloud API and Business Management API [webhooks](https://developers.facebook.com/documentation/business-messaging/whatsapp/support/migrating-from-onprem-to-cloud#webhooks). The app must also be associated with, or claimed by, your verified Meta Business Account.
+
+If you do not have a Meta business app, or if you have one but have not configured the WhatsApp product on it, complete the steps in our Cloud API [Get Started](https://developers.facebook.com/documentation/business-messaging/whatsapp/get-started) guide. Completing these steps will generate all of the assets needed to test Cloud API and Business Management API.
+
+### App Review
+
+Your Meta app must undergo [App Review](https://developers.facebook.com/documentation/business-messaging/whatsapp/solution-providers/app-review) and be approved (i.e. have advanced access) for the **whatsapp_business_messaging** and **whatsapp_business_management** permissions.
+
+## Best Practices
+
+After making sure that your app can handle all API differences, we recommend that you first migrate a low-volume business phone number and verify that all functionality that you intend to offer with Cloud API works correctly. After verifying that everything is working properly, migrate additional numbers.
+
+We also recommend that you perform migration when traffic to your On-Premises API deployment is low.
+
+## API Differences
+
+The following On-Premises API features are either unsupported or are treated differently by Cloud API. Make sure your app is able to handle these differences before starting the migration process.
+
+### Webhooks
+
+Cloud API and Business Management API webhooks payload structures are different from On-Premises API payload structures. We recommend that you create a new webhook endpoint that can handle them both. See [Webhooks](https://developers.facebook.com/documentation/business-messaging/whatsapp/webhooks/overview).
+
+Note that after you migrate a business phone number to Cloud API, you must use the [WhatsApp Business Account > Subscribed Apps](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-account/subscribed-apps-api) endpoint to **subscribe your Meta app to webhooks on the WABA** associated with the business number:
+
+#### Request Syntax
+
+```
+curl -X POST 'https://graph.facebook.com/v17.0/&lt;WABA_ID&gt;/subscribed_apps' \
+-H 'Authorization: Bearer EAAJB...'
+```
+
+Once migration to Cloud API is complete, the business phone number’s On-Premises API webhooks will no longer be delivered and Cloud API webhooks delivery will begin.
+
+### Media
+
+Media IDs for any media uploaded to On-Premises API cannot be used when sending messages with Cloud API, so you must either [reupload media using Cloud API](https://developers.facebook.com/documentation/business-messaging/whatsapp/business-phone-numbers/media#upload-media) to generate new media IDs, or use media URLs if the media is hosted on a public server. See [Media Messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/send-messages#media-messages) and [Media-Based Message Templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/overview#media).
+
+Note that to ensure message integrity, some media hosting domains that are allowed by On-Premises API are not allowed by Cloud API. If you use a hosting service for your media, we recommend that you test media URLs in free-form messages and template messages prior to migration. If you believe your host is blocked in error, please [contact support](https://developers.facebook.com/documentation/business-messaging/whatsapp/support).
+
+### Error Codes
+
+Cloud API and Business Management API error codes are different from On-Premises API error codes. See our [Error Codes](https://developers.facebook.com/documentation/business-messaging/whatsapp/support/error-codes) document.
+
+### Property Validation
+
+On-Premises API can accept unknown properties in message post body payloads, but Cloud API will reject these requests, so make your message send requests use only supported properties.
+On-Premises API allows the omission of button indexes when sending messages with only one button, but Cloud API will reject these requests, so make sure your message send requests that include buttons also include indexes and their values.
+On-Premises API accepts text strings that contain leading or trailing spaces (or only spaces) on action and button object properties when sending interactive messages, but Cloud API will reject these requests.
+
+### Push-To-Talk Messages
+
+On-Premises identifies push-to-talk (PTT) messages in webhooks by setting `messages.type` to `voice`, but Cloud API identifies PTT messages by setting `messages.audio.voice` to `true`.
+
+### Stickerpacks
+
+Cloud API does not support stickerpacks.
+
+## Downtime
+
+Downtime begins as soon as you perform the final migration step (registering the number for use with Cloud API) and should only last a few seconds. During this time, messages sent to the number from WhatsApp users will be silently dropped.
+
+We highly encourage you to schedule migration during a time when the number experiences low activity, to minimize any downtime impact.
+
+## Throughput
+
+If the On-Premises business phone number has multi-connect running 2 or more shards, it will automatically be upgraded to [high throughput](https://developers.facebook.com/documentation/business-messaging/whatsapp/throughput) on Cloud API.
+
+## Official Business Accounts
+
+If you are migrating a business phone number that has an [Official Business Account (OBA)](https://developers.facebook.com/documentation/business-messaging/whatsapp/official-business-accounts) status, its status will be preserved if you include its metadata (generated in step 2) when registering the number (step 3). If you omit this data, the number will lose its OBA status.
+
+## Migration Support
+
+If you have questions or need help with migration, submit a Direct Support ticket with:
+
+Topic: **WABiz: Cloud API**
+Request Type: **On-Premises API -> Cloud API Migration Issues**
+
+## Step 1: Disable Two-Step Verification
+
+If you know the business phone number’s PIN, you can skip this step.
+
+You will need the business phone number’s PIN when performing step 3, so if you do not know the PIN, you must first [disable two-step verification](https://developers.facebook.com/docs/whatsapp/on-premises/reference/settings/two-step-verification#disable) on the business phone number. If you do not own the business phone number, ask the owner to disable it for you.
+
+## Step 2: Generate Phone Number Metadata
+
+Use the [Backup and Restore API](https://developers.facebook.com/docs/whatsapp/on-premises/reference/settings/backup-and-restore) to generate metadata about your business phone number.
+
+### Request Syntax
+
+```
+POST /v1/settings/backup
+\{
+  "password": "&lt;PASSWORD&gt;"
+}
+```
+
+The `&lt;PASSWORD&gt;` can be any string. This value will be used to encode the metadata, so keep track of it as you will need it in the next step.
+
+### Response
+
+```
+\{
+  "settings": {
+    "data": "&lt;METADATA&gt;"
+  },
+  "meta": {
+    "api_status": "&lt;API_STATUS&gt;",
+    "version": "&lt;API_VERSION&gt;"
+  }
+}
+```
+
+The API will return an encoded string assigned to the `data` property that describes your business phone number and its settings. Capture this value as you will need it in the next step.
+
+`&lt;METADATA&gt;` — This is the encoded string that describes your business phone number and its settings. Capture this value as you will need it in the next step.
+`&lt;API_STATUS&gt;` — The status of your On-Premises API deployment.
+`&lt;API_VERSION&gt;` —The On-Premises API version number that you are running.
+
+### Example Request
+
+```
+curl 'https://localhost:9090/v1/settings/backup' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+-d '
+\{
+  "password": "tacocat"
+}'
+```
+
+### Example Response
+
+```
+\{
+  "settings": {
+    "data": "V0FCS..."
+  },
+  "meta": {
+    "api_status": "stable",
+    "version": "2.49.3"
+  }
+}
+```
+
+## Step 3: Register the Number
+
+A one-time password (OTP) is not required if the backup metadata from **Step 2** above is passed correctly and with no modifications to Cloud API during **Step 3** (this step).
+
+Use the Cloud API [WhatsApp Business Phone Number > Register](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/register-api) endpoint to register the number for use with Cloud API.
+
+Include the encoded business phone number metadata value and the password from the previous step. Although you can register the number without this data, the business phone number’s profile data will be lost if not included, which can affect the WhatsApp Business Account’s status as an Official Business Account.
+
+### Request Syntax
+
+```
+POST /&lt;BUSINESS_PHONE_NUMBER_ID&gt;/register
+```
+
+### Post Body
+
+```
+\{
+  "messaging_product": "whatsapp",
+  "pin": "&lt;NEW_OR_EXISTING_PIN&gt;",
+  "backup": {
+    "password": "&lt;PASSWORD&gt;",
+    "data": "&lt;METADATA&gt;"
+  }
+}
+```
+
+`<NEW_OR_EXISTING_PIN`\> — The existing PIN or the PIN you want to set on the business phone number.
+`<PASSWORD`\> — The password you used to generate your business phone number’s metadata in the previous step.
+`<METADATA`\> — The encoded string that describes your business phone number and its settings, generated in the previous step.
+
+### Response
+
+```
+\{
+  "success": &lt;SUCCESS&gt;
+}
+```
+
+The API will respond with `success` set to `true` if registration is successful, or `false` if there was an error.
+
+### Example Request
+
+```
+curl 'https://graph.facebook.com/v24.0/110200345501442/register' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+-d '
+\{
+  "messaging_product": "whatsapp",
+  "pin": "134568",
+  "backup": {
+    "password": "tacocat",
+    "data": "V0FCS..."
+  }
+}'
+```
+
+### Example Response
+
+```
+\{
+  "success": true
+}
+```
+
+## Step 4: Check Messaging Health Status (Optional)
+
+Request the `health_status` field on the business phone number and verify that it can be used for messaging with Cloud API. See [Messaging Health Status](https://developers.facebook.com/documentation/business-messaging/whatsapp/support/health-status).
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+How It Works
+
+Requirements
+
+Meta App
+
+App Review
+
+Best Practices
+
+API Differences
+
+Webhooks
+
+Request Syntax
+
+Media
+
+Error Codes
+
+Property Validation
+
+Push-To-Talk Messages
+
+Stickerpacks
+
+Downtime
+
+Throughput
+
+Official Business Accounts
+
+Migration Support
+
+Step 1: Disable Two-Step Verification
+
+Step 2: Generate Phone Number Metadata
+
+Request Syntax
+
+Response
+
+Example Request
+
+Example Response
+
+Step 3: Register the Number
+
+Request Syntax
+
+Post Body
+
+Response
+
+Example Request
+
+Example Response
+
+Step 4: Check Messaging Health Status (Optional)
+
+* * *

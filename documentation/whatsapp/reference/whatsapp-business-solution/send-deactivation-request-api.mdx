@@ -1,0 +1,767 @@
+
+# WhatsApp Business Multi-Partner Solutions - Send Deactivation Request API
+
+Copy for LLM
+
+[View as Markdown](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-solution/send-deactivation-request-api/v23.0.md/)
+
+Version
+
+v23.0
+
+API for sending deactivation requests for Multi-Partner Solutions.
+
+This endpoint allows solution partners to request deactivation of their
+
+Multi-Partner Solutions.
+
+## Base URL
+
+| https://graph.facebook.com |
+
+## Endpoints
+
+| POST | [/{Version}/{Solution-ID}/send_deactivation_request](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-solution/send-deactivation-request-api#post-version-solution-id-send-deactivation-request) |
+
+* * *
+
+## POST /{Version}/{Solution-ID}/send_deactivation_request
+
+Submit a deactivation request for a Multi-Partner Solution. This initiates
+
+a workflow to transition the solution from its current state to deactivated,
+
+following proper business validation and approval processes.
+
+Use Cases:
+
+Request deactivation of an active Multi-Partner Solution
+
+Initiate solution lifecycle transition management
+
+Trigger business workflow for solution deactivation approval
+
+Programmatically manage solution lifecycle states
+
+Business Logic:
+
+Solution must be in ACTIVE or INITIATED state to be eligible for deactivation
+
+Deactivation requests are processed asynchronously
+
+Solution status will transition to PENDING_DEACTIVATION during processing
+
+Final deactivation requires business approval workflow completion
+
+Rate Limiting:
+
+Standard Graph API rate limits apply. Use appropriate retry logic with exponential backoff.
+
+Workflow:
+
+Validate solution ownership and permissions
+
+Check solution eligibility for deactivation
+
+Submit deactivation request to business workflow
+
+Return confirmation with tracking identifier
+
+### Request Syntax
+
+**POST**/{Version}/{Solution-ID}/send_deactivation_request
+
+Try it
+
+Select language
+
+cURLJavaScriptPython
+
+* * *
+
+```
+curl --request POST \
+  --url 'https://graph.facebook.com/{Version}/{Solution-ID}/send_deactivation_request' \
+  --header 'Authorization: Bearer <Token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "reason": "Solution no longer needed for current business operations"
+}'
+```
+
+Select status code
+
+200400401403404422429500
+
+* * *
+
+```
+\{
+  "successful_request": {
+    "summary": "Successful deactivation request submission",
+    "value": {
+      "success": true,
+      "message": "Deactivation request submitted successfully",
+      "request_id": "deactivation_req_1234567890"
+    }
+  }
+}
+```
+
+Header Parameters
+
+* * *
+
+User-Agentstring
+
+The user agent string identifying the client software making the request.
+
+Authorizationstring·required
+
+Bearer token for API authentication. This should be a valid access token obtained through the appropriate OAuth flow or system user token.
+
+Path Parameters
+
+* * *
+
+Versionstring·required
+
+Graph API version to use for this request. Determines the API behavior and available features.
+
+Solution-IDstring·required
+
+Your Multi-Partner Solution ID. This ID is provided when you create the solution
+
+and can be found in your Partner Dashboard or through solution management APIs.
+
+Request BodyOptional
+
+* * *
+
+Content Type: application/json
+
+Schema: WhatsAppBusinessSolutionDeactivationRequest
+
+Show child attributes
+
+* * *
+
+WhatsAppBusinessSolutionDeactivationRequest
+
+* * *
+
+reasonstring
+
+Optional reason for the deactivation request
+
+Responses
+
+* * *
+
+Submit a deactivation request for a Multi-Partner Solution. This initiates
+
+a workflow to transition the solution from its current state to deactivated,
+
+following proper business validation and approval processes.
+
+Use Cases:
+
+Request deactivation of an active Multi-Partner Solution
+
+Initiate solution lifecycle transition management
+
+Trigger business workflow for solution deactivation approval
+
+Programmatically manage solution lifecycle states
+
+Business Logic:
+
+Solution must be in ACTIVE or INITIATED state to be eligible for deactivation
+
+Deactivation requests are processed asynchronously
+
+Solution status will transition to PENDING_DEACTIVATION during processing
+
+Final deactivation requires business approval workflow completion
+
+Rate Limiting:
+
+Standard Graph API rate limits apply. Use appropriate retry logic with exponential backoff.
+
+Workflow:
+
+Validate solution ownership and permissions
+
+Check solution eligibility for deactivation
+
+Submit deactivation request to business workflow
+
+Return confirmation with tracking identifier
+
+200
+
+Successfully submitted deactivation request
+
+Content Type: application/json
+
+Schema: WhatsAppBusinessSolutionDeactivationResponse
+
+Show child attributes
+
+* * *
+
+WhatsAppBusinessSolutionDeactivationResponse
+
+* * *
+
+successboolean·required
+
+Indicates whether the deactivation request was successfully submitted
+
+* * *
+
+messagestring·required
+
+Human-readable message describing the result
+
+* * *
+
+request_idstring
+
+Unique identifier for tracking the deactivation request
+
+400
+
+Bad Request - Invalid parameters or malformed request
+
+Content Type: application/json
+
+Schema: GraphAPIError
+
+Show child attributes
+
+* * *
+
+GraphAPIError
+
+* * *
+
+errorobject·required
+
+Show child attributes
+
+* * *
+
+messagestring·required
+
+Human-readable error message
+
+* * *
+
+typestring·required
+
+Error category type
+
+* * *
+
+codeinteger·required
+
+Numeric error code
+
+* * *
+
+error_subcodeinteger
+
+More specific error subcode when available
+
+* * *
+
+fbtrace_idstring
+
+Unique identifier for debugging and support requests with Meta
+
+* * *
+
+is_transientboolean
+
+Indicates whether this error is temporary and the request should be retried
+
+* * *
+
+error_user_titlestring
+
+User-friendly error title for display purposes
+
+* * *
+
+error_user_msgstring
+
+User-friendly error message for display purposes
+
+401
+
+Unauthorized - Invalid or missing access token
+
+Content Type: application/json
+
+Schema: GraphAPIError
+
+Show child attributes
+
+* * *
+
+GraphAPIError
+
+* * *
+
+errorobject·required
+
+Show child attributes
+
+* * *
+
+messagestring·required
+
+Human-readable error message
+
+* * *
+
+typestring·required
+
+Error category type
+
+* * *
+
+codeinteger·required
+
+Numeric error code
+
+* * *
+
+error_subcodeinteger
+
+More specific error subcode when available
+
+* * *
+
+fbtrace_idstring
+
+Unique identifier for debugging and support requests with Meta
+
+* * *
+
+is_transientboolean
+
+Indicates whether this error is temporary and the request should be retried
+
+* * *
+
+error_user_titlestring
+
+User-friendly error title for display purposes
+
+* * *
+
+error_user_msgstring
+
+User-friendly error message for display purposes
+
+403
+
+Forbidden - Insufficient permissions or access denied
+
+Content Type: application/json
+
+Schema: GraphAPIError
+
+Show child attributes
+
+* * *
+
+GraphAPIError
+
+* * *
+
+errorobject·required
+
+Show child attributes
+
+* * *
+
+messagestring·required
+
+Human-readable error message
+
+* * *
+
+typestring·required
+
+Error category type
+
+* * *
+
+codeinteger·required
+
+Numeric error code
+
+* * *
+
+error_subcodeinteger
+
+More specific error subcode when available
+
+* * *
+
+fbtrace_idstring
+
+Unique identifier for debugging and support requests with Meta
+
+* * *
+
+is_transientboolean
+
+Indicates whether this error is temporary and the request should be retried
+
+* * *
+
+error_user_titlestring
+
+User-friendly error title for display purposes
+
+* * *
+
+error_user_msgstring
+
+User-friendly error message for display purposes
+
+404
+
+Not Found - Solution ID does not exist or is not accessible
+
+Content Type: application/json
+
+Schema: GraphAPIError
+
+Show child attributes
+
+* * *
+
+GraphAPIError
+
+* * *
+
+errorobject·required
+
+Show child attributes
+
+* * *
+
+messagestring·required
+
+Human-readable error message
+
+* * *
+
+typestring·required
+
+Error category type
+
+* * *
+
+codeinteger·required
+
+Numeric error code
+
+* * *
+
+error_subcodeinteger
+
+More specific error subcode when available
+
+* * *
+
+fbtrace_idstring
+
+Unique identifier for debugging and support requests with Meta
+
+* * *
+
+is_transientboolean
+
+Indicates whether this error is temporary and the request should be retried
+
+* * *
+
+error_user_titlestring
+
+User-friendly error title for display purposes
+
+* * *
+
+error_user_msgstring
+
+User-friendly error message for display purposes
+
+422
+
+Unprocessable Entity - Solution is not eligible for deactivation
+
+Content Type: application/json
+
+Schema: GraphAPIError
+
+Show child attributes
+
+* * *
+
+GraphAPIError
+
+* * *
+
+errorobject·required
+
+Show child attributes
+
+* * *
+
+messagestring·required
+
+Human-readable error message
+
+* * *
+
+typestring·required
+
+Error category type
+
+* * *
+
+codeinteger·required
+
+Numeric error code
+
+* * *
+
+error_subcodeinteger
+
+More specific error subcode when available
+
+* * *
+
+fbtrace_idstring
+
+Unique identifier for debugging and support requests with Meta
+
+* * *
+
+is_transientboolean
+
+Indicates whether this error is temporary and the request should be retried
+
+* * *
+
+error_user_titlestring
+
+User-friendly error title for display purposes
+
+* * *
+
+error_user_msgstring
+
+User-friendly error message for display purposes
+
+429
+
+Too Many Requests - Rate limit exceeded
+
+Content Type: application/json
+
+Schema: GraphAPIError
+
+Show child attributes
+
+* * *
+
+GraphAPIError
+
+* * *
+
+errorobject·required
+
+Show child attributes
+
+* * *
+
+messagestring·required
+
+Human-readable error message
+
+* * *
+
+typestring·required
+
+Error category type
+
+* * *
+
+codeinteger·required
+
+Numeric error code
+
+* * *
+
+error_subcodeinteger
+
+More specific error subcode when available
+
+* * *
+
+fbtrace_idstring
+
+Unique identifier for debugging and support requests with Meta
+
+* * *
+
+is_transientboolean
+
+Indicates whether this error is temporary and the request should be retried
+
+* * *
+
+error_user_titlestring
+
+User-friendly error title for display purposes
+
+* * *
+
+error_user_msgstring
+
+User-friendly error message for display purposes
+
+500
+
+Internal Server Error - Unexpected server error
+
+Content Type: application/json
+
+Schema: GraphAPIError
+
+Show child attributes
+
+* * *
+
+GraphAPIError
+
+* * *
+
+errorobject·required
+
+Show child attributes
+
+* * *
+
+messagestring·required
+
+Human-readable error message
+
+* * *
+
+typestring·required
+
+Error category type
+
+* * *
+
+codeinteger·required
+
+Numeric error code
+
+* * *
+
+error_subcodeinteger
+
+More specific error subcode when available
+
+* * *
+
+fbtrace_idstring
+
+Unique identifier for debugging and support requests with Meta
+
+* * *
+
+is_transientboolean
+
+Indicates whether this error is temporary and the request should be retried
+
+* * *
+
+error_user_titlestring
+
+User-friendly error title for display purposes
+
+* * *
+
+error_user_msgstring
+
+User-friendly error message for display purposes
+
+Select language
+
+cURLJavaScriptPython
+
+* * *
+
+```
+curl --request POST \
+  --url 'https://graph.facebook.com/{Version}/{Solution-ID}/send_deactivation_request' \
+  --header 'Authorization: Bearer <Token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "reason": "Solution no longer needed for current business operations"
+}'
+```
+
+Select status code
+
+200400401403404422429500
+
+* * *
+
+```
+\{
+  "successful_request": {
+    "summary": "Successful deactivation request submission",
+    "value": {
+      "success": true,
+      "message": "Deactivation request submitted successfully",
+      "request_id": "deactivation_req_1234567890"
+    }
+  }
+}
+```
+
+## Authentication
+
+| **Scheme** | **Type** | **Location** |
+| bearerAuth | HTTP Bearer | Header: Authorization |
+
+### Usage Examples
+
+bearerAuth:
+
+Include Authorization: Bearer your-token-here in request headers
+
+### Global Authentication Requirements
+
+All endpoints require:
+
+bearerAuth
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+* * *

@@ -1,0 +1,404 @@
+
+# Load Testing on Cloud API
+
+Updated: Oct 31, 2025
+
+## Introduction to Load Test on Cloud API
+
+### What is an API Load Test?
+
+API Load Testing is a crucial process for assessing how well your application servers handle the expected production traffic. It allows you to systematically apply the anticipated load to your servers and observe how your application behaves. By conducting API Load Testing, you can identify any weaknesses or bottlenecks before your users encounter them, ensuring that your application is robust enough to handle the desired workload.
+
+At Meta, we recognize the importance of API Load Testing and provide a comprehensive feature within our WhatsApp Cloud API that enables you to simulate traffic on the messaging API endpoint and evaluate their performance under various conditions. This feature empowers you to examine the overall performance of your API integration and assess its ability to handle concurrent requests from a large number of virtual users.
+
+We understand the dynamic and demanding landscape of digital communication, and our commitment is firmly rooted in enabling businesses to thrive within it. By offering this feature, we empower our clients to stay ahead of the curve, delivering exceptional messaging services that can withstand the challenges posed by ever-increasing user demands and market fluctuations.
+
+### What types of Load Tests are available?
+
+At present, our Cloud API offers “Outbound Load Test.” This feature serves as a powerful tool for businesses to evaluate and enhance the resiliency of their WhatsApp Cloud API integration. By conducting Outbound Load Testing, clients can gain insightful measurements regarding their system’s performance and identify areas for improvement.
+
+The ability to proactively assess and optimize their systems is paramount for businesses aiming to provide seamless messaging experiences for their customers, even during periods of peak usage. By leveraging the Outbound Load Test feature, clients can gain confidence in the robustness and scalability of their WhatsApp Cloud API integration, ensuring that it can handle high message volumes without sacrificing performance or user experience.
+
+### Why should you perform Outbound Load Testing using Cloud API?
+
+Performing Outbound Load Testing using our Cloud API offers significant benefits in two distinct scenarios:
+
+**Solution Partners Tracking**: Solution Partners can leverage load testing to track the time series of API requests made and the corresponding responses received. This enables Solution Partners to gain valuable insights into the performance of their systems over time. By monitoring these metrics, Solution Partners can identify patterns, analyze response times, and ensure optimal service delivery to their clients.
+
+**Message Status Webhook Monitoring**: For businesses, load testing provides a means to monitor the number of message status webhooks received on their designated endpoint during the testing period. By analyzing webhook data, businesses can gauge the responsiveness and reliability of their systems in real-time. This allows them to proactively detect any issues, optimize their webhook handling processes, and ensure seamless message status updates for their users.
+
+In both scenarios, load testing serves as a powerful tool for assessing and improving webhook performance. Whether it is tracking API request-response dynamics or monitoring message status webhooks, load testing empowers businesses and Solution Partners to enhance their services, optimize workflows, and deliver exceptional user experiences.
+
+## Preparing for the Load Test
+
+To ensure a smooth and effective load test experience, appropriate preparation is crucial. In the case of an outbound load test with Meta, we provide essential components to facilitate the process. Specifically, we will furnish you with a designated test number that will serve as the sender of the load test messages. Additionally, a range of dummy numbers will be provided to act as end user numbers for the test.
+
+The test number we provide has been purposefully designed to process all the requests similar to a regular number would, but it will not deliver the messages to actual recipients. This thoughtful design prevents any inadvertent spamming of real numbers during the load test, maintaining the integrity of the process.
+
+To initiate the load test, clients are required to create load test requests via our Direct Support channel. This ensures streamlined communication and enables our team to provide prompt assistance and guidance throughout the testing phase.
+
+To set up the load test successfully, we kindly request the following information from our clients:
+
+**Existing Message Template Example**: We require a sample of the message template you intend to use for the load test. This includes the associated name and WhatsApp Business Account (WABA) linked to it. Providing us with this information allows us to accurately replicate your messaging setup during the load test, ensuring realistic testing conditions.
+
+**Webhook URL**: Please provide us with the URL of the webhook endpoint that will receive notifications and data from the load test. This enables us to capture and analyze the responses and behavior of your system during the test, allowing for thorough evaluation and optimization.
+
+**Webhook URL verify token**: Please provide us the webhook verify token so that we can override your Webhook URL to receive notifications.
+
+Once the load test session is confirmed, our dedicated support team will provide you with the necessary resources on the day of the load test, including:
+
+**Test Number**: We will furnish you with a dedicated test number that will serve as the sender for the load test messages. This number is specifically designed to process all the requests like a regular number would, without delivering the messages to actual recipients. This ensures the load test is conducted accurately while safeguarding the privacy of real numbers.
+
+**Access Token**: You will receive an access token that grants you the necessary authorization to initiate and monitor the load test.
+
+**Message Template**: We will provide the specific message template and its corresponding details to be used during the testing. This includes the content, structure, and any variables or placeholders that need to be included within the messages.
+
+Our support team will be available throughout the load test to provide guidance, address any queries, and ensure a smooth testing experience.
+
+**Note**: It is crucial to ensure that no incoming messages are sent to the test number when registering or obtaining the ID of the outbound number. Sending a message to the test number during the load test can trigger a circuit breaker mechanism, resulting in the disconnection of the load test number. To maintain a stable and uninterrupted load test session, please refrain from sending any messages to the designated test number during the setup and execution of the load test.
+
+## Load Testing Tools and Setup Guidelines
+
+There are certain tools that pair best depending on what development platform you use for load testing. The following are common platforms and their common load testing tools:
+
+| Development Platform | Tool |
+| --- | --- |
+| Java | [JMeter](https://developers.facebook.com/documentation/business-messaging/whatsapp/support/load-testing#jmeter) |
+| Python | [Locust](https://developers.facebook.com/documentation/business-messaging/whatsapp/support/load-testing#locust) |
+
+To conduct effective load testing, you will need the following tools: InfluxDB, Grafana and JMeter/Locust. Below are the steps to set up each component:
+
+#### InfluxDB:
+
+InfluxDB is a time-series database that works seamlessly with JMeter and Grafana. To install InfluxDB, visit [InfluxDB download](https://l.facebook.com/l.php?u=https%3A%2F%2Fportal.influxdata.com%2Fdownloads%2F&h=AT3sBKEW8DA_4HWSU8DZlHhZr1vaUyG3Ch7lWnesQvEPCF4yYMlWEa6ztRXYksaSVqmZB5iDLMMpSwmTa3JHedkTnkNnXNWofns_QD8pZK9_HWtji0YGWv86EDUqq-uefSNSqWdHYZ3q0A).
+
+Due to known issues with the 2.x version of InfluxDB, you need to download the 1.x version of InfluxDB. You can find the 1.x version if you follow the download link above and then scroll down to the bottom of the webpage and select **Are you interested in InfluxDB 1.x Open Source?**.
+
+#### Grafana:
+
+Grafana is an open-source analytics and monitoring solution that supports various databases. The most commonly used approaches involve building Grafana dashboards using InfluxDB and Prometheus. In this section, we will focus on the integration with JMeter and InfluxDB. To install Grafana, please visit the [Grafana download](https://l.facebook.com/l.php?u=https%3A%2F%2Fgrafana.com%2Fgrafana%2Fdownload%3Fpg%3Dget%26plcmt%3Dselfmanaged-box1-cta1%26platform%3Dmac&h=AT3sBKEW8DA_4HWSU8DZlHhZr1vaUyG3Ch7lWnesQvEPCF4yYMlWEa6ztRXYksaSVqmZB5iDLMMpSwmTa3JHedkTnkNnXNWofns_QD8pZK9_HWtji0YGWv86EDUqq-uefSNSqWdHYZ3q0A) page.
+
+#### JMeter:
+
+JMeter is a powerful open-source load testing tool. To install JMeter, follow the installation guide available at the [JMeter website](https://l.facebook.com/l.php?u=https%3A%2F%2Fjmeter.apache.org%2Fdownload_jmeter.cgi&h=AT3sBKEW8DA_4HWSU8DZlHhZr1vaUyG3Ch7lWnesQvEPCF4yYMlWEa6ztRXYksaSVqmZB5iDLMMpSwmTa3JHedkTnkNnXNWofns_QD8pZK9_HWtji0YGWv86EDUqq-uefSNSqWdHYZ3q0A).
+
+#### Locust:
+
+Locust provides a flexible and efficient way to simulate user behavior and generate load on your system. Download the [load test zip file](https://developers.facebook.com/micro_site/url/?click_from_context_menu=true&country=IE&destination=https%3A%2F%2Fdevelopers.facebook.com%2Fresources%2FLoadTest-py.zip&event_type=click&last_nav_impression_id=1KLU92oUeSpUvNoBF&max_percent_page_viewed=55&max_viewport_height_px=1009&max_viewport_width_px=1792&orig_http_referrer=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fwhatsapp%2Fcloud-api%2Fguides%2Fload-testing&orig_request_uri=https%3A%2F%2Fdevelopers.facebook.com%2Fajax%2Fdocs%2Fnav%2F%3Fpath1%3Dwhatsapp%26path2%3Dcloud-api%26path3%3Dguides%26path4%3Dload-testing&region=emea&scrolled=true&session_id=1A5EfT0NY2fOb0sOj&site=developers) provided by Meta and extract it.
+
+## Load Testing using JMeter with InfluxDB and Grafana
+
+Once you have installed the necessary components, follow these steps below to configure your setup using JMeter:
+
+To start **JMeter**, follow these steps:
+
+Download JMeter using the provided download link.
+Open the terminal and navigate to the JMeter folder.
+Browse to the “bin” folder within the JMeter directory.
+Run the following command to start the JMeter application: `./jmeter`
+
+By executing this command, JMeter will launch, and you will have access to the JMeter application interface, allowing you to create and configure your performance tests.
+
+Next step is to **import the test plan**. To import a sample test plan into JMeter, follow these steps:
+
+Download the [zipped test plan file](https://l.facebook.com/l.php?u=https%3A%2F%2Fscontent-lax3-2.xx.fbcdn.net%2Fv%2Ft39.8562-6%2F383083590_849533576487865_448384137962027554_n.zip%3F_nc_cat%3D111%26ccb%3D1-7%26_nc_sid%3Db8d81d%26_nc_ohc%3Dp0QRwMWaQ3YQ7kNvwGNi1t1%26_nc_oc%3DAdl3g-BnbcdzW6-twIA5hwra3UgY_zs3MBZJatzQULCdmoSRmCcbW4ScRbxVc38qzOk%26_nc_zt%3D14%26_nc_ht%3Dscontent-lax3-2.xx%26_nc_gid%3D02Q2S0iXDW4WlwBQj3fGqg%26oh%3D00_AfnKwGbWdO8QVPgBFufFAdoWcgSvTyGK55tJUgH3Vyzuiw%26oe%3D6940B8E6&h=AT3sBKEW8DA_4HWSU8DZlHhZr1vaUyG3Ch7lWnesQvEPCF4yYMlWEa6ztRXYksaSVqmZB5iDLMMpSwmTa3JHedkTnkNnXNWofns_QD8pZK9_HWtji0YGWv86EDUqq-uefSNSqWdHYZ3q0A)
+provided and extract its contents into the JMeter folder. This file contains the necessary configurations, and you only need to modify the variables.
+
+Open JMeter and navigate to the `LoadTest.en_US.jmx` test file. You can do this by selecting **File** \> **Open** and locating the file within the JMeter interface.
+
+Once the test file is opened, JMeter will display the test plan structure. This imported test plan serves as a starting point, and you can modify it according to your specific requirements.
+
+Locate the “HTTP Request” element within the test plan. Here, you need to provide the necessary details in the POST body data, including the template object.
+
+![Image](https://scontent-lax3-1.xx.fbcdn.net/v/t39.2365-6/567935685_1343934440798540_7485235151905676730_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=e280be&_nc_ohc=xxnsGJvCioYQ7kNvwHUkNH2&_nc_oc=AdkaMTPxI9XpLljqCVjrDujRfTbRNuf3_Ui_79cj8xLCqcbgNn-RckcR3kyUvaXz398&_nc_zt=14&_nc_ht=scontent-lax3-1.xx&_nc_gid=02Q2S0iXDW4WlwBQj3fGqg&oh=00_AfkPH2DkuuCeizDIMPCLXDSPR0u1XmpiUnfvvoILuFyWXA&oe=69552A87)
+
+Find the “User Parameters” element and add values for the following variables:
+
+**phoneNumberID**: this will be the test phone number ID provided by Meta
+
+**systemUserAccessToken**: this will be the access token also provided by Meta
+
+![Image](https://scontent-lax3-2.xx.fbcdn.net/v/t39.2365-6/569390372_1343934430798541_4395388978418862722_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=e280be&_nc_ohc=SOI9hCgpY60Q7kNvwHMQQFS&_nc_oc=AdldEnfFVJBuR7hx3DkEvgwBdF5PuTuwDfUh9MQUXvfRSTdgpPkmIweN6jp40G-ZZXI&_nc_zt=14&_nc_ht=scontent-lax3-2.xx&_nc_gid=02Q2S0iXDW4WlwBQj3fGqg&oh=00_AflrB0QvGufG91eDlggUUBzdf71d-bOI0q_4NzB44RqA7g&oe=695540E6)
+
+To configure InfluxDB for result collection, go to the “Backend Listener” element. Configure it to match the settings shown in the provided screenshot or documentation.
+![Image](https://scontent-lax3-1.xx.fbcdn.net/v/t39.2365-6/565884286_1343934424131875_5658840901806577736_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=e280be&_nc_ohc=TVx666o6UMgQ7kNvwGsWGZt&_nc_oc=AdmflJD-Whi4JapLoUF8OT6Ww0nsAVpA_KiykjAPRetUgLBs_aMSPFaIBJaM9E0UlMA&_nc_zt=14&_nc_ht=scontent-lax3-1.xx&_nc_gid=02Q2S0iXDW4WlwBQj3fGqg&oh=00_AflNOHP_3ClUB73hdZYwUqqwnfAeco87gZw8fQT4Tbjtyw&oe=695532EF)
+
+By following these steps, you will successfully import the sample test plan into JMeter and make the necessary modifications to tailor it to your specific testing requirements. This test plan provides a starting point for load testing your system and collecting performance metrics using JMeter and InfluxDB.
+
+Next start the InfluxDB server and create a new database for storing JMeter readings:
+
+Start the InfluxDB Server:
+
+Open a terminal and navigate to the InfluxDB installation directory. In most cases, it can be found at **InfluxDB_folder/usr/bin**.
+
+Run the following command to start the InfluxDB server on port 8086:
+
+```
+./influxd
+```
+Create a New Database:
+
+Open a new terminal tab or window.
+
+Set the directory to the InfluxDB installation directory, typically located at **InfluxDB_folder/usr/bin**.
+
+Launch the InfluxDB console by executing the following command:
+
+```
+./influx
+```
+Create the Required Database:
+
+Within the InfluxDB console, create the necessary database for the JMeter configuration. In this example, let’s name the database “demo”.
+
+Run the following command to create the database:
+
+```
+create database demo
+```
+
+With these steps completed, the InfluxDB server will be up and running, and you will have a designated “demo” database ready to store the JMeter readings.
+
+To set up Grafana for JMeter, follow these steps:
+
+Grafana Server:
+
+Open a new tab in the terminal and navigate to the Grafana installation directory. Typically, it can be found at **grafana_folder/bin**.
+
+Run the following command to start the Grafana server:
+
+```
+./grafana-server
+```
+
+This will start the Grafana server on the default port 3000. Ensure that other servers using port 3000 (such as Docker or NodeJS) are turned off to prevent conflicts.
+Grafana Client:
+
+Open a web browser and visit [http://localhost:3000](https://l.facebook.com/l.php?u=http%3A%2F%2Flocalhost%3A3000%2F&h=AT3sBKEW8DA_4HWSU8DZlHhZr1vaUyG3Ch7lWnesQvEPCF4yYMlWEa6ztRXYksaSVqmZB5iDLMMpSwmTa3JHedkTnkNnXNWofns_QD8pZK9_HWtji0YGWv86EDUqq-uefSNSqWdHYZ3q0A). You will be prompted to log in to Grafana.
+
+Use the following login credentials:
+
+```
+Username: admin
+Password: admin
+```
+Once logged in, hover over the gear icon (configuration) located at the bottom-left corner and select **Data Sources** to access the list of data sources. Select **InfluxDB** from the available options to open the InfluxDB interface.
+
+Configure the InfluxDB settings:
+
+Set the Query Language to **InfluxQL**.
+
+Enter the InfluxDB URL as [http://localhost:8086](https://l.facebook.com/l.php?u=http%3A%2F%2Flocalhost%3A8086%2F&h=AT3sBKEW8DA_4HWSU8DZlHhZr1vaUyG3Ch7lWnesQvEPCF4yYMlWEa6ztRXYksaSVqmZB5iDLMMpSwmTa3JHedkTnkNnXNWofns_QD8pZK9_HWtji0YGWv86EDUqq-uefSNSqWdHYZ3q0A) (the URL used to access InfluxDB).
+
+Choose the previously created **demo** database as the target database for JMeter readings.
+Click on **Save & Test** to save the InfluxDB configuration and verify the connection.
+
+To set up the Grafana dashboard, hover over the square icon on the left side of the Grafana app and select **+Import**.
+
+Load the Grafana dashboard with ID **5496** by clicking on **Load**.
+![Image](https://scontent-lax3-2.xx.fbcdn.net/v/t39.2365-6/565612441_1343934454131872_6159251827970803777_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=e280be&_nc_ohc=zP14jdBy7KUQ7kNvwGgW--c&_nc_oc=AdnuXT33wAbKA5_RVkjlUzr6aRmOj6O9LD1RNF0UmufpoPPKtRoWnKwxaubuNeBNaXw&_nc_zt=14&_nc_ht=scontent-lax3-2.xx&_nc_gid=02Q2S0iXDW4WlwBQj3fGqg&oh=00_AfmtL5CJ9nY4MxBqOmRdYgOTCXw97KLRuTOQq3n9ZoJVeA&oe=69553471)
+
+With these steps completed, the Grafana configuration is now finished, and you are ready to run your JMeter test. Ensure that both JMeter and InfluxDB are running, and then execute the JMeter test to populate the Grafana dashboard you have just set up.
+
+### Running the Test in JMeter
+
+Once you have completed the setup steps outlined in the previous section, follow these instructions to run the test using JMeter:
+
+Navigate to the **Thread Group** element in your JMeter test plan. This is where you configure the test settings.
+Specify the desired number of threads or users that will simulate concurrent access to your application. Each thread represents a virtual user. The number of threads directly impacts the load on your system.
+Set the ramp-up period to define how JMeter gradually increases the number of users from zero to the desired total. The ramp-up period is measured in seconds and determines the time it takes for JMeter to start all the specified users and reach the maximum number of users. For example, if you have 1000 users and a ramp-up period of 100 seconds, JMeter will start a new user every 0.1 seconds (1000 users / 100 seconds) until all 1000 users are active.
+Once you have configured the test with the appropriate number of threads and the ramp-up period, you can proceed to start the test. Click on the start button, represented by a green play button, to initiate the load test.
+
+![Image](https://scontent-lax3-2.xx.fbcdn.net/v/t39.2365-6/568111860_1343934390798545_5562721101061766972_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=e280be&_nc_ohc=VGKpozQ_kPQQ7kNvwE9oWuH&_nc_oc=AdmpssiiNs7ngKGBbXcY00GskUU6z2xEDv5fcSmdZnZxJEVH9O12Rvl-j9dsWoiIuU4&_nc_zt=14&_nc_ht=scontent-lax3-2.xx&_nc_gid=02Q2S0iXDW4WlwBQj3fGqg&oh=00_AfnfyTE5e_PHYNOi0GlqPcbNrzP7F0wcdoyZIHzZmK0Ncw&oe=695528D3)
+
+## Load Testing using Locust with InfluxDB and Grafana
+
+Once you have installed the necessary components, follow these steps below to configure your setup using Locust.
+
+To start Locust, follow these steps:
+
+Download the [load test zip file](https://developers.facebook.com/resources/LoadTest-py.zip) provided by Meta and extract its contents.
+
+Open the `config.json` file included in the extracted files. In this file, you need to specify the template, auth_token, and phone_number_id values to be used for the load test.
+
+Modify the JSON structure as follows:
+
+```
+\{
+    "template": {
+        "name": "welcome_user",
+        "language": {
+            "policy": "deterministic",
+            "code": "en"
+        }
+    },
+    "auth_token": "&lt;YOUR_TOKEN&gt;",
+    "phone_number_id": "&lt;YOUR_PHONE_NUMBER_ID&gt;"
+}
+```
+
+Replace `&lt;YOUR_TOKEN&gt;` with the appropriate authentication token and `&lt;YOUR_PHONE_NUMBER_ID&gt;` with the corresponding phone number ID.
+Ensure that Locust is installed on your system. If not, install it by running the following command:
+
+```
+pip3 install locust
+```
+
+Verification:
+
+Verify that Locust has been successfully installed by running the following command:
+
+```
+locust -V
+```
+
+This will display the installed Locust version.
+Install the InfluxDB listener/connector to enable loading Locust test results directly into InfluxDB:
+
+Use the following command to install the listener:
+
+```
+pip3 install locust-influxdb-listener
+```
+
+Installing the listener allows you to seamlessly integrate Locust with InfluxDB for storing and analyzing load test results.
+
+Next start the InfluxDB server and create a new database for storing Locust readings:
+
+Start the InfluxDB server:
+
+Open a terminal and navigate to the InfluxDB installation directory. In most cases, it can be found at **InfluxDB_folder/usr/bin**.
+
+Run the following command to start the InfluxDB server on port 8086:
+
+```
+./influxd
+```
+Create a new database:
+
+Open a new terminal tab or window.
+
+Set the directory to the InfluxDB installation directory, typically located at **InfluxDB_folder/usr/bin**.
+
+Launch the InfluxDB console by executing the following command:
+
+```
+./influx
+```
+Create the required database:
+
+Within the InfluxDB console, create the necessary database for the JMeter configuration. In this example, let’s name the database `pyt` .
+
+Run the following command to create the database:
+
+```
+create database pyt
+```
+
+To set up Grafana for Locust, follow these steps:
+
+Grafana Server:
+
+Open a new terminal tab and navigate to the directory where Grafana is installed ( **grafana_folder/bin**). Run the following command to start the Grafana server:
+
+```
+./grafana-server
+```
+
+This will initiate the Grafana server on the default port 3000. Ensure that any other services utilizing port 3000 are stopped or turned off.
+Open a web browser and go to http://localhost:3000. Use the following login credentials to access Grafana:
+
+```
+Username: admin
+Password: admin
+```
+
+On the Grafana web interface, hover over the gear icon (configuration) located on the bottom left corner. Then select **Data Sources** to view a list of data sources.
+
+Select **InfluxDB** to open the InfluxDB interface. In the InfluxDB interface, configure the following settings:
+
+Query Language: Select **InfluxQL**
+
+URL: Set the URL as [http://localhost:8086](https://l.facebook.com/l.php?u=http%3A%2F%2Flocalhost%3A8086%2F&h=AT3sBKEW8DA_4HWSU8DZlHhZr1vaUyG3Ch7lWnesQvEPCF4yYMlWEa6ztRXYksaSVqmZB5iDLMMpSwmTa3JHedkTnkNnXNWofns_QD8pZK9_HWtji0YGWv86EDUqq-uefSNSqWdHYZ3q0A)
+
+Database: Set the database as `pyt`
+Click on “Save & Test” to save the configuration and verify the connection to InfluxDB.
+
+To set up the Grafana dashboard:
+
+Hover over the four-square icon on the left side of the Grafana interface and select **+Import**.
+
+Click on **Upload JSON file** and upload the `locust-grafana-dashboard.json` [file](https://developers.facebook.com/documentation/business-messaging/whatsapp/support/load-testing#using-locust) provided by Meta in the zip archive.
+Click **Load** to import and load the Locust Dashboard with its pre-configured settings and visualizations.
+
+![Image](https://scontent-lax3-2.xx.fbcdn.net/v/t39.2365-6/565823048_1343934460798538_8949946580202322246_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=e280be&_nc_ohc=c4_8GhATGqcQ7kNvwGkCGjR&_nc_oc=AdnPvDMT1W3A-3EKuyVxdKbvnQLixpSKC9mlUcws_oA7dpMGGKJZYzqUOyPj3EOFwF0&_nc_zt=14&_nc_ht=scontent-lax3-2.xx&_nc_gid=02Q2S0iXDW4WlwBQj3fGqg&oh=00_Afkx6pJOMaqFHehUd6l4u-yyepj093U2uTLUxZB-VkQruw&oe=69552461)
+
+By following these steps, you will have successfully set up Locust for load testing and ensured the necessary dependencies and configurations are in place.
+
+### Running the Test in Locust
+
+Once you have completed the setup steps outlined in the previous section, follow these instructions to run the test using Locust:
+
+Navigate to the folder where you installed the load test zip file.
+
+Open your terminal or command prompt and run the following command to start the Locust server on port 8089:
+
+```
+locust -f locustFile.py
+```
+
+After running the command, open your web browser and go to [http://localhost:8089/](https://l.facebook.com/l.php?u=http%3A%2F%2Flocalhost%3A8089%2F&h=AT3sBKEW8DA_4HWSU8DZlHhZr1vaUyG3Ch7lWnesQvEPCF4yYMlWEa6ztRXYksaSVqmZB5iDLMMpSwmTa3JHedkTnkNnXNWofns_QD8pZK9_HWtji0YGWv86EDUqq-uefSNSqWdHYZ3q0A). This will open the Locust web interface.
+
+In the Locust web interface, click on **New Test** to configure your test.
+
+Specify the desired number of users for your load test. These users represent the simulated virtual users or clients that generate traffic to your application during the test. The number of users determines the amount of concurrent traffic generated.
+
+Set the spawn rate, which determines the rate at which new virtual users are created during the load test. It controls how quickly the number of concurrent users ramps up. For example, if you set a spawn rate of 10 users per second, Locust will start with a few users and gradually increase the number of active users by 10 each second until the desired number of users is reached.
+
+Take into consideration the optimal user-to-throughput ratio for your test. As a general guideline, you can add approximately 100 users for every 300 messages per second (MPS) throughput. Keep in mind that each user takes approximately 350ms to compute.
+
+Ensure that the host field is set to the appropriate value, such as [https://graph.facebook.com](https://graph.facebook.com/), depending on the system you are testing.
+
+Click on **Start Swarming** to initiate the load test.
+
+![Image](https://scontent-lax3-1.xx.fbcdn.net/v/t39.2365-6/565636670_1343934437465207_3634071990337038089_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=e280be&_nc_ohc=nNbOV35gyGEQ7kNvwGV29mn&_nc_oc=Adkyd84SptezB_zr_0y0_JOtKE9nibbAEHwdB7tO_tjoc4iL9wZKuetlCFUa31sWfbg&_nc_zt=14&_nc_ht=scontent-lax3-1.xx&_nc_gid=02Q2S0iXDW4WlwBQj3fGqg&oh=00_Afn_s1Xm8zHkFwOT7nng0f73keyLuYnbVRwRQ_tyNyzmUg&oe=695545C8)
+
+In the Locust terminal console, you should see verbose output indicating that the load test is running. Monitor the console for any reported failures. If there are no failures reported, it indicates that your initial test is successful, and you can proceed to configure the Grafana Dashboard.
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Introduction to Load Test on Cloud API
+
+What is an API Load Test?
+
+What types of Load Tests are available?
+
+Why should you perform Outbound Load Testing using Cloud API?
+
+Preparing for the Load Test
+
+Load Testing Tools and Setup Guidelines
+
+InfluxDB:
+
+Grafana:
+
+JMeter:
+
+Locust:
+
+Load Testing using JMeter with InfluxDB and Grafana
+
+Running the Test in JMeter
+
+Load Testing using Locust with InfluxDB and Grafana
+
+Running the Test in Locust
+
+* * *

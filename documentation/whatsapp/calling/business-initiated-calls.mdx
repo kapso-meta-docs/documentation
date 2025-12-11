@@ -1,0 +1,587 @@
+# Business-initiated calls
+
+## Overview
+
+The Calling API supports making calls to WhatsApp users from your business.
+
+The user dictates when calls can be received by [granting call permissions to the business phone number](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/user-call-permissions).
+
+### Call sequence diagram
+
+![](https://lookaside.fbsbx.com/elementpath/media/?media_id=1080278697331057&version=1750265314&transcode_extension=webp)
+
+( _Right click image and choose "Open in new tab" for enlarged image_)
+
+_Note: The `ACCEPTED` call status webhook will typically always arrive after the call has been established. It is primarily sent for call event auditing._
+
+## Prerequisites
+
+Before you get started with business-initiated calling, ensure that:
+
+- [Subscribe](https://developers.facebook.com/docs/whatsapp/webhooks/create-webhook-endpoint#configure-webhooks) to the "calls" webhook field
+- [Calling APIs are enabled on your business phone number](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/call-settings)
+
+Lastly, **before you can call a WhatsApp user, you must obtain their permission to do so.**
+
+[Learn how to obtain WhatsApp user calling permissions here](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/user-call-permissions)
+
+## Business-initiated calling flow
+
+### Part 1: Obtain permission to call the WhatsApp user
+
+Obtaining call permissions from the WhatsApp user can be done in one of the following ways:
+
+#### Send a call permission request message
+
+You can request call permissions by sending the WhatsApp user a permission request, either as a free form message during an open customer service window, or by using a template message that contains the request.
+
+- [Learn how to send a **free form** call permission request](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/user-call-permissions#how-to-send-a-free-form-call-permission-request-message)
+- [Learn how to send a **template** call permission request](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/user-call-permissions#how-to-create-and-send-call-permission-request-template-messages)
+
+#### Enable `callback_permission_status` in call settings
+
+When `callback_permission_status` is enabled, the user automatically provides call permission to your business when they place a call to you.
+
+[Learn how to enable `callback_permission_status`](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/call-settings#configure-update-business-phone-number-calling-settings)
+
+#### WhatsApp user grants permanent permissions
+
+The user can also grant permanent permissions to the business at any time through their business profile.
+
+### Part 2: Your business initiates a new call to the WhatsApp user
+
+Now that you have user permission, you can initiate a new call to the WhatsApp user in question.
+
+You can now call the `POST &lt;PHONE_NUMBER_ID&gt;/calls` endpoint with the following request body to initiate a new call:
+
+```https
+POST &lt;PHONE_NUMBER_ID&gt;/calls
+\{
+  "messaging_product": "whatsapp",
+  "to":"12185552828", // The WhatsApp user's phone number (callee)
+  "action":"connect",
+  "session" : {
+      "sdp_type" : "offer",
+      "sdp" : "<<RFC 8866 SDP>>"
+  }
+}
+```
+
+If there are no errors, you will receive a successful response:
+
+```https
+\{
+  "messaging_product": "whatsapp",
+  "calls" : [\
+     "id" : "wacid.HBgLMTIxODU1NTI4MjgVAgARGCAyODRQIAFRoA", // The WhatsApp call ID\
+   ]
+}
+```
+
+_Note: Response with error code `138006` indicates a lack of a call request permission for this business number from the WhatsApp user._
+
+### Part 3: You establish the call connection using webhook signaling
+
+After successful initiation of a new call, you will receive a Call Connect webhook response that contains an `SDP Answer` from Cloud API. Your business will then apply the `SDP Answer` from this webhook to your WebRTC stack in order to initiate the media connection.
+
+```https
+\{
+    "entry": [\
+        {\
+            "changes": [\
+                {\
+                    "field": "calls",\
+                    "value": {\
+                        "calls": [\
+                            {\
+                                "biz_opaque_callback_data": "TRx334DUDFTI4Mj", // Arbitrary string passed by business for tracking purposes\
+                                "session": {\
+                                    "sdp_type": "answer",\
+                                    "sdp": "<RFC 8866 SDP>"\
+                                },\
+                                "from": "13175551399", // The business phone number placing the call (caller)\
+                                "connection": {\
+                                    "webrtc": {\
+                                        "sdp": "<RFC 8866 SDP>"\
+                                    }\
+                                },\
+                                "id": "wacid.HBgLMTIxODU1NTI4MjgVAgARGCAyODRQIAFRoA", // The WhatsApp call ID\
+                                "to": "12185552828", // The WhatsApp user's phone number (callee)\
+                                "event": "connect",\
+                                "timestamp": "1749196895",\
+                                "direction": "BUSINESS_INITIATED"\
+                            }\
+                        ],\
+                        "metadata": { // ID and display number for the business phone number placing the call (caller)\
+                            "phone_number_id": "436666719526789",\
+                            "display_phone_number": "13175551399"\
+                        },\
+                        "messaging_product": "whatsapp"\
+                    }\
+                }\
+            ],\
+            "id": "366634483210360" // WhatsApp Business Account ID associated with the business phone number\
+        }\
+    ],
+    "object": "whatsapp_business_account"
+},
+```
+
+You then receive an appropriate status webhook, indicating that the call is `RINGING`, `ACCEPTED`, or `REJECTED`:
+
+```https
+\{
+  "entry": [\
+    {\
+      "changes": [\
+        {\
+          "field": "calls",\
+          "value": {\
+            "statuses": [\
+              {\
+                "id": "wacid.HBgLMTIxODU1NTI4MjgVAgARGCAyODRQIAFRoA", // The WhatsApp call ID\
+                "type": "call",\
+                "status": "[RINGING|ACCEPTED|REJECTED]", // The current call status\
+                "timestamp": "1749197000",\
+                "recipient_id": "12185552828" // The WhatsApp user's phone number (callee)\
+              }\
+            ],\
+            "metadata": { // ID and display number for the business phone number placing the call (caller)\
+              "phone_number_id": "436666719526789",\
+              "display_phone_number": "13175551399"\
+            },\
+            "messaging_product": "whatsapp"\
+          }\
+        }\
+      ],\
+      "id": "366634483210360" // WhatsApp Business Account ID associated with the business phone number\
+    }\
+  ],
+  "object": "whatsapp_business_account"
+}
+```
+
+### Part 4: Your business or the WhatsApp user terminates the call
+
+Both you or the WhatsApp user can terminate the call at any time.
+
+You call the `POST &lt;PHONE_NUMBER_ID&gt;/calls` endpoint with the following request body to terminate the call:
+
+```curl
+POST &lt;PHONE_NUMBER_ID&gt;/calls
+\{
+  "messaging_product": "whatsapp",
+  "call_id": "wacid.HBgLMTIxODU1NTI4MjgVAgARGCAyODRQIAFRoA", // The WhatsApp call ID
+  "action" : "terminate"
+}
+```
+
+If there are no errors, you will receive a success response:
+
+```https
+\{
+  "success" : true
+}
+```
+
+When either the business or the WhatsApp user terminates the call, you receive a Call Terminate webhook:
+
+```https
+\{
+  "object": "whatsapp_business_account",
+  "entry": [\
+    {\
+      "id": "366634483210360", // WhatsApp Business Account ID associated with the business phone number\
+      "changes": [\
+        {\
+          "value": {\
+            "messaging_product": "whatsapp",\
+            "metadata": { // ID and display number for the business phone number placing the call (caller)\
+              "phone_number_id": "436666719526789"\
+              "display_phone_number": "13175551399",\
+\
+            },\
+            "calls": [\
+              {\
+                "id": "wacid.HBgLMTIxODU1NTI4MjgVAgARGCAyODRQIAFRoA",\
+                "to": "12185552828", // The WhatsApp user's phone number (callee)\
+                "from": "13175551399", // The business phone number placing the call (caller)\
+                "event": "terminate",\
+                "direction": "BUSINESS_INITIATED",\
+                "timestamp": "1749197480",\
+                "status": ["Failed", "Completed"],\
+                "start_time": "1671644824", // Call start UNIX timestamp\
+                "end_time": "1671644944", // Call end UNIX timestamp\
+                "duration": 480 // Call duration in seconds\
+              }\
+            ]\
+          },\
+          "field": "calls"\
+        }\
+      ]\
+    }\
+  ]
+}
+```
+
+## Endpoints for business-initiated calling
+
+### Initiate call
+
+Use this endpoint to initiate a call to a WhatsApp user by providing a phone number and a WebRTC call offer.
+
+#### Request Syntax
+
+```https
+POST &lt;PHONE_NUMBER_ID&gt;/calls
+```
+
+| Placeholder | Description | Sample Value |
+| --- | --- | --- |
+| `&lt;PHONE_NUMBER_ID&gt;`<br />_Integer_ | **Required**<br />The business phone number from which you are initiating a new call from.<br />[Learn more about formatting phone numbers in Cloud API](https://developers.facebook.com/docs/whatsapp/cloud-api/reference/phone-numbers#whatsapp-user-phone-number-formats) | `+12784358810` |
+
+#### Request body
+
+```https
+\{
+  "messaging_product": "whatsapp",
+  "to": "14085551234",
+  "action": "connect",
+  "session": {
+    "sdp_type": "offer",
+    "sdp": "<<RFC 8866 SDP>>"
+  },
+  "biz_opaque_callback_data": "0fS5cePMok"
+}
+```
+
+#### Body parameters
+
+| Parameter | Description | Sample Value |
+| --- | --- | --- |
+| `to`<br />_Integer_ | **Required**<br />The number being called (callee) | `“17863476655”` |
+| `action`<br />_String_ | **Required**<br />The action being taken on the given call ID.<br />Values can be `connect` \| `pre_accept` \| `accept` \| `reject` \| `terminate` | `“connect”` |
+| `session`<br />_JSON object_ | **Optional**<br />Contains the session description protocol (SDP) type and description language.<br />Requires two values:<br />`sdp_type` — ( _String_) **Required**<br />"offer", to indicate SDP offer<br />`sdp` — ( _String_) **Required**<br />The SDP info of the device on the other end of the call. The SDP must be compliant with [RFC 8866](https://l.facebook.com/l.php?u=https%3A%2F%2Fdatatracker.ietf.org%2Fdoc%2Fhtml%2Frfc8866&h=AT2bPVFep13Lh0nojIYGyHuIEaXzCP-u8GNEaZV8GCh9ZCzH7lgYzWfC-i0jgUfePOZKFvJY1gcgohC6CcSaCVrHqmhzhaGNADIi0aYGuFfhu1GGFAGIgNhg8EsvaW22MorXQUybtqhM1A).<br />[Learn more about Session Description Protocol (SDP)](https://l.facebook.com/l.php?u=https%3A%2F%2Fwww.rfc-editor.org%2Frfc%2Frfc8866.html&h=AT1EUhjTZeDFKK09FUfUzad6b_5U4iYrI-Pjt6sQ_3f9kAiHKFNz1Nn92_HqDSXWSuiY1Vng0xuPhC2ayZeG_R7zuhK4CTNygAtZtbhTUY5Sg4vdmKRFUvnSAfukXHPvNPMYZpTKygz--A)<br />[View example SDP structures](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/reference#sdp-overview-and-sample-sdp-structures) | ```https<br />"session" :<br />{<br />"sdp_type" : "offer",<br />"sdp" : "<<RFC 8866 SDP>>"<br />} <br />``` |
+| `biz_opaque_callback_data`<br />_String_ | **Optional**<br />An arbitrary string you can pass in that is useful for tracking and logging purposes.<br />Any app subscribed to the "calls" webhook field on your WhatsApp Business Account can receive this string, as it is included in the `calls` object within the subsequent [Call Terminate Webhook](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/business-initiated-calls#call-terminate-webhook) payload.<br />Cloud API does not process this field.<br />Maximum 512 characters | `“0fS5cePMok”` |
+
+#### Success response
+
+```https
+\{
+  "messaging_product": "whatsapp",
+  "calls" : [{\
+     "id" : "wacid.ABGGFjFVU2AfAgo6V",\
+   }]
+}
+```
+
+#### Error response
+
+Possible errors that can occur:
+
+- Invalid `phone-number-id`
+- Permissions/Authorization errors
+- Request format validation errors, e.g. connection info, sdp, ice
+- SDP validation errors
+- Calling restriction errors
+
+[View Calling API Error Codes and Troubleshooting for more information](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/troubleshooting)
+
+[View general Cloud API Error Codes here](https://developers.facebook.com/docs/whatsapp/cloud-api/support/error-codes)
+
+### Terminate call
+
+Use this endpoint to terminate an active call.
+
+This must be done even if there is an `RTCP BYE` packet in the media path. Ending the call this way also ensures pricing is more accurate.
+
+When the WhatsApp user terminates the call, you do not have to call this endpoint. Once the call is successfully terminated, a [Call Terminate Webhook](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/business-initiated-calls#call-terminate-webhook) will be sent to you.
+
+#### Request syntax
+
+```https
+POST <PHONE_NUMBER_ID/calls
+```
+
+| Parameter | Description | Sample Value |
+| --- | --- | --- |
+| `&lt;PHONE_NUMBER_ID&gt;`<br />_Integer_ | **Required**<br />The business phone number which you are terminating a call from.<br />[Learn more about formatting phone numbers in Cloud API](https://developers.facebook.com/docs/whatsapp/cloud-api/reference/phone-numbers#whatsapp-user-phone-number-formats) | `18274459827` |
+
+#### Request body
+
+```https
+\{
+  "messaging_product": "whatsapp",
+  "call_id": "wacid.ABGGFjFVU2AfAgo6V-Hc5eCgK5Gh",
+  "action": "terminate"
+}
+```
+
+#### Body parameters
+
+| Parameter | Description | Sample Value |
+| --- | --- | --- |
+| `call_id`<br />_String_ | **Required**<br />The ID of the phone call.<br />For inbound calls, you receive a call ID from the [Call Connect webhook](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/business-initiated-calls#call-connect-webhook) when a WhatsApp user initiates the call. | `“wacid.ABGGFjFVU2AfAgo6V-Hc5eCgK5Gh”` |
+| `action`<br />_String_ | **Required**<br />The action being taken on the given call ID.<br />Values can be `connect` \| `pre_accept` \| `accept` \| `reject` \| `terminate` | `“terminate”` |
+
+#### Success response
+
+```https
+\{
+  "messaging_product": "whatsapp",
+  "success" : true
+}
+```
+
+#### Error response
+
+Possible errors that can occur:
+
+- Invalid `call id`
+- Invalid `phone-number-id`
+- The WhatsApp user has already terminated the call
+- Reject call is already in progress
+- Permissions/Authorization errors
+
+[View Calling API Error Codes and Troubleshooting for more information](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/troubleshooting)
+
+[View general Cloud API Error Codes here](https://developers.facebook.com/docs/whatsapp/cloud-api/support/error-codes)
+
+## Webhooks for business-initiated calling
+
+With all Calling API webhooks, there is a `”calls”` object inside the `”value”` object of the webhook response. The `”calls”` object contains metadata about the call that is used to action on each call placed or received by your business.
+
+To receive Calling API webhooks, subscribe to the "calls" webhook field.
+
+[Learn more about Cloud API webhooks here](https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/components#statuses-object)
+
+### Call connect webhook
+
+A webhook notification is sent in near real-time when a call initiated by your business is ready to be connected to the whatsapp user (an `SDP Answer`).
+
+Critically, the webhook contains information required to establish a call connection via WebRTC.
+
+Once you receive the Call Connect webhook, you can apply the `SDP Answer` received in the webhook to your WebRTC stack in order to initiate the media connection.
+
+```https
+\{
+  "object": "whatsapp_business_account",
+  "entry": [\
+    {\
+      "id": "&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;",\
+      "changes": [\
+        {\
+          "value": {\
+            "messaging_product": "whatsapp",\
+            "metadata": {\
+              "display_phone_number": "16315553601",\
+              "phone_number_id": "&lt;PHONE_NUMBER_ID&gt;"\
+            },\
+            "contacts": [\
+              {\
+                "profile": {\
+                  "name": "&lt;CALLEE_NAME&gt;"\
+                },\
+                "wa_id": "16315553602"\
+              }\
+            ],\
+            "calls": [\
+              {\
+                "id": "wacid.ABGGFjFVU2AfAgo6V-Hc5eCgK5Gh",\
+                "to": "16315553601",\
+                "from": "16315553602",\
+                "event": "connect",\
+                "timestamp": "1671644824",\
+                "direction": "BUSINESS_INITIATED",\
+                "session": {\
+                  "sdp_type": "answer",\
+                  "sdp": "<<RFC 8866 SDP>>"\
+                }\
+              }\
+            ]\
+          },\
+          "field": "calls"\
+        }\
+      ]\
+    }\
+  ]
+}
+```
+
+#### Webhook values for `"calls"`
+
+| Placeholder | Description |
+| --- | --- |
+| `id`<br />_String_ | A unique ID for the call |
+| `to`<br />_Integer_ | The number being called (callee) |
+| `from`<br />_Integer_ | The number of the caller |
+| `event`<br />_Integer_ | The calling event that this webhook is notifying the subscriber of |
+| `timestamp`<br />_Integer_ | The UNIX timestamp of the webhook event |
+| `direction`<br />_String_ | The direction of the call being made.<br />Can contain either:<br />`BUSINESS_INITIATED`, for calls initiated by your business.<br />`USER_INITIATED`, for calls initiated by a WhatsApp user. |
+| `session`<br />_JSON object_ | **Optional**<br />Contains the session description protocol (SDP) type and description language.<br />Requires two values:<br />`sdp_type` — ( _String_) **Required**<br />"offer", to indicate SDP offer<br />`sdp` — ( _String_) **Required**<br />The SDP info of the device on the other end of the call. The SDP must be compliant with [RFC 8866](https://l.facebook.com/l.php?u=https%3A%2F%2Fdatatracker.ietf.org%2Fdoc%2Fhtml%2Frfc8866&h=AT2Z-d47cK6onflqkVETSHEvWH6Ra0ZSUUnUzni5gE4pwEIzb5qP4NtmN5aE4B4rMUDsqoujGQRvLWY2emYvcNEmlhyCARu0rvrhXBvrc7R8C6f-uCgZJUof7Y5SJ3gDEAofOvdP-1kIKg).<br />[Learn more about Session Description Protocol (SDP)](https://l.facebook.com/l.php?u=https%3A%2F%2Fwww.rfc-editor.org%2Frfc%2Frfc8866.html&h=AT3KYf20aDEbt6_qvHrgCGi4hUFzHupgxHcJAzkRYP_QjKlJRIyOxIHt7ulUXtVR8o0ZTM-BmmJic5_pCZCtYYyTFzYgJx8GdiGfNQW3EsZR71FW4vkxqzfc_Rlsdl7ygUH_8MYDiV8_OQ)<br />[View example SDP structures](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/reference#sdp-overview-and-sample-sdp-structures) |
+| `contacts`<br />_JSON object_ | Profile information of the callee.<br />Contains two values:<br />`name` — The WhatsApp profile name of the callee.<br />`wa_id` — The WhatsApp ID of the callee. |
+
+### Call status webhook
+
+This webhook is sent during the following calling events:
+
+1. Ringing: When the WhatsApp user’s client device begins ringing
+2. Accepted: When the WhatsApp user accepts the call
+3. Rejected: When the call is rejected by the WhatsApp user. You'll also receive the call terminate webhook in this case
+
+The Webhook structure here is similar to the Status webhooks used for the Cloud API messages.
+
+```https
+\{
+  "object": "whatsapp_business_account",
+  "entry": [\
+    {\
+      "id": "&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;",\
+      "changes": [\
+        {\
+          "value": {\
+              "messaging_product": "whatsapp",\
+              "metadata": {\
+                   "display_phone_number": "16315553601",\
+                   "phone_number_id": "&lt;PHONE_NUMBER_ID&gt;",\
+              },\
+              "statuses": [{\
+                    "id": "wacid.ABGGFjFVU2AfAgo6V",\
+                    "timestamp": "1671644824",\
+                    "type": "call"\
+                    "status": "[RINGING|ACCEPTED|REJECTED]",\
+                    "recipient_id": "163155536021",\
+                    "biz_opaque_callback_data": "random_string",\
+               }]\
+          },\
+          "field": "calls"\
+        }\
+      ]\
+    }\
+  ]
+}
+```
+
+[_Learn more about Cloud API status webhooks_](https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/components#statuses-object)
+
+#### Webhook values for `"statuses"`
+
+| Placeholder | Description |
+| --- | --- |
+| `id`<br />_String_ | A unique ID for the call |
+| `timestamp`<br />_Integer_ | The UNIX timestamp of the webhook event |
+| `recipient_id`<br />_Integer_ | The phone number of the WhatsApp user receiving the call |
+| `status`<br />_Integer_ | The current call status.<br />Possible values:<br />`RINGING`: Business initiated call is ringing the user<br />`ACCEPTED`: Business initiated call is accepted by the user<br />`REJECTED`: Business initiated call is rejected by the user |
+| `biz_opaque_callback_date`<br />_String_ | Arbitrary string your business passes into the call for tracking and logging purposes.<br />Will only be returned if provided through [Initiate New Call API requests](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/business-initiated-calls#initiate-a-new-call) |
+
+### Call terminate webhook
+
+A webhook notification is sent whenever the call has been terminated for any reason, such as when the WhatsApp user hangs up, or when the business calls the `POST /&lt;PHONE_NUMBER_ID&gt;/calls` endpoint with an action of `terminate` or `reject`.
+
+```https
+\{
+  "object": "whatsapp_business_account",
+  "entry": [\
+    {\
+      "id": "&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;",\
+      "changes": [\
+        {\
+          "value": {\
+              "messaging_product": "whatsapp",\
+              "metadata": {\
+                   "display_phone_number": "16505553602",\
+                   "phone_number_id": "&lt;PHONE_NUMBER_ID&gt;",\
+              },\
+               "calls": [\
+                {\
+                    "id": "wacid.ABGGFjFVU2AfAgo6V-Hc5eCgK5Gh",\
+                    "to": "16315553601",\
+                    "from": "16315553602",\
+                    "event": "terminate"\
+                    "direction": "BUSINESS_INITIATED",\
+                    "biz_opaque_callback_data": "random_string",\
+                    "timestamp": "1671644824",\
+                    "status" : [FAILED | COMPLETED],\
+                    "start_time" : "1671644824",\
+                    "end_time" : "1671644944",\
+                    "duration" : 120\
+                }\
+              ],\
+              "errors": [\
+                {\
+                    "code": INT_CODE,\
+                    "message": "ERROR_TITLE",\
+                    "href": "ERROR_HREF",\
+                    "error_data": {\
+                        "details": "ERROR_DETAILS"\
+                    }\
+                }\
+              ]\
+          },\
+          "field": "calls"\
+        }\
+      ]\
+    }\
+  ]
+}
+```
+
+#### Webhook values for `"calls"`
+
+| Placeholder | Description |
+| --- | --- |
+| `id`<br />_String_ | A unique ID for the call |
+| `to`<br />_Integer_ | The number being called (callee) |
+| `from`<br />_Integer_ | The number of the caller |
+| `event`<br />_Integer_ | The calling event that this webhook is notifying the subscriber of |
+| `timestamp`<br />_Integer_ | The UNIX timestamp of the webhook event |
+| `direction`<br />_String_ | The direction of the call being made.<br />Can contain either:<br />`BUSINESS_INITIATED`, for calls initiated by your business.<br />`USER_INITIATED`, for calls initiated by a WhatsApp user. |
+| `start_time`<br />_Integer_ | The UNIX timestamp of when the call started.<br />Only present when the call was picked up by the other party. |
+| `end_time`<br />_Integer_ | The UNIX timestamp of when the call ended.<br />Only present when the call was picked up by the other party. |
+| `duration`<br />_Integer_ | Duration of the call in seconds.<br />Only present when the call was picked up by the other party. |
+| `biz_opaque_callback_date`<br />_String_ | Arbitrary string your business passes into the call for tracking and logging purposes.<br />Will only be returned if provided through an [Initiate Call API request](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/business-initiated-calls#initiate-call) or [Accept Call request](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/reference#accept-call) |
+| `errors.code`<br />_Integer_ | The `errors` object is present only for failed calls when there is error information available. Code is one of the [calling error codes](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/troubleshooting#calling-error-codes) |
+
+## SDP overview and sample SDP structures
+
+Session Description Protocol (SDP) is a text-based format used to describe the characteristics of multimedia sessions, such as voice and video calls, in real-time communication applications. SDP provides a standardized way to convey information about the session's media streams, including the type of media, codecs, protocols, and other parameters necessary for establishing and managing the session.
+
+In the context of WebRTC, SDP is used to negotiate the media parameters between the sender and receiver, enabling them to agree on the specifics of the media exchange.
+
+[View SDP sample structures for business-initiated calls](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/reference#sdp-overview-and-sample-sdp-structures)
+
+On This Page
+
+[Business-initiated calls](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/business-initiated-calls#business-initiated-calls)
+
+[Overview](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/business-initiated-calls#overview)
+
+[Call sequence diagram](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/business-initiated-calls#call-sequence-diagram)
+
+[Prerequisites](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/business-initiated-calls#prerequisites)
+
+[Business-initiated calling flow](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/business-initiated-calls#business-initiated-calling-flow)
+
+[Part 1: Obtain permission to call the WhatsApp user](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/business-initiated-calls#part-1--obtain-permission-to-call-the-whatsapp-user)
+
+[Part 2: Your business initiates a new call to the WhatsApp user](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/business-initiated-calls#part-2--your-business-initiates-a-new-call-to-the-whatsapp-user)
+
+[Part 3: You establish the call connection using webhook signaling](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/business-initiated-calls#part-3--you-establish-the-call-connection-using-webhook-signaling)
+
+[Part 4: Your business or the WhatsApp user terminates the call](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/business-initiated-calls#part-4--your-business-or-the-whatsapp-user-terminates-the-call)
+
+[Endpoints for business-initiated calling](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/business-initiated-calls#endpoints-for-business-initiated-calling)
+
+[Initiate call](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/business-initiated-calls#initiate-call)
+
+[Terminate call](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/business-initiated-calls#terminate-call)
+
+[Webhooks for business-initiated calling](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/business-initiated-calls#webhooks-for-business-initiated-calling)
+
+[Call connect webhook](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/business-initiated-calls#call-connect-webhook)
+
+[Call status webhook](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/business-initiated-calls#call-status-webhook)
+
+[Call terminate webhook](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/business-initiated-calls#call-terminate-webhook)
+
+[SDP overview and sample SDP structures](https://developers.facebook.com/docs/whatsapp/cloud-api/calling/business-initiated-calls#sdp-overview-and-sample-sdp-structures)

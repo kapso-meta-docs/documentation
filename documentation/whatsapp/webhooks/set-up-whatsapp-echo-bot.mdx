@@ -1,0 +1,129 @@
+
+# Create a test webhook endpoint
+
+Updated: Nov 7, 2025
+
+If you aren’t ready to create your own webhook endpoint yet, you can deploy a test webhook app on [Render.com](https://l.facebook.com/l.php?u=https%3A%2F%2Fwww.render.com%2F&h=AT0Gjs4pCZQ0jWdzmjx7laB611PWs3-PjuPM-796M9H5se1Rn90sOnDvmnJRl2P-IwE5gXBnxpre405buRsGIlaVS9bV7EPoZZ31y19Fzy1LFOqL-O95ithO64B8IP83cUHbHo6ndjt1Kw) that accepts webhook requests and dumps their contents to Render’s console.
+
+_Only use this app for testing purposes._
+
+## Requirements
+
+A [Render](https://l.facebook.com/l.php?u=https%3A%2F%2Fwww.render.com%2F&h=AT0Gjs4pCZQ0jWdzmjx7laB611PWs3-PjuPM-796M9H5se1Rn90sOnDvmnJRl2P-IwE5gXBnxpre405buRsGIlaVS9bV7EPoZZ31y19Fzy1LFOqL-O95ithO64B8IP83cUHbHo6ndjt1Kw) account.
+A [Github](https://l.facebook.com/l.php?u=https%3A%2F%2Fwww.github.com%2F&h=AT0Gjs4pCZQ0jWdzmjx7laB611PWs3-PjuPM-796M9H5se1Rn90sOnDvmnJRl2P-IwE5gXBnxpre405buRsGIlaVS9bV7EPoZZ31y19Fzy1LFOqL-O95ithO64B8IP83cUHbHo6ndjt1Kw) account.
+
+## Step 1: Create a Github repository
+
+Sign into your Github account and create a new repo (public or private) with a name of your choice. Within the repo, create an `app.js` file and paste this code into it:
+
+```
+// Import Express.js
+const express = require('express');
+
+// Create an Express app
+const app = express();
+
+// Middleware to parse JSON bodies
+app.use(express.json());
+
+// Set port and verify_token
+const port = process.env.PORT || 3000;
+const verifyToken = process.env.VERIFY_TOKEN;
+
+// Route for GET requests
+app.get('/', (req, res) => {
+  const { 'hub.mode': mode, 'hub.challenge': challenge, 'hub.verify_token': token } = req.query;
+
+  if (mode === 'subscribe' && token === verifyToken) {
+    console.log('WEBHOOK VERIFIED');
+    res.status(200).send(challenge);
+  } else {
+    res.status(403).end();
+  }
+});
+
+// Route for POST requests
+app.post('/', (req, res) => {
+  const timestamp = new Date().toISOString().replace('T', ' ').slice(0, 19);
+  console.log(`\n\nWebhook received ${timestamp}\n`);
+  console.log(JSON.stringify(req.body, null, 2));
+  res.status(200).end();
+});
+
+// Start the server
+app.listen(port, () => {
+  console.log(`\nListening on port ${port}\n`);
+});
+```
+
+## Step 2: Deploy a Node Express app on Render
+
+Follow Render’s instructions for [deploying a Node Express app](https://l.facebook.com/l.php?u=https%3A%2F%2Frender.com%2Fdocs%2Fdeploy-node-express-app&h=AT0Gjs4pCZQ0jWdzmjx7laB611PWs3-PjuPM-796M9H5se1Rn90sOnDvmnJRl2P-IwE5gXBnxpre405buRsGIlaVS9bV7EPoZZ31y19Fzy1LFOqL-O95ithO64B8IP83cUHbHo6ndjt1Kw), with these differences:
+
+Skip step 1
+Use these settings for step 3:
+Build command: `npm install express`
+Start command: `node app.js`
+In the **Environment Variables** section, add the variable `VERIFY_TOKEN` and set it to a string of your choice (e.g. `vibecode`).
+
+When you’re done, click the **Deploy your web service** button. This will take you to the app log where you will see your app being built, which can take a few minutes. You’ll know it’s done when you see “Your service is live” in the log.
+
+![](https://scontent-fra5-1.xx.fbcdn.net/v/t39.2365-6/518314752_779138407775567_4233589617658404934_n.png?_nc_cat=100&ccb=1-7&_nc_sid=e280be&_nc_ohc=qEsQGCZvfvIQ7kNvwGUjTae&_nc_oc=AdnwITBieqHfDLohDf9UKmOMcdtdHMq07uAA1fTjUcsG0nY2HAKkatcFV_-uFddcbIc&_nc_zt=14&_nc_ht=scontent-fra5-1.xx&_nc_gid=Zt77sQl_zOQ2vry3luCH2g&oh=00_AfmX-hW3BCY4wO8LCKFNMxcDeElpjXsXaZzJ7cwafeTmPA&oe=69550C45)
+
+Copy your deployed test webhook app URL, which is displayed at the top of the page under your Github repo name. (If you view the URL, you’ll get a 403 error, which is expected).
+
+## Step 3: Add your test webhook app URL to your Meta app
+
+Open a new window/tab, and navigate to the (Meta) [App Dashboard](https://developers.facebook.com/apps) \> **WhatsApp** \> **Webhooks** \> **Configuration** panel.
+
+Paste your test webhook app URL in the **Callback URL** field, and add the `VERIFY_TOKEN` environment variable string you set earlier to the **Verify token** field, then click **Verify and save**.
+
+![](https://scontent-fra3-2.xx.fbcdn.net/v/t39.2365-6/518348561_1679202599393717_3427225193188619311_n.png?_nc_cat=111&ccb=1-7&_nc_sid=e280be&_nc_ohc=nlhlLbsL-LsQ7kNvwEP5whp&_nc_oc=AdkvS8TYG4MGg-Ak0maRGgVKzo_Zfr4BNtIZE6uRp-itYtj2W288iWYdZa7D6yOOQeo&_nc_zt=14&_nc_ht=scontent-fra3-2.xx&_nc_gid=Zt77sQl_zOQ2vry3luCH2g&oh=00_AfliAAwOIDg1MLEXzRNXM5AEatbBqJg2uKRM7YrRd99Pog&oe=695503F0)
+
+If verification is successful, the Meta app dashboard should refresh and you should see a list of webhook fields you can subscribe to.
+
+_Subscribe to the **messages** webhook field if you haven’t already._
+
+Also, in Render’s app log, if you see “WEBHOOK VERIFIED”, your test webhook app URL has been successfully verified.
+
+![](https://scontent-fra3-1.xx.fbcdn.net/v/t39.2365-6/516871315_2146397049169598_3394446764023076795_n.png?_nc_cat=101&ccb=1-7&_nc_sid=e280be&_nc_ohc=gWRyy7q8cSoQ7kNvwHPyQmd&_nc_oc=AdmIUQ4YbyBI78uvZyZPGHJPMwBrnhkqVJdrQ8eAKb8k9n6HDa9uHMFAUGEabYYd8ls&_nc_zt=14&_nc_ht=scontent-fra3-1.xx&_nc_gid=Zt77sQl_zOQ2vry3luCH2g&oh=00_Afm2kHmnZulqaD2oJHV_qWdK0aU-kIs3Y8gwmk6tI7qpzg&oe=69552C90)
+
+## Step 4: Send a test message
+
+Back in the Meta app dashboard **Configuration** panel, scroll down to the **messages** webhook field, subscribe to the field if you haven’t already, then click the **Test** link.
+
+![](https://scontent-fra5-1.xx.fbcdn.net/v/t39.2365-6/518357131_2083466912058941_6508814785021877118_n.png?_nc_cat=100&ccb=1-7&_nc_sid=e280be&_nc_ohc=Pev0ghwyK4gQ7kNvwE6aRm6&_nc_oc=AdmLrf_5dbj1Rr96WphddALBH7xO4Yr_pWP2EuJjy0gcIaLTJhjRDP2q60LFje9rNxU&_nc_zt=14&_nc_ht=scontent-fra5-1.xx&_nc_gid=Zt77sQl_zOQ2vry3luCH2g&oh=00_Afng2ITMrNU2fFKJMlEnxpCJN6ode9wI6u6eB5qfhcV3pg&oe=69553A4B)
+
+This will send a test message to your test webhook app. Confirm that it appears in Render app log with “Webhook received” followed by a test JSON payload:
+
+![](https://scontent-fra3-1.xx.fbcdn.net/v/t39.2365-6/516488905_709538035232698_4800340255912767794_n.png?_nc_cat=105&ccb=1-7&_nc_sid=e280be&_nc_ohc=NfJT2_cjubYQ7kNvwEyZcmN&_nc_oc=AdnDNvm8vuEeFgrNBDeSp0CH8hV7iPOu6ta06B_8K_PQwSfcWz5pxC0P-SHqfl1Z39w&_nc_zt=14&_nc_ht=scontent-fra3-1.xx&_nc_gid=Zt77sQl_zOQ2vry3luCH2g&oh=00_AfmPvGPTY1ybZxth8HvV3rNQp3seeVVaZ8Fk2Ktht18icQ&oe=69552541)
+
+## Troubleshooting
+
+If the test **messages** webhook doesn’t appear in the Render app dashboard log:
+
+Confirm that you successfully added your test webhook app URL to your Meta app (Step 3).
+Confirm that your app is subscribed to the **messages** webhook field.
+Make sure you are sending a **messages** test webhook; some test webhooks only work when your app is in Live mode, while others only work in Development mode ( **messages** test webhooks work in both modes).
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Requirements
+
+Step 1: Create a Github repository
+
+Step 2: Deploy a Node Express app on Render
+
+Step 3: Add your test webhook app URL to your Meta app
+
+Step 4: Send a test message
+
+Troubleshooting
+
+* * *

@@ -1,0 +1,91 @@
+
+# Contextual replies
+
+Updated: Oct 21, 2025
+
+Contextual replies are a special way of responding to a WhatsApp user message. Sending a message as a contextual reply makes it clearer to the user which message you are replying to by quoting the previous message in a contextual bubble:
+
+![](https://scontent-lax3-2.xx.fbcdn.net/v/t39.2365-6/441349069_1363509007609494_6528221959622289637_n.png?_nc_cat=103&ccb=1-7&_nc_sid=e280be&_nc_ohc=CrZTLd5uF08Q7kNvwEW8Hlt&_nc_oc=AdmT-LGqi1u6FfTCKVKCYXfiqLTuYgc8n7kgOLQP2xzsJDsg83ejt3yDZiY8icsMcu4&_nc_zt=14&_nc_ht=scontent-lax3-2.xx&_nc_gid=v46WJdsfr61MbyeDVE77cw&oh=00_AflSICqYt7914gomhCnjBvnT2iYLzEJnablGBBAGBsJngQ&oe=695517EB)
+
+## Limitations
+
+You cannot send a [reaction message](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/reaction-messages) as a contextual reply.
+
+The contextual bubble will not appear at the top of the delivered message if:
+
+The previous message has been deleted or moved to long term storage (messages are typically moved to long term storage after 30 days, unless you have enabled [local storage](https://developers.facebook.com/documentation/business-messaging/whatsapp/local-storage)).
+You reply with an [audio](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/audio-messages), [image](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/image-messages), or [video message](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/video-messages) and the WhatsApp user is running KaiOS.
+You use the WhatsApp client to reply with a [push-to-talk](https://l.facebook.com/l.php?u=https%3A%2F%2Ffaq.whatsapp.com%2F657157755756612%2F%3Fcms_platform%3Dweb&h=AT27YbaSpJuEHegQFanV3PvbujbJ4ZR4AUqVYx6J2cMcQj2OPYUhTlHQbddbukDGWbbiunmA-Mo2AJqEiuVY_st-Ycnjilt1u5GrNuBQsR4gDRsFTrlB21_a89Wd6eX7YUKplDYMFbhw4Q) message and the WhatsApp user is running KaiOS.
+You reply with a [template message](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/template-messages).
+
+## Request Syntax
+
+```
+POST /&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;/messages
+```
+
+### Post Body
+
+```
+\{
+  "messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": "&lt;WHATSAPP_USER_PHONE_NUMBER&gt;",
+  "context": {
+    "message_id": "WAMID_TO_REPLY_TO"
+  },
+
+  /* Message type and type contents goes here */
+
+}
+```
+
+### Post Body Parameters
+
+| Placeholder | Description | Example Value |
+| --- | --- | --- |
+| `&lt;WAMID_TO_REPLY_TO&gt;`<br />_String_ | **Required.**<br />WhatsApp message ID (wamid) of the previous message you want to reply to. | `wamid.HBgLMTY0NjcwNDM1OTUVAgASGBQzQTdCNTg5RjY1MEMyRjlGMjRGNgA=` |
+| `&lt;WHATSAPP_USER_PHONE_NUMBER&gt;`<br />_String_ | **Required.**<br />WhatsApp user phone number. | `+16505551234` |
+
+## Example Request
+
+Example of a text message sent as a reply to a previous message.
+
+```
+curl 'https://graph.facebook.com/v19.0/106540352242922/messages' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+-d '
+\{
+  "messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": "+16505551234",
+  "context": {
+    "message_id": "wamid.HBgLMTY0NjcwNDM1OTUVAgASGBQzQTdCNTg5RjY1MEMyRjlGMjRGNgA="
+  },
+  "type": "text",
+  "text": {
+    "body": "You'\''re welcome, Pablo!"
+  }
+}'
+```
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Limitations
+
+Request Syntax
+
+Post Body
+
+Post Body Parameters
+
+Example Request
+
+* * *

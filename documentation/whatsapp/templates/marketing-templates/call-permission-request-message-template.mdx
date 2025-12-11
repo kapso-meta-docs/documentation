@@ -1,0 +1,148 @@
+
+# Call permission request message template
+
+Updated: Nov 3, 2025
+
+Create a call permission request template message that your business can send to users outside of the customer service window.
+
+![](https://scontent-lax3-1.xx.fbcdn.net/v/t39.2365-6/543369275_3208571362625810_4384114346853497205_n.png?_nc_cat=110&ccb=1-7&_nc_sid=e280be&_nc_ohc=7A3pYXBKI0sQ7kNvwGIifT2&_nc_oc=AdkFnQYObys8JyFaHrUWpz9JUUp9X9o4mdeExnpTw18F4ZmmenFKk7gMe4PvO-9LImc&_nc_zt=14&_nc_ht=scontent-lax3-1.xx&_nc_gid=J6iKYprsWkAQXqP3xM8OaQ&oh=00_AfkRYzRo7rBC3lAMvqoPi62uSDtfWa9V40FJQlIAIAQKzw&oe=695510F0)
+
+## Create call permission request message template
+
+### Request syntax
+
+Use the [POST /&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;/message_templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-account/template-api?locale=en_US#Creating) endpoint to create a call permission request message template.
+
+```
+curl -X POST \
+  'https://graph.facebook.com/&lt;API_VERSION&gt;/&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;/message_templates' \
+  -H 'Authorization: Bearer &lt;ACCESS_TOKEN&gt;' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "name": "sample_cpr_template",
+    "language": "en",
+    "category": "&lt;CATEGORY&gt;",
+    "components": [\
+      {\
+        "type": "BODY",\
+        "text": "We would like to call you to help support your order.",\
+      },\
+      {\
+        "type": "call_permission_request"\
+      }\
+   ]
+}'
+```
+
+### Request parameters
+
+| Placeholder | Description | Example Value |
+| --- | --- | --- |
+| `&lt;ACCESS_TOKEN&gt;`<br />_String_ | **Required.**<br />[System token](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#system-user-access-tokens) or [business token](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#business-integration-system-user-access-tokens). | `EAAAN6tcBzAUBOZC82CW7iR2LiaZBwUHS4Y7FDtQxRUPy1PHZClDGZBZCgWdrTisgMjpFKiZAi1FBBQNO2IqZBAzdZAA16lmUs0XgRcCf6z1LLxQCgLXDEpg80d41UZBt1FKJZCqJFcTYXJvSMeHLvOdZwFyZBrV9ZPHZASSqxDZBUZASyFdzjiy2A1sippEsF4DVV5W2IlkOSr2LrMLuYoNMYBy8xQczzOKDOMccqHEZD` |
+| `&lt;API_VERSION&gt;`<br />_String_ | **Optional.**<br />Graph API version. | v24.0 |
+| `&lt;CATEGORY&gt;` | **Required.**<br />Template category<br />Marketing or Utility | `Marketing` |
+| `&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;` | **Required.**<br />Whatsapp business account ID. | `106540352242922` |
+
+### Response syntax
+
+```
+\{
+  "id": "&lt;ID&gt;",
+  "status": "&lt;STATUS&gt;",
+  "category": "&lt;CATEGORY&gt;"
+}
+```
+
+## Send a call permission request message template
+
+### Request syntax
+
+Use the [POST /&lt;PHONE_NUMBER_ID&gt;/messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api) endpoint to send a call permission request message template to a WhatsApp user.
+
+```
+curl -X POST \
+  'https://graph.facebook.com/&lt;API_VERSION&gt;/&lt;PHONE_NUMBER_ID&gt;/messages' \
+  -H 'Authorization: Bearer &lt;ACCESS_TOKEN&gt;' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "messaging_product": "whatsapp",
+    "recipient_type": "individual",
+    "to": "&lt;WHATSAPP_USER_PHONE_NUMBER&gt;",
+    "type": "template",
+    "template": {
+      "name": "&lt;TEMPLATE_NAME&gt;",
+      "language": {
+        "code": "&lt;LANGUAGE_AND_LOCAL_CODE&gt;"
+      },
+      "components": [\
+        {\
+          "type": "body",\
+          "parameters": [\
+            {\
+              "type": "text",\
+              "text": "&lt;BODY_TEXT&gt;"\
+            }\
+          ]\
+        }\
+      ]
+   }
+}'
+```
+
+### Request parameters
+
+| Placeholder | Description | Example Value |
+| --- | --- | --- |
+| `&lt;ACCESS_TOKEN&gt;`<br />_String_ | **Required.**<br />[System token](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#system-user-access-tokens) or [business token](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#business-integration-system-user-access-tokens). | `EAAAN6tcBzAUBOZC82CW7iR2LiaZBwUHS4Y7FDtQxRUPy1PHZClDGZBZCgWdrTisgMjpFKiZAi1FBBQNO2IqZBAzdZAA16lmUs0XgRcCf6z1LLxQCgLXDEpg80d41UZBt1FKJZCqJFcTYXJvSMeHLvOdZwFyZBrV9ZPHZASSqxDZBUZASyFdzjiy2A1sippEsF4DVV5W2IlkOSr2LrMLuYoNMYBy8xQczzOKDOMccqHEZD` |
+| `&lt;API_VERSION&gt;`<br />_String_ | **Optional.**<br />Graph API version. | v24.0 |
+| `&lt;BODY_TEXT&gt;`<br />_String_ | **Required.**<br />Body text. URLs are automatically hyperlinked.<br />Maximum 4096 characters. | `John Smith` |
+| `&lt;LANGUAGE_AND_LOCAL_CODE&gt;`<br />_String_ | **Required.**<br />Template [language and locale code](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/supported-languages). | `en` |
+| `&lt;TEMPLATE_NAME&gt;`<br />_String_ | **Required.**<br />Name of template. | `august_promotion` |
+| `&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;`<br />_String_ | **Required.**<br />WhatsApp business phone number ID. | `106540352242922` |
+| `&lt;WHATSAPP_USER_PHONE_NUMBER&gt;`<br />_String_ | **Required.**<br />WhatsApp user phone number. | `+16505551234` |
+
+### Example response
+
+```
+\{
+   "messaging_product": "whatsapp",
+   "contacts": [\
+       {\
+           "input": "+1233214532",\
+           "wa_id": "1233214532"\
+       }\
+   ],
+   "messages": [\
+       {\
+           "id": "wamid.HBgLMTMyMzI4NjU2NzgVAgARGBJBQzRBRDBEMDEwQzVBM0M0QkIA",\
+           "message_status": "accepted"\
+       }\
+   ]
+}
+```
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Create call permission request message template
+
+Request syntax
+
+Request parameters
+
+Response syntax
+
+Send a call permission request message template
+
+Request syntax
+
+Request parameters
+
+Example response
+
+* * *

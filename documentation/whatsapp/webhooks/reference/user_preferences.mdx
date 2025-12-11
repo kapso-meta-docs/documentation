@@ -1,0 +1,125 @@
+
+# user_preferences webhook reference
+
+Updated: Nov 5, 2025
+
+This reference describes trigger events and payload contents for the WhatsApp Business Account **user_preferences** webhook.
+
+The **user_preferences** webhook notifies you of changes to a WhatsApp user’s [marketing message preferences](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates#user-preferences-for-marketing-messages).
+
+## Triggers
+
+A WhatsApp user stops marketing messages.
+A WhatsApp user resumes marketing messages.
+
+## Syntax
+
+```
+\{
+  "object": "whatsapp_business_account",
+  "entry": [\
+    {\
+      "id": "&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;",\
+      "changes": [\
+        {\
+          "value": {\
+            "messaging_product": "whatsapp",\
+            "metadata": {\
+              "display_phone_number": "&lt;BUSINESS_DISPLAY_PHONE_NUMBER&gt;",\
+              "phone_number_id": "&lt;BUSINESS_PHONE_NUMBER_ID&gt;"\
+            },\
+            "contacts": [\
+              {\
+                "profile": {\
+                  "name": "&lt;WHATSAPP_USER_NAME&gt;"\
+                },\
+                "wa_id": "&lt;WHATSAPP_USER_ID&gt;"\
+              }\
+            ],\
+            "user_preferences": [\
+              {\
+                "wa_id": "&lt;WHATSAPP_USER_ID&gt;",\
+                "detail": "&lt;PREFERENCE_DESCRIPTION&gt;",\
+                "category": "marketing_messages",\
+                "value": "&lt;PREFERENCE&gt;",\
+                "timestamp": &lt;WEBHOOK_SENT_TIMESTAMP&gt;\
+              }\
+            ]\
+          },\
+          "field": "user_preferences"\
+        }\
+      ]\
+    }\
+  ]
+}
+```
+
+## Parameters
+
+| Placeholder | Description | Example value |
+| --- | --- | --- |
+| `&lt;BUSINESS_DISPLAY_PHONE_NUMBER&gt;`<br />_String_ | Business display phone number. | `15550783881` |
+| `&lt;BUSINESS_PHONE_NUMBER_ID&gt;`<br />_String_ | Business phone number ID. | `106540352242922` |
+| `&lt;PREFERENCE&gt;`<br />_String_ | [Marketing message preference](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates#user-preferences-for-marketing-messages).<br />Values can be:<br />`stop` — Indicates the WhatsApp users has opted to stop receiving marketing messages from you.<br />`resume` — Indicates the WhatsApp users has opted to resume receiving marketing messages from you. | `stop` |
+| `&lt;PREFERENCE_DESCRIPTION&gt;`<br />_String_ | Description of [marketing message preference](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates#user-preferences-for-marketing-messages).<br />Values can be:<br />`User requested to stop marketing messages`<br />`User requested to resume marketing messages` | `User requested to stop marketing messages` |
+| `&lt;WEBHOOK_TRIGGER_TIMESTAMP&gt;`<br />_Integer_ | Unix timestamp indicating when the webhook was triggered. | `1739321024` |
+| `&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;`<br />_String_ | WhatsApp Business Account ID. | `102290129340398` |
+| `&lt;WHATSAPP_USER_ID&gt;`<br />_String_ | WhatsApp user ID. Note that a WhatsApp user’s ID and phone number may not always match. | `16505551234` |
+| `&lt;WHATSAPP_USER_PROFILE_NAME&gt;`<br />_String_ | WhatsApp user’s name as it appears in their profile in the WhatsApp client. | `Sheena Nelson` |
+
+## Example
+
+```
+\{
+  "object": "whatsapp_business_account",
+  "entry": [\
+    {\
+      "id": "102290129340398",\
+      "changes": [\
+        {\
+          "value": {\
+            "messaging_product": "whatsapp",\
+            "metadata": {\
+              "display_phone_number": "15550783881",\
+              "phone_number_id": "106540352242922"\
+            },\
+            "contacts": [\
+              {\
+                "wa_id": "16505551234"\
+              }\
+            ],\
+            "user_preferences": [\
+              {\
+                "wa_id": "16505551234",\
+                "detail": "User requested to resume marketing messages",\
+                "category": "marketing_messages",\
+                "value": "resume",\
+                "timestamp": 1731705721\
+              }\
+            ]\
+          },\
+          "field": "user_preferences"\
+        }\
+      ]\
+    }\
+  ]
+}
+```
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Triggers
+
+Syntax
+
+Parameters
+
+Example
+
+* * *

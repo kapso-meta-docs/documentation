@@ -1,0 +1,108 @@
+
+# Business profiles
+
+Updated: Oct 5, 2025
+
+Your business phone number’s business profile provides additional information about your business, such as its address, website, description, etc. You can supply this information when registering your business phone number, or later, via WhatsApp Manager or API.
+
+![](https://scontent-lga3-3.xx.fbcdn.net/v/t39.2365-6/507476070_1379105613180336_7510619276605653298_n.png?_nc_cat=106&ccb=1-7&_nc_sid=e280be&_nc_ohc=mmklHwPIeJ8Q7kNvwG__tat&_nc_oc=AdmOZAIrvxFqcyPQ_M6jPB3Z3q4FKcsItDVwvJX2u7ebWB98_QE0C9uklQ5fvyUhpGw&_nc_zt=14&_nc_ht=scontent-lga3-3.xx&_nc_gid=v1HL0nsDzRiicF8VhTgWiQ&oh=00_AfldRUZd68GHbYZoYjlvW-LX1JAHF1R3W52cOiYjR50lXw&oe=6954FA9D)
+
+## Viewing or updating your profile via WhatsApp Manager
+
+To view or update your business profile via WhatsApp Manager:
+
+Navigate to [WhatsApp Manager](https://business.facebook.com/latest/whatsapp_manager/) \> **Account tools** \> **Phone numbers**.
+Select your business phone number.
+Click the **Profile** tab to view your current profile.
+Use the form to set new profile values.
+
+## Getting your profile via API
+
+Use the [GET /&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;/whatsapp_business_profile](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/whatsapp-business-profile-api#Reading) endpoint to request specific business profile fields:
+
+### Example request
+
+```
+curl 'https://graph.facebook.com/v24.0/106540352242922/whatsapp_business_profile?fields=about,address,description,email,profile_picture_url,websites,vertical' \
+-H 'Authorization: Bearer EAAJB...'
+```
+
+### Example response
+
+Upon success:
+
+```
+\{
+  "data": [\
+    {\
+      "about": "Succulent specialists!",\
+      "address": "1 Hacker Way, Menlo Park, CA 94025",\
+      "description": "At Lucky Shrub, we specialize in providing a...",\
+      "email": "lucky@luckyshrub.com",\
+      "profile_picture_url": "https://pps.whatsapp.net/v/t61.24...",\
+      "websites": [\
+        "https://www.luckyshrub.com/"\
+      ],\
+      "vertical": "RETAIL",\
+      "messaging_product": "whatsapp"\
+    }\
+  ]
+}
+```
+
+## Updating your profile via API
+
+Use the [POST /&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;/whatsapp_business_profile](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/whatsapp-business-profile-api#Updating) endpoint to update specific business profile fields:
+
+### Example request
+
+```
+curl 'https://graph.facebook.com/v24.0/106540352242922/whatsapp_business_profile' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+--data-raw '
+\{
+  "about": "Succulent specialists!",
+  "address": "1 Hacker Way, Menlo Park, CA 94025",
+  "description": "At Lucky Shrub, we specialize in providing a diverse range of high-quality succulents to suit your needs. From rare and exotic varieties to timeless classics, our collection has something for everyone.",
+  "email": "lucky@luckyshrub.com",
+  "messaging_product": "whatsapp",
+  "profile_picture_handle": "4::aW...",
+  "vertical": "RETAIL",
+  "websites": "[\n  \"https://www.luckyshrub.com\"\n]"
+}'
+```
+
+### Example response
+
+Upon success:
+
+```
+\{
+  "success": true
+}
+```
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Viewing or updating your profile via WhatsApp Manager
+
+Getting your profile via API
+
+Example request
+
+Example response
+
+Updating your profile via API
+
+Example request
+
+Example response
+
+* * *

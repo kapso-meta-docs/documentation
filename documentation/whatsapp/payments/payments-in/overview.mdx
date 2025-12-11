@@ -1,0 +1,77 @@
+
+# Payments API — India
+
+Updated: Nov 26, 2025
+
+Payments API enable businesses to accept payments from their customers through all UPI Apps installed on their device and other payment methods like cards, NetBanking, and wallets via WhatsApp.
+
+Businesses can sends invoice (`order_details`) messages to their customers, then get notified about payment status updates via webhook notifications from Payment Gateway.
+
+## Know the differences in the models of integration
+
+The choice between the two models of intergration relies on what Payment Gateway the merchant/business uses. There are 2 models of integration and they differ in the following ways:
+
+**[UPI Intent Mode](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/upi-intent)**: This mode can be used with any Payment Gateway provided they support UPI Intent generation.
+**[Payment Gateway Deep Integration Mode](https://developers.facebook.com/documentation/business-messaging/whatsapp/payments/payments-in/pg)**: Currently supported for Razorpay, PayU, Billdesk and Zaakpay only.
+
+| User Experience | UPI Intent Mode | Payment Gateway Deep Integration Mode |
+| --- | --- | --- |
+| **Native support for “Other payment methods”**<br />Eg: Netbanking, cards, wallets | ❌<br />Alternative: Send payment links | ✅ |
+| **Native support for UPI Intent** | ✅ | ✅ |
+| **Native Payment Status Notification** | ❌ | ✅ |
+
+| Integration Features | UPI Intent Mode | Payment Gateway Deep Integration Mode |
+| --- | --- | --- |
+| **Refunds from Whatsapp APIs** | ❌ | ✅ |
+| **Payment Status from Whatsapp webhooks** | ❌ | ✅ |
+
+## Pre-requisites for integration
+
+**Essential Payments APIs are available at SP/TP**
+**Access to merchant order trigger APIs / CSVs** needed to trigger an order. (eg: amount, goods/service details)
+**Access to payment posting APIs** needed to close an order (eg: ticket generation APIs to create tickets once payment is received)
+
+#### Full payment gateway deep integration mode
+
+**Find out PG account owner**: This is to authorize the linking of their account to Whatsapp Business Manager.
+
+#### UPI intent mode
+
+**Find out VPA IDs, MCC and PC** for business from merchant’s PG.
+**Access to PG API docs**:
+UPI Intent S2S calls
+Webhook configuration for payment status
+
+## Example use cases and features needed
+
+| Use case | Essential Feature Set |
+| --- | --- |
+| **Buying Tickets**<br />eg: Metro, bus, event tickets | Order Details Message<br />Payment Status Webhook/API<br />Order Status Message<br />Refund |
+| **Payment Reminders**<br />Example: Bill payments, subscription renewals, insurance renewals | Order Details Template<br />Payment Status Webhook/API<br />Order Status Message<br />Refund |
+
+## Support
+
+Incase you run into issue, reach out to [direct support](https://business.facebook.com/direct-support/). _Make sure to choose the correct case type: **“WaBiz: Business Payments API”** so you get a faster resolution._
+[Signup for office hours](https://l.facebook.com/l.php?u=https%3A%2F%2Foutlook.office365.com%2Fowa%2Fcalendar%2FWhatsappBusinessPaymentsIndiaOfficeHourse%40meta.com%2Fbookings%2F&h=AT2pPZT9gMfqfItS_YCG41_5jsbsyLPWH8pfin5RPY4gi4XhXgNnH8_o1B5zXR1Nv1B5MlfZWobC3i9KED5LsPU5XCCRMtHOeRnDvVKm9XWu1dVK_zNA7QnTNSH54-ha1PbWHKyx6knabA). _Make sure to write down your issues in the form provided_
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Know the differences in the models of integration
+
+Pre-requisites for integration
+
+Full payment gateway deep integration mode
+
+UPI intent mode
+
+Example use cases and features needed
+
+Support
+
+* * *

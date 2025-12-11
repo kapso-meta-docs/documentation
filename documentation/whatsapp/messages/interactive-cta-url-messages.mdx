@@ -1,0 +1,164 @@
+
+# Interactive Call-to-Action URL Button Messages
+
+Updated: Nov 3, 2025
+
+WhatsApp users may be hesitant to tap raw URLs containing lengthy or obscure strings in text messages. In these situations, you may wish to send an interactive call-to-action (CTA) URL button message instead. CTA URL button messages allow you to map any URL to a button so you don’t have to include the raw URL in the message body.
+
+![](https://scontent-fra3-1.xx.fbcdn.net/v/t39.2365-6/498114174_2231456237292792_1964702441845433307_n.png?_nc_cat=105&ccb=1-7&_nc_sid=e280be&_nc_ohc=3H5eQEUqbCsQ7kNvwFgJwE8&_nc_oc=AdmUesU1y_M7sNh1c9lydSfY7K8GMQxMAwVpaHxpnEVW5S3MLZgTQ2QaOh_1GqFwIIA&_nc_zt=14&_nc_ht=scontent-fra3-1.xx&_nc_gid=poROJ0fttnA6j4T4s_a25A&oh=00_AfmEeEoKMJaBsTkfbYuJ2I5oYBXiVgqyBVmFgi-cMR0FNA&oe=69552511)
+
+## Request syntax
+
+Endpoint: [POST /&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;/messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api)
+
+```
+curl 'https://graph.facebook.com/&lt;API_VERSION&gt;/&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;/messages' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer &lt;ACCESS_TOKEN&gt;' \
+-d '
+\{
+  "messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": "&lt;WHATSAPP_USER_PHONE_NUMBER&gt;",
+  "type": "interactive",
+  "interactive": {
+    "type": "cta_url",
+
+    <!-- If using document header, otherwise omit -->
+    "header": {
+      "type": "document",
+      "document": {
+        "link": "&lt;ASSET_URL&gt;"
+      }
+    },
+
+    <!-- If using image header, otherwise omit -->
+    "header": {
+      "type": "image",
+      "image": {
+        "link": "&lt;ASSET_URL&gt;"
+      }
+    },
+
+    <!-- If using text header, otherwise omit -->
+    "header": {
+      "type": "text",
+      "text": "&lt;HEADER_TEXT&gt;"
+      }
+    },
+
+    <!-- If using video header, otherwise omit -->
+    "header": {
+      "type": "video",
+      "video": {
+        "link": "&lt;ASSET_URL&gt;"
+      }
+    },
+
+    "body": {
+      "text": "&lt;BODY_TEXT&gt;"
+    },
+    "action": {
+      "name": "cta_url",
+      "parameters": {
+        "display_text": "&lt;BUTTON_LABEL_TEXT&gt;",
+        "url": "&lt;BUTTON_URL&gt;"
+      }
+    },
+
+    <!-- If using footer text, otherwise omit -->
+    "footer": {
+      "text": "&lt;FOOTER_TEXT&gt;"
+    }
+  }
+}'
+```
+
+## Request parameters
+
+| Placeholder | Description | Example Value |
+| --- | --- | --- |
+| `&lt;ACCESS_TOKEN&gt;`<br />_String_ | **Required.**<br />[System token](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#system-user-access-tokens) or [business token](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#business-integration-system-user-access-tokens). | `EAAAN6tcBzAUBOZC82CW7iR2LiaZBwUHS4Y7FDtQxRUPy1PHZClDGZBZCgWdrTisgMjpFKiZAi1FBBQNO2IqZBAzdZAA16lmUs0XgRcCf6z1LLxQCgLXDEpg80d41UZBt1FKJZCqJFcTYXJvSMeHLvOdZwFyZBrV9ZPHZASSqxDZBUZASyFdzjiy2A1sippEsF4DVV5W2IlkOSr2LrMLuYoNMYBy8xQczzOKDOMccqHEZD` |
+| `&lt;API_VERSION&gt;`<br />_String_ | **Optional.**<br />Graph API version. | v24.0 |
+| `&lt;ASSET_URL&gt;`<br />_String_ | **Required if using a header with a media asset.**<br />Asset URL on a public server. | `https://www.luckyshrub.com/assets/lucky-shrub-banner-logo-v1.png` |
+| `&lt;BODY_TEXT&gt;`<br />_String_ | **Required.**<br />Body text. URLs are automatically hyperlinked.<br />Maximum 1024 characters. | `Tap the button below to see available dates.` |
+| `&lt;BUTTON_LABEL_TEXT&gt;`<br />_String_ | **Required.**<br />Button label text. Must be unique if using multiple buttons.<br />Maximum 20 characters. | `See Dates` |
+| `&lt;BUTTON_URL&gt;` | **Required.**<br />URL to load in the device’s default web browser when tapped by the WhatsApp user. | `https://www.luckyshrub.com?clickID=kqDGWd24Q5TRwoEQTICY7W1JKoXvaZOXWAS7h1P76s0R7Paec4` |
+| `&lt;FOOTER_TEXT&gt;`<br />_String_ | **Required if using a footer.**<br />Footer text. URLs are automatically hyperlinked.<br />Maximum 60 characters. | `Dates subject to change.` |
+| `&lt;HEADER_TEXT&gt;`<br />_String_ | **Required if using a text header.**<br />Header text.<br />Maximum 60 characters. | `New workshop dates announced!` |
+| `&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;`<br />_String_ | **Required.**<br />WhatsApp business phone number ID. | `106540352242922` |
+| `&lt;WHATSAPP_USER_PHONE_NUMBER&gt;`<br />_String_ | **Required.**<br />WhatsApp user phone number. | `+16505551234` |
+
+## Example request
+
+```
+curl 'https://graph.facebook.com/v24.0/106540352242922/messages' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+-d '
+\{
+  "messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": "+16505551234",
+  "type": "interactive",
+  "interactive": {
+    "type": "cta_url",
+    "header": {
+      "type": "image",
+      "image": {
+        "link": "https://www.luckyshrub.com/assets/lucky-shrub-banner-logo-v1.png"
+      }
+    },
+    "body": {
+      "text": "Tap the button below to see available dates."
+    },
+    "action": {
+      "name": "cta_url",
+      "parameters": {
+        "display_text": "See Dates",
+        "url": "https://www.luckyshrub.com?clickID=kqDGWd24Q5TRwoEQTICY7W1JKoXvaZOXWAS7h1P76s0R7Paec4"
+      }
+    },
+    "footer": {
+      "text": "Dates subject to change."
+    }
+  }
+}'
+```
+
+## Example Response
+
+```
+\{
+  "messaging_product": "whatsapp",
+  "contacts": [\
+    {\
+      "input": "+16505551234",\
+      "wa_id": "16505551234"\
+    }\
+  ],
+  "messages": [\
+    {\
+      "id": "wamid.HBgLMTY0NjcwNDM1OTUVAgARGBI1RjQyNUE3NEYxMzAzMzQ5MkEA"\
+    }\
+  ]
+}
+```
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Request syntax
+
+Request parameters
+
+Example request
+
+Example Response
+
+* * *

@@ -1,0 +1,250 @@
+
+# Contacts messages
+
+Updated: Nov 3, 2025
+
+Contacts messages allow you to send rich contact information directly to WhatsApp users, such as names, phone numbers, physical addresses, and email addresses.
+
+![](https://scontent-fra3-2.xx.fbcdn.net/v/t39.2365-6/441381765_2668119610015051_1596469393832242771_n.png?_nc_cat=104&ccb=1-7&_nc_sid=e280be&_nc_ohc=nA33lAqrbGwQ7kNvwGJpTZk&_nc_oc=Adn_jphqnfK8ni8eVpvIq3kDa71REmuJQOqmn4SPPl9Dk0RZde9c20Lz75-xKV1FRnw&_nc_zt=14&_nc_ht=scontent-fra3-2.xx&_nc_gid=wpNJ_5noT4f2hHuDO-oppA&oh=00_Afnz4slhvDc9gBXKlhYfQ5Ci49gLUfeg_BxaA7GVVBrhTg&oe=69552FB2)
+
+When a WhatsApp user taps the message’s profile arrow, it displays the contact’s information in a profile view:
+
+![](https://scontent-fra5-1.xx.fbcdn.net/v/t39.2365-6/441391825_1516000578987481_5920245070887074504_n.png?_nc_cat=100&ccb=1-7&_nc_sid=e280be&_nc_ohc=TMxKLE-hV6sQ7kNvwF4HkW9&_nc_oc=Adm2UjCIifGz_r1wHKRUVASo7F4hI0-SHPy76GIN6eHXMMV6uDK5wfIIh84UHwRk7VA&_nc_zt=14&_nc_ht=scontent-fra5-1.xx&_nc_gid=wpNJ_5noT4f2hHuDO-oppA&oh=00_Afl3szmJfbimJV-z5n1Shv3SbcT2hyyeRvHAQ9AsOqJTvw&oe=69552C67)
+
+Each message can include information for up to 257 contacts, although it is recommended to send fewer for usability and negative feedback reasons.
+
+## Request syntax
+
+Use the [POST /&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;/messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api) endpoint to send a contacts message to a WhatsApp user.
+
+```
+curl 'https://graph.facebook.com/&lt;API_VERSION&gt;/&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;/messages' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer &lt;ACCESS_TOKEN&gt;' \
+-d '
+\{
+  "messaging_product": "whatsapp",
+  "to": "&lt;WHATSAPP_USER_PHONE_NUMBER&gt;",
+  "type": "contacts",
+  "contacts": [\
+    {\
+      "addresses": [\
+        {\
+          "street": "&lt;STREET_NUMBER_AND_NAME&gt;",\
+          "city": "&lt;CITY&gt;",\
+          "state": "&lt;STATE_CODE&gt;",\
+          "zip": "&lt;ZIP_CODE&gt;",\
+          "country": "&lt;COUNTRY_NAME&gt;",\
+          "country_code": "&lt;COUNTRY_CODE&gt;",\
+          "type": "&lt;ADDRESS_TYPE&gt;"\
+        }\
+        <!-- Additional addresses objects go here, if using -->\
+      ],\
+      "birthday": "&lt;BIRTHDAY&gt;",\
+      "emails": [\
+        {\
+          "email": "&lt;EMAIL_ADDRESS&gt;",\
+          "type": "&lt;EMAIL_TYPE&gt;"\
+        }\
+        <!-- Additional emails objects go here, if using -->\
+      ],\
+      "name": {\
+        "formatted_name": "&lt;FULL_NAME&gt;",\
+        "first_name": "&lt;FIRST_NAME&gt;",\
+        "last_name": "&lt;LAST_NAME&gt;",\
+        "middle_name": "&lt;MIDDLE_NAME&gt;",\
+        "suffix": "&lt;SUFFIX&gt;",\
+        "prefix": "&lt;PREFIX&gt;"\
+      },\
+      "org": {\
+        "company": "&lt;COMPANY_OR_ORG_NAME&gt;",\
+        "department": "&lt;DEPARTMENT_NAME&gt;",\
+        "title": "&lt;JOB_TITLE&gt;"\
+      },\
+      "phones": [\
+          "phone": "&lt;PHONE_NUMBER&gt;",\
+          "type": "&lt;PHONE_NUMBER_TYPE&gt;",\
+          "wa_id": "&lt;WHATSAPP_USER_ID&gt;"\
+        }\
+        <!-- Additional phones objects go here, if using -->\
+      ],\
+      "urls": [\
+        {\
+          "url": "&lt;WEBSITE_URL&gt;",\
+          "type": "&lt;WEBSITE_TYPE&gt;"\
+        }\
+        <!-- Additional URLs go here, if using -->\
+      ]\
+    }\
+  ]
+}'
+```
+
+## Request parameters
+
+| Placeholder | Description | Example Value |
+| --- | --- | --- |
+| `&lt;ACCESS_TOKEN&gt;`<br />_String_ | **Required.**<br />[System token](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#system-user-access-tokens) or [business token](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#business-integration-system-user-access-tokens). | `EAAAN6tcBzAUBOZC82CW7iR2LiaZBwUHS4Y7FDtQxRUPy1PHZClDGZBZCgWdrTisgMjpFKiZAi1FBBQNO2IqZBAzdZAA16lmUs0XgRcCf6z1LLxQCgLXDEpg80d41UZBt1FKJZCqJFcTYXJvSMeHLvOdZwFyZBrV9ZPHZASSqxDZBUZASyFdzjiy2A1sippEsF4DVV5W2IlkOSr2LrMLuYoNMYBy8xQczzOKDOMccqHEZD` |
+| `&lt;ADDRESS_TYPE&gt;`<br />_String_ | **Optional.**<br />Type of address, such as home or work. | `Home` |
+| `&lt;API_VERSION&gt;`<br />_String_ | **Optional.**<br />Graph API version. | v24.0 |
+| `&lt;BIRTHDAY&gt;`<br />_String_ | **Optional.**<br />Contact’s birthday. Must be in YYYY-MM-DD format. | `1999-01-23` |
+| `&lt;CITY&gt;`<br />_String_ | **Optional.**<br />City where the contact resides. | `Menlo Park` |
+| `&lt;COMPANY_OR_ORG_NAME&gt;`<br />_String_ | **Optional.**<br />Name of the company where the contact works. | `Lucky Shrub` |
+| `&lt;COUNTRY_CODE&gt;`<br />_String_ | **Optional.**<br />ISO two-letter country code. | `US` |
+| `&lt;COUNTRY_NAME&gt;`<br />_String_ | **Optional.**<br />Country name. | `United States` |
+| `&lt;DEPARTMENT_NAME&gt;`<br />_String_ | **Optional.**<br />Department within the company. | `Legal` |
+| `&lt;EMAIL_ADDRESS&gt;`<br />_String_ | **Optional.**<br />Email address of the contact. | `bjohnson@luckyshrub.com` |
+| `&lt;EMAIL_TYPE&gt;`<br />_String_ | **Optional.**<br />Type of email, such as personal or work. | `Work` |
+| `&lt;FIRST_NAME&gt;`<br />_String_ | **Optional.**<br />Contact’s first name. | `Barbara` |
+| `&lt;FORMATTED_NAME&gt;`<br />_String_ | **Required.**<br />Contact’s formatted name. This will appear in the message alongside the profile arrow button. | `Barbara J. Johnson` |
+| `&lt;JOB_TITLE&gt;`<br />_String_ | **Optional.**<br />Contact’s job title. | `Lead Counsel` |
+| `&lt;LAST_NAME&gt;`<br />_String_ | **Optional.**<br />Contact’s last name. | `Johnson` |
+| `&lt;MIDDLE_NAME&gt;`<br />_String_ | **Optional.**<br />Contact’s middle name. | `Joana` |
+| `&lt;PHONE_NUMBER&gt;`<br />_String_ | **Optional.**<br />WhatsApp user phone number. | `+16505559999` |
+| `&lt;PHONE_NUMBER_TYPE&gt;`<br />_String_ | **Optional.**<br />Type of phone number. For example, cell, mobile, main, iPhone, home, work, etc. | `Home` |
+| `&lt;PREFIX&gt;`<br />_String_ | **Optional.**<br />Prefix for the contact’s name, such as Mr., Ms., Dr., etc. | `Dr.` |
+| `&lt;STATE_CODE&gt;`<br />_String_ | **Optional.**<br />Two-letter state code. | `CA` |
+| `&lt;STREET_NUMBER_AND_NAME&gt;`<br />_String_ | **Optional.**<br />Street address of the contact. | `1 Lucky Shrub Way` |
+| `&lt;SUFFIX&gt;`<br />_String_ | **Optional.**<br />Suffix for the contact’s name, if applicable. | `Esq.` |
+| `&lt;WEBSITE_TYPE&gt;`<br />_String_ | **Optional.**<br />Type of website. For example, company, work, personal, Facebook Page, Instagram, etc. | `Company` |
+| `&lt;WEBSITE_URL&gt;`<br />_String_ | **Optional.**<br />Website URL associated with the contact or their company. | `https://www.luckyshrub.com` |
+| `&lt;WHATSAPP_USER_ID&gt;`<br />_String_ | **Optional.**<br />WhatsApp user ID. If omitted, the message will display an Invite to WhatsApp button instead of the standard buttons.<br />See [Button Behavior](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/contacts-messages#button-behavior) below. | `19175559999` |
+| `&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;`<br />_String_ | **Required.**<br />WhatsApp business phone number ID. | `106540352242922` |
+| `&lt;WHATSAPP_USER_PHONE_NUMBER&gt;`<br />_String_ | **Required.**<br />WhatsApp user phone number. | `+16505551234` |
+| `&lt;ZIP_CODE&gt;`<br />_String_ | **Optional.**<br />Postal or ZIP code. | `94025` |
+
+## Button behavior
+
+If you include the contact’s WhatsApp ID in the message (via the `wa_id` property), the message will include a **Message** and a **Save contact** button:
+
+![](https://scontent-fra5-1.xx.fbcdn.net/v/t39.2365-6/441399296_815661620463689_7258599973025915055_n.png?_nc_cat=102&ccb=1-7&_nc_sid=e280be&_nc_ohc=jQZB57j0dOUQ7kNvwEWSZ5N&_nc_oc=Adm9HgXD3qlrgPUgKxW8X0KmeNxXdL5OlxYDNQUVJb5ZT11lPjbDchH_FZUlSCvbzFs&_nc_zt=14&_nc_ht=scontent-fra5-1.xx&_nc_gid=wpNJ_5noT4f2hHuDO-oppA&oh=00_AfnP6WE_B2BkaZbp8724SEQ2zS2Y-5lOPiAAf-z-AFOCIw&oe=6954FDEA)
+
+If the WhatsApp user taps the **Message** button, it will open a new message with the contact. If the user taps the **Save contact** button, they will be given the option to save the contact as a new contact, or to update an existing contact.
+
+If you omit the `wa_id` property, both buttons will be replaced with an **Invite to WhatsApp** button:
+
+![](https://scontent-fra3-2.xx.fbcdn.net/v/t39.2365-6/441366594_855962089669296_5557083162637364924_n.png?_nc_cat=111&ccb=1-7&_nc_sid=e280be&_nc_ohc=9YYba8ppUOEQ7kNvwGG6_gP&_nc_oc=Adk4VmT0fNpL-ffRJ7T_m8oN1BgIOnzPJ2uJ49zSPPpAEl4X0yTijDJcLuTohw5yr3I&_nc_zt=14&_nc_ht=scontent-fra3-2.xx&_nc_gid=wpNJ_5noT4f2hHuDO-oppA&oh=00_AfkKhNfV6ckSNq9hi6e9kXQEHkK1g6oxrOuja9PZd_KIpw&oe=69551C17)
+
+## Example request
+
+Example request to send a contacts message with two physical addresses, two email addresses, two phone numbers, and two website URLs.
+
+```
+curl 'https://graph.facebook.com/v24.0/106540352242922/messages' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+-d '
+\{
+  "messaging_product": "whatsapp",
+  "to": "+16505551234",
+  "type": "contacts",
+  "contacts": [\
+    {\
+      "addresses": [\
+        {\
+          "street": "1 Lucky Shrub Way",\
+          "city": "Menlo Park",\
+          "state": "CA",\
+          "zip": "94025",\
+          "country": "United States",\
+          "country_code": "US",\
+          "type": "Office"\
+        },\
+        {\
+          "street": "1 Hacker Way",\
+          "city": "Menlo Park",\
+          "state": "CA",\
+          "zip": "94025",\
+          "country": "United States",\
+          "country_code": "US",\
+          "type": "Pop-Up"\
+        }\
+      ],\
+      "birthday": "1999-01-23",\
+      "emails": [\
+        {\
+          "email": "bjohnson@luckyshrub.com",\
+          "type": "Work"\
+        },\
+        {\
+          "email": "bjohnson@luckyshrubplants.com",\
+          "type": "Work (old)"\
+        }\
+      ],\
+      "name": {\
+        "formatted_name": "Barbara J. Johnson",\
+        "first_name": "Barbara",\
+        "last_name": "Johnson",\
+        "middle_name": "Joana",\
+        "suffix": "Esq.",\
+        "prefix": "Dr."\
+      },\
+      "org": {\
+        "company": "Lucky Shrub",\
+        "department": "Legal",\
+        "title": "Lead Counsel"\
+      },\
+      "phones": [\
+        {\
+          "phone": "+16505559999",\
+          "type": "Landline"\
+        },\
+        {\
+          "phone": "+19175559999",\
+          "type": "Mobile",\
+          "wa_id": "19175559999"\
+        }\
+      ],\
+      "urls": [\
+        {\
+          "url": "https://www.luckyshrub.com",\
+          "type": "Company"\
+        },\
+        {\
+          "url": "https://www.facebook.com/luckyshrubplants",\
+          "type": "Company (FB)"\
+        }\
+      ]\
+    }\
+  ]
+}'
+```
+
+## Example response
+
+```
+\{
+  "messaging_product": "whatsapp",
+  "contacts": [\
+    {\
+      "input": "+16505551234",\
+      "wa_id": "16505551234"\
+    }\
+  ],
+  "messages": [\
+    {\
+      "id": "wamid.HBgLMTY0NjcwNDM1OTUVAgARGBI1RjQyNUE3NEYxMzAzMzQ5MkEA"\
+    }\
+  ]
+}
+```
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Request syntax
+
+Request parameters
+
+Button behavior
+
+Example request
+
+Example response
+
+* * *

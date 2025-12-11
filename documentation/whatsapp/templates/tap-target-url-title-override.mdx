@@ -1,0 +1,160 @@
+
+# Tap target title URL override
+
+Updated: Nov 13, 2025
+
+This document explains how to send approved message templates using the `tap_target_configuration` component within a template message. Tap target override enables image-based, text-based, and header-less message templates to function as interactive Call-to-Action URL buttons. These buttons display a custom title and open the destination linked to the first URL button.
+
+WhatsApp Business Accounts (WABAs) must be fully verified and consistently maintain high-quality standards to ensure compliance and access to this component.
+
+![](https://scontent-fra5-2.xx.fbcdn.net/v/t39.2365-6/520579996_716872931262110_1406523760843053750_n.png?_nc_cat=109&ccb=1-7&_nc_sid=e280be&_nc_ohc=jSQ6rDmSdQcQ7kNvwHX4tUx&_nc_oc=AdnR3Qj3OFj3jMlBK0bvYGNi7-oHBPXrF7Lmd2nrYoyuCqDnByGAjCBPp6bu-DfOHn8&_nc_zt=14&_nc_ht=scontent-fra5-2.xx&_nc_gid=0PctbDU3dAZyOmUP5HD6fA&oh=00_Afn-1CWcy0F6bZYsnxHFxbrnTE1zBMfMEQ58qxvXZIVxnw&oe=695526F5)
+
+## Request syntax
+
+Use the [POST /&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;/messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api) endpoint to send a text message template to a WhatsApp user.
+
+```
+curl 'https://graph.facebook.com/&lt;API_VERSION&gt;/&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;/messages' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer &lt;ACCESS_TOKEN&gt;' \
+-d '
+\{
+  "messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": "&lt;WHATSAPP_USER_PHONE_NUMBER&gt;",
+  "type": "template",
+  "template": {
+    "name": "&lt;TEMPLATE_NAME&gt;",
+    "language": {
+      "code": "&lt;LANGUAGE_AND_LOCALE_CODE&gt;"
+    },
+    "components": [\
+      {\
+        "type": "tap_target_configuration",\
+        "parameters": [\
+          {\
+            "type": "tap_target_configuration",\
+            "tap_target_configuration": [\
+              {\
+                "url": "&lt;URL&gt;",\
+                "title": "&lt;TITLE&gt;"\
+              }\
+            ]\
+          }\
+        ]\
+      },\
+          <!-- Add additional components -->\
+    ]
+  }
+}
+```
+
+### Request parameters
+
+| Placeholder | Description | Example Value |
+| --- | --- | --- |
+| `&lt;ACCESS_TOKEN&gt;`<br />_String_ | **Required.**<br />[System token](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#system-user-access-tokens) or [business token](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#business-integration-system-user-access-tokens). | `EAAAN6tcBzAUBOZC82CW7iR2LiaZBwUHS4Y7FDtQxRUPy1PHZClDGZBZCgWdrTisgMjpFKiZAi1FBBQNO2IqZBAzdZAA16lmUs0XgRcCf6z1LLxQCgLXDEpg80d41UZBt1FKJZCqJFcTYXJvSMeHLvOdZwFyZBrV9ZPHZASSqxDZBUZASyFdzjiy2A1sippEsF4DVV5W2IlkOSr2LrMLuYoNMYBy8xQczzOKDOMccqHEZD` |
+| `&lt;API_VERSION&gt;`<br />_String_ | **Optional.**<br />Graph API version. | v24.0 |
+| `&lt;LANGUAGE_AND_LOCAL_CODE&gt;`<br />_String_ | **Required.**<br />Template [language and locale code](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/supported-languages). | `en` |
+| `&lt;TEMPLATE_NAME&gt;`<br />_String_ | **Required.**<br />Name of template. | `august_promotion` |
+| `&lt;TITLE&gt;`<br />_String_ | **Required.**<br />URL Title. | `Offer Details!<br />` |
+| `&lt;URL&gt;`<br />_String_ | **Required.**<br />URL. | `https://www.luckyshrubs.com` |
+| `&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;`<br />_String_ | **Required.**<br />WhatsApp business phone number ID. | `106540352242922` |
+| `&lt;WHATSAPP_USER_PHONE_NUMBER&gt;`<br />_String_ | **Required.**<br />WhatsApp user phone number. | `+16505551234` |
+
+## Example request
+
+Example request to send a template message with the `tap_target_configuration` type.
+
+```
+curl 'https://graph.facebook.com/v24.0/106540352242922/messages' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+-d '
+\{
+  "messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": "+1233214532",
+  "type": "template",
+  "template": {
+    "name": "august_promotion",
+    "language": {
+      "code": "en"
+    },
+    "components": [\
+      {\
+        "type": "header",\
+        "parameters": [\
+          {\
+            "type": "image",\
+            "image": {\
+              "link": "https://www.luckyshrubs.com"\
+            }\
+          }\
+        ]\
+      },\
+      {\
+        "type": "body",\
+        "parameters": [\
+          {\
+            "type": "text",\
+            "text": "Hello Andy..."\
+          }\
+        ]\
+      },\
+      {\
+        "type": "tap_target_configuration",\
+        "parameters": [\
+          {\
+            "type": "tap_target_configuration",\
+            "tap_target_configuration": [\
+              {\
+                "url": "https://www.luckyshrubs.com/",\
+                "title": "Offer Details"\
+              }\
+            ]\
+          }\
+        ]\
+      }\
+    ]
+  }
+}'
+```
+
+## Example response
+
+```
+\{
+   "messaging_product": "whatsapp",
+   "contacts": [\
+       {\
+           "input": "+1233214532",\
+           "wa_id": "1233214532"\
+       }\
+   ],
+   "messages": [\
+       {\
+           "id": "wamid.HBgLMTMyMzI4NjU2NzgVAgARGBJBQzRBRDBEMDEwQzVBM0M0QkIA",\
+           "message_status": "accepted"\
+       }\
+   ]
+}
+```
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Request syntax
+
+Request parameters
+
+Example request
+
+Example response
+
+* * *

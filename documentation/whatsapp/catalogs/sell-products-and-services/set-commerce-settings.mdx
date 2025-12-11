@@ -1,0 +1,178 @@
+
+# Set Commerce Settings
+
+Updated: Nov 14, 2025
+
+You can enable or disable the shopping cart and the product catalog on a per-business phone number basis. By default, the shopping cart is enabled and the storefront icon is hidden for all business phone numbers associated with a WhatsApp Business Account.
+
+## Requirements
+
+A [system token](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#system-user-access-tokens) or [user token](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#user-access-tokens).
+The [whatsapp_business_management](https://developers.facebook.com/docs/permissions/reference/whatsapp_business_management) permission.
+If using a [system token](https://developers.facebook.com/documentation/business-messaging/whatsapp/access-tokens#system-user-access-tokens), the system user must be granted full controll over the WhatsApp Business Account.
+Businesses based in India must [comply with all online selling laws](https://www.facebook.com/help/1104628230079278).
+
+## Get Business Phone Numbers
+
+Use the [WhatsApp Business Account > Phone Numbers](https://developers.facebook.com/documentation/business-messaging/whatsapp/business-phone-numbers/phone-numbers#get-all-phone-numbers) endpoint to get a list of all business phone numbers associated with a WhatsApp Business Account.
+
+## Enable/Disable Cart
+
+Use the [Business Phone Number > WhatsApp Commerce Settings](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/phone-number-api) endpoint to enable or disable the shopping cart for a specific business phone number.
+
+When enabled, cart-related buttons appear in the chat, catalog, and product details views:
+
+![Three WhatsApp messenger screenshots with callout of various cart UI components displayed](https://scontent-lax3-1.xx.fbcdn.net/v/t39.2365-6/513870481_1426428692034436_5288360534924361904_n.png?_nc_cat=108&ccb=1-7&_nc_sid=e280be&_nc_ohc=tK8bD7I4XYQQ7kNvwFsD8IO&_nc_oc=Adm-GSKCopFzvyzhSzbZ59P1RzRpKemBbS2gKNbqXzZvvS1AStCPO3XYUm_KxPg1QBI&_nc_zt=14&_nc_ht=scontent-lax3-1.xx&_nc_gid=D0JvvNyHiID-JWOwvCnx-A&oh=00_AfkzWZDzIDYlxaN1QRm4PxlhmfHyL9AuqJ-LVclRNyrh7A&oe=695509D6)
+
+When the cart is disabled, customers can see products and their details, but all cart related buttons will not appear in any view.
+
+### Request Syntax
+
+```
+POST /&lt;BUSINESS_PHONE_NUMBER_ID&gt;/whatsapp_commerce_settings
+  ?is_cart_enabled=&lt;IS_CART_ENABLED&gt;
+```
+
+### Parameters
+
+| Placeholder | Sample Value | Description |
+| --- | --- | --- |
+| `&lt;BUSINESS_PHONE_NUMBER_ID&gt;` | `106850078877666` | Business phone number ID. |
+| `&lt;IS_CART_ENABLED&gt;` | `true` | Boolean. Set to `true` to enable cart or `false` to disable it. Default value is `true`. |
+
+### Sample Request
+
+```
+curl -X POST 'https://graph.facebook.com/v24.0/106850078877666/whatsapp_commerce_settings?is_cart_enabled=true' \
+-H 'Authorization: Bearer EAAJB...'
+```
+
+### Sample Response
+
+```
+\{
+  "success": true
+}
+```
+
+## Enable/Disable Catalog
+
+Use the [Business Phone Number > WhatsApp Commerce Settings](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/phone-number-api) endpoint to enable or disable the product catalog for a specific business phone number.
+
+When enabled, the catalog storefront icon and catalog-related buttons appear in chat views and business profile views:
+
+![Two WhatsApp messenger screenshots with callout of various catalog UI components displayed](https://scontent-lax3-1.xx.fbcdn.net/v/t39.2365-6/513359223_1234792844894756_6573923522221485884_n.png?_nc_cat=102&ccb=1-7&_nc_sid=e280be&_nc_ohc=AULqEpYUmoYQ7kNvwGrxIDU&_nc_oc=Adne4f1AXg_z7d4mGkbycZWx79pds8olX5zr71j1Fk_h_jvgVyxNR_o1lz6NfUdmE4U&_nc_zt=14&_nc_ht=scontent-lax3-1.xx&_nc_gid=D0JvvNyHiID-JWOwvCnx-A&oh=00_AfnNzaxxquWJNS4kOJEI7OFqURupzCDYiqrbMyiObrshRQ&oe=69550433)
+
+When the catalog is disabled, the storefront icon and catalog-related buttons will not appear in any views and the catalog preview with thumbnails will not appear in the business profile view.
+
+If you disable the catalog, wa.me links to your catalog, as well as the **View catalog** button that appears when you send your catalog link in a message will display an **Invalid catalog link** warning when tapped.
+
+### Request Syntax
+
+```
+POST /&lt;BUSINESS_PHONE_NUMBER_ID&gt;/whatsapp_commerce_settings
+  ?is_catalog_visible=&lt;IS_CATALOG_VISIBLE&gt;
+```
+
+### Parameters
+
+| Placeholder | Sample Value | Description |
+| --- | --- | --- |
+| `&lt;BUSINESS_PHONE_NUMBER_ID&gt;` | `106850078877666` | Business phone number ID. |
+| `&lt;IS_CATALOG_VISIBLE&gt;` | `true` | Boolean. Set to `true` to show catalog storefront icon or `false` to hide it. Default value is `false`. |
+
+### Sample Request
+
+```
+curl -X POST 'https://graph.facebook.com/v24.0/106850078877666/whatsapp_commerce_settings?is_catalog_visible=true' \
+-H 'Authorization: Bearer EAAJB...'
+```
+
+### Sample Response
+
+```
+\{
+  "success": true
+}
+```
+
+## Get Commerce Settings
+
+Use the [Business Phone Number > WhatsApp Commerce Settings](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/phone-number-api) endpoint to get an individual business phone number’s commerce settings.
+
+### Request Syntax
+
+```
+GET /&lt;BUSINESS_PHONE_NUMBER_ID&gt;/whatsapp_commerce_settings
+```
+
+### Parameters
+
+| Placeholder | Sample Value | Description |
+| --- | --- | --- |
+| `&lt;BUSINESS_PHONE_NUMBER_ID&gt;` | `106850078877666` | Business phone number ID. |
+
+### Sample Request
+
+```
+curl -X GET 'https://graph.facebook.com/v24.0/106850078877666/whatsapp_commerce_settings' \
+-H 'Authorization: Bearer EAAJB...'
+```
+
+### Sample Response
+
+```
+\{
+  "data": [\
+    {\
+      "is_cart_enabled": true,\
+      "is_catalog_visible": true,\
+      "id": "727705352028726"\
+    }\
+  ]
+}
+```
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Requirements
+
+Get Business Phone Numbers
+
+Enable/Disable Cart
+
+Request Syntax
+
+Parameters
+
+Sample Request
+
+Sample Response
+
+Enable/Disable Catalog
+
+Request Syntax
+
+Parameters
+
+Sample Request
+
+Sample Response
+
+Get Commerce Settings
+
+Request Syntax
+
+Parameters
+
+Sample Request
+
+Sample Response
+
+* * *

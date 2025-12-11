@@ -1,0 +1,413 @@
+
+# Limited-time offer templates
+
+Updated: Nov 4, 2025
+
+This document describes limited-time offer templates and how to use them.
+
+Limited-time offer templates allow you to display expiration dates and running countdown timers for offer codes in template messages, making it easy for you to communicate time-bound offers and drive customer engagement.
+
+![](https://scontent-lax3-1.xx.fbcdn.net/v/t39.2365-6/385485492_1044097420371007_6435130166952753459_n.png?_nc_cat=110&ccb=1-7&_nc_sid=e280be&_nc_ohc=t21u8W3K_Y0Q7kNvwFdV0Fi&_nc_oc=Adn5wF1DMB9Yvh8H9E4p-8YsuWR1lI_FALvE_NSuRG-ySr3sfT-TdV0ygH_Mj-dFuus&_nc_zt=14&_nc_ht=scontent-lax3-1.xx&_nc_gid=CE_wNh5pC851y4KVWs4hzA&oh=00_AfnsNh1jyjFRZOk6E-oDEI5iCzqXhLlg-EshyI2flSUGYQ&oe=6954FBBF)
+
+## Limitations
+
+Only templates categorized as `MARKETING` are supported.
+Footer components are not supported.
+Users who view a limited-time offer template message using that WhatsApp web app or desktop app will not see the offer, but will instead see a message indicating that they have received a message but that it’s not supported in the client they are using.
+
+## Creating limited-time offer templates
+
+Use the [WhatsApp Business Account > Message Templates](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-account/template-api#post-version-waba-id-message-templates) endpoint to create a limited-time offer template.
+
+### Request syntax
+
+```
+curl -X POST "https://graph.facebook.com/v23.0/&lt;WHATSAPP_BUSINESS_ACCOUNT_ID&gt;/message_templates" \
+  -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;" \
+  -H "Content-Type: application/json" \
+  -d '
+\{
+    "name": "&lt;TEMPLATE_NAME&gt;",
+    "language": "&lt;TEMPLATE_LANGUAGE&gt;",
+    "category": "marketing",
+    "components": [\
+      {\
+        "type": "header",\
+        "format": "&lt;HEADER_FORMAT&gt;",\
+        "example": {\
+          "header_handle": [\
+            "&lt;HEADER_ASSET_HANDLE&gt;"\
+          ]\
+        }\
+      },\
+      {\
+        "type": "limited_time_offer",\
+        "limited_time_offer": {\
+          "text": "&lt;LIMITED_TIME_OFFER_TEXT&gt;",\
+          "has_expiration": &lt;HAS_EXPIRATION&gt;\
+        }\
+      },\
+      {\
+        "type": "body",\
+        "text": "&lt;BODY_TEXT&gt;",\
+        "example": {\
+          "body_text": [&lt;BODY_TEXT_VARIABLE_EXAMPLES&gt;]\
+        }\
+      },\
+      {\
+        "type": "buttons",\
+        "buttons": [\
+          {\
+            "type": "copy_code",\
+            "example": "&lt;OFFER_CODE_EXAMPLE&gt;"\
+          },\
+          {\
+            "type": "url",\
+            "text": "&lt;URL_BUTTON_TEXT&gt;",\
+            "url": "&lt;URL_BUTTON_URL&gt;",\
+            "example": [\
+              "&lt;URL_EXAMPLE_WITH_VARIABLE_EXAMPLE&gt;"\
+            ]\
+          }\
+        ]\
+      }\
+    ]
+  }'
+```
+
+### Request parameters
+
+| Placeholder | Description | Example Value |
+| --- | --- | --- |
+| `&lt;BODY_TEXT&gt;`<br />_String_ | **Required.**<br />Body component text. Supports variables.<br />Maximum 600 characters. | `Good news, {{1}}! Use code {{2}} to get 25% off all Caribbean Destination packages!` |
+| `&lt;BODY_TEXT_VARIABLE_EXAMPLES&gt;`<br />_Array of strings_ | **Required if body component text uses variables.**<br />Array of example variable strings.<br />Must supply examples for all placeholders in `&lt;BODY_TEXT&gt;` string.<br />No maximum, but counts against `&lt;BODY_TEXT&gt;` maximum. | `["Pablo","CARIBE25"]` |
+| `&lt;HAS_EXPIRATION&gt;`<br />_Boolean_ | **Optional.**<br />Set to `true` to have the [offer expiration details](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/marketing-templates/limited-time-offer-templates#offer-expiration-details) appear in the delivered message. | `true` |
+| `&lt;HEADER_ASSET_HANDLE&gt;`<br />_Media asset handle_ | **Required if using an image or video header.**<br />Uploaded media asset handle. Use the [Resumable Upload API](https://developers.facebook.com/docs/graph-api/guides/upload) to generate an asset handle. | `4::aW...` |
+| `&lt;HEADER_FORMAT&gt;`<br />_Enum_ | **Required if using a header.**<br />Can be `IMAGE`, or `VIDEO`. | `IMAGE` |
+| `&lt;LIMITED_TIME_OFFER_TEXT&gt;`<br />_String_ | **Required.**<br />Offer details text.<br />Maximum 16 characters. | `Expiring offer!` |
+| `&lt;OFFER_CODE_EXAMPLE&gt;`<br />_String_ | **Required.**<br />Example offer code.<br />Maximum 15 characters. | `CARIBE25` |
+| `&lt;TEMPLATE_LANGUAGE&gt;`<br />_Enum_ | **Required.**<br />Template [language and locale code](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/supported-languages). | `en_US` |
+| `&lt;TEMPLATE_NAME&gt;`<br />_String_ | **Required.**<br />Template name.<br />Maximum 512 characters. | `limited_time_offer_caribbean_pkg_2023` |
+| `&lt;URL_BUTTON_TEXT&gt;`<br />_String_ | **Required.**<br />[URL button](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/components#url-buttons) label text. Supports 1 variable.<br />25 characters maximum. | `Book now!` |
+| `&lt;URL_BUTTON_URL&gt;`<br />_String_ | **Required.**<br />URL of website that loads in the device’s default mobile web browser when the [URL button](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/components#url-buttons) is tapped by the WhatsApp user.<br />Supports 1 variable appended to the end of the URL string.<br />Maximum 2000 characters. | `https://awesomedestinations.com/offers?code={{1}}` |
+| `&lt;URL_EXAMPLE_WITH_VARIABLE_EXAMPLE&gt;`<br />_String_ | **Required if URL uses a variable.**<br />Example URL with example variable appended to the end.<br />No maximum, but value counts against `&lt;URL_BUTTON_URL&gt;` maximum. | `https://awesomedestinations.com/offers?ref=n3mtql` |
+
+### Offer expiration details
+
+The delivered message can display an offer expiration details section with a heading, an optional expiration timer, and the offer code itself.
+
+![](https://scontent-lax3-1.xx.fbcdn.net/v/t39.2365-6/384988489_703197894993408_6289249753669812858_n.png?_nc_cat=109&ccb=1-7&_nc_sid=e280be&_nc_ohc=CF8nlkHGv8oQ7kNvwFx7ehu&_nc_oc=AdmpaIZW80t2AJlpLhG_OWIKE9fO5xvxQ6GkJaOcuIOeUWx3py_hMPsHWs7D01HFRS4&_nc_zt=14&_nc_ht=scontent-lax3-1.xx&_nc_gid=CE_wNh5pC851y4KVWs4hzA&oh=00_AfmPJfo6KjyuW0uMsIoWZ_DClV0mV3Wkj_BcFgJCckfy6Q&oe=69550861)
+
+The expiration timer is a text string that is not customizable, but it will change to red text if the message is viewed and the offer code is expiring within the next hour. (You include the actual offer code and its expiration timestamp when you send the template in a template message.)
+
+### Example request
+
+This is an example request to create a limited-time offer template that uses:
+
+an image header component
+body text component with variables
+the limited time offer component
+a copy code button
+a button URL with a variable
+
+```
+curl 'https://graph.facebook.com/v17.0/102290129340398/message_templates' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+-d '
+\{
+  "name": "limited_time_offer_caribbean_pkg_2023",
+  "language": "en_US",
+  "category": "marketing",
+  "components": [\
+    {\
+      "type": "header",\
+      "format": "image",\
+      "example": {\
+        "header_handle": [\
+          "4::aW..."\
+        ]\
+      }\
+    },\
+    {\
+      "type": "limited_time_offer",\
+      "limited_time_offer": {\
+        "text": "Expiring offer!",\
+        "has_expiration": true\
+      }\
+    },\
+    {\
+      "type": "body",\
+      "text": "Good news, {{1}}! Use code {{2}} to get 25% off all Caribbean Destination packages!",\
+      "example": {\
+        "body_text": [\
+          [\
+            "Pablo",\
+            "CARIBE25"\
+          ]\
+        ]\
+      }\
+    },\
+    {\
+      "type": "buttons",\
+      "buttons": [\
+        {\
+          "type": "copy_code",\
+          "example": "CARIBE25"\
+        },\
+        {\
+          "type": "url",\
+          "text": "Book now!",\
+          "url": "https://awesomedestinations.com/offers?code={{1}}",\
+          "example": [\
+            "https://awesomedestinations.com/offers?ref=n3mtql"\
+          ]\
+        }\
+      ]\
+    }\
+  ]
+}'
+```
+
+### Example response
+
+```
+\{
+  "id": "546151681022936",
+  "status": "PENDING",
+  "category": "MARKETING"
+}
+```
+
+## Sending limited-time offer templates
+
+Use the [WhatsApp Business Phone Number > Messages](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api) endpoint to send an approved limited-time offer template in a template message.
+
+### Request syntax
+
+```
+curl -X POST "https://graph.facebook.com/v23.0/&lt;WHATSAPP_BUSINESS_PHONE_NUMBER_ID&gt;/messages" \
+  -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;" \
+  -H "Content-Type: application/json" \
+  -d '
+\{
+    "messaging_product": "whatsapp",
+    "recipient_type": "individual",
+    "to": "&lt;CUSTOMER_PHONE_NUMBER&gt;",
+    "type": "template",
+    "template": {
+      "name": "&lt;TEMPLATE_NAME&gt;",
+      "language": {
+        "code": "&lt;TEMPLATE_LANGUAGE_CODE&gt;"
+      },
+      "components": [\
+        {\
+          "type": "header",\
+          "parameters": [\
+            {\
+              "type": "&lt;HEADER_TYPE&gt;",\
+              "&lt;HEADER_TYPE&gt;": {\
+                "id": "&lt;HEADER_ASSET_ID&gt;"\
+              }\
+            }\
+          ]\
+        },\
+        {\
+          "type": "body",\
+          "parameters": [\
+            &lt;BODY_VARIABLES&gt;\
+          ]\
+        },\
+        {\
+          "type": "limited_time_offer",\
+          "parameters": [\
+            {\
+              "type": "limited_time_offer",\
+              "limited_time_offer": {\
+                "expiration_time_ms": &lt;EXPIRATION_TIME&gt;\
+              }\
+            }\
+          ]\
+        },\
+        {\
+          "type": "button",\
+          "sub_type": "copy_code",\
+          "index": 0,\
+          "parameters": [\
+            {\
+              "type": "coupon_code",\
+              "coupon_code": "&lt;OFFER_CODE&gt;"\
+            }\
+          ]\
+        },\
+        {\
+          "type": "button",\
+          "sub_type": "url",\
+          "index": &lt;URL_BUTTON_INDEX&gt;,\
+          "parameters": [\
+            {\
+              "type": "text",\
+              "text": "&lt;URL_VARIABLE&gt;"\
+            }\
+          ]\
+        }\
+      ]
+    }
+  }'
+```
+
+### Request parameters
+
+| Placeholder | Description | Example Value |
+| --- | --- | --- |
+| `&lt;BODY_VARIABLES&gt;`<br />_Array of objects_ | **Required if template body text uses variables.**<br />Body text variable values. Define each variable as an individual object. | `{"type":"text","text":"Pablo"},{"type":"text","text":"CARIBE25"}` |
+| `&lt;CUSTOMER_PHONE_NUMBER&gt;`<br />_String_ | **Required.**<br />Phone number of customer who the template message should be sent to. | `+16505555555` |
+| `&lt;EXPIRATION_TIME&gt;`<br />_Unix timestamp_ | **Required.**<br />Offer code expiration time as a UNIX timestamp in milliseconds. | `1698562800000` |
+| `&lt;HEADER_ASSET_ID&gt;`<br />_Media asset ID_ | **Required.**<br />Uploaded media asset ID. Use the [/PHONE_NUMBER_ID/media](https://developers.facebook.com/documentation/business-messaging/whatsapp/reference/whatsapp-business-phone-number/message-api) endpoint to generate an ID. | `1602186516975000` |
+| `&lt;HEADER_TYPE&gt;`<br />_String_ | **Required.**<br />Header type used by the template. Values can be `image` or `video`. | `image` |
+| `&lt;OFFER_CODE&gt;`<br />_String_ | **Required if template uses a copy code button.**<br />Offer code.<br />Maximum 15 characters. | `CARIBE25` |
+| `&lt;TEMPLATE_LANGUAGE_CODE&gt;`<br />_Enum_ | **Required.**<br />The template’s [language and locale code](https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/supported-languages). | `en_US` |
+| `&lt;TEMPLATE_NAME&gt;`<br />_String_ | **Required.**<br />The template’s name. | `limited_time_offer_caribbean_pkg_2023` |
+| `&lt;URL_BUTTON_INDEX&gt;`<br />_Integer_ | **Required.**<br />URL button index. If the template uses a copy code button, value must be `1`.<br />If the template does not use a copy code button, the value must be `0`. | `1` |
+| `&lt;URL_VARIABLE&gt;`<br />_String_ | **Required if URL uses a variable.**<br />URL variable value.<br />No maximum but value counts against URL string maximum of 2000 characters. | `n3mtql` |
+
+### Example request
+
+Example request to send a limited-time offer template that uses:
+
+an image header
+body text variables
+the offer expiration details
+a copy code button
+a URL button with a variable
+
+```
+curl 'https://graph.facebook.com/v17.0/106540352242922/messages' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer EAAJB...' \
+-d '
+\{
+  "messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": "16505555555",
+  "type": "template",
+  "template": {
+    "name": "limited_time_offer_caribbean_pkg_2023",
+    "language": {
+      "code": "en_US"
+    },
+    "components": [\
+      {\
+        "type": "header",\
+        "parameters": [\
+          {\
+            "type": "image",\
+            "image": {\
+              "id": "1602186516975000"\
+            }\
+          }\
+        ]\
+      },\
+      {\
+        "type": "body",\
+        "parameters": [\
+          {\
+            "type": "text",\
+            "text": "Pablo"\
+          },\
+          {\
+            "type": "text",\
+            "text": "CARIBE25"\
+          }\
+        ]\
+      },\
+      {\
+        "type": "limited_time_offer",\
+        "parameters": [\
+          {\
+            "type": "limited_time_offer",\
+            "limited_time_offer": {\
+              "expiration_time_ms": 1209600000\
+            }\
+          }\
+        ]\
+      },\
+      {\
+        "type": "button",\
+        "sub_type": "copy_code",\
+        "index": 0,\
+        "parameters": [\
+          {\
+            "type": "coupon_code",\
+            "coupon_code": "CARIBE25"\
+          }\
+        ]\
+      },\
+      {\
+        "type": "button",\
+        "sub_type": "url",\
+        "index": 1,\
+        "parameters": [\
+          {\
+            "type": "text",\
+            "text": "n3mtql"\
+          }\
+        ]\
+      }\
+    ]
+  }
+}'
+```
+
+### Example response
+
+```
+\{
+  "messaging_product": "whatsapp",
+  "contacts": [\
+    {\
+      "input": "16505555555",\
+      "wa_id": "16505555555"\
+    }\
+  ],
+  "messages": [\
+    {\
+      "id": "wamid.HBgLMTY1MDUwNzY1MjAVAgARGBI5QTNDQTVCM0Q0Q0Q2RTY3RTcA"\
+    }\
+  ]
+}
+```
+
+Did you find this page helpful?
+
+![Thumbs up icon](https://static.xx.fbcdn.net/rsrc.php/yR/r/OEXJ0_DJeZv.svg)
+
+![Thumbs down icon](https://static.xx.fbcdn.net/rsrc.php/yb/r/qKPgNVNeatU.svg)
+
+ON THIS PAGE
+
+Limitations
+
+Creating limited-time offer templates
+
+Request syntax
+
+Request parameters
+
+Offer expiration details
+
+Example request
+
+Example response
+
+Sending limited-time offer templates
+
+Request syntax
+
+Request parameters
+
+Example request
+
+Example response
+
+* * *
