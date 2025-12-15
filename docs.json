@@ -94,6 +94,55 @@
             ]
           },
           {
+            "group": "Templates",
+            "pages": [
+              "documentation/whatsapp/templates/overview",
+              "documentation/whatsapp/templates/components",
+              "documentation/whatsapp/templates/template-categorization",
+              "documentation/whatsapp/templates/template-quality",
+              "documentation/whatsapp/templates/template-review",
+              "documentation/whatsapp/templates/template-migration",
+              "documentation/whatsapp/templates/supported-languages",
+              "documentation/whatsapp/templates/time-to-live",
+              "documentation/whatsapp/templates/tap-target-url-title-override",
+              "documentation/whatsapp/templates/portfolio-pacing",
+              {
+                "group": "Authentication templates",
+                "pages": [
+                  "documentation/whatsapp/templates/authentication-templates/authentication-templates",
+                  "documentation/whatsapp/templates/authentication-templates/autofill-button-authentication-templates",
+                  "documentation/whatsapp/templates/authentication-templates/zero-tap-authentication-templates",
+                  "documentation/whatsapp/templates/authentication-templates/authentication-best-practices",
+                  "documentation/whatsapp/templates/authentication-templates/bulk-management",
+                  "documentation/whatsapp/templates/authentication-templates/error-signals",
+                  "documentation/whatsapp/templates/authentication-templates/template-preview"
+                ]
+              },
+              {
+                "group": "Marketing templates",
+                "pages": [
+                  "documentation/whatsapp/templates/marketing-templates",
+                  "documentation/whatsapp/templates/marketing-templates/custom-marketing-templates",
+                  "documentation/whatsapp/templates/marketing-templates/catalog-templates",
+                  "documentation/whatsapp/templates/marketing-templates/coupon-templates",
+                  "documentation/whatsapp/templates/marketing-templates/limited-time-offer-templates",
+                  "documentation/whatsapp/templates/marketing-templates/media-card-carousel-templates",
+                  "documentation/whatsapp/templates/marketing-templates/product-card-carousel-templates",
+                  "documentation/whatsapp/templates/marketing-templates/mpm-templates",
+                  "documentation/whatsapp/templates/marketing-templates/spm-templates",
+                  "documentation/whatsapp/templates/marketing-templates/call-permission-request-message-template",
+                  "documentation/whatsapp/templates/marketing-templates/per-user-limits"
+                ]
+              },
+              {
+                "group": "Utility templates",
+                "pages": [
+                  "documentation/whatsapp/templates/utility-templates/utility-templates"
+                ]
+              }
+            ]
+          },
+          {
             "group": "Embedded signup",
             "pages": [
               "documentation/whatsapp/embedded-signup/overview",
